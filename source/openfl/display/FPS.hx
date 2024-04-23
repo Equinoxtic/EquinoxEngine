@@ -1,5 +1,6 @@
 package openfl.display;
 
+import flixel.FlxSprite;
 import haxe.Timer;
 import openfl.events.Event;
 import openfl.text.TextField;
@@ -46,7 +47,7 @@ class FPS extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat("_sans", 14, color);
+		defaultTextFormat = new TextFormat(Assets.getFont('assets/fonts/comfortaabold.ttf').fontName, 14, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";
@@ -85,11 +86,11 @@ class FPS extends TextField
 			text = "FPS: " + currentFPS;
 
 			var gameMemory:Float = 0;
-            var memoryPeak:Float = 0;
+			var memoryPeak:Float = 0;
 			
 			#if openfl
 			gameMemory = Math.round(System.totalMemory / 1024 / 1024 * 100) / 100;
-            if (gameMemory > memoryPeak) memoryPeak = gameMemory;
+			if (gameMemory > memoryPeak) memoryPeak = gameMemory;
 			text += "\nMemory: " + gameMemory + "MB / " + memoryPeak + "MB";
 			#end
 
@@ -97,8 +98,8 @@ class FPS extends TextField
 			if (gameMemory > 3000 || currentFPS <= ClientPrefs.framerate / 2) {
 				textColor = 0xE67E3E;
 			} else if (gameMemory > 1000 || currentFPS <= ClientPrefs.framerate / 4) {
-                textColor = 0xBF3434;
-            }
+				textColor = 0xBF3434;
+			}
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();

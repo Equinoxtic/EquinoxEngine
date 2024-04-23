@@ -1,5 +1,6 @@
 package;
 
+import modcharting.ModchartMusicBeatState;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
@@ -15,7 +16,7 @@ import flixel.FlxState;
 import flixel.FlxCamera;
 import flixel.FlxBasic;
 
-class MusicBeatState extends FlxUIState
+class MusicBeatState extends ModchartMusicBeatState
 {
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;

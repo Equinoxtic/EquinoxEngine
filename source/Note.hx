@@ -7,6 +7,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flash.display.BitmapData;
 import editors.ChartingState;
+import modcharting.SustainStrip;
 
 using StringTools;
 
@@ -32,6 +33,9 @@ class Note extends FlxSprite
 	public var noteWasHit:Bool = false;
 	public var prevNote:Note;
 	public var nextNote:Note;
+
+	public var mesh:SustainStrip = null;
+	public var z:Float = 0;
 
 	public var spawned:Bool = false;
 

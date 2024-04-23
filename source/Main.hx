@@ -82,8 +82,8 @@ class Main extends Sprite
 		}
 	
 		ClientPrefs.loadDefaultKeys();
-        
-        // Thanks to @Quackerona for sending a patch to this one
+		
+		// Thanks to @Quackerona for sending a patch to this one
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile

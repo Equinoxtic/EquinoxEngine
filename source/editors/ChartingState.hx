@@ -212,6 +212,9 @@ class ChartingState extends MusicBeatState
 
 			_song = {
 				song: 'Test',
+				credit: 'Artist',
+				extraText: 'Test',
+				charter: 'Person',
 				notes: [],
 				events: [],
 				bpm: 150.0,
@@ -403,6 +406,11 @@ class ChartingState extends MusicBeatState
 	var noteSplashesInputText:FlxUIInputText;
 	var stageDropDown:FlxUIDropDownMenuCustom;
 	var sliderRate:FlxUISlider;
+
+	var creditsInputText:FlxUIInputText;
+	var charterInputText:FlxUIInputText;
+	var extraStringInputText:FlxUIInputText;
+
 	function addSongUI():Void
 	{
 		UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
@@ -592,6 +600,21 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 
+		var songCredit = PlayState.SONG.credit;
+		if (songCredit == null) songCredit = '';
+		creditsInputText = new FlxUIInputText(stageDropDown.x, stageDropDown.y + 30, 125, songCredit, 8);
+		blockPressWhileTypingOn.push(creditsInputText);
+
+		var songCharter = PlayState.SONG.charter;
+		if (songCharter == null) songCharter = '';
+		charterInputText = new FlxUIInputText(creditsInputText.x, creditsInputText.y + 30, 125, songCharter, 8);
+		blockPressWhileTypingOn.push(charterInputText);
+
+		var songExtraText = PlayState.SONG.extraText;
+		if (songExtraText == null) songExtraText = '';
+		extraStringInputText = new FlxUIInputText(charterInputText.x, charterInputText.y + 30, 125, songExtraText, 8);
+		blockPressWhileTypingOn.push(extraStringInputText);
+
 		var skin = PlayState.SONG.arrowSkin;
 		if(skin == null) skin = '';
 		noteSkinInputText = new FlxUIInputText(player2DropDown.x, player2DropDown.y + 50, 150, skin, 8);
@@ -636,6 +659,13 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(stageDropDown);
+
+		tab_group_song.add(new FlxText(creditsInputText.x, creditsInputText.y - 15, 0, 'Song Credits:'));
+		tab_group_song.add(new FlxText(charterInputText.x, charterInputText.y - 15, 0, 'Song Charter:'));
+		tab_group_song.add(new FlxText(extraStringInputText.x, extraStringInputText.y - 15, 0, 'Extra String:'));
+		tab_group_song.add(creditsInputText);
+		tab_group_song.add(charterInputText);
+		tab_group_song.add(extraStringInputText);
 
 		UI_box.addGroup(tab_group_song);
 
@@ -1465,9 +1495,15 @@ class ChartingState extends MusicBeatState
 				vocals.volume = nums.value;
 			}
 		}
-		else if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
-			if(sender == noteSplashesInputText) {
+		else if (id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
+			if (sender == noteSplashesInputText) {
 				_song.splashSkin = noteSplashesInputText.text;
+			} else if (sender == creditsInputText) {
+				_song.credit = creditsInputText.text;
+			} else if (sender == charterInputText) {
+				_song.charter = charterInputText.text;
+			} else if (sender == extraStringInputText) {
+				_song.extraText = extraStringInputText.text;
 			}
 			else if(curSelectedNote != null)
 			{

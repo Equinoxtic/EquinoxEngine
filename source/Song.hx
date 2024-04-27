@@ -29,11 +29,18 @@ typedef SwagSong =
 	var arrowSkin:String;
 	var splashSkin:String;
 	var validScore:Bool;
+
+	var credit:String;
+	var extraText:String;
+	var charter:String;
 }
 
 class Song
 {
 	public var song:String;
+	public var credit:String;
+	public var extraText:String;
+	public var charter:String;
 	public var notes:Array<SwagSection>;
 	public var events:Array<Dynamic>;
 	public var bpm:Float;

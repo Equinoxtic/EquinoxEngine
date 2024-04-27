@@ -37,8 +37,7 @@ class ScoreTracker extends FlxSpriteGroup
 		// < SCORE: SONG SCORE / COMBO BREAKS: MISSES / ACCURACY: ACCURACY% / RATING - RANK >
 		scoreTxt.text = '< SCORE: ${score}'
 		+ ' / COMBO BREAKS: ${misses}'
-		+ ' / '
-		+ ((score > 0) ? 'ACCURACY: ${Highscore.floorDecimal(ratingPercent * 100, 2)}% / $ratingFC - ${rankingString}' : '')
+		+ ((score > 0) ? ' / ACCURACY: ${Highscore.floorDecimal(ratingPercent * 100, 2)}% / $ratingFC - ${rankingString}' : '')
 		+ ' >';
 		/**
 		 * NOTE: I used the condition (SCORE > 0) to make it seem more feature-proof than using (RATING or RANKING != X)

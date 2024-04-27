@@ -128,9 +128,11 @@
 
 	<!--In case you want to use the addons package-->
 
-    <define name="PSYCH" />
+	<!-- DEPRECATE FNF MODCHARTING TOOLS FOR NOW -->
 
-    <haxelib name="fnf-modcharting-tools" />
+    <!-- <define name="PSYCH" />
+
+    <haxelib name="fnf-modcharting-tools" /> -->
 
 	<haxelib name="random" />
 

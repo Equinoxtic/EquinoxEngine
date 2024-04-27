@@ -390,6 +390,7 @@ class CharacterEditorState extends MusicBeatState
 					"name": "Dad Sing Note RIGHT"
 				}
 			],
+			"display_name": "EngineOverride",
 			"no_antialiasing": false,
 			"image": "characters/DADDY_DEAREST",
 			"position": [
@@ -492,6 +493,8 @@ class CharacterEditorState extends MusicBeatState
 		UI_box.addGroup(tab_group);
 	}
 
+	var displayNameInputText:FlxUIInputText;
+
 	var imageInputText:FlxUIInputText;
 	var healthIconInputText:FlxUIInputText;
 
@@ -534,7 +537,9 @@ class CharacterEditorState extends MusicBeatState
 				getEvent(FlxUINumericStepper.CHANGE_EVENT, healthColorStepperB, null);
 			});
 
-		healthIconInputText = new FlxUIInputText(15, imageInputText.y + 35, 75, leHealthIcon.getCharacter(), 8);
+		displayNameInputText = new FlxUIInputText(15, imageInputText.y + 35, 75, 'Boyfriend', 8);
+
+		healthIconInputText = new FlxUIInputText(15, displayNameInputText.y + 35, 75, leHealthIcon.getCharacter(), 8);
 
 		singDurationStepper = new FlxUINumericStepper(15, healthIconInputText.y + 45, 0.1, 4, 0, 999, 1);
 
@@ -577,6 +582,7 @@ class CharacterEditorState extends MusicBeatState
 		healthColorStepperB = new FlxUINumericStepper(singDurationStepper.x + 130, saveCharacterButton.y, 20, char.healthColorArray[2], 0, 255, 0);
 
 		tab_group.add(new FlxText(15, imageInputText.y - 18, 0, 'Image file name:'));
+		tab_group.add(new FlxText(15, displayNameInputText.y - 18, 0, 'Character Name:'));
 		tab_group.add(new FlxText(15, healthIconInputText.y - 18, 0, 'Health icon name:'));
 		tab_group.add(new FlxText(15, singDurationStepper.y - 18, 0, 'Sing Animation length:'));
 		tab_group.add(new FlxText(15, scaleStepper.y - 18, 0, 'Scale:'));
@@ -586,6 +592,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(imageInputText);
 		tab_group.add(reloadImage);
 		tab_group.add(decideIconColor);
+		tab_group.add(displayNameInputText);
 		tab_group.add(healthIconInputText);
 		tab_group.add(singDurationStepper);
 		tab_group.add(scaleStepper);
@@ -758,13 +765,14 @@ class CharacterEditorState extends MusicBeatState
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
-			if(sender == healthIconInputText) {
+			if (sender == healthIconInputText) {
 				leHealthIcon.changeIcon(healthIconInputText.text);
 				char.healthIcon = healthIconInputText.text;
 				updatePresence();
-			}
-			else if(sender == imageInputText) {
+			} else if (sender == imageInputText) {
 				char.imageFile = imageInputText.text;
+			} else if (sender == displayNameInputText) {
+				char.displayName = displayNameInputText.text;
 			}
 		} else if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
 			if (sender == scaleStepper)
@@ -981,6 +989,7 @@ class CharacterEditorState extends MusicBeatState
 	function reloadCharacterOptions() {
 		if(UI_characterbox != null) {
 			imageInputText.text = char.imageFile;
+			displayNameInputText.text = char.displayName;
 			healthIconInputText.text = char.healthIcon;
 			singDurationStepper.value = char.singDuration;
 			scaleStepper.value = char.jsonScale;
@@ -1273,6 +1282,8 @@ class CharacterEditorState extends MusicBeatState
 
 	function saveCharacter() {
 		var json = {
+			"display_name": char.displayName,
+
 			"animations": char.animationsArray,
 			"image": char.imageFile,
 			"scale": char.jsonScale,

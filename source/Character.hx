@@ -21,6 +21,8 @@ import haxe.format.JsonParser;
 using StringTools;
 
 typedef CharacterFile = {
+	var display_name:String;
+
 	var animations:Array<AnimArray>;
 	var image:String;
 	var scale:Float;
@@ -46,6 +48,8 @@ typedef AnimArray = {
 
 class Character extends FlxSprite
 {
+	public var displayName:String;
+
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
@@ -176,6 +180,8 @@ class Character extends FlxSprite
 
 				positionArray = json.position;
 				cameraPosition = json.camera_position;
+
+				displayName = json.display_name;
 
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;

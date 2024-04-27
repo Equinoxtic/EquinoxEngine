@@ -7,6 +7,8 @@ import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 
+using StringTools;
+
 class ScoreTracker extends FlxSpriteGroup
 {
 	var instance:FlxBasic;
@@ -37,18 +39,32 @@ class ScoreTracker extends FlxSpriteGroup
 		// < SCORE: SONG SCORE / COMBO BREAKS: MISSES / ACCURACY: ACCURACY% / RATING - RANK >
 		scoreTxt.text = '< SCORE: ${score}'
 		+ ' / COMBO BREAKS: ${misses}'
-		+ ((score > 0) ? ' / ACCURACY: ${Highscore.floorDecimal(ratingPercent * 100, 2)}% / $ratingFC - ${rankingString}' : '')
+		+ ' / ACCURACY: ${Highscore.floorDecimal(ratingPercent * 100, 2)}%'
+		+ ((score > 0) ? ' / $ratingFC - ${rankingString}' : '')
 		+ ' >';
 		/**
 		 * NOTE: I used the condition (SCORE > 0) to make it seem more feature-proof than using (RATING or RANKING != X)
 		 */
+	}
 
-		if (PlayState.instance.cpuControlled) {
-			scoreTxt.size = Std.int(fontSize * 1.1);
-			scoreTxt.text = '< BOTPLAY >';
-		} else if (PlayState.instance.practiceMode) {
-			scoreTxt.size = Std.int(fontSize * 1.1);
-			scoreTxt.text = '< PRACTICE MODE >';
+	public function changeScoreTextMode(mode:String, ?defaultFontSizeMult:Float = 1.0):Void {
+		if (mode != null) {
+			var validModes:Array<String> = [ 
+				'botplay', 
+				'charting-mode', 
+				'practice-mode' 
+			];
+
+			var isValidMode:Bool = false;
+
+			for (i in 0...validModes.length) {
+				isValidMode = ((mode.toLowerCase() == validModes[i].toLowerCase()));
+				if (isValidMode) break;
+			}
+
+			trace(isValidMode);
+
+			if (isValidMode) scoreTxt.text = '< ${mode.toUpperCase().replace('-', ' ')} >';
 		}
 	}
 

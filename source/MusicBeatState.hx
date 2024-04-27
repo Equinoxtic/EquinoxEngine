@@ -1,6 +1,5 @@
 package;
 
-import modcharting.ModchartMusicBeatState;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
@@ -16,7 +15,7 @@ import flixel.FlxState;
 import flixel.FlxCamera;
 import flixel.FlxBasic;
 
-class MusicBeatState extends ModchartMusicBeatState
+class MusicBeatState extends FlxUIState
 {
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
@@ -123,18 +122,16 @@ class MusicBeatState extends ModchartMusicBeatState
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
-		if(!FlxTransitionableState.skipNextTransIn) {
+		if (!FlxTransitionableState.skipNextTransIn) {
 			leState.openSubState(new CustomFadeTransition(0.6, false));
-			if(nextState == FlxG.state) {
+			if (nextState == FlxG.state) {
 				CustomFadeTransition.finishCallback = function() {
 					FlxG.resetState();
 				};
-				//trace('resetted');
 			} else {
 				CustomFadeTransition.finishCallback = function() {
 					FlxG.switchState(nextState);
 				};
-				//trace('changed state');
 			}
 			return;
 		}

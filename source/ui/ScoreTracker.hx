@@ -34,13 +34,13 @@ class ScoreTracker extends FlxSpriteGroup
 		add(scoreTxt);
 	}
 
-	public function updateScoreText(?score:Int = 0, ?misses:Int = 0, ?ratingFC:String = "", ?rankingString:String = "", ?ratingPercent:Float = 0.0) {
+	public function updateScoreText() {
 
 		// < SCORE: SONG SCORE / COMBO BREAKS: MISSES / ACCURACY: ACCURACY% / RATING - RANK >
-		scoreTxt.text = '< SCORE: ${score}'
-		+ ' / COMBO BREAKS: ${misses}'
-		+ ' / ACCURACY: ${Highscore.floorDecimal(ratingPercent * 100, 2)}%'
-		+ ((score > 0) ? ' / $ratingFC - ${rankingString}' : '')
+		scoreTxt.text = '< SCORE: ${PlayState.instance.songScore}'
+		+ ' / COMBO BREAKS: ${PlayState.instance.songMisses}'
+		+ ' / ACCURACY: ${Highscore.floorDecimal(PlayState.instance.ratingPercent * 100, 2)}%'
+		+ ((PlayState.instance.songScore > 0) ? ' / ${PlayState.instance.ratingFC} - ${PlayState.instance.ranking}' : '')
 		+ ' >';
 		/**
 		 * NOTE: I used the condition (SCORE > 0) to make it seem more feature-proof than using (RATING or RANKING != X)

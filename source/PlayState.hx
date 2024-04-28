@@ -3210,10 +3210,10 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 		
-		judgementCounter.updateJudgementCounter(combo, songHits, sicks, goods, bads, shits, songMisses);
+		judgementCounter.updateJudgementCounter();
 		
 		if (!cpuControlled && !practiceMode && !chartingMode) {
-			scoreTracker.updateScoreText(songScore, songMisses, ratingFC, ranking, ratingPercent);
+			scoreTracker.updateScoreText();
 		}
 		
 		gameplayInfo.updateGameplayText(
@@ -5415,7 +5415,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// public var ratingName:String = '?';
-	public var ratingPercent:Float;
+	public var ratingPercent:Float = 1.0;
 	public var ratingFC:String = '?';
 	public var ranking:String = '?';
 

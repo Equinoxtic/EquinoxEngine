@@ -157,7 +157,7 @@ class FunkinLua {
 		set('hits', 0);
 
 		set('rating', 0);
-		set('ratingName', '');
+		set('ranking', '');
 		set('ratingFC', '');
 		set('version', MainMenuState.psychEngineVersion.trim());
 
@@ -1649,8 +1649,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "setRatingPercent", function(value:Float) {
 			PlayState.instance.ratingPercent = value;
 		});
-		Lua_helper.add_callback(lua, "setRatingName", function(value:String) {
-			PlayState.instance.ratingName = value;
+		Lua_helper.add_callback(lua, "setRanking", function(value:String) {
+			PlayState.instance.ranking = value;
 		});
 		Lua_helper.add_callback(lua, "setRatingFC", function(value:String) {
 			PlayState.instance.ratingFC = value;

@@ -5497,9 +5497,8 @@ class PlayState extends MusicBeatState
 
 		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
 
-		// setOnLuas('rating', ratingPercent);
+		setOnLuas('rating', ratingPercent);
 		// setOnLuas('ratingName', ratingName);
-
 		setOnLuas('ratingFC', ratingFC);
 		setOnLuas('ranking', ranking);
 	}

@@ -35,7 +35,6 @@ class ScoreTracker extends FlxSpriteGroup
 	}
 
 	public function updateScoreText() {
-
 		// < SCORE: SONG SCORE / COMBO BREAKS: MISSES / ACCURACY: ACCURACY% / RATING - RANK >
 		scoreTxt.text = '< SCORE: ${PlayState.instance.songScore}'
 		+ ' / COMBO BREAKS: ${PlayState.instance.songMisses}'

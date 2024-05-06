@@ -10,10 +10,12 @@ class Highscore
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songRating:Map<String, Float> = new Map();
+	public static var songRanking:Map<String, String> = new Map();
 	#else
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songRating:Map<String, Float> = new Map<String, Float>();
+	public static var songRanking:Map<String, String> = new Map<String, String>();
 	#end
 
 
@@ -46,20 +48,24 @@ class Highscore
 		return newValue / tempMult;
 	}
 
-	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1):Void
+	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1, ?rank:String = ''):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
 		if (songScores.exists(daSong)) {
 			if (songScores.get(daSong) < score) {
 				setScore(daSong, score);
-				if(rating >= 0) setRating(daSong, rating);
+				if (rank != '') setRanking(daSong, rank);
+				if (rating >= 0) setRating(daSong, rating);
 			}
 		}
 		else {
 			setScore(daSong, score);
-			if(rating >= 0) setRating(daSong, rating);
+			if (rank != '') setRanking(daSong, rank);
+			if (rating >= 0) setRating(daSong, rating);
 		}
+
+		trace('SAVED SCORE BOIS');
 	}
 
 	public static function saveWeekScore(week:String, score:Int = 0, ?diff:Int = 0):Void
@@ -101,6 +107,13 @@ class Highscore
 		FlxG.save.flush();
 	}
 
+	static function setRanking(song:String, ranking:String):Void
+	{
+		songRanking.set(song, ranking);
+		FlxG.save.data.songRanking = songRanking;
+		FlxG.save.flush();	
+	}
+
 	public static function formatSong(song:String, diff:Int):String
 	{
 		return Paths.formatToSongPath(song) + CoolUtil.getDifficultyFilePath(diff);
@@ -122,6 +135,15 @@ class Highscore
 			setRating(daSong, 0);
 
 		return songRating.get(daSong);
+	}
+
+	public static function getRanking(song:String, diff:Int):String
+	{
+		var daSong:String = formatSong(song, diff);
+		if (!songRanking.exists(daSong))
+			setRanking(daSong, 'N/A');
+
+		return songRanking.get(daSong);
 	}
 
 	public static function getWeekScore(week:String, diff:Int):Int
@@ -146,6 +168,10 @@ class Highscore
 		if (FlxG.save.data.songRating != null)
 		{
 			songRating = FlxG.save.data.songRating;
+		}
+		if (FlxG.save.data.songRanking != null)
+		{
+			songRanking = FlxG.save.data.songRanking;
 		}
 	}
 }

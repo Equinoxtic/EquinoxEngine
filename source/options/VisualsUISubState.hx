@@ -41,6 +41,34 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Show Judgement Counter',
+			'Shows and tracks how many sicks, goods, bads and shits.',
+			'showJudgementCounter',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Show Gameplay Info',
+			'Displays the current song, the current difficulty, etc.',
+			'showGameplayInfo',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Detailed Judgement Counter Info',
+			'If checked, the Judgement Counter will also track the total note hits, combo and misses.',
+			'detailedJudgementInfo',
+			'bool',
+			false);
+		addOption(option);
+
+		var option:Option = new Option('Disable Watermark',
+			'If checked, the watermark will not be visible',
+			'showGameplayInfo',
+			'bool',
+			false);
+		addOption(option);
+
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',
 			'hideHud',
@@ -52,8 +80,8 @@ class VisualsUISubState extends BaseOptionsMenu
 			"What should the Time Bar display?",
 			'timeBarType',
 			'string',
-			'Time Left',
-			['Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
+			'Default',
+			['Default', 'Time Elapsed / Song Length', 'Song Name', 'Default Percentage', 'Percentage Only', 'Disabled']);
 		addOption(option);
 
 		var option:Option = new Option('Flashing Lights',

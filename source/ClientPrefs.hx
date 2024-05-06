@@ -24,7 +24,7 @@ class ClientPrefs {
 	public static var noteOffset:Int = 0;
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var ghostTapping:Bool = true;
-	public static var timeBarType:String = 'Time Left';
+	public static var timeBarType:String = 'Default';
 	public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;
 	public static var healthBarAlpha:Float = 1;
@@ -60,6 +60,15 @@ class ClientPrefs {
 	public static var goodWindow:Int = 90;
 	public static var badWindow:Int = 135;
 	public static var safeFrames:Float = 10;
+
+	/**
+	 * Solarium Engine Options
+	 */
+
+	public static var showJudgementCounter:Bool = true;
+	public static var detailedJudgementInfo:Bool = false;
+	public static var showGameplayInfo:Bool = true;
+	public static var noWatermark:Bool = false;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -130,6 +139,11 @@ class ClientPrefs {
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.checkForUpdates = checkForUpdates;
 		FlxG.save.data.comboStacking = comboStacking;
+
+		FlxG.save.data.showJudgementCounter = showJudgementCounter;
+		FlxG.save.data.detailedJudgementInfo = detailedJudgementInfo;
+		FlxG.save.data.showGameplayInfo = showGameplayInfo;
+		FlxG.save.data.noWatermark = noWatermark;
 	
 		FlxG.save.flush();
 
@@ -266,6 +280,26 @@ class ClientPrefs {
 		}
 		if (FlxG.save.data.comboStacking != null)
 			comboStacking = FlxG.save.data.comboStacking;
+
+
+
+		if (FlxG.save.data.showJudgementCounter != null) {
+			showJudgementCounter = FlxG.save.data.showJudgementCounter;
+		}
+
+		if (FlxG.save.data.detailedJudgementInfo != null) {
+			detailedJudgementInfo = FlxG.save.data.detailedJudgementInfo;
+		}
+
+		if (FlxG.save.data.showGameplayInfo != null) {
+			showGameplayInfo = FlxG.save.data.showGameplayInfo;
+		}
+		
+		if (FlxG.save.data.noWatermark != null) {
+			noWatermark = FlxG.save.data.noWatermark;
+		}
+
+
 
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', 'ninjamuffin99');

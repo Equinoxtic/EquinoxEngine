@@ -36,17 +36,22 @@ class JudgementCounter extends FlxSpriteGroup
 	}
 
 	public function updateJudgementCounter() {
-		judgementText.text = ((ClientPrefs.detailedJudgementInfo) ?
-			'TOTAL HITS: ${PlayState.instance.songHits}\n'
-			+ 'COMBO: ${PlayState.instance.combo}' : '') + '\n\n'
-
-			+ 'SICK: ${PlayState.instance.sicks}\n'
-			+ 'GOOD: ${PlayState.instance.goods}\n'
-			+ 'BAD: ${PlayState.instance.bads}\n'
-			+ 'SHIT: ${PlayState.instance.shits}'
-
-			+ ((ClientPrefs.detailedJudgementInfo) ?
-			'\n\nCOMBO BREAKS: ${PlayState.instance.songMisses}' : '');
+		if (ClientPrefs.detailedJudgementInfo) {
+			judgementText.scale.set(0.985, 0.985);
+			judgementText.text = 'TOTAL HITS: ${PlayState.instance.songHits}\n'
+				+ 'COMBO: ${PlayState.instance.combo}\n\n'
+				+ 'SICK: ${PlayState.instance.sicks}\n'
+				+ 'GOOD: ${PlayState.instance.goods}\n'
+				+ 'BAD: ${PlayState.instance.bads}\n'
+				+ 'SHIT: ${PlayState.instance.shits}'
+				+ '\n\nCOMBO BREAKS: ${PlayState.instance.songMisses}';
+		} else {
+			judgementText.scale.set(1.025, 1.025);
+			judgementText.text = 'SICK: ${PlayState.instance.sicks}\n'
+				+ 'GOOD: ${PlayState.instance.goods}\n'
+				+ 'BAD: ${PlayState.instance.bads}\n'
+				+ 'SHIT: ${PlayState.instance.shits}';
+		}
 	}
 
 	override function update(elapsed:Float) {

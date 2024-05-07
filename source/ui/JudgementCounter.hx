@@ -40,6 +40,7 @@ class JudgementCounter extends FlxSpriteGroup
 			judgementText.scale.set(0.985, 0.985);
 			judgementText.text = 'TOTAL HITS: ${PlayState.instance.songHits}\n'
 				+ 'COMBO: ${PlayState.instance.combo}\n\n'
+				+ 'MARVELOUS: ${PlayState.instance.marvs}\n'
 				+ 'SICK: ${PlayState.instance.sicks}\n'
 				+ 'GOOD: ${PlayState.instance.goods}\n'
 				+ 'BAD: ${PlayState.instance.bads}\n'
@@ -47,7 +48,8 @@ class JudgementCounter extends FlxSpriteGroup
 				+ '\n\nCOMBO BREAKS: ${PlayState.instance.songMisses}';
 		} else {
 			judgementText.scale.set(1.025, 1.025);
-			judgementText.text = 'SICK: ${PlayState.instance.sicks}\n'
+			judgementText.text = 'MARVELOUS: ${PlayState.instance.marvs}\n'
+				+ 'SICK: ${PlayState.instance.sicks}\n'
 				+ 'GOOD: ${PlayState.instance.goods}\n'
 				+ 'BAD: ${PlayState.instance.bads}\n'
 				+ 'SHIT: ${PlayState.instance.shits}';

@@ -65,6 +65,7 @@ import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
 import Random;
+import Shaders;
 
 /**
  * Solarium Classes
@@ -214,6 +215,7 @@ class PlayState extends MusicBeatState
 	public var timeBar:FlxBar;
 
 	public var ratingsData:Array<Rating> = [];
+	public var marvs:Int = 0;
 	public var sicks:Int = 0;
 	public var goods:Int = 0;
 	public var bads:Int = 0;
@@ -248,6 +250,9 @@ class PlayState extends MusicBeatState
 	// public var camOtherUI:FlxCamera;
 	public var cameraSpeed:Float = 1;
 
+	var aberrationEffect:ChromaticAberration;
+	var vcrEffect:VCRDistortionEffect;
+
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
 
@@ -265,6 +270,7 @@ class PlayState extends MusicBeatState
 	var blammedLightsBlack:FlxSprite;
 	var phillyWindowEvent:BGSprite;
 	var trainSound:FlxSound;
+	var doPhillyCAB:Bool = false;
 
 	var phillyGlowGradient:PhillyGlow.PhillyGlowGradient;
 	var phillyGlowParticles:FlxTypedGroup<PhillyGlow.PhillyGlowParticle>;
@@ -304,6 +310,11 @@ class PlayState extends MusicBeatState
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
+	public static var campaignMarvs:Int = 0;
+	public static var campaignSicks:Int = 0;
+	public static var campaignGoods:Int = 0;
+	public static var campaignBads:Int = 0;
+	public static var campaignShits:Int = 0;
 	public static var seenCutscene:Bool = false;
 	public static var deathCounter:Int = 0;
 
@@ -364,6 +375,9 @@ class PlayState extends MusicBeatState
 	var useHardcodedInfo:Bool = false;
 
 	var canPause:Bool = false;
+	var scoreMultiplier:Float = 0.0;
+	private var displayedHealth:Float = 1;
+	private var comboPeak:Int = 0;
 
 	override public function create()
 	{
@@ -393,7 +407,13 @@ class PlayState extends MusicBeatState
 		];
 
 		//Ratings
-		ratingsData.push(new Rating('sick')); //default rating
+		ratingsData.push(new Rating('marv')); //default rating
+
+		var rating:Rating = new Rating('sick');
+		rating.ratingMod = 1.0;
+		rating.score = 350;
+		rating.noteSplash = true;
+		ratingsData.push(rating);
 
 		var rating:Rating = new Rating('good');
 		rating.ratingMod = 0.7;
@@ -443,6 +463,9 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOther, false);
 		// FlxG.cameras.add(camOtherUI, false);
+
+		aberrationEffect = new ChromaticAberration(0.0);
+		vcrEffect = new VCRDistortionEffect(1.0);
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 
@@ -1031,11 +1054,6 @@ class PlayState extends MusicBeatState
 				songCreditTxt = "Bassetfilms";
 				songCharterTxt = "NinjaMuffin";
 				useHardcodedInfo = true;
-
-			default:
-				songCreditTxt = "ARTIST";
-				songCharterTxt = "CHARTER";
-				useHardcodedInfo = true;
 		}
 
 		if (!stageData.hide_girlfriend)
@@ -1143,28 +1161,25 @@ class PlayState extends MusicBeatState
 		'songPercent', 0, 1);
 		timeBar.setGraphicSize(Std.int(timeBar.width * 1.1), Std.int(timeBar.height * 0.8));
 		timeBar.scrollFactor.set();
-		timeBar.createFilledBar(0xFF555555, 0xFFFFFFFF);
+		// timeBar.createFilledBar(0xFF555555, 0xFFFFFFFF);
+		timeBar.createGradientBar([0xFF252525, 0xFF353535, 0xFF555555], [0xFFFFFFFF, 0xFFDDDDDD, 0xFFAAAAAA], 1, 180);
 		timeBar.x = timeBarBG.x * 1;
 		timeBar.y = timeBarBG.y - 1;
 		timeBar.numDivisions = 1000; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
 
-		timeTxt = new FlxText(0, 0, 400, "", 32);
-		timeTxt.setFormat(Paths.font('elnath.ttf'), 30, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt = new FlxText(0, 0, FlxG.width, "", 20);
+		timeTxt.setFormat(Paths.font('azonix.otf'), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.screenCenter(X);
 		// timeTxt.x = timeBarBG.x * 1;
-		timeTxt.y = timeBarBG.y - 1;
+		timeTxt.y = timeBarBG.y - 2;
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2.5;
+		timeTxt.antialiasing = ClientPrefs.globalAntialiasing;
 		timeTxt.visible = showTime;
 		if(ClientPrefs.downScroll) timeTxt.y = FlxG.height - 44;
-
-		if(ClientPrefs.timeBarType == 'Song Name')
-		{
-			timeTxt.text = SONG.song;
-		}
 		updateTime = showTime;
 		
 		add(timeBar);
@@ -1176,11 +1191,11 @@ class PlayState extends MusicBeatState
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
 		
-		if(ClientPrefs.timeBarType == 'Song Name')
-		{
-			timeTxt.size = 24;
-			timeTxt.y += 3;
-		}
+		// if(ClientPrefs.timeBarType == 'Song Name')
+		// {
+		// 	timeTxt.size = 24;
+		// 	timeTxt.y += 3;
+		// }
 		
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
@@ -1239,7 +1254,7 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 		
 		healthBar = new FlxBar(0, 0, FlxBarFillDirection.RIGHT_TO_LEFT, Std.int(healthBarBG.width * 1), Std.int(healthBarBG.height * 1), this,
-		'health', 0, 2);
+		'displayedHealth', 0, 2);
 		healthBar.scrollFactor.set();
 		healthBar.x = healthBarBG.x * 1;
 		healthBar.y = healthBarBG.y - 1;
@@ -1294,13 +1309,13 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
-		judgementCounter = new JudgementCounter(-30, -25, this, 21);
+		judgementCounter = new JudgementCounter(-20, -25, this, 21);
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
 		judgementCounter.visible = !ClientPrefs.hideHud;
 		add(judgementCounter);
 		
-		gameplayInfo = new GameplayInfo(1, healthBarBG.y + 35, this, 18, 
+		gameplayInfo = new GameplayInfo(0, healthBarBG.y + 35, this, 18, 
 			SONG.song.toUpperCase(), 
 			CoolUtil.difficultyString(),
 			SONG.credit,
@@ -1311,7 +1326,7 @@ class PlayState extends MusicBeatState
 		gameplayInfo.visible = !ClientPrefs.hideHud;
 		add(gameplayInfo);
 
-		engineWatermark = new Watermark(-15, FlxG.height - 0.08, this, .15);
+		engineWatermark = new Watermark(-17, FlxG.height - 0.09, this, .15);
 		engineWatermark.scrollFactor.set();
 		engineWatermark.visible = !ClientPrefs.hideHud;
 		add(engineWatermark);
@@ -1674,10 +1689,24 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	public function reloadHealthBarColors() {
-		healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
-			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
+	public function getHealthArrayIndexOf(?character:String = 'bf'):FlxColor {
+		if (character != null) {
+			switch(character)
+			{
+				/**
+				 * Using Flx.fromRGBFloat to determine more presice values of color, dividing each index of healthColorArray by 255 to achieve the same colors whilst avoiding conflicting results
+				 */
+				case 'bf' | 'boyfriend' | 'player': 
+					return FlxColor.fromRGBFloat(boyfriend.healthColorArray[0] / 255, boyfriend.healthColorArray[1] / 255, boyfriend.healthColorArray[2] / 255, 1.0);
+				case 'dad' | 'oppoenent' | 'enemy': 
+					return FlxColor.fromRGBFloat(dad.healthColorArray[0] / 255, dad.healthColorArray[1] / 255, dad.healthColorArray[2] / 255, 1.0);
+			}
+		}
+		return FlxColor.fromRGBFloat(1.0, 1.0, 1.0, 1.0);
+	}
 
+	public function reloadHealthBarColors() {
+		healthBar.createFilledBar(getHealthArrayIndexOf('dad'), getHealthArrayIndexOf('bf'));
 		healthBar.updateBar();
 	}
 
@@ -3073,6 +3102,14 @@ class PlayState extends MusicBeatState
 				if(!ClientPrefs.lowQuality && bgGhouls.animation.curAnim.finished) {
 					bgGhouls.visible = false;
 				}
+
+				vcrEffect.setGlitchModifier(0.005);
+			
+			case 'school':
+				vcrEffect.setGlitchModifier(0.0001);
+				vcrEffect.setVignette(false);
+				vcrEffect.setVignetteMoving(false);
+
 			case 'philly':
 				if (trainMoving)
 				{
@@ -3101,6 +3138,22 @@ class PlayState extends MusicBeatState
 						--i;
 					}
 				}
+
+				camHUD.setFilters([new ShaderFilter(aberrationEffect.shader)]);
+				camGame.setFilters([new ShaderFilter(aberrationEffect.shader)]);
+
+				var cameraShakeIntensity = 0.00175;
+
+				aberrationEffect.setOffset(
+					((doPhillyCAB) ? Random.float(0.001, 0.005) : 0.0)
+				);
+		
+				if (doPhillyCAB) {
+					cameraShakeIntensity += (cameraShakeIntensity / 24);
+					camGame.shake(cameraShakeIntensity, 0.5);
+					camHUD.shake(cameraShakeIntensity, 0.5);
+				}
+
 			case 'limo':
 				if(!ClientPrefs.lowQuality) {
 					grpLimoParticles.forEach(function(spr:BGSprite) {
@@ -3209,6 +3262,21 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+
+		// bloomEffect.update(elapsed);
+
+		if (combo > comboPeak) {
+			comboPeak = combo;
+		}
+
+		displayedHealth = FlxMath.lerp(displayedHealth, health, .2 / (ClientPrefs.framerate / 60));
+
+		switch (Paths.formatToSongPath(SONG.song).toLowerCase()) {
+			case 'senpai' | 'roses' | 'thorns':
+				camHUD.setFilters([new ShaderFilter(vcrEffect.shader)]);
+				camGame.setFilters([new ShaderFilter(vcrEffect.shader)]);
+				vcrEffect.update(elapsed);
+		}
 		
 		judgementCounter.updateJudgementCounter();
 		
@@ -3226,6 +3294,8 @@ class PlayState extends MusicBeatState
 		TweenClass.globalManager.update(elapsed);
 
 		if (combo >= 10) showCombo = true;
+
+		scoreMultiplier = ((combo * 0.1) * (Highscore.floorDecimal(ratingPercent * 100, 2) / 100)) + 1;
 
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
@@ -3320,14 +3390,33 @@ class PlayState extends MusicBeatState
 					if(curTime < 0) curTime = 0;
 					songPercent = (curTime / songLength);
 
-					var songCalc:Float = (songLength - curTime);
-					if(ClientPrefs.timeBarType == 'Time Elapsed') songCalc = curTime;
+					// var songCalc:Float = (songLength - curTime);
+					var songCalc:Float = curTime;
 
+					var songLengthButReal:Int = Math.floor(songLength / 1000);
 					var secondsTotal:Int = Math.floor(songCalc / 1000);
-					if(secondsTotal < 0) secondsTotal = 0;
+					
+					if (secondsTotal < 0) secondsTotal = 0;
+					if (songLengthButReal < 0) songLengthButReal = 0;
 
-					if(ClientPrefs.timeBarType != 'Song Name')
-						timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
+					var songPercentage:String = '${Math.round(Highscore.floorDecimal((secondsTotal / songLengthButReal) * 100, 2))}%';
+					var formattedSongString:String = '${SONG.song} - ${CoolUtil.difficultyString().toUpperCase()}';
+					var songLengthString:String = '${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(songLengthButReal, false)}';
+
+					switch(ClientPrefs.timeBarType)
+					{
+						case 'Default':
+							timeTxt.text = '${formattedSongString} (${songLengthString})';
+						case 'Time Elapsed / Song Length':
+							timeTxt.text = '${songLengthString}';
+						case 'Song Name':
+							timeTxt.text = '${formattedSongString}';
+						case 'Default Percentage':
+							timeTxt.text = '${formattedSongString} (${songPercentage})';
+						case 'Percentage Only':
+							timeTxt.text = '${songPercentage}';
+							timeTxt.x = timeBar.x + 25;
+					}
 				}
 			}
 
@@ -3732,6 +3821,8 @@ class PlayState extends MusicBeatState
 								camHUD.zoom += 0.1;
 							}
 
+							doPhillyCAB = false;
+
 							blammedLightsBlack.visible = false;
 							phillyWindowEvent.visible = false;
 							phillyGlowGradient.visible = false;
@@ -3788,6 +3879,8 @@ class PlayState extends MusicBeatState
 
 						color.brightness *= 0.5;
 						phillyStreet.color = color;
+
+						doPhillyCAB = true;
 
 					case 2: // spawn particles
 						if(!ClientPrefs.lowQuality)
@@ -4125,9 +4218,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		timeBarBG.visible = false;
-		timeBar.visible = false;
-		timeTxt.visible = false;
 		canPause = false;
 		endingSong = true;
 		camZooming = false;
@@ -4160,7 +4250,7 @@ class PlayState extends MusicBeatState
 				if (!cpuControlled || !practiceMode) {
 					var percent:Float = ratingPercent;
 					if(Math.isNaN(percent)) percent = 0;
-					Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
+					Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, ranking);
 				}
 				#end
 			}
@@ -4176,6 +4266,11 @@ class PlayState extends MusicBeatState
 			{
 				campaignScore += songScore;
 				campaignMisses += songMisses;
+				campaignMarvs += marvs;
+				campaignSicks += sicks;
+				campaignGoods += goods;
+				campaignBads += bads;
+				campaignShits += shits;
 
 				storyPlaylist.remove(storyPlaylist[0]);
 
@@ -4307,6 +4402,7 @@ class PlayState extends MusicBeatState
 			pixelShitPart2 = '-pixel';
 		}
 
+		Paths.image(pixelShitPart1 + "marv" + pixelShitPart2);
 		Paths.image(pixelShitPart1 + "sick" + pixelShitPart2);
 		Paths.image(pixelShitPart1 + "good" + pixelShitPart2);
 		Paths.image(pixelShitPart1 + "bad" + pixelShitPart2);
@@ -4334,7 +4430,7 @@ class PlayState extends MusicBeatState
 		//
 
 		var rating:FlxSprite = new FlxSprite();
-		var score:Int = 350;
+		var score:Int = 500;
 
 		//tryna do MS based judgment due to popular demand
 		var daRating:Rating = Conductor.judgeNote(note, noteDiff / playbackRate);
@@ -4358,8 +4454,9 @@ class PlayState extends MusicBeatState
 
 		if (modifiedScoringEnabled)
 		{
-			songScore += score;
-			if(!note.ratingDisabled)
+			songScore += score * Std.int(Highscore.floorDecimal(scoreMultiplier, 2));
+
+			if (!note.ratingDisabled)
 			{
 				songHits++;
 				totalPlayed++;
@@ -4735,6 +4832,8 @@ class PlayState extends MusicBeatState
 				note.destroy();
 			}
 		});
+
+		scoreMultiplier = 1;
 		combo = 0;
 		health -= daNote.missHealth * healthLoss;
 		
@@ -4910,7 +5009,13 @@ class PlayState extends MusicBeatState
 				if(combo > 99999) combo = 99999;
 				popUpScore(note);
 			}
-			health += note.hitHealth * healthGain;
+
+			// Pity Health System
+			if (combo > 0 && songScore > 0) {
+				health += (note.hitHealth * healthGain) * ((((combo / 2) * 0.015) / 2) + 1);
+			} else {
+				health += (note.hitHealth * healthGain) * 1.5;
+			}
 
 			if(!note.noAnimation) {
 				var animToPlay:String = singAnimations[Std.int(Math.abs(note.noteData))];
@@ -5057,7 +5162,7 @@ class PlayState extends MusicBeatState
 		if (trainSound.time >= 4700)
 		{
 			startedMoving = true;
-			FlxG.camera.shake(trainShakeIntensity, 1.25);
+			FlxG.camera.shake(trainShakeIntensity, 1.0);
 			if (gf != null)
 			{
 				gf.playAnim('hairBlow');

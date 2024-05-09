@@ -3139,9 +3139,6 @@ class PlayState extends MusicBeatState
 					}
 				}
 
-				camHUD.setFilters([new ShaderFilter(aberrationEffect.shader)]);
-				camGame.setFilters([new ShaderFilter(aberrationEffect.shader)]);
-
 				var cameraShakeIntensity = 0.00175;
 
 				aberrationEffect.setOffset(
@@ -3271,11 +3268,16 @@ class PlayState extends MusicBeatState
 
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .2 / (ClientPrefs.framerate / 60));
 
-		switch (Paths.formatToSongPath(SONG.song).toLowerCase()) {
-			case 'senpai' | 'roses' | 'thorns':
-				camHUD.setFilters([new ShaderFilter(vcrEffect.shader)]);
-				camGame.setFilters([new ShaderFilter(vcrEffect.shader)]);
-				vcrEffect.update(elapsed);
+		if (ClientPrefs.shaders) {
+			switch (curStage) {
+				case 'philly':
+					camHUD.setFilters([new ShaderFilter(aberrationEffect.shader)]);
+					camGame.setFilters([new ShaderFilter(aberrationEffect.shader)]);
+				case 'school' | 'schoolEvil':
+					camHUD.setFilters([new ShaderFilter(vcrEffect.shader)]);
+					camGame.setFilters([new ShaderFilter(vcrEffect.shader)]);
+					vcrEffect.update(elapsed);
+			}
 		}
 		
 		judgementCounter.updateJudgementCounter();

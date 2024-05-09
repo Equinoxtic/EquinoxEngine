@@ -1309,13 +1309,13 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
-		judgementCounter = new JudgementCounter(-20, -25, this, 21);
+		judgementCounter = new JudgementCounter(-13, -25, this, 21);
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
 		judgementCounter.visible = !ClientPrefs.hideHud;
 		add(judgementCounter);
 		
-		gameplayInfo = new GameplayInfo(0, healthBarBG.y + 35, this, 18, 
+		gameplayInfo = new GameplayInfo(15, healthBarBG.y + 45, this, 18, 
 			SONG.song.toUpperCase(), 
 			CoolUtil.difficultyString(),
 			SONG.credit,
@@ -1326,7 +1326,7 @@ class PlayState extends MusicBeatState
 		gameplayInfo.visible = !ClientPrefs.hideHud;
 		add(gameplayInfo);
 
-		engineWatermark = new Watermark(-17, FlxG.height - 0.09, this, .15);
+		engineWatermark = new Watermark(-19, FlxG.height - .85, this, .15);
 		engineWatermark.scrollFactor.set();
 		engineWatermark.visible = !ClientPrefs.hideHud;
 		add(engineWatermark);
@@ -3417,7 +3417,7 @@ class PlayState extends MusicBeatState
 							timeTxt.text = '${formattedSongString} (${songPercentage})';
 						case 'Percentage Only':
 							timeTxt.text = '${songPercentage}';
-							timeTxt.x = timeBar.x + 25;
+							timeTxt.x = (timeBar.x * 1) + 75;
 					}
 				}
 			}
@@ -4501,11 +4501,8 @@ class PlayState extends MusicBeatState
 
 		insert(members.indexOf(strumLineNotes), rating);
 		
-		if (!ClientPrefs.comboStacking)
-		{
-			if (lastRating != null) lastRating.kill();
-			lastRating = rating;
-		}
+		if (lastRating != null) lastRating.kill();
+		lastRating = rating;
 
 		if (!PlayState.isPixelStage)
 		{
@@ -4525,24 +4522,21 @@ class PlayState extends MusicBeatState
 
 		var seperatedScore:Array<Int> = [];
 
-		if(combo >= 1000) {
-			seperatedScore.push(Math.floor(combo / 1000) % 10);
-		}
-		seperatedScore.push(Math.floor(combo / 100) % 10);
-		seperatedScore.push(Math.floor(combo / 10) % 10);
-		seperatedScore.push(combo % 10);
+		if (combo >= 1000) seperatedScore.push(Math.floor(combo / 1000) % 10);
+		if (combo >= 100) seperatedScore.push(Math.floor(combo / 100) % 10);
+		if (combo >= 10) seperatedScore.push(Math.floor(combo / 10) % 10);
+		if (combo > 0) seperatedScore.push(combo % 10);
 
 		var daLoop:Int = 0;
 		var xThing:Float = 0;
-		if (showCombo)
-		{
+
+		if (showCombo) {
 			insert(members.indexOf(strumLineNotes), comboSpr);
 		}
-		if (!ClientPrefs.comboStacking)
-		{
-			if (lastCombo != null) lastCombo.kill();
-			lastCombo = comboSpr;
-		}
+
+		if (lastCombo != null) lastCombo.kill();
+		lastCombo = comboSpr;
+
 		if (lastScore != null)
 		{
 			while (lastScore.length > 0)
@@ -4562,8 +4556,7 @@ class PlayState extends MusicBeatState
 			numScore.x += ClientPrefs.comboOffset[2];
 			numScore.y -= ClientPrefs.comboOffset[3];
 			
-			if (!ClientPrefs.comboStacking)
-				lastScore.push(numScore);
+			lastScore.push(numScore);
 
 			if (!PlayState.isPixelStage)
 			{
@@ -4600,7 +4593,7 @@ class PlayState extends MusicBeatState
 		/*
 			trace(combo);
 			trace(seperatedScore);
-		 */
+		*/
 
 		coolText.text = Std.string(seperatedScore);
 		// add(coolText);
@@ -5364,16 +5357,14 @@ class PlayState extends MusicBeatState
 		/**
 		 * ICON-BOP
 		 */
-		if ((curBeat % 4) == 0) {
-			iconP1.scale.set(1.5, 1.5);
-			iconP2.scale.set(1.5, 1.5);
-		} else {
-			iconP1.scale.set(1.1, 1.1);
-			iconP2.scale.set(1.1, 1.1);
-		}
-
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
+		playerIcons.forEach(function(spr) {
+			if ((curBeat % 4) == 0) {
+				spr.scale.set(1.45, 1.45);
+			} else {
+				spr.scale.set(1.2, 1.2);
+			}
+			spr.updateHitbox();
+		});
 
 		if (gf != null && curBeat % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
 		{

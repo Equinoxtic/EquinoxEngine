@@ -1,5 +1,9 @@
 package;
 
+import haxe.Http;
+import Shaders.BloomShader as BloomShader;
+import Shaders;
+import openfl.filters.ShaderFilter;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -25,8 +29,8 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.6.3'; //This is also used for Discord RPC
-	public static var solariumEngineVersion:String = '0.0.1';
+	public static var psychEngineVersion:String = ''; //This is also used for Discord RPC
+	public static var solariumEngineVersion:String = '';
 	public static var funkinVersion:String = '0.2.8';
 	public static var curSelected:Int = 0;
 
@@ -131,6 +135,20 @@ class MainMenuState extends MusicBeatState
 		}
 
 		FlxG.camera.follow(camFollowPos, null, 1);
+
+		var httpSolarium = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/SolariumVersion.txt");
+		httpSolarium.onData = function(data:String) { solariumEngineVersion = data.split('\n')[0].trim(); }
+		httpSolarium.request();
+		httpSolarium.onError = function (error) {
+			trace('error: $error');
+		}
+		
+		var httpPsych = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/psychVersion.txt");
+		httpPsych.onData = function(data:String) { psychEngineVersion = data.split('\n')[0].trim(); }
+		httpPsych.request();
+		httpPsych.onError = function (error) {
+			trace('error: $error');
+		}
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, 'Solarium Engine v${solariumEngineVersion} - PE v${psychEngineVersion}', 12);
 		versionShit.scrollFactor.set();

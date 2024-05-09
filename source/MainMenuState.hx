@@ -136,18 +136,24 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var httpSolarium = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/SolariumVersion.txt");
-		httpSolarium.onData = function(data:String) { solariumEngineVersion = data.split('\n')[0].trim(); }
-		httpSolarium.request();
-		httpSolarium.onError = function (error) {
-			trace('error: $error');
-		}
-		
-		var httpPsych = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/psychVersion.txt");
-		httpPsych.onData = function(data:String) { psychEngineVersion = data.split('\n')[0].trim(); }
-		httpPsych.request();
-		httpPsych.onError = function (error) {
-			trace('error: $error');
+		/**
+		 * Had to do this because everytime you go to this specific state, it fucks up the memory!!
+		 */
+		if (solariumEngineVersion.split(' ')[0].trim() == '' || psychEngineVersion.split(' ')[0].trim() == '')
+		{
+			var httpSolarium = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/SolariumVersion.txt");
+			httpSolarium.onData = function(data:String) { solariumEngineVersion = data.split('\n')[0].trim(); }
+			httpSolarium.request();
+			httpSolarium.onError = function (error) {
+				trace('error: $error');
+			}
+			
+			var httpPsych = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/psychVersion.txt");
+			httpPsych.onData = function(data:String) { psychEngineVersion = data.split('\n')[0].trim(); }
+			httpPsych.request();
+			httpPsych.onError = function (error) {
+				trace('error: $error');
+			}
 		}
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, 'Solarium Engine v${solariumEngineVersion} - PE v${psychEngineVersion}', 12);
@@ -268,7 +274,7 @@ class MainMenuState extends MusicBeatState
 									case 'credits':
 										MusicBeatState.switchState(new CreditsState());
 									case 'options':
-										LoadingState.loadAndSwitchState(new options.OptionsState());
+										MusicBeatState.switchState(new options.OptionsState());
 								}
 							});
 						}

@@ -5364,8 +5364,13 @@ class PlayState extends MusicBeatState
 		/**
 		 * ICON-BOP
 		 */
-		iconP1.scale.set(1.2, 1.2);
-		iconP2.scale.set(1.2, 1.2);
+		if ((curBeat % 4) == 0) {
+			iconP1.scale.set(1.5, 1.5);
+			iconP2.scale.set(1.5, 1.5);
+		} else {
+			iconP1.scale.set(1.1, 1.1);
+			iconP2.scale.set(1.1, 1.1);
+		}
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

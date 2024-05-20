@@ -66,10 +66,11 @@ class ClientPrefs {
 	 * Solarium Engine Options
 	 */
 
-	public static var showJudgementCounter:Bool = true;
 	public static var detailedJudgementInfo:Bool = false;
-	public static var showGameplayInfo:Bool = true;
+	public static var showJudgementCounter:Bool = false;
+	public static var showGameplayInfo:Bool = false;
 	public static var noWatermark:Bool = false;
+	public static var smallerTextDisplay:Bool = true;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -146,6 +147,7 @@ class ClientPrefs {
 		FlxG.save.data.detailedJudgementInfo = detailedJudgementInfo;
 		FlxG.save.data.showGameplayInfo = showGameplayInfo;
 		FlxG.save.data.noWatermark = noWatermark;
+		FlxG.save.data.smallerTextDisplay = smallerTextDisplay;
 	
 		FlxG.save.flush();
 
@@ -303,6 +305,10 @@ class ClientPrefs {
 		
 		if (FlxG.save.data.noWatermark != null) {
 			noWatermark = FlxG.save.data.noWatermark;
+		}
+
+		if (FlxG.save.data.smallerTextDisplay != null) {
+			smallerTextDisplay = FlxG.save.data.smallerTextDisplay;
 		}
 
 

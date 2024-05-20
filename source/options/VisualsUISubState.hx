@@ -45,14 +45,14 @@ class VisualsUISubState extends BaseOptionsMenu
 			'Shows and tracks how many sicks, goods, bads and shits.',
 			'showJudgementCounter',
 			'bool',
-			true);
+			false);
 		addOption(option);
 
 		var option:Option = new Option('Show Gameplay Info',
 			'Displays the current song, the current difficulty, etc.',
 			'showGameplayInfo',
 			'bool',
-			true);
+			false);
 		addOption(option);
 
 		var option:Option = new Option('Detailed Judgement Counter Info',
@@ -64,7 +64,7 @@ class VisualsUISubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Disable Watermark',
 			'If checked, the watermark will not be visible',
-			'showGameplayInfo',
+			'noWatermark',
 			'bool',
 			false);
 		addOption(option);
@@ -94,6 +94,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		var option:Option = new Option('Camera Zooms',
 			"If unchecked, the camera won't zoom in on a beat hit.",
 			'camZooms',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Smaller Text',
+			"Whether or not to allow smaller and more compact texts.",
+			'smallerTextDisplay',
 			'bool',
 			true);
 		addOption(option);

@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.FlxCamera;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -14,7 +15,6 @@ class JudgementCounter extends FlxSpriteGroup
 {
 	public var colorArray:Array<Int> = [225, 235, 95];
 
-	
 	private var instance:FlxBasic;
 	
 	private var judgementText:FlxText;
@@ -33,6 +33,12 @@ class JudgementCounter extends FlxSpriteGroup
 		judgementText.borderSize = 1.45;
 		judgementText.antialiasing = ClientPrefs.globalAntialiasing;
 		add(judgementText);
+
+		if (ClientPrefs.smallerTextDisplay) {
+			judgementText.scale.set(.785, .785);
+		}
+		
+		visible = ((ClientPrefs.showJudgementCounter) ? !ClientPrefs.hideHud : false);
 	}
 
 	public function updateJudgementCounter() {

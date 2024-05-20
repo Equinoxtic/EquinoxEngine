@@ -19,7 +19,7 @@ class Watermark extends FlxSpriteGroup
 	private var watermarkText:FlxText;
 	private var watermarkSprite:FlxSprite;
 
-	public function new(?x:Float = 0.0, ?y:Float = 0.0, ?instance:FlxBasic, ?spriteScaleMult:Float = 0.35)
+	public function new(?x:Float = 0.0, ?y:Float = 0.0, ?instance:FlxBasic, ?fontSize:Int = 10)
 	{
 		super();
 
@@ -29,34 +29,35 @@ class Watermark extends FlxSpriteGroup
 
 		this.instance = instance;
 
-		if (spriteScaleMult > 1) {
-			spriteScaleMult = 1;
-		}
-
 		watermarkText = new FlxText(x, y, FlxG.width, 'Solarium Engine v${MainMenuState.solariumEngineVersion.trim()} (PE v${MainMenuState.psychEngineVersion.trim()}) - FNF v${MainMenuState.funkinVersion}');
-		watermarkText.setFormat(Paths.font('azonix.otf'), 11, 0xFFFFFFFF, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		watermarkText.setFormat(Paths.font('azonix.otf'), fontSize, 0xFFFFFFFF, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
 		watermarkText.antialiasing = ClientPrefs.globalAntialiasing;
 		watermarkText.borderSize = 1.3;
 		watermarkText.alpha = 0.5;
 		
 		watermarkSprite = new FlxSprite(watermarkText.x - 225, watermarkText.y - 250).loadGraphic(Paths.image('watermark-alt'));
-		watermarkSprite.setGraphicSize(Std.int(watermarkSprite.width * spriteScaleMult), Std.int(watermarkSprite.height * spriteScaleMult));
+		watermarkSprite.scale.set(.15, .15);
 		watermarkSprite.antialiasing = ClientPrefs.globalAntialiasing;
-		// watermarkSprite.cameras = [spriteCam];
-		// watermarkSprite.alpha = 0.5;
 
 		add(watermarkSprite);
 		add(watermarkText);
+
+		if (ClientPrefs.smallerTextDisplay) {
+			watermarkText.scale.set(.85, .85);
+			watermarkSprite.scale.set(.1, .1);
+			watermarkText.x -= 95;
+		}
+
+		visible = ((!ClientPrefs.noWatermark) ? !ClientPrefs.hideHud : false);
 	}
 
 	public function playWatermarkAnimation(?durationMultiplier:Float = 0.95) {
 		watermarkText.alpha = 0.0;
-		// watermarkSprite.alpha = 0.0;
-		// watermarkSprite.y = FlxG.height * 1.2;
-		TweenClass.tween(watermarkText, {alpha: 0.5}, 1.0 * durationMultiplier, {ease: FlxEase.quadInOut});
-		// TweenClass.tween(watermarkSprite, {alpha: 0.5}, 1.0 * durationMultiplier, {ease: FlxEase.quadInOut});
-		TweenClass.tween(watermarkSprite, {y: watermarkText.y - 300}, 1.0 * durationMultiplier, {ease: FlxEase.quartOut});
-		TweenClass.tween(watermarkSprite, {angle: 360}, 1.0 * durationMultiplier, {ease: FlxEase.quartOut});
+		watermarkSprite.alpha = 0.0;
+		TweenClass.tween(watermarkText, {alpha: 0.5}, 1.0 * durationMultiplier, {ease: FlxEase.sineInOut});
+		TweenClass.tween(watermarkSprite, {y: watermarkText.y - 300}, 1.0 * durationMultiplier, {ease: FlxEase.sineInOut});
+		TweenClass.tween(watermarkSprite, {angle: 360}, 1.0 * durationMultiplier, {ease: FlxEase.sineInOut});
+		TweenClass.tween(watermarkSprite, {alpha: 1.0}, 1.15 * durationMultiplier, {ease: FlxEase.sineInOut});
 	}
 
 	override function update(elapsed:Float) {

@@ -70,6 +70,7 @@
 	<section if="PRELOAD_ALL">
 		<library name="songs"         preload="true" />
 		<library name="shared"        preload="true" />
+		<library name="week1"         preload="true" />
 		<library name="week2"         preload="true" />
 		<library name="week3"         preload="true" />
 		<library name="week4"         preload="true" />
@@ -81,6 +82,7 @@
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"         preload="true" />
 		<library name="shared"        preload="false" />
+		<library name="week1"         preload="false" />
 		<library name="week2"         preload="false" />
 		<library name="week3"         preload="false" />
 		<library name="week4"         preload="false" />
@@ -185,10 +187,10 @@
 	<!--haxedef name="HXCPP_GC_BIG_BLOCKS"-->
 	
 	<!-- Show debug traces for hxCodec -->
-	<!-- <haxedef name="HXC_DEBUG_TRACE" if="debug" /> -->
+	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
-	<!-- <haxedef name="FLX_NO_DEBUG" unless="debug" /> -->
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />

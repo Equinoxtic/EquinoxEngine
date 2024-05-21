@@ -101,11 +101,10 @@ class Note extends FlxSprite
 	private function set_multSpeed(value:Float):Float {
 		resizeByRatio(value / multSpeed);
 		multSpeed = value;
-		//trace('fuck cock');
 		return value;
 	}
 
-	public function resizeByRatio(ratio:Float) //haha funny twitter shit
+	public function resizeByRatio(ratio:Float)
 	{
 		if(isSustainNote && !animation.curAnim.name.endsWith('end'))
 		{
@@ -124,6 +123,7 @@ class Note extends FlxSprite
 
 	private function set_noteType(value:String):String {
 		noteSplashTexture = PlayState.SONG.splashSkin;
+
 		if (noteData > -1 && noteData < ClientPrefs.arrowHSV.length)
 		{
 			colorSwap.hue = ClientPrefs.arrowHSV[noteData][0] / 360;
@@ -158,9 +158,11 @@ class Note extends FlxSprite
 			}
 			noteType = value;
 		}
+
 		noteSplashHue = colorSwap.hue;
 		noteSplashSat = colorSwap.saturation;
 		noteSplashBrt = colorSwap.brightness;
+
 		return value;
 	}
 

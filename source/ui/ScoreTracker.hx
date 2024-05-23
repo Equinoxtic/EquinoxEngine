@@ -1,5 +1,6 @@
 package ui;
 
+import util.Constants;
 import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
@@ -31,8 +32,10 @@ class ScoreTracker extends FlxSpriteGroup
 		scoreTxt.antialiasing = ClientPrefs.globalAntialiasing;
 		add(scoreTxt);
 
-		if (ClientPrefs.smallerTextDisplay) {
-			scoreTxt.scale.set(.87, .87);
+		if (!ClientPrefs.smallerTextDisplay) {
+			scoreTxt.scale.set(Constants.SCORE_TRACKER_SIZE, Constants.SCORE_TRACKER_SIZE);
+		} else {
+			scoreTxt.scale.set(Constants.SCORE_TRACKER_SMALL, Constants.SCORE_TRACKER_SMALL);
 		}
 
 		visible = !ClientPrefs.hideHud;

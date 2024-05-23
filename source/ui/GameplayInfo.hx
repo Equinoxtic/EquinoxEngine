@@ -1,5 +1,6 @@
 package ui;
 
+import util.Constants;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -28,8 +29,10 @@ class GameplayInfo extends FlxSpriteGroup
 		gameplayText.antialiasing = ClientPrefs.globalAntialiasing;
 		add(gameplayText);
 
-		if (ClientPrefs.smallerTextDisplay) {
-			gameplayText.scale.set(.9, .9);
+		if (!ClientPrefs.smallerTextDisplay) {
+			gameplayText.scale.set(Constants.GAMEPLAY_INFO_SIZE, Constants.GAMEPLAY_INFO_SIZE);
+		} else {
+			gameplayText.scale.set(Constants.GAMEPLAY_INFO_SMALL, Constants.GAMEPLAY_INFO_SMALL);
 			gameplayText.x += 72;
 			gameplayText.y += 12;
 		}

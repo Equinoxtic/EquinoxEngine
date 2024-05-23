@@ -8,6 +8,7 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
+import util.Constants;
 
 using StringTools;
 
@@ -34,8 +35,10 @@ class JudgementCounter extends FlxSpriteGroup
 		judgementText.antialiasing = ClientPrefs.globalAntialiasing;
 		add(judgementText);
 
-		if (ClientPrefs.smallerTextDisplay) {
-			judgementText.scale.set(.785, .785);
+		if (!ClientPrefs.smallerTextDisplay) {
+			judgementText.scale.set(Constants.JUDGEMENT_COUNTER_SIZE, Constants.JUDGEMENT_COUNTER_SIZE);
+		} else {
+			judgementText.scale.set(Constants.JUDGEMENT_COUNTER_SMALL, Constants.JUDGEMENT_COUNTER_SMALL);
 		}
 		
 		visible = ((ClientPrefs.showJudgementCounter) ? !ClientPrefs.hideHud : false);

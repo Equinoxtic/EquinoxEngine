@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
 // import Random;
+import util.Constants;
 import TweenClass;
 
 using StringTools;
@@ -36,15 +37,17 @@ class Watermark extends FlxSpriteGroup
 		watermarkText.alpha = 0.5;
 		
 		watermarkSprite = new FlxSprite(watermarkText.x - 225, watermarkText.y - 250).loadGraphic(Paths.image('watermark-alt'));
-		watermarkSprite.scale.set(.15, .15);
 		watermarkSprite.antialiasing = ClientPrefs.globalAntialiasing;
 
 		add(watermarkSprite);
 		add(watermarkText);
 
-		if (ClientPrefs.smallerTextDisplay) {
-			watermarkText.scale.set(.85, .85);
-			watermarkSprite.scale.set(.1, .1);
+		if (!ClientPrefs.smallerTextDisplay) {
+			watermarkText.scale.set(Constants.WATERMARK_SIZE, Constants.WATERMARK_SIZE);
+			watermarkSprite.scale.set(Constants.WATERMARK_SPRITE_SIZE, Constants.WATERMARK_SPRITE_SIZE);
+		} else {
+			watermarkText.scale.set(Constants.WATERMARK_SMALL, Constants.WATERMARK_SMALL);
+			watermarkSprite.scale.set(Constants.WATERMARK_SPRITE_SMALL, Constants.WATERMARK_SPRITE_SMALL);
 			watermarkText.x -= 95;
 		}
 

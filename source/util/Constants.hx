@@ -6,52 +6,112 @@ class Constants
 	 * ============================= PLAYER ICON VALUES =============================
 	 */
 
+	/**
+	 * The default offset of the icons.
+	 */
 	public static final ICON_OFFSET:Int = 26;
 
+	/**
+	 * The winning percentage based on health percentage.
+	 */
 	public static final WINNING_PERCENT:Int = 80;
-	
+
+	/**
+	 * The losing percentage based on health percentage.
+	 */
 	public static final LOSING_PERCENT:Int = 20;
 
-	public static final ICON_BOP_BEATDRAIN:Int = 8;
-	
+	/**
+	 * The decay of the icon bop.
+	 */
+	public static final ICON_BOP_BEATDECAY:Int = 8;
+
+	/**
+	 * The mod of the icon bop based on beat. (Used for ICON_BOP_INTENSITY_BEAT)
+	 */
 	public static final ICON_BOP_BEATMOD:Int = 4;
 
+	/**
+	 * The intensity of the icon bop.
+	 */
 	public static final ICON_BOP_INTENSITY:Float = 1.2;
 
+	/**
+	 * The intensity of the icon bop every MOD beats. (Refer to ICON_BOP_BEATMOD)
+	 */
 	public static final ICON_BOP_INTENSITY_BEAT:Float = ICON_BOP_INTENSITY + 0.3;
 
 	/**
 	 * ============================= UI RELATED VALUES =============================
 	 */
 
+	/**
+	 * The size of the Score Tracker.
+	 */
 	public static final SCORE_TRACKER_SIZE:Float = 1.0;
 
+	/**
+	 * The size of the Score Tracker with 'smallerTextDisplay' on.
+	 */
 	public static final SCORE_TRACKER_SMALL:Float = SCORE_TRACKER_SIZE - 0.15;
 
+	/**
+	 * The size that gets added up to the Score Tracker. (Used for the Score Tracker zoom tween)
+	 */
 	public static final SCORE_TRACKER_SIZE_ADDITIVE:Float = 0.22;
 
+	/**
+	 * The size of the Judgement Counter.
+	 */
 	public static final JUDGEMENT_COUNTER_SIZE:Float = 1.0;
 
+	/**
+	 * The size of the Judgement Counter with 'smallerTextDisplay' on.
+	 */
 	public static final JUDGEMENT_COUNTER_SMALL:Float = SCORE_TRACKER_SIZE - 0.115;
 
+	/**
+	 * The size of the Gameplay Info.
+	 */
 	public static final GAMEPLAY_INFO_SIZE:Float = 1.0;
 
+	/**
+	 * The size of the Gameplay Info with 'smallerTextDisplay' on.
+	 */
 	public static final GAMEPLAY_INFO_SMALL:Float = GAMEPLAY_INFO_SIZE - 0.1;
 
+	/**
+	 * The size of the Engine Watermark.
+	 */
 	public static final WATERMARK_SIZE:Float = 1;
 
+	/**
+	 * The size of the Engine Watermark with 'smallerTextDisplay' on.
+	 */
 	public static final WATERMARK_SMALL:Float = WATERMARK_SIZE - 0.15;
 
+	/**
+	 * The size of the Engine Watermark's sprite.
+	 */
 	public static final WATERMARK_SPRITE_SIZE = WATERMARK_SIZE - 0.85;
 
+	/**
+	 * The size of the Engine Watermark's sprite with 'smallerTextDisplay' on.
+	 */
 	public static final WATERMARK_SPRITE_SMALL = WATERMARK_SPRITE_SIZE - 0.05;
 
 	/**
 	 * ============================= TWEEN VALUES =============================
 	 */
 
+	/**
+	 * The default ease of the Score Tracker Zoom Tween.
+	 */
 	public static final SCORE_TRACKER_TWEEN_EASE:String = 'quadInOut';
-	
+
+	/**
+	 * The default duration of the Score Tracker Zoom Tween.
+	 */
 	public static final SCORE_TRACKER_TWEEN_DURATION:Float = 0.35;
 
 	/**

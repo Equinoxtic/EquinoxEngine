@@ -1,5 +1,6 @@
 package;
 
+import util.Constants;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -205,9 +206,12 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			alpha = 0.6;
-			multAlpha = 0.6;
+			alpha = Constants.NOTE_TAIL_ALPHA;
+
+			multAlpha = alpha;
+
 			hitsoundDisabled = true;
+
 			if(ClientPrefs.downScroll) flipY = true;
 
 			offsetX += width / 2;
@@ -227,15 +231,16 @@ class Note extends FlxSprite
 				prevNote.animation.play(colArray[prevNote.noteData % 4] + 'hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
-				if(PlayState.instance != null)
+				if (PlayState.instance != null)
 				{
 					prevNote.scale.y *= PlayState.instance.songSpeed;
 				}
 
-				if(PlayState.isPixelStage) {
+				if (PlayState.isPixelStage) {
 					prevNote.scale.y *= 1.19;
 					prevNote.scale.y *= (6 / height); //Auto adjust note size
 				}
+
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
 			}

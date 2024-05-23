@@ -42,6 +42,15 @@ class Constants
 	public static final ICON_BOP_INTENSITY_BEAT:Float = ICON_BOP_INTENSITY + 0.3;
 
 	/**
+	 * ============================= NOTE VALUES =============================
+	 */
+
+	/**
+	 * The alpha/transparency of the Note Tail.
+	 */
+	public static final NOTE_TAIL_ALPHA:Float = 0.75;
+
+	/**
 	 * ============================= UI RELATED VALUES =============================
 	 */
 

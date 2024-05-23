@@ -98,6 +98,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Directional Camera Movement',
+			"Toggles whether or not the camera moves to the note\'s direction.",
+			'directionalCameraMovement',
+			'bool',
+			true);
+		addOption(option);
+
 		var option:Option = new Option('Smaller Text',
 			"Whether or not to allow smaller and more compact texts.",
 			'smallerTextDisplay',

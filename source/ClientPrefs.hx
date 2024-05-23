@@ -71,6 +71,7 @@ class ClientPrefs {
 	public static var showGameplayInfo:Bool = false;
 	public static var noWatermark:Bool = false;
 	public static var smallerTextDisplay:Bool = true;
+	public static var directionalCameraMovement:Bool = true;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -148,6 +149,7 @@ class ClientPrefs {
 		FlxG.save.data.showGameplayInfo = showGameplayInfo;
 		FlxG.save.data.noWatermark = noWatermark;
 		FlxG.save.data.smallerTextDisplay = smallerTextDisplay;
+		FlxG.save.data.directionalCameraMovement = directionalCameraMovement;
 	
 		FlxG.save.flush();
 
@@ -311,7 +313,9 @@ class ClientPrefs {
 			smallerTextDisplay = FlxG.save.data.smallerTextDisplay;
 		}
 
-
+		if (FlxG.save.data.directionalCameraMovement != null) {
+			directionalCameraMovement = FlxG.save.data.directionalCameraMovement;
+		}
 
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', 'ninjamuffin99');

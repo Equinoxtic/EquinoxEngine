@@ -6,73 +6,48 @@ using StringTools;
 
 class EaseUtil
 {
-	public static inline function getEase(ease:Null<String>):Null<Float->Float>
+	public static function getEase(ease:Null<String>):Null<Float->Float>
 	{
-		if (ease == null || ease == '') return getFlxEaseId();
+		if (ease == null || ease == '') return FlxEase.linear;
 
-		var easeArray:Array<String> = [
-			'linear',
-			'sineIn', 'sineOut', 'sineInOut',
-			'quadIn', 'quadOut', 'quadInOut',
-			'quartIn', 'quartOut', 'quartInOut',
-			'quintIn', 'quintOut', 'quintInOut',
-			'cubeIn', 'cubeOut', 'cubeInOut',
-			'expoIn', 'expoOut', 'expoInOut'
-		];
+		switch (ease)
+		{
+			// LINEAR (DEFAULT)
+			case 'linear': return FlxEase.linear;
 
-		var currentEase:Int = 0;
+			// SINE FUNCTIONS
+			case 'sineIn': return FlxEase.sineIn;
+			case 'sineOut': return FlxEase.sineOut;
+			case 'sineInOut': return FlxEase.sineInOut;
 
-		for (i in 0...easeArray.length) {
-			currentEase++;
-			if (ease.trim() == easeArray[currentEase]) break;
+			// QUAD FUNCTIONS
+			case 'quadIn': return FlxEase.quadIn;
+			case 'quadOut': return FlxEase.quadOut;
+			case 'quadInOut': return FlxEase.quadInOut;
+
+			// QUART FUNCTIONS
+			case 'quartIn': return FlxEase.quartIn;
+			case 'quartOut': return FlxEase.quartOut;
+			case 'quartInOut': return FlxEase.quartInOut;
+
+			// QUINT FUNCTIONS
+			case 'quintIn': return FlxEase.quintIn;
+			case 'quintOut': return FlxEase.quintOut;
+			case 'quintInOut': return FlxEase.quintInOut;
+
+			// CUBE / CUBIC FUNCTIONS
+			case 'cubeIn': return FlxEase.cubeIn;
+			case 'cubeOut': return FlxEase.cubeOut;
+			case 'cubeInOut': return FlxEase.cubeInOut;
+
+			// EXPO / EXPONENTIAL FUNCTIONS
+			case 'expoIn': return FlxEase.expoIn;
+			case 'expoOut': return FlxEase.expoOut;
+			case 'expoInOut': return FlxEase.expoInOut;
+			
+			default: return FlxEase.linear;
 		}
 		
-		return getFlxEaseId(currentEase);
-	}
-
-	private static function getFlxEaseId(id:Null<Int> = 1):Null<Float->Float>
-	{
-		if (id != null && !(id < 0))
-		{
-			switch (id)
-			{
-				// LINEAR (DEFAULT)
-				case 1: return FlxEase.linear;
-
-				// SINE FUNCTIONS
-				case 2: return FlxEase.sineIn;
-				case 3: return FlxEase.sineOut;
-				case 4: return FlxEase.sineInOut;
-
-				// QUAD FUNCTIONS
-				case 5: return FlxEase.quadInOut;
-				case 6: return FlxEase.quadInOut;
-				case 7: return FlxEase.quadInOut;
-
-				// QUART FUNCTIONS
-				case 8: return FlxEase.quartIn;
-				case 9: return FlxEase.quartOut;
-				case 10: return FlxEase.quartInOut;
-
-				// QUINT FUNCTIONS
-				case 11: return FlxEase.quintIn;
-				case 12: return FlxEase.quintOut;
-				case 13: return FlxEase.quintInOut;
-
-				// CUBE / CUBIC FUNCTIONS
-				case 14: return FlxEase.cubeIn;
-				case 15: return FlxEase.cubeOut;
-				case 16: return FlxEase.cubeInOut;
-
-				// EXPO / EXPONENTIAL FUNCTIONS
-				case 17: return FlxEase.expoIn;
-				case 18: return FlxEase.expoOut;
-				case 19: return FlxEase.expoInOut;
-				
-				default: return FlxEase.linear;
-			}
-		}
-
 		return FlxEase.linear;
 	}
 }

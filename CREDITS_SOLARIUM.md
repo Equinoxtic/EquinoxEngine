@@ -10,6 +10,7 @@
 * Comfortaa [[``comfortaa.ttf``](https://www.dafont.com/comfortaa.font)]
 * Elnath [[``elnath.ttf``](https://www.dafont.com/elnath.font?l[]=10&l[]=1&l[]=6)]
 * Square One [[``squareone.ttf``](https://www.dafont.com/square-one.font)]
+* Phantommuff [[``phantommuff.ttf``]](https://gamebanana.com/tools/7763)
 
 ---
 

@@ -137,10 +137,10 @@ class TitleState extends MusicBeatState
 
 		ClientPrefs.loadPrefs();
 
-		#if CHECK_FOR_UPDATES
+		#if (CHECK_FOR_UPDATES && !debug)
 		if(ClientPrefs.checkForUpdates && !closedState) {
 			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/SolariumVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/gitVersion.txt");
 
 			http.onData = function (data:String)
 			{

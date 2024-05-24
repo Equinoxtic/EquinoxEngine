@@ -358,16 +358,16 @@ class FreeplayState extends MusicBeatState
 		if (!OpenFlAssets.exists(Paths.json(songPath))) {
 		#end
 			trace('Couldnt find file: ${songPath}, gunna load dad battle lolz');
-			formattedSong = 'dadbattle-hard';
-			selectedSong = 'dadbattle';
+			formattedSong = 'dad-battle-hard';
+			selectedSong = 'dad-battle';
 			curDifficulty = 2;
 		}
 
 		trace(formattedSong);
 
+		PlayState.storyDifficulty = curDifficulty;
 		PlayState.SONG = Song.loadFromJson(formattedSong, selectedSong);
 		PlayState.isStoryMode = false;
-		PlayState.storyDifficulty = curDifficulty;
 
 		trace('CURRENT WEEK: ${WeekData.getWeekFileName()}');
 	}

@@ -22,4 +22,3 @@ haxelib install random 1.4.1
 haxelib install hxCodec 2.5.1
 haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools

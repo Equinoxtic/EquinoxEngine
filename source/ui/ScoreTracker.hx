@@ -17,7 +17,7 @@ class ScoreTracker extends FlxSpriteGroup
 
 	private static var scoreTxt:FlxText;
 
-	public function new(?x:Float = 0, ?y:Float = 0, ?instance:FlxBasic, ?fontSize:Int = 20, ?alignment:FlxTextAlign = CENTER) {
+	public function new(?instance:FlxBasic, ?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 20, ?alignment:FlxTextAlign = CENTER) {
 		super();
 
 		if (instance == null) {
@@ -27,27 +27,23 @@ class ScoreTracker extends FlxSpriteGroup
 		this.instance = instance;
 
 		scoreTxt = new FlxText(x, y, FlxG.width, "", fontSize);
-		scoreTxt.setFormat(Paths.font('azonix.otf'), fontSize, FlxColor.WHITE, alignment, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		scoreTxt.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, alignment, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		scoreTxt.scrollFactor.set();
+		scoreTxt.screenCenter(X);
+		scoreTxt.scale.set(initialSize, initialSize);
 		scoreTxt.borderSize = 1.3;
 		scoreTxt.antialiasing = ClientPrefs.globalAntialiasing;
 		add(scoreTxt);
-
-		if (!ClientPrefs.smallerTextDisplay) {
-			scoreTxt.scale.set(Constants.SCORE_TRACKER_SIZE, Constants.SCORE_TRACKER_SIZE);
-		} else {
-			scoreTxt.scale.set(Constants.SCORE_TRACKER_SMALL, Constants.SCORE_TRACKER_SMALL);
-		}
 
 		visible = !ClientPrefs.hideHud;
 	}
 
 	public function updateScoreText(?songScore:Int = 0, ?songMisses:Int = 0, ?accuracy:Float = 0, ?rating:String = '', ?ranking:String = '') {
 		// < SCORE: SONG SCORE / COMBO BREAKS: MISSES / ACCURACY: ACCURACY% / RATING - RANK >
-		scoreTxt.text = '< SCORE: ${songScore}'
+		scoreTxt.text = 'SCORE: ${songScore}'
 		+ ' / MISSES: ${songMisses}'
 		+ ' / ACCURACY: ${accuracy}%'
-		+ ((songScore > 0) ? ' / ${rating} - ${ranking}' : '')
-		+ ' >';
+		+ ((songScore > 0) ? ' / ${rating} - ${ranking}' : '');
 		/**
 		 * NOTE: I used the condition (SCORE > 0) to make it seem more feature-proof than using (RATING or RANKING != X)
 		 */

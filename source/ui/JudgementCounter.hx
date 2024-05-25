@@ -20,7 +20,7 @@ class JudgementCounter extends FlxSpriteGroup
 	
 	private var judgementText:FlxText;
 
-	public function new(?x:Float = 0, ?y:Float = 0, ?instance:FlxBasic, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT) {
+	public function new(?instance:FlxBasic, ?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT) {
 		super();
 
 		if (instance == null) {
@@ -30,18 +30,14 @@ class JudgementCounter extends FlxSpriteGroup
 		this.instance = instance;
 
 		judgementText = new FlxText(x, y, FlxG.width, "", fontSize);
-		judgementText.setFormat(Paths.font('azonix.otf'), fontSize, FlxColor.WHITE, alignment, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		judgementText.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, alignment, FlxTextBorderStyle.OUTLINE, 0xFF000000);
 		judgementText.borderSize = 1.45;
 		judgementText.antialiasing = ClientPrefs.globalAntialiasing;
 		add(judgementText);
-
-		if (!ClientPrefs.smallerTextDisplay) {
-			judgementText.scale.set(Constants.JUDGEMENT_COUNTER_SIZE, Constants.JUDGEMENT_COUNTER_SIZE);
-		} else {
-			judgementText.scale.set(Constants.JUDGEMENT_COUNTER_SMALL, Constants.JUDGEMENT_COUNTER_SMALL);
-		}
 		
+		#if (!debug)
 		visible = ((ClientPrefs.showJudgementCounter) ? !ClientPrefs.hideHud : false);
+		#end
 	}
 
 	public function updateJudgementCounter() {

@@ -13,7 +13,7 @@ class GameplayInfo extends FlxSpriteGroup
 
 	private static var gameplayText:FlxText;
 
-	public function new(?x:Float = 0.0, ?y:Float = 0.0, ?instance:FlxBasic, ?fontSize:Int = 24, ?songName:String = "", ?difficultyString:String = "", ?songCredit:String = "", ?songText:String = "")
+	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:String = "", ?difficultyString:String = "", ?songCredit:String = "", ?songText:String = "")
 	{
 		super();
 		
@@ -24,25 +24,21 @@ class GameplayInfo extends FlxSpriteGroup
 		this.instance = instance;
 
 		gameplayText = new FlxText(x, y, FlxG.width, "", fontSize);
-		gameplayText.setFormat(Paths.font('azonix.otf'), fontSize, 0xFFFFFFFF, RIGHT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		gameplayText.setFormat(Paths.font('phantommuff.ttf'), fontSize, 0xFFFFFFFF, RIGHT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
 		gameplayText.borderSize = 1.3;
 		gameplayText.antialiasing = ClientPrefs.globalAntialiasing;
 		add(gameplayText);
 
-		if (!ClientPrefs.smallerTextDisplay) {
-			gameplayText.scale.set(Constants.GAMEPLAY_INFO_SIZE, Constants.GAMEPLAY_INFO_SIZE);
-		} else {
-			gameplayText.scale.set(Constants.GAMEPLAY_INFO_SMALL, Constants.GAMEPLAY_INFO_SMALL);
-			gameplayText.x += 72;
-			gameplayText.y += 12;
-		}
+		gameplayText.updateHitbox();
 
 		gameplayText.text = '${songName}\n'
 		+ '${difficultyString}\n'
 		+ '${songCredit}\n'
 		+ '${songText}';
 
+		#if (!debug)
 		visible = ((ClientPrefs.showGameplayInfo) ? !ClientPrefs.hideHud : false);
+		#end
 	}
 
 	public function updateGameplayText(?songName:String = "", ?difficultyString:String = "", ?songCredit:String = "", ?songText:String = "") {

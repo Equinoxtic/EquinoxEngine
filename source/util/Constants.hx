@@ -68,9 +68,19 @@ class Constants
 		http.request();
 		return '${MAIN_APPLICATION_TITLE} - v${version}';
 		#else
-		return '${MAIN_APPLICATION_TITLE} - DEV : ${Repository.getGitBranch()} @ ${Repository.getGitCommitHash()}';
+		return '${MAIN_APPLICATION_TITLE} - DEV : ${GIT_BRANCH} @ ${GIT_HASH}';
 		#end
 	}
+
+	/**
+	 * The current branch of the engine's repository.
+	 */
+	public static final GIT_BRANCH:String = Repository.getGitBranch();
+
+	/**
+	 * The current commit hash of the engine's repository.
+	 */
+	public static final GIT_HASH:String = Repository.getGitCommitHash();
 	
 	/**
 	 * ============================= PLAYER ICON VALUES =============================

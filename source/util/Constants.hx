@@ -121,26 +121,6 @@ class Constants
 	public static final NOTE_TAIL_ALPHA:Float = 0.77;
 
 	/**
-	 * The amplitude of the note tail wiggle.
-	 */
-	public static final NOTE_WIGGLE_AMPLITUDE:Float = 0.06;
-
-	/**
-	 * The frequency of the note tail wiggle.
-	 */
-	public static final NOTE_WIGGLE_FREQUENCY:Float = 7;
-
-	/**
-	 * The speed of the note tail wiggle.
-	 */
-	public static final NOTE_WIGGLE_SPEED:Float = 15;
-
-	/**
-	 * The decay of the amplitude of the note tail wiggle.
-	 */
-	public static final NOTE_WIGGLE_AMPLITUDE_DECAY:Float = 8;
-
-	/**
 	 * ============================= UI RELATED VALUES =============================
 	 */
 

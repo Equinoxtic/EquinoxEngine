@@ -201,7 +201,7 @@ class FunkinLua {
 		set('ghostTapping', ClientPrefs.ghostTapping);
 		set('hideHud', ClientPrefs.hideHud);
 		set('timeBarType', ClientPrefs.timeBarType);
-		set('scoreZoom', ClientPrefs.scoreZoom);
+		// set('scoreZoom', ClientPrefs.scoreZoom);
 		set('cameraZoomOnBeat', ClientPrefs.camZooms);
 		set('flashingLights', ClientPrefs.flashing);
 		set('noteOffset', ClientPrefs.noteOffset);
@@ -209,6 +209,16 @@ class FunkinLua {
 		set('noResetButton', ClientPrefs.noReset);
 		set('lowQuality', ClientPrefs.lowQuality);
 		set('shadersEnabled', ClientPrefs.shaders);
+
+		/**
+		 * Engine Preferences.
+		 */
+		set('showJudgementCounter', ClientPrefs.showJudgementCounter);
+		set('detailedJudgementInfo', ClientPrefs.detailedJudgementInfo);
+		set('showGameplayInfo', ClientPrefs.showGameplayInfo);
+		set('noWatermark', ClientPrefs.noWatermark);
+		set('directionalCameraMovement', ClientPrefs.directionalCameraMovement);
+
 		set('scriptName', scriptName);
 		set('currentModDirectory', Paths.currentModDirectory);
 

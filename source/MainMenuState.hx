@@ -1,5 +1,6 @@
 package;
 
+import util.Constants;
 import haxe.Http;
 import Shaders.BloomShader as BloomShader;
 import Shaders;
@@ -29,9 +30,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = ''; //This is also used for Discord RPC
-	public static var solariumEngineVersion:String = '';
-	public static var funkinVersion:String = '0.2.8';
+	public static var psychEngineVersion:String = Constants.VERSION_PSYCH; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -138,39 +137,19 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		/**
-		 * Had to do this because everytime you go to this specific state, it fucks up the memory!!
-		 */
-		if (solariumEngineVersion.split(' ')[0].trim() == '' || psychEngineVersion.split(' ')[0].trim() == '')
-		{
-			var httpSolarium = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/SolariumVersion.txt");
-			httpSolarium.onData = function(data:String) { solariumEngineVersion = data.split('\n')[0].trim(); }
-			httpSolarium.request();
-			httpSolarium.onError = function (error) {
-				trace('error: $error');
-			}
-			
-			var httpPsych = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/psychVersion.txt");
-			httpPsych.onData = function(data:String) { psychEngineVersion = data.split('\n')[0].trim(); }
-			httpPsych.request();
-			httpPsych.onError = function (error) {
-				trace('error: $error');
-			}
-		}
-
 		menuTexts = new FlxTypedGroup<FlxText>();
 		add(menuTexts);
 
-		var engineVersion:FlxText = new FlxText(12, FlxG.height - 44, 0, 'Solarium Engine v${solariumEngineVersion} - PE v${psychEngineVersion}', 12);
+		var engineVersion:FlxText = new FlxText(12, FlxG.height - 44, 0, '${Constants.VERSION_MAIN} | ${Constants.VERSION_PSYCH}', 12);
 		menuTexts.add(engineVersion);
 
-		var fnfVersion:FlxText = new FlxText(12, FlxG.height - 24, 0, 'Friday Night Funkin\' v${funkinVersion}', 12);
+		var fnfVersion:FlxText = new FlxText(12, FlxG.height - 24, 0, '${Constants.VERSION_FUNKIN}', 12);
 		menuTexts.add(fnfVersion);
 
 		menuTexts.forEach(function(txt:FlxText) {
 			txt.antialiasing = ClientPrefs.globalAntialiasing;
 			txt.scrollFactor.set();
-			txt.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			txt.setFormat(Paths.font('phantommuff.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		});
 
 		// NG.core.calls.event.logEvent('swag').send();

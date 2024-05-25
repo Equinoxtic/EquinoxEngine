@@ -100,13 +100,13 @@ class HealthIcon extends FlxSprite
 		var curAnimation:Int = 0;
 		var health:Float = PlayState.instance.healthBar.percent; // NOTE TO SELF: IT'S HEALTHBAR.PERCENT NOT HEALTHBAR.VALUE !!!
 
-		if (health < 20) // Losing Condition.
+		if (health < Constants.LOSING_PERCENT) // Losing Condition.
 		{
 			curAnimation = getIconAnimationString(
 				((isPlayer) ? 'losing' : 'winning')
 			);
 		}
-		else if (health > 80) // Winning Condition.
+		else if (health > Constants.WINNING_PERCENT) // Winning Condition.
 		{
 			curAnimation = getIconAnimationString(
 				((isPlayer) ? 'winning' : 'losing')
@@ -146,30 +146,20 @@ class HealthIcon extends FlxSprite
 	/**
 	 * Small wrapper function to call whenever wanting to bop the icons to the beat.
 	 */
-	public static function bopIconsToBeat(?healthIconGroup:Null<FlxTypedGroup<HealthIcon>>, ?curBeat:Null<Int>, ?beatMod:Null<Int>, ?scaleMod:Null<Float>, ?beatScaleMod:Null<Float>):Void
+	public function bopToBeat(?curBeat:Null<Int>, ?beatMod:Null<Int>, ?scaleMod:Null<Float>, ?beatScaleMod:Null<Float>):Void
 	{
-		if (healthIconGroup != null)
-		{
-			healthIconGroup.forEach(function(spr)
-			{
-				// Every beatMod beats, the scale should be much bigger compared to every beat.
-				if ((curBeat % beatMod) == 0) {
-					if (beatScaleMod >= 0 && beatScaleMod != null) {
-						spr.scale.set(beatScaleMod, beatScaleMod); // Use beatScaleMod when it is greater than 0 and not null.
-					}
-				} else {
-					if (scaleMod >= 0 && scaleMod != null) {
-						spr.scale.set(scaleMod, scaleMod); // Use scaleMod when it is greater than 0 and not null.
-					}
-				}
-				spr.updateHitbox();
-				// IMPORTANT NOTE: If both scaleMod and beatScaleMod are null or less than 0, then do nothing.
-			});
+		// Every beatMod beats, the scale should be much bigger compared to every beat.
+		if ((curBeat % beatMod) == 0) {
+			if (beatScaleMod >= 0 && beatScaleMod != null) {
+				scale.set(beatScaleMod, beatScaleMod); // Use beatScaleMod when it is greater than 0 and not null.
+			}
+		} else {
+			if (scaleMod >= 0 && scaleMod != null) {
+				scale.set(scaleMod, scaleMod); // Use scaleMod when it is greater than 0 and not null.
+			}
 		}
-		else
-		{
-			trace('Uhh no health icon group????');
-		}
+		updateHitbox();
+		// IMPORTANT NOTE: If both scaleMod and beatScaleMod are null or less than 0, then do nothing.
 	}
 
 	override function updateHitbox()

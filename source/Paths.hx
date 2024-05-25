@@ -218,18 +218,47 @@ class Paths
 		return file;
 	}
 
+	// Use this for the legacy vocals system !!!
 	inline static public function voices(song:String):Any
 	{
-		var songKey:String = '${formatToSongPath(song)}/Voices';
+		var songKey:String = '${formatToSongPath(song)}/Voices${FunkinSound.erectModePrefix()}';
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
 
+	// Use this for the new seperated vocals system !!!
+	inline static public function playerVoices(song:String, playerId:Int):Any
+	{
+		var songKey:String = '${formatToSongPath(song)}/Voices-${getVoicesFromPlayer(playerId)}${FunkinSound.erectModePrefix()}';
+		var voices = returnSound('songs', songKey);
+		return voices;
+	}
+	
 	inline static public function inst(song:String):Any
 	{
-		var songKey:String = '${formatToSongPath(song)}/Inst';
+		var songKey:String = '${formatToSongPath(song)}/Inst${FunkinSound.erectModePrefix()}';
 		var inst = returnSound('songs', songKey);
 		return inst;
+	}
+
+	/**
+	 * Gets the voices with an integer ID, 0 = player, 1 = opponent.
+	 */
+	 private static function getVoicesFromPlayer(?id:Null<Int>):String
+	{
+		if (id != null && !(id < 0 && id >= 2))
+		{
+			switch (id) {
+				case 0: return 'player';
+				case 1: return 'opponent';
+			}
+		}
+		else
+		{
+			trace('Failed to get voices file.');
+		}
+		
+		return '';
 	}
 
 	inline static public function image(key:String, ?library:String):FlxGraphic

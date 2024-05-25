@@ -93,14 +93,18 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
+	public static function loadFromJson(jsonInput:String, ?folder:String, ?erectCondition:Bool = false):SwagSong
 	{
 		var rawJson = null;
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
 
-		var songPath:String = 'charts/${formattedFolder}/${formattedSong}';
+		var erectPrefix:String = FunkinSound.erectModePrefix();
+		if (!erectCondition)
+			erectPrefix = '';
+
+		var songPath:String = 'charts/${formattedFolder}/${formattedSong}${erectPrefix}';
 		
 		#if MODS_ALLOWED
 		var moddyFile:String = Paths.modsJson(songPath);

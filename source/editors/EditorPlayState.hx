@@ -1,5 +1,6 @@
 package editors;
 
+import FunkinSound.FunkinSoundChartEditor;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -36,7 +37,10 @@ class EditorPlayState extends MusicBeatState
 	public var unspawnNotes:Array<Note> = [];
 
 	var generatedMusic:Bool = false;
+	
 	var vocals:FlxSound;
+	var vocalsBf:FlxSound;
+	var vocalsDad:FlxSound;
 
 	var startOffset:Float = 0;
 	var startPos:Float = 0;
@@ -105,13 +109,11 @@ class EditorPlayState extends MusicBeatState
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.0;
-		
-		if (PlayState.SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
-		else
-			vocals = new FlxSound();
+
+		FunkinSound.loadVocals(PlayState.SONG.song, PlayState.SONG.needsVoices);
 
 		generateSong(PlayState.SONG.song);
+
 		#if (LUA_ALLOWED && MODS_ALLOWED)
 		for (notetype in noteTypeMap.keys()) {
 			var luaToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.lua');
@@ -124,6 +126,7 @@ class EditorPlayState extends MusicBeatState
 			}
 		}
 		#end
+		
 		noteTypeMap.clear();
 		noteTypeMap = null;
 
@@ -165,6 +168,7 @@ class EditorPlayState extends MusicBeatState
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
+
 		super.create();
 	}
 
@@ -196,8 +200,8 @@ class EditorPlayState extends MusicBeatState
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0, false);
 		FlxG.sound.music.pause();
 		FlxG.sound.music.onComplete = endSong;
-		vocals.pause();
-		vocals.volume = 0;
+
+		FunkinSound.muteVoices(true);
 
 		var songData = PlayState.SONG;
 		Conductor.changeBPM(songData.bpm);
@@ -304,12 +308,14 @@ class EditorPlayState extends MusicBeatState
 	function startSong():Void
 	{
 		startingSong = false;
-		FlxG.sound.music.time = startPos;
-		FlxG.sound.music.play();
-		FlxG.sound.music.volume = 1;
-		vocals.volume = 1;
-		vocals.time = startPos;
-		vocals.play();
+
+		FunkinSound.setInstTime(startPos);
+		FunkinSound.setVolume(1, 'instrumental');
+		FunkinSound.playInst();
+
+		FunkinSound.setVoicesVolume(1);
+		FunkinSound.setVoicesTime(startPos);
+		FunkinSound.playVoices();
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
@@ -323,11 +329,14 @@ class EditorPlayState extends MusicBeatState
 
 	public var noteKillOffset:Float = 350;
 	public var spawnTime:Float = 2000;
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float)
+	{
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
-			FlxG.sound.music.pause();
-			vocals.pause();
+			FunkinSound.pauseInst();
+			
+			FunkinSound.pauseVoices();
+
 			LoadingState.loadAndSwitchState(new editors.ChartingState());
 		}
 
@@ -449,8 +458,7 @@ class EditorPlayState extends MusicBeatState
 
 				if (!daNote.mustPress && daNote.wasGoodHit && !daNote.hitByOpponent && !daNote.ignoreNote)
 				{
-					if (PlayState.SONG.needsVoices)
-						vocals.volume = 1;
+					FunkinSound.setVoicesVolume(1);
 
 					var time:Float = 0.15;
 					if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
@@ -484,7 +492,7 @@ class EditorPlayState extends MusicBeatState
 
 							if(!daNote.ignoreNote) {
 								songMisses++;
-								vocals.volume = 0;
+								FunkinSound.setVolume(0, 'bf');
 							}
 						}
 					}
@@ -509,14 +517,14 @@ class EditorPlayState extends MusicBeatState
 	
 	override public function onFocus():Void
 	{
-		vocals.play();
+		FunkinSound.playVoices();
 
 		super.onFocus();
 	}
 	
 	override public function onFocusLost():Void
 	{
-		vocals.pause();
+		FunkinSound.pauseVoices();
 
 		super.onFocusLost();
 	}
@@ -542,13 +550,13 @@ class EditorPlayState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		vocals.pause();
-
-		FlxG.sound.music.play();
-		Conductor.songPosition = FlxG.sound.music.time;
-		vocals.time = Conductor.songPosition;
-		vocals.play();
+		FunkinSound.pauseVoices();
+		FunkinSound.playInst();
+		FunkinSound.setConductorSongPos(FlxG.sound.music.time);
+		FunkinSound.setVoicesTime(Conductor.songPosition);
+		FunkinSound.playVoices();
 	}
+
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
@@ -735,7 +743,8 @@ class EditorPlayState extends MusicBeatState
 					}
 
 					note.wasGoodHit = true;
-					vocals.volume = 0;
+
+					FunkinSound.setVolume(0, 'bf');
 
 					if (!note.isSustainNote)
 					{
@@ -763,7 +772,8 @@ class EditorPlayState extends MusicBeatState
 			});
 
 			note.wasGoodHit = true;
-			vocals.volume = 1;
+
+			FunkinSound.setVolume(1, 'bf');
 
 			if (!note.isSustainNote)
 			{
@@ -782,7 +792,8 @@ class EditorPlayState extends MusicBeatState
 		songMisses++;
 
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-		vocals.volume = 0;
+		
+		FunkinSound.setVolume(0, 'bf');
 	}
 
 	var COMBO_X:Float = 400;
@@ -791,7 +802,7 @@ class EditorPlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 
-		vocals.volume = 1;
+		FunkinSound.setVolume(1, 'bf');
 
 		var placement:String = Std.string(combo);
 
@@ -1018,7 +1029,8 @@ class EditorPlayState extends MusicBeatState
 		}
 	}
 
-	function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null) {
+	function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null)
+	{
 		var skin:String = 'noteSplashes';
 		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
 		
@@ -1037,10 +1049,9 @@ class EditorPlayState extends MusicBeatState
 		grpNoteSplashes.add(splash);
 	}
 	
-	override function destroy() {
-		FlxG.sound.music.stop();
-		vocals.stop();
-		vocals.destroy();
+	override function destroy()
+	{
+		FunkinSound.stopSong();
 
 		if(!ClientPrefs.controllerMode)
 		{

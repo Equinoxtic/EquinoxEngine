@@ -20,9 +20,12 @@ class CoolUtil
 	public static var defaultDifficulties:Array<String> = [
 		'Easy',
 		'Normal',
-		'Hard'
+		'Hard',
+		#if (debug) // No erect mode, figure out how to run this lol
+		'Erect'
+		#end
 	];
-	public static var defaultDifficulty:String = 'Normal'; //The chart that has no suffix and starting difficulty on Freeplay/Story Mode
+	public static var defaultDifficulty:String = 'Normal';
 
 	public static var difficulties:Array<String> = [];
 

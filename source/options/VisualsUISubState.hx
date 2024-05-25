@@ -105,19 +105,12 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Smaller Text',
-			"Whether or not to allow smaller and more compact texts.",
-			'smallerTextDisplay',
-			'bool',
-			true);
-		addOption(option);
-
-		var option:Option = new Option('Score Text Zoom on Hit',
+		/* var option:Option = new Option('Score Text Zoom on Hit',
 			"If unchecked, disables the Score text zooming\neverytime you hit a note.",
 			'scoreZoom',
 			'bool',
 			true);
-		addOption(option);
+		addOption(option); */
 
 		var option:Option = new Option('Health Bar Transparency',
 			'How much transparent should the health bar and icons be.',

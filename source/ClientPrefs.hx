@@ -25,7 +25,7 @@ class ClientPrefs {
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var ghostTapping:Bool = true;
 	public static var timeBarType:String = 'Default';
-	public static var scoreZoom:Bool = true;
+	// public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;
 	public static var healthBarAlpha:Float = 1;
 	public static var controllerMode:Bool = false;
@@ -70,7 +70,6 @@ class ClientPrefs {
 	public static var showJudgementCounter:Bool = false;
 	public static var showGameplayInfo:Bool = false;
 	public static var noWatermark:Bool = false;
-	public static var smallerTextDisplay:Bool = true;
 	public static var directionalCameraMovement:Bool = true;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
@@ -124,7 +123,7 @@ class ClientPrefs {
 		FlxG.save.data.arrowHSV = arrowHSV;
 		FlxG.save.data.ghostTapping = ghostTapping;
 		FlxG.save.data.timeBarType = timeBarType;
-		FlxG.save.data.scoreZoom = scoreZoom;
+		// FlxG.save.data.scoreZoom = scoreZoom;
 		FlxG.save.data.noReset = noReset;
 		FlxG.save.data.healthBarAlpha = healthBarAlpha;
 		FlxG.save.data.comboOffset = comboOffset;
@@ -148,7 +147,6 @@ class ClientPrefs {
 		FlxG.save.data.detailedJudgementInfo = detailedJudgementInfo;
 		FlxG.save.data.showGameplayInfo = showGameplayInfo;
 		FlxG.save.data.noWatermark = noWatermark;
-		FlxG.save.data.smallerTextDisplay = smallerTextDisplay;
 		FlxG.save.data.directionalCameraMovement = directionalCameraMovement;
 	
 		FlxG.save.flush();
@@ -225,9 +223,9 @@ class ClientPrefs {
 		if(FlxG.save.data.timeBarType != null) {
 			timeBarType = FlxG.save.data.timeBarType;
 		}
-		if(FlxG.save.data.scoreZoom != null) {
+		/*if(FlxG.save.data.scoreZoom != null) {
 			scoreZoom = FlxG.save.data.scoreZoom;
-		}
+		}*/
 		if(FlxG.save.data.noReset != null) {
 			noReset = FlxG.save.data.noReset;
 		}
@@ -307,10 +305,6 @@ class ClientPrefs {
 		
 		if (FlxG.save.data.noWatermark != null) {
 			noWatermark = FlxG.save.data.noWatermark;
-		}
-
-		if (FlxG.save.data.smallerTextDisplay != null) {
-			smallerTextDisplay = FlxG.save.data.smallerTextDisplay;
 		}
 
 		if (FlxG.save.data.directionalCameraMovement != null) {

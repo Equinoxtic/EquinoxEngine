@@ -41,16 +41,10 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		#if (!debug)
 		var option:Option = new Option('Show Judgement Counter',
 			'Shows and tracks how many sicks, goods, bads and shits.',
 			'showJudgementCounter',
-			'bool',
-			false);
-		addOption(option);
-
-		var option:Option = new Option('Show Gameplay Info',
-			'Displays the current song, the current difficulty, etc.',
-			'showGameplayInfo',
 			'bool',
 			false);
 		addOption(option);
@@ -62,12 +56,20 @@ class VisualsUISubState extends BaseOptionsMenu
 			false);
 		addOption(option);
 
-		var option:Option = new Option('Disable Watermark',
-			'If checked, the watermark will not be visible',
-			'noWatermark',
+		var option:Option = new Option('Show Gameplay Info',
+			'Displays the current song, the current difficulty, etc.',
+			'showGameplayInfo',
 			'bool',
 			false);
 		addOption(option);
+		
+		var option:Option = new Option('Disable Watermark',
+		'If checked, the watermark will not be visible',
+		'noWatermark',
+		'bool',
+		false);
+		addOption(option);
+		#end
 
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',

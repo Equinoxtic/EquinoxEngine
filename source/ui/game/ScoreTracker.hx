@@ -1,4 +1,4 @@
-package ui;
+package ui.game;
 
 import util.Constants;
 import flixel.FlxG;

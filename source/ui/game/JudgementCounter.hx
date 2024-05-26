@@ -1,4 +1,4 @@
-package ui;
+package ui.game;
 
 import flixel.FlxCamera;
 import flixel.group.FlxGroup.FlxTypedGroup;

@@ -48,24 +48,14 @@ class Constants
 
 	static function get_VERSION_PSYCH():String
 	{
-		var http:haxe.Http = new haxe.Http('https://raw.githubusercontent.com/ShadowMario/FNF-PsychEngine/0.6.3/gitVersion.txt');
-		var version:String = '';
-		http.onData = function(data:String):Void {
-			version = data.split('\n')[0].trim();
-		}
-		http.request();
+		var version:String = util.Http.requestStringFrom('https://raw.githubusercontent.com/ShadowMario/FNF-PsychEngine/0.6.3/gitVersion.txt');
 		return '${ENGINE_APPLICATION_TITLE} v${version}';
 	}
 
 	static function get_VERSION_MAIN():String
 	{
 		#if !debug
-		var http:haxe.Http = new haxe.Http('https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/gitVersion.txt');
-		var version:String = '';
-		http.onData = function(data:String):Void {
-			version = data.split('\n')[0].trim();
-		}
-		http.request();
+		var version:String = util.Http.requestStringFrom('https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/gitVersion.txt');
 		return '${MAIN_APPLICATION_TITLE} - v${version}';
 		#else
 		return '${MAIN_APPLICATION_TITLE} - DEV : ${GIT_BRANCH} @ ${GIT_HASH}';

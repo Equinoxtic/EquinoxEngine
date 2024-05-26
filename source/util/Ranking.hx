@@ -4,52 +4,58 @@ import Highscore;
 
 class Ranking
 {
+	/**
+	 * The string array for the rating FCs.
+	 * - DEFAULT VALUES:
+	 * [ 'PFC', 'SFC', 'GFC', 'FC', 'SDCB', 'DDCB', 'TDCB', 'QDCB' ],
+	 */
+	public static var ratingsArray:Array<String> = [
+		'PFC', 'SFC', 'GFC', 'FC',
+		'SDCB', 'DDCB', 'TDCB', 'QDCB'
+	];
+
+	/**
+	 * The string array for the letter rankings.
+	 * - DEFAULT VALUES:
+	 * [ 'P', 'SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E', 'F' ]
+	 */
+	public static var letterRanksArray:Array<String> =[
+		'P', 'SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E', 'F'
+	];
+
 	public static function calculateAccuracy(?percentage:Null<Float>):Float
 	{
 		return Highscore.floorDecimal(percentage * 100, 2);
 	}
 
-	public static function evaluateRatingFC():String
+	public static function evaluateRatingFC(?misses:Null<Int>, ?bads:Null<Int>, ?shits:Null<Int>, ?goods:Null<Int>, ?sicks:Null<Int>, ?marvs:Null<Int>):String
 	{
 		var fcConditions:Array<Bool> = [
-			(PlayState.instance.songMisses == 0 && PlayState.instance.bads == 0 && PlayState.instance.shits == 0 && PlayState.instance.goods == 0), // PFC (Perfect FC)
-			(PlayState.instance.songMisses == 0 && PlayState.instance.bads == 0 && PlayState.instance.shits == 0 && PlayState.instance.goods >= 1), // SFC (Sick FC)
-			(PlayState.instance.songMisses == 0 && PlayState.instance.bads >= 1 && PlayState.instance.shits == 0 && PlayState.instance.goods >= 0), // GFC (Good FC)
-			(PlayState.instance.songMisses == 0), // FC (Full Combo)
-			(PlayState.instance.songMisses < 10), // SDCB (Single Digit Combo Breaks)
-			(PlayState.instance.songMisses >= 10), // DDCB (Double Digit Combo Breaks)
-			(PlayState.instance.songMisses >= 100), // TDCB (Triple Digit Combo Breaks)
-			(PlayState.instance.songMisses >= 1000) // QDCB (Quadruple Digit Combo Breaks)
+			(misses == 0 && bads == 0 && shits == 0 && goods == 0 && sicks >= 0 && marvs >= 0), // PFC (Perfect FC)
+			(misses == 0 && bads == 0 && shits == 0 && goods >= 1 && sicks >= 0 && marvs >= 0), // SFC (Sick FC)
+			(misses == 0 && bads >= 1 && shits == 0 && goods >= 0 && sicks >= 0 && marvs >= 0), // GFC (Good FC)
+			(misses == 0), // FC (Full Combo)
+			(misses < 10), // SDCB (Single Digit Combo Breaks)
+			(misses >= 10), // DDCB (Double Digit Combo Breaks)
+			(misses >= 100), // TDCB (Triple Digit Combo Breaks)
+			(misses >= 1000) // QDCB (Quadruple Digit Combo Breaks)
 		];
 
-		var ratingFcKey:String = '';
+		var ratingKey:String = '';
 
 		for (rating in 0...fcConditions.length)
 		{
-			if (fcConditions[rating])
-			{
-				switch (rating)
-				{
-					case 0: ratingFcKey = 'PFC';
-					case 1: ratingFcKey = 'SFC';
-					case 2: ratingFcKey = 'GFC';
-					case 3: ratingFcKey = 'FC';
-					case 4: ratingFcKey = 'SDCB';
-					case 5: ratingFcKey = 'CLEAR';
-					case 6: ratingFcKey = 'TDCB';
-					case 7: ratingFcKey = 'QDCB';
-				}
+			if (fcConditions[rating]) {
+				ratingKey = ratingsArray[rating];
 				break;
 			}
 		}
 
-		return ratingFcKey;
+		return ratingKey;
 	}
 
 	public static function evaluateLetterRanking(?accuracyValue:Null<Float>):String
 	{
-		if (accuracyValue == null) return 'ERR';
-
 		var accuracyConditions:Array<Bool> = [
 			accuracyValue >= 99.98,		// P (Perfect)
 			accuracyValue >= 99.00,		// SSS
@@ -67,21 +73,8 @@ class Ranking
 
 		for (ranking in 0...accuracyConditions.length)
 		{
-			if (accuracyConditions[ranking])
-			{
-				switch (ranking)
-				{
-					case 0: rankingKey = 'P';
-					case 1: rankingKey = 'SSS';
-					case 2: rankingKey = 'SS';
-					case 3: rankingKey = 'S';
-					case 4: rankingKey = 'A';
-					case 5: rankingKey = 'B';
-					case 6: rankingKey = 'C';
-					case 7: rankingKey = 'D';
-					case 8: rankingKey = 'E';
-					case 9: rankingKey = 'F';
-				}
+			if (accuracyConditions[ranking]) {
+				rankingKey = letterRanksArray[ranking];
 				break;
 			}
 		}

@@ -78,22 +78,31 @@ class PauseSubState extends MusicBeatSubstate
 		pauseTexts = new FlxTypedGroup<FlxText>();
 		add(pauseTexts);
 
-		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += '${PlayState.SONG.song}   -   ${CoolUtil.difficultyString()}';
+		var levelInfo:FlxText = new FlxText(0, 15, 0, "", 32);
+		levelInfo.text += '${PlayState.SONG.song} - ${PlayState.SONG.credit}';
 		pauseTexts.add(levelInfo);
 
-		var blueballedTxt:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
+		var difficulty:FlxText = new FlxText(0, 15 + 32, 0, "", 32);
+		difficulty.text += 'Difficulty: ${CoolUtil.difficultyString()}';
+		pauseTexts.add(difficulty);
+
+		var restarts:FlxText = new FlxText(0, 15 + 64, 0, "", 32);
+		restarts.text += 'Restarts: ${PlayState.restartCounter}';
+		pauseTexts.add(restarts);
+
+		var blueballedTxt:FlxText = new FlxText(0, 15 + 96, 0, "", 32);
 		blueballedTxt.text = "Blueballed: " + PlayState.deathCounter;
 		pauseTexts.add(blueballedTxt);
 
-		currentModeTxt = new FlxText(25, 15 + 96, 255, "", 32);
+		currentModeTxt = new FlxText(0, 15 + 128, 512, "", 32);
 		pauseTexts.add(currentModeTxt);
 
 		pauseTexts.forEach(function(txt:FlxText) {
+			txt.setFormat(Paths.font('phantommuff.ttf'), 32, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			txt.scrollFactor.set();
 			txt.updateHitbox();
+			txt.borderSize = 1.5;
 			txt.antialiasing = ClientPrefs.globalAntialiasing;
-			txt.setFormat(Paths.font('phantommuff.ttf'), 32);
 			txt.alpha = 0;
 			txt.x = FlxG.width - (txt.width + 20);
 		});
@@ -102,7 +111,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		pauseTexts.forEach(function(txt:FlxText) {
 			textTweenDelay += 0.1;
-			FlxTween.tween(txt, {alpha: 1, y: txt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: textTweenDelay});
+			FlxTween.tween(txt, {alpha: 1, y: txt.y + 5}, 0.4, {ease: FlxEase.cubeOut, startDelay: textTweenDelay});
 		});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
@@ -300,6 +309,8 @@ class PauseSubState extends MusicBeatSubstate
 
 	public static function restartSong(noTrans:Bool = false)
 	{
+		PlayState.restartCounter++;
+		
 		PlayState.instance.paused = true; // For lua
 		FlxG.sound.music.volume = 0;
 		FunkinSound.muteVoices(false);

@@ -73,9 +73,9 @@ import util.Constants;
  * Solarium Classes
  */
 import TweenClass;
-import ui.JudgementCounter;
-import ui.ScoreTracker;
-import ui.GameplayInfo;
+import ui.game.JudgementCounter;
+import ui.game.ScoreTracker;
+import ui.game.GameplayInfo;
 import ui.Watermark;
 
 /**
@@ -1277,7 +1277,7 @@ class PlayState extends MusicBeatState
 		timeTxt = new FlxText(0, 0, FlxG.width, "", 20);
 		timeTxt.setFormat(Paths.font('phantommuff.ttf'), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.screenCenter(X);
-		timeTxt.y = timeBarBG.y + 1;
+		timeTxt.y = timeBarBG.y - 1.5;
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2.5;
 		timeTxt.antialiasing = ClientPrefs.globalAntialiasing;
@@ -1322,12 +1322,12 @@ class PlayState extends MusicBeatState
 		/**
 		 * ScoreTracker, formerly known as scoreTxt.
 		 */
-		scoreTracker = new ScoreTracker(this, 0, healthBarBG.y + 50, Constants.SCORE_TRACKER_SIZE, 16, CENTER);
+		scoreTracker = new ScoreTracker(this, 0, healthBarBG.y + 55, Constants.SCORE_TRACKER_SIZE, 17, CENTER);
 		hudGroupInfo.add(scoreTracker);
 		
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font('phantommuff.ttf'), 38, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		botplayTxt.borderSize = 1.25;
+		botplayTxt.borderSize = 1.5;
 		botplayTxt.visible = cpuControlled;
 		hudGroupInfo.add(botplayTxt);
 		if(ClientPrefs.downScroll) {
@@ -1337,14 +1337,14 @@ class PlayState extends MusicBeatState
 		/**
 		 * JudgementCounter.
 		 */
-		judgementCounter = new JudgementCounter(this, 25, -25, Constants.JUDGEMENT_COUNTER_SIZE, 16, LEFT);
+		judgementCounter = new JudgementCounter(this, 25, -25, Constants.JUDGEMENT_COUNTER_SIZE, 18, LEFT);
 		judgementCounter.screenCenter(Y);
 		hudGroupInfo.add(judgementCounter);
 
 		/**
 		 * GameplayInfo.
 		 */
-		gameplayInfo = new GameplayInfo(this, -15, FlxG.height - 85, Constants.GAMEPLAY_INFO_SIZE, 16,
+		gameplayInfo = new GameplayInfo(this, -15, FlxG.height - 85, Constants.GAMEPLAY_INFO_SIZE, 17,
 			PlayState.SONG.song.replace('-', ' '),
 			CoolUtil.difficultyString().toUpperCase().trim(),
 			PlayState.SONG.credit,
@@ -1356,7 +1356,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Watermark.
 		 */
-		engineWatermark = new Watermark(this, 5, FlxG.height - 25, Constants.WATERMARK_SIZE, 14);
+		engineWatermark = new Watermark(this, 5, FlxG.height - 25, Constants.WATERMARK_SIZE, 12);
 		engineWatermark.scrollFactor.set();
 		hudGroupExcluded.add(engineWatermark);
 		engineWatermark.playWatermarkAnimation();

@@ -25,12 +25,12 @@ class CinematicBorder extends flixel.group.FlxSpriteGroup
 
 		this.instance = instance;
 
-		borderSpriteTop = new FlxSprite().loadGraphic(Paths.image('ui/TopBorder'));
+		borderSpriteTop = new FlxSprite().loadGraphic(Paths.image('ui/visual/TopBorder'));
 		borderSpriteTop.screenCenter(X);
 		borderSpriteTop.color = FlxColor.fromRGB(0, 0, 0);
 		add(borderSpriteTop);
 
-		borderSpriteBottom = new FlxSprite().loadGraphic(Paths.image('ui/BottomBorder'));
+		borderSpriteBottom = new FlxSprite().loadGraphic(Paths.image('ui/visual/BottomBorder'));
 		borderSpriteBottom.screenCenter(X);
 		borderSpriteBottom.color = FlxColor.fromRGB(0, 0, 0);
 		add(borderSpriteBottom);

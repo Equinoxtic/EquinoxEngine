@@ -129,6 +129,9 @@ class FunkinSound
 		if (shouldPause) pauseVoices();
 	}
 
+	/**
+	 * Plays the song's instrumental.
+	 */
 	public static function playInst():Void
 	{
 		if (FlxG.sound.music != null) {
@@ -136,6 +139,9 @@ class FunkinSound
 		}
 	}
 
+	/**
+	 * Pauses the song's instrumental.
+	 */
 	public static function pauseInst():Void
 	{
 		if (FlxG.sound.music != null) {
@@ -143,7 +149,9 @@ class FunkinSound
 		}
 	}
 
-
+	/**
+	 * Stops the song's instrumental.
+	 */
 	public static function stopInst():Void
 	{
 		if (FlxG.sound.music != null) {
@@ -151,6 +159,9 @@ class FunkinSound
 		}
 	}
 
+	/**
+	 * Set's the both the player and opponent's vocals volume.
+	 */
 	public static function setVoicesVolume(value:Null<Float>):Void
 	{
 		if (value != null && value >= 0.0) {
@@ -161,6 +172,9 @@ class FunkinSound
 		}
 	}
 
+	/**
+	 * Set's the both the player and opponent's vocals pitch.
+	 */
 	public static function setVoicesPitch(value:Null<Float>):Void
 	{
 		if (value != null && value > 0.0) {
@@ -171,6 +185,9 @@ class FunkinSound
 		}
 	}
 
+	/**
+	 * Adjusts both the player and opponent's vocals time.
+	 */
 	public static function setVoicesTime(value:Null<Float>):Void
 	{
 		if (value != null && value >= 0.0) {
@@ -181,6 +198,9 @@ class FunkinSound
 		}
 	}
 
+	/**
+	 * Sets the volume for the instrumental.
+	 */
 	public static function setInstVolume(value:Null<Float>):Void
 	{
 		if (value != null && value >= 0.0) {
@@ -201,6 +221,9 @@ class FunkinSound
 		}
 	}
 
+	/**
+	 * Adjusts the time for the instrumental.
+	 */
 	public static function setInstTime(value:Null<Float>):Void
 	{
 		if (value != null && value >= 0.0) {
@@ -217,6 +240,7 @@ class FunkinSound
 	{
 		// Play the instrumental.
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+		setInstTime(PlayState.SONG.songOffset); // May skip the time if you have a chart for a specific song already lol
 		setInstPitch(PlayState.instance.playbackRate);
 		FlxG.sound.music.onComplete = PlayState.instance.finishSong.bind();
 
@@ -236,7 +260,7 @@ class FunkinSound
 	/**
 	 * Sets the volume for the vocals and the instrumental depending on the target.
 	 */
-	 public static function setVolume(value:Null<Float>, ?target:String = 'bf'):Void
+	public static function setVolume(value:Null<Float>, ?target:String = 'bf'):Void
 	{
 		if (value != null && value >= 0)
 		{
@@ -250,9 +274,8 @@ class FunkinSound
 				if (voicesOpponent != null) {
 					voicesOpponent.volume = value;
 				} else {
-					if (voicesPlayer != null) {
+					if (voicesPlayer != null)
 						voicesPlayer.volume = value;
-					}
 				}
 			}
 			else if (target.toLowerCase() == 'instrumental')
@@ -380,13 +403,11 @@ class FunkinSound
 			switch (playerId)
 			{
 				case 'player' | 'bf' | '0':
-					if (voicesPlayer != null) {
+					if (voicesPlayer != null)
 						voicesPlayer.destroy();
-					}
 				case 'opponent' | 'dad' | '1':
-					if (voicesOpponent != null) {
+					if (voicesOpponent != null)
 						voicesOpponent.destroy();
-					}
 				default: trace('Invalid player ID: ${playerId}');
 			}
 		}
@@ -686,6 +707,9 @@ class FunkinSoundChartEditor
 		}
 	}
 
+	/**
+	 * Updates the current waveforms of the vocals and instrumental.
+	 */
 	public static function updateWaveforms(valueST:Null<Float>, valueET:Null<Float>, gridSize:Null<Int>, gridHeight:Null<Float>):Void
 	{
 		#if desktop
@@ -705,80 +729,66 @@ class FunkinSoundChartEditor
 
 		if (FlxG.save.data.chart_waveformInst)
 		{
-			createInstWaveform(st, et, gridHeight);
+			var sound:FlxSound = FlxG.sound.music;
+			if (sound != null)
+			{
+				if (sound._sound != null && sound._sound.__buffer != null)
+				{
+					var bytes:Bytes = sound._sound.__buffer.data.toBytes();
+					wavData = createWaveformData(
+						sound._sound.__buffer,
+						bytes, st, et,
+						1,
+						wavData,
+						Std.int(gridHeight)
+					);
+				}
+			}
 		}
 
 		if (FlxG.save.data.chart_waveformVoicesPlayer)
 		{
-			createVocalWaveform(st, et, true, gridHeight);
+			var sound:FlxSound = vocalsPlayer;
+			if (sound != null)
+			{
+				if (sound._sound != null && sound._sound.__buffer != null)
+				{
+					var bytes:Bytes = sound._sound.__buffer.data.toBytes();
+					wavData = createWaveformData(
+						sound._sound.__buffer,
+						bytes, st, et,
+						1,
+						wavData,
+						Std.int(gridHeight)
+					);
+				}
+			}
 		}
 
 		if (FlxG.save.data.chart_waveformVoicesOpponent)
 		{
-			createVocalWaveform(st, et, false, gridHeight);
-		}
-
-		// drawWaveformData(gridSize);
-		#end
-	}
-
-	public static function createVocalWaveform(st:Null<Float>, et:Null<Float>, isPlayer:Bool, gridHeight:Null<Float>):Void
-	{
-		#if desktop
-		if (isPlayer)
-		{
-			var sound:FlxSound = vocalsPlayer;
-			if (sound._sound != null && sound._sound.__buffer != null)
-			{
-				var bytes:Bytes = sound._sound.__buffer.data.toBytes();
-				createSoundWaveform(sound, bytes, st, et, gridHeight);
-			}
-		}
-		else
-		{
 			var sound:FlxSound = vocalsOpponent;
-			if (sound._sound != null && sound._sound.__buffer != null)
+			if (sound != null)
 			{
-				var bytes:Bytes = sound._sound.__buffer.data.toBytes();
-				createSoundWaveform(sound, bytes, st, et, gridHeight);
+				if (sound._sound != null && sound._sound.__buffer != null)
+				{
+					var bytes:Bytes = sound._sound.__buffer.data.toBytes();
+					wavData = createWaveformData(
+						sound._sound.__buffer,
+						bytes, st, et,
+						1,
+						wavData,
+						Std.int(gridHeight)
+					);
+				}
 			}
 		}
 		#end
 	}
 
-	public static function createInstWaveform(st:Null<Float>, et:Null<Float>, gridHeight:Null<Float>):Void
-	{
-		#if desktop
-		var sound:FlxSound = FlxG.sound.music;
-		if (sound._sound != null && sound._sound.__buffer != null)
-		{
-			var bytes:Bytes = sound._sound.__buffer.data.toBytes();
-			createSoundWaveform(sound, bytes, st, et, gridHeight);
-		}
-		#end
-	}
-
-	public static function createSoundWaveform(sound:Null<FlxSound>, bytes:Bytes, startTime:Null<Float>, endTime:Null<Float>, gridHeight:Null<Float>):Void
-	{
-		#if desktop
-		if (sound != null && sound.alive)
-		{
-			if (sound._sound != null && sound._sound.__buffer != null)
-			{
-				wavData = createWaveformData(
-					sound._sound.__buffer,
-					bytes,
-					startTime,
-					endTime,
-					1,
-					wavData,
-					Std.int(gridHeight)
-				);
-			}
-		}
-		#end
-	}
-
+	/**
+	 * Creates the waveform data of a sound.
+	 */
 	public static function createWaveformData(buffer:AudioBuffer, bytes:Bytes, time:Float, endTime:Float, multiply:Float = 1, ?array:Array<Array<Array<Float>>>, ?steps:Float):Array<Array<Array<Float>>>
 	{
 		#if (lime_cffi && !macro)
@@ -921,6 +931,9 @@ class FunkinSoundChartEditor
 		#end
 	}
 
+	/**
+	 * Draws the waveform data.
+	 */
 	public static function drawWaveformData(gridSize:Null<Int>, tWaveformSprite:Null<FlxSprite>):Void
 	{
 		#if desktop
@@ -965,6 +978,9 @@ class FunkinSoundChartEditor
 		#end
 	}
 
+	/**
+	 * Updates the sprite for the waveform.
+	 */
 	public static function updateWaveformSprite(tWaveformSprite:Null<FlxSprite>, gridSize:Null<Float>, gridHeight:Null<Float>, gridWidth:Null<Float>):Void
 	{
 		#if desktop
@@ -979,6 +995,9 @@ class FunkinSoundChartEditor
 		#end
 	}
 
+	/**
+	 * Enables Flixel's volume control keys.
+	 */
 	public static function enableVolumeControlKeys():Void
 	{
 		FlxG.sound.muteKeys = TitleState.muteKeys;
@@ -986,6 +1005,9 @@ class FunkinSoundChartEditor
 		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
 	}
 
+	/**
+	 * Disables Flixel's volume control keys.
+	 */
 	public static function disableVolumeControlKeys():Void
 	{
 		FlxG.sound.muteKeys = [];
@@ -993,6 +1015,9 @@ class FunkinSoundChartEditor
 		FlxG.sound.volumeUpKeys = [];
 	}
 
+	/**
+	 * Adjusts and increments the time of the music.
+	 */
 	public static function adjustMusicTime(increment:Null<Float>):Void
 	{
 		if (FlxG.keys.pressed.W) {

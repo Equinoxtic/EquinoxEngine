@@ -2742,14 +2742,18 @@ class PlayState extends MusicBeatState
 
 				swagNote.scrollFactor.set();
 
-				var susLength:Float = swagNote.sustainLength;
-
-				susLength = susLength / Conductor.stepCrochet;
+				
 				unspawnNotes.push(swagNote);
 
-				var floorSus:Int = Math.floor(susLength);
-				if(floorSus > 0) {
-					for (susNote in 0...floorSus+1)
+				/**
+				 * SHORTENED HOLD NOTE LENGTH SOLUTION: by using ceil instead of floor, we can get more accurate and proper hold note lengths, this seems to work more effectively
+				 */
+				 final susLength:Float = swagNote.sustainLength / (Conductor.stepCrochet / 1.04);
+				final ceilSus:Int = Math.ceil(susLength);
+
+				if (ceilSus > 0)
+				{
+					for (susNote in 0...ceilSus)
 					{
 						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 

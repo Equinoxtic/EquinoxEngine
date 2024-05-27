@@ -3250,7 +3250,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (ClientPrefs.directionalCameraMovement) {
-			moveCameraToDirection(28, focusedCharacter);
+			moveCameraToDirection(18 * (defaultCamZoom - 0.05), focusedCharacter);
 		}
 
 		if(!inCutscene) {
@@ -4151,8 +4151,8 @@ class PlayState extends MusicBeatState
 
 				if ((amount >= 0.0 && amount <= 1.0) && duration > 0 && (ease != null && ease != ''))
 				{
-					trace('[CINEMATIC BORDER EVENT INFORMATION] > ${amount} : ${duration} : ${ease}');
-					
+					trace('[Cinematic Border Event] > ${amount} : ${duration} : ${ease}');
+
 					borderCam.visible = true;
 
 					if (borderCameraTween != null) {

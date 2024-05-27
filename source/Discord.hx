@@ -44,8 +44,13 @@ class DiscordClient
 		DiscordRpc.presence({
 			details: "In the Menus",
 			state: null,
-			largeImageKey: 'icon',
-			largeImageText: "Solarium Engine"
+			#if (!debug)
+			largeImageKey: 'solariumrpc',
+			largeImageText: '${Constants.MAIN_APPLICATION_TITLE}'
+			#else
+			largeImageKey: 'solariumrpc_debug',
+			largeImageText: '${Constants.MAIN_APPLICATION_TITLE}: Developer Build'
+			#end
 		});
 	}
 
@@ -81,8 +86,13 @@ class DiscordClient
 		DiscordRpc.presence({
 			details: details,
 			state: state,
-			largeImageKey: 'icon',
-			largeImageText: "Engine Version: " + Constants.VERSION_MAIN,
+			#if (!debug)
+			largeImageKey: 'solariumrpc',
+			largeImageText: Constants.VERSION_MAIN,
+			#else
+			largeImageKey: 'solariumrpc_debug',
+			largeImageText: '${Constants.MAIN_APPLICATION_TITLE} Branch: [${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}]',
+			#end
 			smallImageKey : smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp : Std.int(startTimestamp / 1000),

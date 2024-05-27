@@ -31,21 +31,38 @@ class GameplayInfo extends FlxSpriteGroup
 
 		gameplayText.updateHitbox();
 
-		gameplayText.text = '${songName}\n'
-		+ '${difficultyString}\n'
-		+ '${songCredit}\n'
-		+ '${songText}';
+		createGameplayText(songName, difficultyString, songCredit, songText);
 
 		#if (!debug)
 		visible = ((ClientPrefs.showGameplayInfo) ? !ClientPrefs.hideHud : false);
 		#end
 	}
 
-	public function updateGameplayText(?songName:String = "", ?difficultyString:String = "", ?songCredit:String = "", ?songText:String = "") {
-		gameplayText.text = '${songName}\n'
-		+ '${difficultyString}\n'
-		+ '${songCredit}\n'
-		+ '${songText}';
+	private function createGameplayText(songName:Null<String>, difficultyString:Null<String>, songCredit:Null<String>, songText:Null<String>):Void
+	{
+		var nullCheckArray:Array<String> = [];
+		var text:String = '';
+
+		/**
+		 * Make place holder text first just in case if anything returns null.
+		 */
+		gameplayText.text = 'Song\nDifficulty\nArtist\nText';
+
+		nullCheckArray.push(songName);
+		nullCheckArray.push(difficultyString);
+		nullCheckArray.push(songCredit);
+		nullCheckArray.push(songText);
+
+		for (s in 0...nullCheckArray.length) {
+			if (nullCheckArray[s] != null && nullCheckArray[s] != '') {
+				text += '${nullCheckArray[s]}\n';
+			}
+		}
+
+		/**
+		 * Finally, update the placeholder text to the current text.
+		 */
+		gameplayText.text = text;
 	}
 	
 	override function update(elapsed:Float) {

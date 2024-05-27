@@ -1605,7 +1605,11 @@ class PlayState extends MusicBeatState
 
 	private function useVanillaSongInfo():Void
 	{
-		// Hardcoded Song Credits.
+		/**
+		 * Hardcoded song credits and info.
+		 */
+
+		// The list/array of songs to be used and checked for the hardcoded song info.
 		var vanillaSongArray:Array<String> = [
 			'bopeebo', 'fresh', 'dad-battle', /** - Week 1 - **/
 			'spookeez', 'south', 'monster', /** - Week 2 - **/
@@ -1618,26 +1622,36 @@ class PlayState extends MusicBeatState
 
 		var formattedSongPath:String = Paths.formatToSongPath(SONG.song).toLowerCase();
 
-		for (i in 0...vanillaSongArray.length)
+		if (PlayState.SONG.credit == null || PlayState.SONG.extraText == null)
 		{
-			if (formattedSongPath == vanillaSongArray[i])
+			for (i in 0...vanillaSongArray.length)
 			{
-				//Check whether or not the song is Monster or Winter Horrorland so we can credit Bassetfilms in the mix.
-				switch(formattedSongPath)
+				if (formattedSongPath == vanillaSongArray[i])
 				{
-					case 'monster' | 'winter-horrorland':
-						songCreditTxt = "KawaiSprite (ft. Bassetfilms)";
-					default:
-						songCreditTxt = "KawaiSprite";
-				}
-				
-				songExtraTxt = "The Funkin\' Crew";
+					//Check whether or not the song is Monster or Winter Horrorland so we can credit Bassetfilms in the mix.
+					switch(formattedSongPath)
+					{
+						case 'monster' | 'winter-horrorland':
+							songCreditTxt = "KawaiSprite (ft. Bassetfilms)";
+						default:
+							songCreditTxt = "KawaiSprite";
+					}
+					
+					songExtraTxt = "The Funkin\' Crew";
 
-				// Set useHardcodedInfo to true to ensure safety of using hardcoded credits when the song is vanilla and not from modded.
-				useHardcodedInfo = true;
-				
-				break;
+					if (PlayState.SONG.credit == null)
+						PlayState.SONG.credit = songCreditTxt;
+
+					if (PlayState.SONG.extraText == null)
+						PlayState.SONG.extraText = songExtraTxt;
+					
+					break;
+				}
 			}
+		}
+		else
+		{
+			return;
 		}
 	}
 
@@ -3356,16 +3370,6 @@ class PlayState extends MusicBeatState
 		{
 			scoreTracker.checkPlayStateMode();
 		}
-
-		/**
-		 * Update Gameplay Info. (Song Credits and etc.)
-		 */
-		gameplayInfo.updateGameplayText(
-			SONG.song.toUpperCase(), 
-			CoolUtil.difficultyString(), 
-			((!useHardcodedInfo) ? SONG.credit : songCreditTxt), 
-			((!useHardcodedInfo) ? SONG.extraText : songExtraTxt)
-		);
 
 		/**
 		 * Added a cool global tween class. (Basically modified FlxTween, thanks for @Quackerona for teaching me this a while back)

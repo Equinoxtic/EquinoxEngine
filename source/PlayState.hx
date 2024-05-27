@@ -3,7 +3,7 @@ package;
 /**
  * Main Classes
  */
-import util.EaseUtil;
+import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
@@ -4253,7 +4253,7 @@ class PlayState extends MusicBeatState
 						borderCameraTween.cancel();
 					}
 
-					borderCameraTween = TweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration, {ease: EaseUtil.getEase(ease), onComplete: function(_) {
+					borderCameraTween = TweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
 						borderCameraTween = null;
 					}});
 

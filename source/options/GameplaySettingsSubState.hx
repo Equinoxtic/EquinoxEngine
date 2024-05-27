@@ -56,11 +56,11 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			false);
 		addOption(option);
 
-		var option:Option = new Option('Opponent Notes',
-			'If unchecked, opponent notes get hidden.',
-			'opponentStrums',
+		var option:Option = new Option('Middlescroll Opponent Notes',
+			'Shows the opponent strums when on middlescroll.',
+			'opponentStrumsMiddleScroll',
 			'bool',
-			true);
+			false);
 		addOption(option);
 
 		var option:Option = new Option('Ghost Tapping',

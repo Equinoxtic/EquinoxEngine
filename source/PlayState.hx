@@ -2374,11 +2374,9 @@ class PlayState extends MusicBeatState
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
 
 			if (ClientPrefs.middleScroll) {
-				if (ClientPrefs.opponentStrums) {
-					generateStaticArrows(false, 0.35);
-				} else {
-					generateStaticArrows(false, 0);
-				}
+				generateStaticArrows(false,
+					((ClientPrefs.opponentStrumsMiddleScroll) ? 0.35 : 0.0)
+				);
 				generateStaticArrows(true, 1.0);
 			} else {
 				generateStaticArrows(false, 1.0);
@@ -2394,7 +2392,7 @@ class PlayState extends MusicBeatState
 			for (i in 0...opponentStrums.length) {
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				// if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
+				opponentStrums.members[i].visible = ClientPrefs.opponentStrumsMiddleScroll;
 			}
 
 			startedCountdown = true;
@@ -2523,12 +2521,13 @@ class PlayState extends MusicBeatState
 						canPause = true;
 				}
 
-				notes.forEachAlive(function(note:Note) {
-					if(ClientPrefs.opponentStrums /**|| !note.mustPress*/)
+				notes.forEachAlive(function(note:Note)
+				{
+					if (ClientPrefs.opponentStrumsMiddleScroll)
 					{
 						note.copyAlpha = false;
 						note.alpha = note.multAlpha;
-						if(ClientPrefs.middleScroll /**&& !note.mustPress*/) {
+						if (ClientPrefs.middleScroll) {
 							note.alpha *= 0.35;
 						}
 					}

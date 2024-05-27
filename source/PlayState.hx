@@ -3371,21 +3371,9 @@ class PlayState extends MusicBeatState
 				ranking // RANKING
 			);
 		}
-		else // Otherwise, change the score tracker text to the according mode that the player is in.
+		else // Otherwise, check the current mode that the player is in and update the score tracker text.
 		{
-			/**
-			* Score Tracker / Score Text mode changing.
-			*/
-			if (cpuControlled) {
-				// < BOTPLAY >
-				scoreTracker.changeScoreTextMode('botplay', 1.175);
-			} else if (practiceMode) {
-				// < PRACTICE MODE >
-				scoreTracker.changeScoreTextMode('practice-mode', 1.15);
-			} else if (chartingMode) {
-				// < CHARTING MODE >
-				scoreTracker.changeScoreTextMode('charting-mode', 1.15);
-			}
+			scoreTracker.checkPlayStateMode();
 		}
 
 		/**

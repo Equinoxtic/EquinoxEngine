@@ -38,7 +38,8 @@ class ScoreTracker extends FlxSpriteGroup
 		visible = !ClientPrefs.hideHud;
 	}
 
-	public function updateScoreText(?songScore:Int = 0, ?songMisses:Int = 0, ?accuracy:Float = 0, ?rating:String = '', ?ranking:String = '') {
+	public function updateScoreText(?songScore:Int = 0, ?songMisses:Int = 0, ?accuracy:Float = 0, ?rating:String = '', ?ranking:String = ''):Void
+	{
 		// < SCORE: SONG SCORE | COMBO BREAKS: MISSES | ACCURACY: ACCURACY% | RATING - RANK >
 		scoreTxt.text = 'SCORE: ${songScore}'
 		+ ' | MISSES: ${songMisses}'
@@ -49,26 +50,16 @@ class ScoreTracker extends FlxSpriteGroup
 		 */
 	}
 
-	public function changeScoreTextMode(mode:String, ?defaultFontSizeMult:Float = 1.0):Void {
-		if (mode != null) {
-			var validModes:Array<String> = [ 
-				'botplay', 
-				'charting-mode', 
-				'practice-mode' 
-			];
+	public function checkPlayStateMode():Void
+	{
+		var botplay:Bool = PlayState.instance.cpuControlled;
+		var practiceMode:Bool = PlayState.instance.practiceMode;
+		var chartingMode:Bool = PlayState.chartingMode;
 
-			var isValidMode:Bool = false;
+		var text:String = '- ${((botplay) ? 'Botplay - ' : '')}${((practiceMode) ? 'Practice Mode - ' : '')}${((chartingMode) ? 'Charting Mode - ' : '')}
+		';
 
-			for (i in 0...validModes.length) {
-				isValidMode = ((mode.toLowerCase() == validModes[i]));
-				if (isValidMode)
-					break;
-			}
-
-			// trace(isValidMode);
-
-			if (isValidMode) scoreTxt.text = '< ${mode.toUpperCase().replace('-', ' ')} >';
-		}
+		scoreTxt.text = text;
 	}
 
 	override function update(elapsed:Float) {

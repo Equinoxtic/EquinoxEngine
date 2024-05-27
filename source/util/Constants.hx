@@ -94,7 +94,7 @@ class Constants
 	/**
 	 * The decay of the icon bop.
 	 */
-	public static final ICON_BOP_BEATDECAY:Float = 7.0;
+	public static final ICON_BOP_BEATDECAY:Float = 6.8;
 
 	/**
 	 * The mod of the icon bop based on beat. (Used for ICON_BOP_INTENSITY_BEAT)
@@ -104,12 +104,12 @@ class Constants
 	/**
 	 * The intensity of the icon bop.
 	 */
-	public static final ICON_BOP_INTENSITY:Float = 1.2;
+	public static final ICON_BOP_INTENSITY:Float = 1.185;
 
 	/**
 	 * The intensity of the icon bop every MOD beats. (Refer to ICON_BOP_BEATMOD)
 	 */
-	public static final ICON_BOP_INTENSITY_BEAT:Float = ICON_BOP_INTENSITY + 0.21;
+	public static final ICON_BOP_INTENSITY_BEAT:Float = ICON_BOP_INTENSITY + 0.25;
 
 	/**
 	 * ============================= NOTE VALUES =============================
@@ -118,7 +118,7 @@ class Constants
 	/**
 	 * The alpha/transparency of the Note Tail.
 	 */
-	public static final NOTE_TAIL_ALPHA:Float = 0.77;
+	public static final NOTE_TAIL_ALPHA:Float = 0.75;
 
 	/**
 	 * ============================= UI RELATED VALUES =============================
@@ -165,8 +165,14 @@ class Constants
 	 */
 	public static final NUMERICAL_COMBO_SIZE:Float = 0.5;
 
+	/**
+	 * The zoom of the main camera. (camGame | FlxG.camera.zoom)
+	 */
 	public static final CAMERA_GAME_ZOOM:Float = 1.0;
 
+	/**
+	 * The zoom of the HUD camera.
+	 */
 	public static final CAMERA_HUD_ZOOM:Float = 1.0;
 
 	/**

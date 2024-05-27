@@ -202,12 +202,14 @@ class TitleState extends MusicBeatState
 		}
 
 		FlxG.mouse.visible = false;
-		
-		#if (debug)
-		if (!DebugInfoState.leftState) {
-			FlxTransitionableState.skipNextTransIn = true;
-			FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new DebugInfoState());
+
+		#if desktop
+		if (!DiscordClient.isInitialized)
+		{
+			DiscordClient.initialize();
+			Application.current.onExit.add (function (exitCode) {
+				DiscordClient.shutdown();
+			});
 		}
 		#end
 
@@ -221,16 +223,14 @@ class TitleState extends MusicBeatState
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
 		} else {
-			#if desktop
-			if (!DiscordClient.isInitialized)
-			{
-				DiscordClient.initialize();
-				Application.current.onExit.add (function (exitCode) {
-					DiscordClient.shutdown();
-				});
+			#if (debug)
+			if (!DebugInfoState.leftState) {
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				MusicBeatState.switchState(new DebugInfoState());
 			}
 			#end
-
+			
 			if (initialized)
 				startIntro();
 			else

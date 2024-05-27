@@ -252,8 +252,8 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var borderCam:FlxCamera;
+	public var camExternalInfo:FlxCamera;
 	public var camOther:FlxCamera;
-	public var camExternal:FlxCamera;
 	public var camStrum:FlxCamera;
 	public var camSus:FlxCamera;
 	public var camNotes:FlxCamera;
@@ -338,6 +338,7 @@ class PlayState extends MusicBeatState
 	public static var campaignShits:Int = 0;
 	public static var seenCutscene:Bool = false;
 	public static var deathCounter:Int = 0;
+	public static var restartCounter:Int = 0;
 
 	public var defaultCamZoom:Float = 1.05;
 
@@ -511,16 +512,16 @@ class PlayState extends MusicBeatState
 		camStrum = new FlxCamera();
 		camSus = new FlxCamera();
 		camNotes = new FlxCamera();
+		camExternalInfo = new FlxCamera();
 		camOther = new FlxCamera();
-		camExternal = new FlxCamera();
 
 		borderCam.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;
 		camStrum.bgColor.alpha = 0;
 		camSus.bgColor.alpha = 0;
 		camNotes.bgColor.alpha = 0;
+		camExternalInfo.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
-		camExternal.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(borderCam, false);
@@ -528,8 +529,8 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camSus, false);
 		FlxG.cameras.add(camNotes, false);
 		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(camExternalInfo, false);
 		FlxG.cameras.add(camOther, false);
-		FlxG.cameras.add(camExternal, false);
 
 		camHUD.zoom = Constants.CAMERA_HUD_ZOOM;
 
@@ -1392,7 +1393,7 @@ class PlayState extends MusicBeatState
 		hudGroupExcluded.forEach(function(spr:FlxSprite) {
 			spr.scrollFactor.set();
 			spr.antialiasing = ClientPrefs.globalAntialiasing;
-			spr.cameras = [camExternal];
+			spr.cameras = [camExternalInfo];
 		});
 
 		cinematicBorder = new CinematicBorder(this, 1.0);
@@ -1599,7 +1600,7 @@ class PlayState extends MusicBeatState
 
 		super.create();
 
-		borderCam.zoom = 1.5;
+		borderCam.zoom = 1.85;
 		borderCam.visible = false;
 
 		health = Constants.HEALTH_START;
@@ -2601,52 +2602,8 @@ class PlayState extends MusicBeatState
 
 	public function updateScore(miss:Bool = false)
 	{
-		/*
-		if (ClientPrefs.scoreZoom && !miss && !cpuControlled && !practiceMode && !chartingMode)
-		{
-			if (!ClientPrefs.smallerTextDisplay) {
-				tweenScoreTxt(
-					Constants.SCORE_TRACKER_SIZE_ADDITIVE, 
-					Constants.SCORE_TRACKER_TWEEN_DURATION,
-					Constants.SCORE_TRACKER_TWEEN_EASE
-				);
-			} else {
-				tweenScoreTxt(
-					Constants.SCORE_TRACKER_SIZE_ADDITIVE - 0.05, 
-					Constants.SCORE_TRACKER_TWEEN_DURATION,
-					Constants.SCORE_TRACKER_TWEEN_EASE
-				);
-			}
-		}
-		*/
 		callOnLuas('onUpdateScore', [miss]);
 	}
-	
-	/*
-	public function tweenScoreTxt(?sizeAdd:Float, ?duration:Float, ?ease:Null<String>):Void
-	{
-		if(scoreTxtTween != null) scoreTxtTween.cancel();
-			
-		scoreTracker.scale.set(Constants.SCORE_TRACKER_SIZE + sizeAdd, Constants.SCORE_TRACKER_SIZE + sizeAdd);
-
-		scoreTxtTween = TweenClass.tween(
-			scoreTracker.scale,
-			{
-				x: Constants.SCORE_TRACKER_SIZE,
-				y: Constants.SCORE_TRACKER_SIZE
-			}, 
-			0.65, 
-			{
-				ease: EaseUtil.getEase(ease),
-				onComplete: function(twn:FlxTween) {
-					scoreTxtTween = null;
-				}
-			}
-		);
-
-		scoreTxtTween.start();
-	}
-	*/
 
 	public function setSongTime(time:Float)
 	{
@@ -3001,17 +2958,6 @@ class PlayState extends MusicBeatState
 			var targetAlpha:Float = alphaOverride;
 
 			var player:Int = (isPlayer) ? 1 : 0;
-
-			/*
-			if (player < 1)
-			{
-				if (!ClientPrefs.opponentStrums) {
-					targetAlpha = 0;
-				} else if (ClientPrefs.middleScroll) {
-					targetAlpha = 0.35;
-				}
-			}
-			*/
 
 			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);
 			babyArrow.downScroll = ClientPrefs.downScroll;
@@ -3856,7 +3802,7 @@ class PlayState extends MusicBeatState
 		}
 		*/
 
-		if(FlxG.sound.music != null) {
+		if (FlxG.sound.music != null) {
 			FunkinSound.pauseSong();
 		}
 
@@ -3904,8 +3850,6 @@ class PlayState extends MusicBeatState
 				}
 
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
-
-				// MusicBeatState.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 				#if desktop
 				// Game Over doesn't get his own variable because it's only used here
@@ -4415,7 +4359,7 @@ class PlayState extends MusicBeatState
 	var cameraTwn:FlxTween;
 	public function moveCamera(isDad:Bool)
 	{
-		if(isDad)
+		if (isDad)
 		{
 			focusedCharacter = dad;
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
@@ -4569,6 +4513,8 @@ class PlayState extends MusicBeatState
 		updateTime = false;
 
 		deathCounter = 0;
+		restartCounter = 0;
+
 		seenCutscene = false;
 
 		#if ACHIEVEMENTS_ALLOWED

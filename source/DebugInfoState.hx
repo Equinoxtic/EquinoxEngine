@@ -30,9 +30,8 @@ class DebugInfoState extends MusicBeatState
 
 	var allowInteraction:Bool = false;
 
-
 	override function create():Void
-	{
+	{	
 		confirmedSound = new Sound().loadEmbedded(Paths.sound('confirmMenuFancy'));
 		FlxG.sound.list.add(confirmedSound);
 

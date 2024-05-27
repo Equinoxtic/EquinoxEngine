@@ -64,7 +64,6 @@ import Achievements;
 import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
-import Random;
 import Shaders;
 import util.Rating;
 import util.Constants;
@@ -398,12 +397,11 @@ class PlayState extends MusicBeatState
 
 	var songCreditTxt:String = "";
 	var songExtraTxt:String = "";
-	var useHardcodedInfo:Bool = false;
 
 	var canPause:Bool = false;
 	private var scoreMultiplier:Float = 1.0;
 	private var missMultiplier:Float = 1.0;
-	private var displayedHealth:Float = 1;
+	private var displayedHealth:Float = Constants.HEALTH_START;
 	private var lerpTime:Float = 0;
 	private var comboPeak:Int = 0;
 	private var lerpScore:Int = 0;
@@ -3167,7 +3165,7 @@ class PlayState extends MusicBeatState
 				var cameraShakeIntensity = 0.00175;
 
 				aberrationEffect.setOffset(
-					((doPhillyCAB) ? Random.float(0.001, 0.005) : 0.0)
+					((doPhillyCAB) ? FlxG.random.float(0.001, 0.005) : 0.0)
 				);
 		
 				if (doPhillyCAB) {
@@ -3418,7 +3416,8 @@ class PlayState extends MusicBeatState
 		iconP2.offsetIcon(Constants.ICON_OFFSET, false);
 		iconP2.updateHealthIcon();
 
-		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
+		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene)
+		{
 			persistentUpdate = false;
 			paused = true;
 			cancelMusicFadeTween();
@@ -3774,6 +3773,7 @@ class PlayState extends MusicBeatState
 			MusicBeatState.switchState(new GitarooPause());
 		}
 		*/
+
 
 		if (FlxG.sound.music != null) {
 			FunkinSound.pauseSong();
@@ -5394,7 +5394,7 @@ class PlayState extends MusicBeatState
 	{
 		trainMoving = true;
 
-		trainSound.pitch = Random.float(0.9, 1.2);
+		trainSound.pitch = FlxG.random.float(0.9, 1.2);
 		trainSound.play(true);
 	}
 

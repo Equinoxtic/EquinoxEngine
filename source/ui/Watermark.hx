@@ -7,7 +7,6 @@ import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
-// import Random;
 import util.Constants;
 import TweenClass;
 

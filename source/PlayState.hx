@@ -612,7 +612,7 @@ class PlayState extends MusicBeatState
 				stageStuff.add(bg);
 
 				var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+				stageFront.setGraphicSize(Std.int(stageFront.width * 1.2));
 				stageStuff.add(stageFront);
 
 				var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
@@ -624,7 +624,7 @@ class PlayState extends MusicBeatState
 				stageLight.flipX = true;
 				stageStuff.add(stageLight);
 
-				var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
+				var stageCurtains:BGSprite = new BGSprite('stagecurtains', -640, -300, 1.3, 1.3);
 				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 				stageStuff.add(stageCurtains);
 

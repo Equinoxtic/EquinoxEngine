@@ -219,6 +219,7 @@ class ChartingState extends MusicBeatState
 	var curSelectedNote:Array<Dynamic> = null;
 
 	var tempBpm:Float = 0;
+	var tempOffset:Float = 0;
 	var playbackSpeed:Float = 1;
 
 	var leftIcon:HealthIcon;
@@ -292,6 +293,7 @@ class ChartingState extends MusicBeatState
 				notes: [],
 				events: [],
 				bpm: 150.0,
+				songOffset: 0.0,
 				needsVoices: true,
 				arrowSkin: '',
 				splashSkin: 'noteSplashes',//idk it would crash if i didn't
@@ -357,6 +359,7 @@ class ChartingState extends MusicBeatState
 		//FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		tempBpm = _song.bpm;
+		tempOffset = _song.songOffset;
 
 		addSection();
 
@@ -369,6 +372,10 @@ class ChartingState extends MusicBeatState
 		Conductor.mapBPMChanges(_song);
 
 		bpmTxt = new FlxText(1000, 50, 0, "", 16);
+		bpmTxt.setFormat(Paths.font('phantommuff.ttf'), 16, FlxColor.WHITE);
+		bpmTxt.borderStyle = FlxTextBorderStyle.OUTLINE;
+		bpmTxt.borderColor = FlxColor.BLACK;
+		bpmTxt.borderSize = 1.75;
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
 
@@ -422,21 +429,22 @@ class ChartingState extends MusicBeatState
 		\nUp/Down - Change Conductor's Strum Time with Snapping
 		\nLeft Bracket / Right Bracket - Change Song Playback Rate (SHIFT to go Faster)
 		\nALT + Left Bracket / Right Bracket - Reset Song Playback Rate
-		\nHold Shift to move 4x faster
+		\nHold Shift to move 4x faster & enable \'Free-Snap\'
 		\nHold Control and click on an arrow to select it
 		\nZ/X - Zoom in/out
 		\n
-		\nEsc - Test your chart inside Chart Editor
-		\nEnter - Play your chart
+		\nEsc - Test your chart inside the Chart Editor
+		\nEnter - Play your chart normally through the game
 		\nQ/E - Decrease/Increase Note Sustain Length
 		\nSpace - Stop/Resume song";
 
 		var tipTextArray:Array<String> = text.split('\n');
 		for (i in 0...tipTextArray.length) {
 			var tipText:FlxText = new FlxText(UI_box.x, UI_box.y + UI_box.height + 8, 0, tipTextArray[i], 16);
-			tipText.y += i * 12;
-			tipText.setFormat(Paths.font("vcr.ttf"), 14, FlxColor.WHITE, LEFT/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
-			//tipText.borderSize = 2;
+			tipText.y += i * 11;
+			tipText.antialiasing = ClientPrefs.globalAntialiasing;
+			tipText.setFormat(Paths.font("phantommuff.ttf"), 14, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			tipText.borderSize = 1.35;
 			tipText.scrollFactor.set();
 			add(tipText);
 		}
@@ -573,6 +581,13 @@ class ChartingState extends MusicBeatState
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
+
+		var stepperOffset:FlxUINumericStepper = new FlxUINumericStepper(stepperBPM.x + 120, stepperBPM.y, 10, 0, 0, 9999, 2);
+		stepperOffset.value = _song.songOffset;
+		stepperOffset.name = 'song_offset';
+		
+		blockPressWhileTypingOnStepper.push(stepperOffset);
+
 		#if MODS_ALLOWED
 		var directories:Array<String> = [Paths.mods('characters/'), Paths.mods(Paths.currentModDirectory + '/characters/'), Paths.getPreloadPath('characters/')];
 		for(mod in Paths.getGlobalMods())
@@ -717,6 +732,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadEventJson);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		tab_group_song.add(stepperOffset);
 		tab_group_song.add(reloadNotesButton);
 		tab_group_song.add(noteSkinInputText);
 		tab_group_song.add(noteSplashesInputText);
@@ -1296,18 +1312,17 @@ class ChartingState extends MusicBeatState
 		if (FlxG.save.data.chart_waveformVoicesPlayer == null) FlxG.save.data.chart_waveformVoicesPlayer = false;
 		if (FlxG.save.data.chart_waveformVoicesOpponent == null) FlxG.save.data.chart_waveformVoicesOpponent = false;
 
-		waveformUseInstrumental = new FlxUICheckBox(10, 90, null, null, "Waveform for Instrumental", 100);
+		waveformUseInstrumental = new FlxUICheckBox(10, 90, null, null, "Instrumental Waveform", 100);
 		waveformUseInstrumental.checked = FlxG.save.data.chart_waveformInst;
 		waveformUseInstrumental.callback = function()
 		{
-			waveformUseInstrumental.checked = false;
 			FlxG.save.data.chart_waveformVoicesPlayer = false;
 			FlxG.save.data.chart_waveformVoicesOpponent = false;
 			FlxG.save.data.chart_waveformInst = waveformUseInstrumental.checked;
 			updateWaveform();
 		};
 
-		waveformUseVoicesPlayer = new FlxUICheckBox(waveformUseInstrumental.x + 120, waveformUseInstrumental.y, null, null, "Waveform for Voices (PLAYER)", 100);
+		waveformUseVoicesPlayer = new FlxUICheckBox(waveformUseInstrumental.x + 120, waveformUseInstrumental.y, null, null, "Waveform Voices (PLAYER)", 100);
 		waveformUseVoicesPlayer.checked = FlxG.save.data.chart_waveformVoicesPlayer;
 		waveformUseVoicesPlayer.callback = function()
 		{
@@ -1317,7 +1332,7 @@ class ChartingState extends MusicBeatState
 			updateWaveform();
 		};
 
-		waveformUseVoicesOpponent = new FlxUICheckBox(waveformUseVoicesPlayer.x + 80, waveformUseInstrumental.y, null, null, "Waveform for Voices (OPPONENT)", 100);
+		waveformUseVoicesOpponent = new FlxUICheckBox(waveformUseVoicesPlayer.x, waveformUseInstrumental.y + 30, null, null, "Waveform Voices (OPPONENT)", 100);
 		waveformUseVoicesOpponent.checked = FlxG.save.data.chart_waveformVoicesOpponent;
 		waveformUseVoicesOpponent.callback = function()
 		{
@@ -1450,9 +1465,11 @@ class ChartingState extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(voicesVolume);
 		
 		#if !html5
+		/*
 		sliderRate = new FlxUISlider(this, 'playbackSpeed', 120, 120, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 		sliderRate.nameLabel.text = 'Playback Rate';
 		tab_group_chart.add(sliderRate);
+		*/
 		#end
 
 		tab_group_chart.add(new FlxText(metronomeStepper.x, metronomeStepper.y - 15, 0, 'BPM:'));
@@ -1579,6 +1596,11 @@ class ChartingState extends MusicBeatState
 				tempBpm = nums.value;
 				Conductor.mapBPMChanges(_song);
 				Conductor.changeBPM(nums.value);
+			}
+			else if (wname == 'song_offset')
+			{
+				tempOffset = nums.value;
+				_song.songOffset = nums.value;
 			}
 			else if (wname == 'note_susLength')
 			{
@@ -2048,6 +2070,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		_song.bpm = tempBpm;
+		_song.songOffset = tempOffset;
 
 		strumLineNotes.visible = quant.visible = vortex;
 
@@ -2205,9 +2228,12 @@ class ChartingState extends MusicBeatState
 
 	var lastSecBeats:Float = 0;
 	var lastSecBeatsNext:Float = 0;
-	function reloadGridLayer() {
+	function reloadGridLayer():Void
+	{
 		gridLayer.clear();
+
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, Std.int(GRID_SIZE * getSectionBeats() * 4 * zoomList[curZoom]));
+		gridBG.drawFrame(false);
 
 		#if desktop
 		updateWaveform();
@@ -2227,10 +2253,13 @@ class ChartingState extends MusicBeatState
 		gridLayer.add(nextGridBG);
 		gridLayer.add(gridBG);
 
+		nextGridBG.drawFrame(false);
+
 		if(foundNextSec)
 		{
 			var gridBlack:FlxSprite = new FlxSprite(0, gridBG.height).makeGraphic(Std.int(GRID_SIZE * 9), Std.int(nextGridBG.height), FlxColor.BLACK);
 			gridBlack.alpha = 0.4;
+			gridBlack.drawFrame(false);
 			gridLayer.add(gridBlack);
 		}
 
@@ -2631,7 +2660,8 @@ class ChartingState extends MusicBeatState
 		if(height < minHeight) height = minHeight;
 		if(height < 1) height = 1; //Prevents error of invalid height
 
-		var spr:FlxSprite = new FlxSprite(note.x + (GRID_SIZE * 0.5) - 4, note.y + GRID_SIZE / 2).makeGraphic(8, height);
+		var spr:FlxSprite = new FlxSprite(note.x + (GRID_SIZE * 0.5) - 4, note.y + GRID_SIZE / 2).makeGraphic(9, height);
+		spr.alpha = Constants.NOTE_TAIL_ALPHA;
 		spr.color = FlxColor.fromRGB(250, 110, 0);
 		return spr;
 	}

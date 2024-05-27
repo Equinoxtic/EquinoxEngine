@@ -458,36 +458,10 @@ class PlayState extends MusicBeatState
 			'NOTE_RIGHT'
 		];
 
-		//Ratings
-		ratingsData.push(new Rating('marv')); //default rating
-
-		var rating:Rating = new Rating('sick');
-		rating.ratingMod = 1.0;
-		rating.score = 350;
-		rating.healthGain = Constants.HEALTH_SICK_BONUS;
-		rating.noteSplash = true;
-		ratingsData.push(rating);
-
-		var rating:Rating = new Rating('good');
-		rating.ratingMod = 0.7;
-		rating.score = 200;
-		rating.healthGain = Constants.HEALTH_GOOD_BONUS;
-		rating.noteSplash = false;
-		ratingsData.push(rating);
-
-		var rating:Rating = new Rating('bad');
-		rating.ratingMod = 0.4;
-		rating.score = 100;
-		rating.healthGain = Constants.HEALTH_BAD_BONUS;
-		rating.noteSplash = false;
-		ratingsData.push(rating);
-
-		var rating:Rating = new Rating('shit');
-		rating.ratingMod = 0;
-		rating.score = 50;
-		rating.healthGain = Constants.HEALTH_SHIT_BONUS;
-		rating.noteSplash = false;
-		ratingsData.push(rating);
+		/**
+		 * Song ratings.
+		 */
+		PlayStateRating.initPlayStateRatings(ratingsData);
 
 		// For the "Just the Two of Us" achievement
 		for (i in 0...keysArray.length)

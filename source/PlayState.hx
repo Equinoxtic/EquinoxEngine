@@ -5932,45 +5932,8 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			/*
-			if (songMisses == 0 && bads == 0 && shits == 0 && goods == 0) ratingFC = "PFC";	// Perfect FC
-			else if (songMisses == 0 && bads == 0 && shits == 0 && goods >= 1) ratingFC = "SFC"; // Sick FC
-			else if (songMisses == 0 && bads >= 1 && shits == 0 && goods >= 0) ratingFC = "GFC"; // Good FC
-			else if (songMisses == 0) ratingFC = "FC"; // Full Combo
-			else if (songMisses < 10) ratingFC = "SDCB"; // Single Digit Combo Breaks
-			else if (songMisses >= 10) ratingFC = "Clear"; // N/A
-			else if (songMisses >= 100) ratingFC = "TDCB"; // Triple Digit Combo Breaks
-			else if (songMisses >= 1000) ratingFC = "QDCB"; // Quadruple Digit Combo Breaks
-			*/
-
-			var playerAccuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
-
-			var fcConditions:Array<Bool> = [
-				(songMisses == 0 && bads == 0 && shits == 0 && goods == 0), // PFC (Perfect FC)
-				(songMisses == 0 && bads == 0 && shits == 0 && goods >= 1), // SFC (Sick FC)
-				(songMisses == 0 && bads >= 1 && shits == 0 && goods >= 0), // GFC (Good FC)
-				(songMisses == 0), // FC (Full Combo)
-				(songMisses < 10), // SDCB (Single Digit Combo Breaks)
-				(songMisses >= 10), // Clear / NA
-				(songMisses >= 100), // TDCB (Triple Digit Combo Breaks)
-				(songMisses >= 1000) // QDCB (Quadruple Digit Combo Breaks)
-			];
-					
-			var accuracyConditions:Array<Bool> = [
-				playerAccuracy >= 99.98,	// P (Perfect)
-				playerAccuracy >= 99.00,	// SSS
-				playerAccuracy >= 98.00,	// SS
-				playerAccuracy >= 93.00,   	// S
-				playerAccuracy >= 90.00,	// A
-				playerAccuracy >= 80.00,	// B
-				playerAccuracy >= 73.50,	// C
-				playerAccuracy >= 65.00,	// D
-				playerAccuracy >= 60.00,	// E
-				playerAccuracy < 50.00,		// F
-			];
-
-			ratingFC = evaluateRatingFC(fcConditions);
-			ranking = evaluateRanking(accuracyConditions);
+			ratingFC = Ranking.evaluateRatingFC(songMisses, bads, shits, goods, sicks, marvs);
+			ranking = Ranking.evaluateLetterRanking(Ranking.calculateAccuracy(ratingPercent));
 		}
 
 		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
@@ -5979,52 +5942,6 @@ class PlayState extends MusicBeatState
 		// setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		setOnLuas('ranking', ranking);
-	}
-
-	public function evaluateRatingFC(fcConditionsArray:Array<Bool>):String {
-		var fcRatingString = '?';
-		if (fcConditionsArray != null) {
-			for (i in 0...fcConditionsArray.length) {
-				if (fcConditionsArray[i]) {
-					switch(i) {
-						case 0: fcRatingString = 'PFC';
-						case 1: fcRatingString = 'SFC';
-						case 2: fcRatingString = 'GFC';
-						case 3: fcRatingString = 'FC';
-						case 4: fcRatingString = 'SDCB';
-						case 5: fcRatingString = 'CLEAR';
-						case 6: fcRatingString = 'TDCB';
-						case 7: fcRatingString = 'QDCB';
-					}
-					break;
-				}
-			}
-		}
-		return fcRatingString;
-	}
-
-	public function evaluateRanking(rankingConditions:Array<Bool>):String {
-		var shitRankingString = '?';
-		if (rankingConditions != null) {
-			for (i in 0...rankingConditions.length) {
-				if (rankingConditions[i]) {
-					switch(i) {
-						case 0: shitRankingString = 'P';
-						case 1: shitRankingString = 'SSS';
-						case 2: shitRankingString = 'SS';
-						case 3: shitRankingString = 'S';
-						case 4: shitRankingString = 'A';
-						case 5: shitRankingString = 'B';
-						case 6: shitRankingString = 'C';
-						case 7: shitRankingString = 'D';
-						case 8: shitRankingString = 'E';
-						case 9: shitRankingString = 'F';
-					}
-					break;
-				}
-			}
-		}
-		return shitRankingString;
 	}
 
 	#if ACHIEVEMENTS_ALLOWED

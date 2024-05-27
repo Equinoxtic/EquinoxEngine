@@ -32,9 +32,9 @@ class StageData {
 	public static var forceNextDirectory:String = null;
 	public static function loadDirectory(SONG:SwagSong) {
 		var stage:String = '';
-		if(SONG.stage != null) {
+		if (SONG.stage != null) {
 			stage = SONG.stage;
-		} else if(SONG.song != null) {
+		} else if (SONG.song != null) {
 			switch (SONG.song.toLowerCase().replace(' ', '-'))
 			{
 				case 'spookeez' | 'south' | 'monster':

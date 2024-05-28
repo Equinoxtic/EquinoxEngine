@@ -2967,7 +2967,7 @@ class PlayState extends MusicBeatState
 			switch (playerId)
 			{
 				case 'bf' | 'player': player = 1;
-				case 'dad' | 'opponent': player = 2;
+				case 'dad' | 'opponent': player = 0;
 			}
 
 			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);

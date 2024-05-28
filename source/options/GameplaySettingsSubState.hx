@@ -76,6 +76,14 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'bool',
 			false);
 		addOption(option);
+		
+		var option:Option = new Option('Note Miss Sounds',
+			"Whether or not to play \"miss\" sound effect when the player misses a note.",
+			'noteMissSounds',
+			'bool',
+			true);
+		option.onChange = onMissSoundEnabled;
+		addOption(option);
 
 		var option:Option = new Option('Hitsound Volume',
 			'Funny notes does \"Tick!\" when you hit them."',
@@ -159,7 +167,12 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		super();
 	}
 
-	function onChangeHitsoundVolume()
+	function onMissSoundEnabled():Void
+	{
+		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.3, 0.5));
+	}
+
+	function onChangeHitsoundVolume():Void
 	{
 		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
 	}

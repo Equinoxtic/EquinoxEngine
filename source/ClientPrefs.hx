@@ -11,6 +11,7 @@ class ClientPrefs {
 	public static var middleScroll:Bool = false;
 	// public static var opponentStrums:Bool = true;
 	public static var opponentStrumsMiddleScroll:Bool = false;
+	public static var noteMissSounds:Bool = true;
 	public static var showFPS:Bool = true;
 	public static var flashing:Bool = true;
 	public static var globalAntialiasing:Bool = true;
@@ -110,6 +111,7 @@ class ClientPrefs {
 		FlxG.save.data.middleScroll = middleScroll;
 		// FlxG.save.data.opponentStrums = opponentStrums;
 		FlxG.save.data.opponentStrumsMiddleScroll = opponentStrumsMiddleScroll;
+		FlxG.save.data.noteMissSounds = noteMissSounds;
 		FlxG.save.data.showFPS = showFPS;
 		FlxG.save.data.flashing = flashing;
 		FlxG.save.data.globalAntialiasing = globalAntialiasing;
@@ -173,6 +175,8 @@ class ClientPrefs {
 		if (FlxG.save.data.opponentStrumsMiddleScroll != null) {
 			opponentStrumsMiddleScroll = FlxG.save.data.opponentStrumsMiddleScroll;
 		}
+		if (FlxG.save.data.noteMissSounds != null) {
+			noteMissSounds = FlxG.save.data.noteMissSounds;
 		}
 		if(FlxG.save.data.showFPS != null) {
 			showFPS = FlxG.save.data.showFPS;

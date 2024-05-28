@@ -201,8 +201,6 @@ class TitleState extends MusicBeatState
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 		}
 
-		FlxG.mouse.visible = false;
-
 		#if desktop
 		if (!DiscordClient.isInitialized)
 		{

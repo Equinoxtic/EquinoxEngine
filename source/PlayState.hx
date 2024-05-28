@@ -1455,13 +1455,21 @@ class PlayState extends MusicBeatState
 			{
 				for (file in FileSystem.readDirectory(folder))
 				{
-					if (file.endsWith('.lua') && !filesPushed.contains(file))
+					if (erectMode)
 					{
-						luaArray.push(new FunkinLua('${folder}${file}'));
-						if (erectMode)
-							filesPushed.push('${file}${FunkinSound.erectModePrefix()}');
-						else
+						if (file.endsWith('.lua') && !filesPushed.contains(file))
+						{
+							luaArray.push(new FunkinLua('${folder}${file}'));
 							filesPushed.push(file);
+						}
+					}
+					else
+					{
+						if (file.endsWith('.lua') && file.contains(Std.string('${FunkinSound.erectModePrefix}')) && !filesPushed.contains(file))
+						{
+							luaArray.push(new FunkinLua('${folder}${file}'));
+							filesPushed.push(file);
+						}
 					}
 				}
 			}

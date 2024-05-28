@@ -103,7 +103,9 @@ class FunkinLua {
 			trace(e);
 			return;
 		}
+		
 		scriptName = script;
+		
 		initHaxeModule();
 
 		trace('lua file loaded succesfully:' + script);

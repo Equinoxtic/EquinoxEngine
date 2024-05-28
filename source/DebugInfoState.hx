@@ -41,7 +41,7 @@ class DebugInfoState extends MusicBeatState
 		bg= new Sprite().makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), 0xFF000000);
 		add(bg);
 
-		var watermarkSprite = new Sprite().loadGraphic(Paths.image('ui/watermark'));
+		watermarkSprite = new Sprite().loadGraphic(Paths.image('ui/watermark'));
 		watermarkSprite.screenCenter(X);
 		watermarkSprite.setGraphicSize(Std.int(watermarkSprite.width * 0.5), Std.int(watermarkSprite.height * 0.5));
 		watermarkSprite.antialiasing = true;
@@ -118,6 +118,7 @@ class DebugInfoState extends MusicBeatState
 								onComplete: function(_:Tween):Void {
 									confirmedSound.fadeOut(4.8, 0, null);
 									new Timer().start(5.0, function(t:Timer) {
+										watermarkSprite.destroy();
 										debugText.destroy();
 										FlxG.camera.zoom = 1.0;
 										MusicBeatState.switchState(new TitleState());

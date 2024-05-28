@@ -3286,8 +3286,12 @@ class PlayState extends MusicBeatState
 				}
 		}
 
+		/**
+		 * Directional Camera Movement.
+		 */
+		final cameraOffsetAmount:Float = 18 + (defaultCamZoom * 1.5) + 0.5;
 		if (ClientPrefs.directionalCameraMovement) {
-			moveCameraToDirection(18 * (defaultCamZoom - 0.05), focusedCharacter);
+			moveCameraToDirection(cameraOffsetAmount, focusedCharacter);
 		}
 
 		if(!inCutscene) {

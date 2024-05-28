@@ -432,6 +432,8 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
+		FlxG.mouse.visible = false;
+		
 		Paths.clearStoredMemory();
 
 		// for lua
@@ -3424,6 +3426,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene)
 		{
+			FlxG.mouse.visible = true;
 			openChartEditor();
 		}
 
@@ -3440,6 +3443,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene)
 		{
+			FlxG.mouse.visible = true;
 			persistentUpdate = false;
 			paused = true;
 			cancelMusicFadeTween();

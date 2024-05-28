@@ -265,6 +265,7 @@ class PauseSubState extends MusicBeatSubstate
 					}
 
 				case "End Song":
+					FlxG.mouse.visible = true;
 					close();
 					PlayState.instance.finishSong(true);
 
@@ -276,6 +277,8 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplaySine = 0;
 
 				case "Exit to menu":
+					FlxG.mouse.visible = true;
+
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
 

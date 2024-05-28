@@ -13,9 +13,11 @@ class GameplayInfo extends FlxSpriteGroup
 
 	private static var gameplayText:FlxText;
 
-	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:String = "", ?difficultyString:String = "", ?songCredit:String = "", ?songText:String = "")
+	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:Null<String> = "", ?difficultyString:Null<String> = "", ?songCredit:Null<String> = "", ?songText:Null<String> = ""):Void
 	{
 		super();
+
+		if (songName == null || difficultyString == null || songCredit == null || songText == null) return;
 		
 		if (instance == null) {
 			instance = this;

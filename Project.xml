@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Solarium Engine" file="SolariumEngine" packageName="com.equinoxtic.solariumengine" package="com.equinoxtic.solariumengine" main="Main" version="0.3.3" company="Equinoxtic" />
+	<app title="Friday Night Funkin': Equinox Engine" file="EquinoxEngine" packageName="com.equinoxtic.equinoxengine" package="com.equinoxtic.equinoxengine" main="Main" version="0.3.3" company="Equinoxtic" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -203,8 +203,8 @@
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 	
-	<icon path="art/icons/icon-main.png" size='16'/>
-	<icon path="art/icons/icon-alt.png" size='32'/>
-	<icon path="art/icons/icon-alt.png" size='64'/>
-	<icon path="art/icons/icon-alt.png" />
+	<icon path="art/icons/ICON_WATERMARK.png" size='16'/>
+	<icon path="art/icons/ICON_MAIN_ALT.png" size='32'/>
+	<icon path="art/icons/ICON_MAIN_ALT.png" size='64'/>
+	<icon path="art/icons/ICON_MAIN.png" />
 </project>

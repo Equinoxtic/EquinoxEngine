@@ -2373,14 +2373,18 @@ class PlayState extends MusicBeatState
 		if(ret != FunkinLua.Function_Stop) {
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
 
-			if (ClientPrefs.middleScroll) {
-				generateStaticArrows(false,
-					((ClientPrefs.opponentStrumsMiddleScroll) ? 0.35 : 0.0)
-				);
-				generateStaticArrows(true, 1.0);
-			} else {
-				generateStaticArrows(false, 1.0);
-				generateStaticArrows(true, 1.0);
+			if (ClientPrefs.middleScroll)
+			{
+				if (ClientPrefs.opponentStrumsMiddleScroll)
+					generateStaticArrows('dad', 0.35);
+				else
+					generateStaticArrows('dad', 0.0000001);
+				generateStaticArrows('bf', 1.0);
+			}
+			else
+			{
+				generateStaticArrows('dad', 1.0);
+				generateStaticArrows('bf', 1.0);
 			}
 
 			// NoteMovement.getDefaultStrumPos(this);
@@ -2392,7 +2396,7 @@ class PlayState extends MusicBeatState
 			for (i in 0...opponentStrums.length) {
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				opponentStrums.members[i].visible = ClientPrefs.opponentStrumsMiddleScroll;
+				// opponentStrums.members[i].visible = ClientPrefs.opponentStrumsMiddleScroll;
 			}
 
 			startedCountdown = true;
@@ -2942,14 +2946,21 @@ class PlayState extends MusicBeatState
 	}
 
 	public var skipArrowStartTween:Bool = false; //for lua
-	private function generateStaticArrows(isPlayer:Bool, ?alphaOverride = 1.0):Void
+	private function generateStaticArrows(playerId:Null<String> = '', ?alphaOverride:Null<Float> = 1.0):Void
 	{
+		if (playerId == null || playerId == '') return;
+
 		for (i in 0...4)
 		{
-			// FlxG.log.add(i);
 			var targetAlpha:Float = alphaOverride;
 
-			var player:Int = (isPlayer) ? 1 : 0;
+			var player:Int = 0;
+
+			switch (playerId)
+			{
+				case 'bf' | 'player': player = 1;
+				case 'dad' | 'opponent': player = 2;
+			}
 
 			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);
 			babyArrow.downScroll = ClientPrefs.downScroll;

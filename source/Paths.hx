@@ -207,9 +207,9 @@ class Paths
 		return sound;
 	}
 
-	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
+	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String):Sound
 	{
-		return sound(key + FlxG.random.int(min, max), library);
+		return sound(Std.string('${key}${FlxG.random.int(min, max)}'), library);
 	}
 
 	inline static public function music(key:String, ?library:String):Sound

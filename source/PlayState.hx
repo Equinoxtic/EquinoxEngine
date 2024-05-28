@@ -1243,7 +1243,7 @@ class PlayState extends MusicBeatState
 		timeBar.createGradientBar([0xFF252525, 0xFF353535, 0xFF555555], [0xFFFFFFFF, 0xFFDDDDDD, 0xFFAAAAAA], 1, 180);
 		timeBar.x = timeBarBG.x * 1;
 		timeBar.y = timeBarBG.y - 1;
-		timeBar.numDivisions = 800;
+		timeBar.numDivisions = 1000;
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
 
@@ -3366,7 +3366,7 @@ class PlayState extends MusicBeatState
 		 */
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .15);
 		// lerpScore = Math.round(FlxMath.lerp(lerpScore, songScore, .5));
-		lerpTime = FlxMath.lerp(lerpTime, songPercent, .05);
+		lerpTime = FlxMath.lerp(lerpTime, songPercent, .15);
 
 		/**
 		 * Update Judgement Counter ratings.

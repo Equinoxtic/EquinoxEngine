@@ -4,6 +4,11 @@ import haxe.Http as HaxeHTTP;
 
 using StringTools;
 
+/**
+ * From CNE (Codename Engine)
+ * 
+ * Source: https://github.com/FNF-CNE-Devs/CodenameEngine/blob/main/source/funkin/backend/utils/HttpUtil.hx
+ */
 class Http
 {
 	public static var userAgent:String = 'request';

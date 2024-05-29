@@ -140,7 +140,7 @@ class TitleState extends MusicBeatState
 		#if (CHECK_FOR_UPDATES && !debug)
 		if(ClientPrefs.checkForUpdates && !closedState) {
 			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/gitVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/gitVersion.txt");
 
 			http.onData = function (data:String)
 			{
@@ -660,7 +660,7 @@ class TitleState extends MusicBeatState
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
 					#if PSYCH_WATERMARKS
-					createCoolText(['Solarium Engine By'], 15);
+					createCoolText(['Equinox Engine By'], 15);
 					#else
 					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 					#end

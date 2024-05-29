@@ -24,7 +24,7 @@ class Constants
 	/**
 	 * The application of the current engine. [ Solarium Engine ]
 	 */
-	public static final MAIN_APPLICATION_TITLE:String = 'Solarium Engine';
+	public static final MAIN_APPLICATION_TITLE:String = 'Equinox Engine';
 
 	/**
 	 * The version of Funkin' / FNF.
@@ -55,7 +55,7 @@ class Constants
 	static function get_VERSION_MAIN():String
 	{
 		#if !debug
-		var version:String = util.Http.requestStringFrom('https://raw.githubusercontent.com/Equinoxtic/SolariumEngine/master/gitVersion.txt');
+		var version:String = util.Http.requestStringFrom('https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/gitVersion.txt');
 		return '${MAIN_APPLICATION_TITLE} - v${version}';
 		#else
 		return '${MAIN_APPLICATION_TITLE} - DEV : ${GIT_BRANCH} @ ${GIT_HASH}';

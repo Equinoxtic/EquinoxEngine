@@ -17,7 +17,11 @@ class DiscordClient
 	{
 		trace("Discord Client starting...");
 		DiscordRpc.start({
+			#if (!debug)
 			clientID: "1244628667779252274",
+			#else
+			clientID: "1245359637327253524",
+			#end
 			onReady: onReady,
 			onError: onError,
 			onDisconnected: onDisconnected
@@ -45,10 +49,10 @@ class DiscordClient
 			details: "In the Menus",
 			state: null,
 			#if (!debug)
-			largeImageKey: 'solariumrpc',
+			largeImageKey: 'equinoxrpc',
 			largeImageText: '${Constants.MAIN_APPLICATION_TITLE}'
 			#else
-			largeImageKey: 'solariumrpc_debug',
+			largeImageKey: 'equinoxrpc_debug',
 			largeImageText: '${Constants.MAIN_APPLICATION_TITLE}: Developer Build'
 			#end
 		});
@@ -87,10 +91,10 @@ class DiscordClient
 			details: details,
 			state: state,
 			#if (!debug)
-			largeImageKey: 'solariumrpc',
+			largeImageKey: 'equinoxrpc',
 			largeImageText: Constants.VERSION_MAIN,
 			#else
-			largeImageKey: 'solariumrpc_debug',
+			largeImageKey: 'equinoxrpc_debug',
 			largeImageText: '${Constants.MAIN_APPLICATION_TITLE} Branch: [${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}]',
 			#end
 			smallImageKey : smallImageKey,

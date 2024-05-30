@@ -3,6 +3,10 @@ package;
 /**
  * Main Classes
  */
+import ui.game.rating.RatingSprite;
+import ui.game.rating.ComboSprite;
+import ui.game.rating.NumericalComboSprite;
+import Song.SongDataJson;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
 #if desktop
@@ -67,6 +71,7 @@ import DialogueBoxPsych;
 import Shaders;
 import util.Rating;
 import util.Constants;
+import Song.SongData;
 
 /**
  * Solarium Classes
@@ -169,6 +174,7 @@ class PlayState extends MusicBeatState
 	public static var curStage:String = '';
 	public static var isPixelStage:Bool = false;
 	public static var SONG:SwagSong = null;
+	public static var SONG_DATA:SongDataJson = null;
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
@@ -964,6 +970,44 @@ class PlayState extends MusicBeatState
 				add(foregroundSprites);
 		}
 
+		/**
+		 * Song Data / Information / Credits JSONs.
+		 */
+		var songDataPath:String = 'charts/${Paths.formatToSongPath(PlayState.SONG.song)}/song-data/default';
+		if (erectMode)
+			songDataPath = 'charts/${Paths.formatToSongPath(PlayState.SONG.song)}/song-data/erect';
+
+		#if (debug)
+		FlxG.log.add('Loading song data: ${Paths.json(songDataPath)}');
+		#end
+
+		#if MODS_ALLOWED
+		if (sys.FileSystem.exists(Paths.modsJson(songDataPath)) || sys.FileSystem.exists(Paths.json(songDataPath)))
+		#else
+		if (OpenFlAssets.exists(Paths.json(songDataPath)))
+		#end
+		{
+			#if (debug)
+			FlxG.log.add('Loaded song data of ${PlayState.SONG.song}.');
+			#end
+
+			PlayState.SONG_DATA = SongData.loadSongData(PlayState.SONG.song);
+		}
+		else
+		{
+			#if (debug)
+			FlxG.log.add('Failed to load song data of ${PlayState.SONG.song}, loading dummy JSON.');
+			#end
+
+			var dummyJson = {
+				artist: 'Artist',
+				charter: 'Charter',
+				stringExtra: 'String message'
+			};
+
+			PlayState.SONG_DATA = dummyJson;
+		}
+
 		#if LUA_ALLOWED
 		luaDebugGroup = new FlxTypedGroup<DebugLuaText>();
 		luaDebugGroup.cameras = [camOther];
@@ -1110,11 +1154,6 @@ class PlayState extends MusicBeatState
 				var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069); //nice
 				addBehindDad(evilTrail);
 		}
-
-		/**
-		 * Use Vanilla / Hardcoded values for Song Credits and etc.
-		 */
-		useVanillaSongInfo();
 
 		var file:String = Paths.json(songName + '/dialogue'); //Checks for json/Psych Engine dialogue
 		if (OpenFlAssets.exists(file)) {
@@ -1322,8 +1361,8 @@ class PlayState extends MusicBeatState
 		gameplayInfo = new GameplayInfo(this, -15, FlxG.height - 85, Constants.GAMEPLAY_INFO_SIZE, 17,
 			PlayState.SONG.song.replace('-', ' '),
 			CoolUtil.difficultyString().toUpperCase().trim(),
-			PlayState.SONG.credit,
-			PlayState.SONG.extraText
+			PlayState.SONG_DATA.artist,
+			PlayState.SONG_DATA.stringExtra
 		);
 		gameplayInfo.scrollFactor.set();
 		hudGroupInfo.add(gameplayInfo);
@@ -1341,7 +1380,6 @@ class PlayState extends MusicBeatState
 		debugText.scrollFactor.set();
 		hudGroupExcluded.add(debugText);
 		#end
-		
 
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
@@ -1440,15 +1478,15 @@ class PlayState extends MusicBeatState
 		// SONG SPECIFIC SCRIPTS
 		#if LUA_ALLOWED
 		var filesPushed:Array<String> = [];
-		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/charts/' + Paths.formatToSongPath(SONG.song) + '/')];
+		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/')];
 
 		#if MODS_ALLOWED
-		foldersToCheck.insert(0, Paths.mods('data/charts/' + Paths.formatToSongPath(SONG.song) + '/'));
+		foldersToCheck.insert(0, Paths.mods('data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/'));
 		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
-			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/data/charts/' + Paths.formatToSongPath(SONG.song) + '/'));
+			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/${'data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/'}'));
 
 		for(mod in Paths.getGlobalMods())
-			foldersToCheck.insert(0, Paths.mods(mod + '/data/charts/' + Paths.formatToSongPath(SONG.song) + '/' ));// using push instead of insert because these should run after everything else
+			foldersToCheck.insert(0, Paths.mods(mod + 'data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/'));// using push instead of insert because these should run after everything else
 		#end
 
 		for (folder in foldersToCheck)
@@ -1609,58 +1647,6 @@ class PlayState extends MusicBeatState
 		Paths.clearUnusedMemory();
 		
 		CustomFadeTransition.nextCamera = camOther;
-	}
-
-	private function useVanillaSongInfo():Void
-	{
-		/**
-		 * Hardcoded song credits and info.
-		 */
-
-		// The list/array of songs to be used and checked for the hardcoded song info.
-		var vanillaSongArray:Array<String> = [
-			'bopeebo', 'fresh', 'dad-battle', /** - Week 1 - **/
-			'spookeez', 'south', 'monster', /** - Week 2 - **/
-			'pico', 'philly-nice', 'blammed', /** - Week 3 - **/
-			'satin-panties', 'high', 'milf', /** - Week 4 - **/
-			'cocoa', 'eggnog', 'winter-horrorland', /** - Week 5 - **/
-			'senpai', 'roses', 'thorns', /** - Week 6 - **/
-			'ugh', 'guns', 'stress' /** - Week 7 - **/
-		];
-
-		var formattedSongPath:String = Paths.formatToSongPath(SONG.song).toLowerCase();
-
-		if (PlayState.SONG.credit == null || PlayState.SONG.extraText == null)
-		{
-			for (i in 0...vanillaSongArray.length)
-			{
-				if (formattedSongPath == vanillaSongArray[i])
-				{
-					//Check whether or not the song is Monster or Winter Horrorland so we can credit Bassetfilms in the mix.
-					switch(formattedSongPath)
-					{
-						case 'monster' | 'winter-horrorland':
-							songCreditTxt = "KawaiSprite (ft. Bassetfilms)";
-						default:
-							songCreditTxt = "KawaiSprite";
-					}
-					
-					songExtraTxt = "The Funkin\' Crew";
-
-					if (PlayState.SONG.credit == null)
-						PlayState.SONG.credit = songCreditTxt;
-
-					if (PlayState.SONG.extraText == null)
-						PlayState.SONG.extraText = songExtraTxt;
-					
-					break;
-				}
-			}
-		}
-		else
-		{
-			return;
-		}
 	}
 
 	#if (!flash && sys)
@@ -2637,7 +2623,7 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		FunkinSound.setVolume(1, 'instrumental');
+		FunkinSound.setVolume(Constants.INSTRUMENTAL_VOLUME, 'instrumental');
 
 		FunkinSound.start();
 
@@ -2712,14 +2698,18 @@ class PlayState extends MusicBeatState
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 
 		var songName:String = Paths.formatToSongPath(SONG.song);
-		var shittyEventsPath = 'charts/${songName}/events';
+		
+		var shittyEventsPath = 'charts/${songName}/song-events/default';
+		if (erectMode)
+			shittyEventsPath = 'charts/${songName}/song-events/erect';
+
 		var file:String = Paths.json(shittyEventsPath);
 		#if MODS_ALLOWED
 		if (FileSystem.exists(Paths.modsJson(shittyEventsPath)) || FileSystem.exists(file)) {
 		#else
 		if (OpenFlAssets.exists(file)) {
 		#end
-			var eventsData:Array<Dynamic> = Song.loadFromJson('events', songName, erectMode).events;
+			var eventsData:Array<Dynamic> = Song.loadFromJson('events', songName, true).events;
 			for (event in eventsData) //Event Notes
 			{
 				for (i in 0...event[1].length)
@@ -4707,7 +4697,7 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 
-		FunkinSound.setVolume(1, 'player');
+		FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'player');
 
 		var placement:String = Std.string(combo);
 
@@ -4814,122 +4804,6 @@ class PlayState extends MusicBeatState
 				coolText.destroy();
 			}
 		});
-	}
-
-	private function loadRatingGraphics(ratingSprite:Null<FlxSprite>, daRating:Rating, ?posX:Float = 0.0, ?posY:Float = 0.0, ?prefixA:String = '', ?prefixB:String = ''):Void
-	{
-		if (ratingSprite != null && daRating != null)
-		{
-			var rating:FlxSprite = ratingSprite;
-			rating.loadGraphic(Paths.image('${prefixA}${daRating.image}${prefixB}'));
-			rating.cameras = [camHUD];
-			rating.screenCenter();
-			if (!Math.isNaN(posX)) rating.x = posX;
-			if (!Math.isNaN(posY)) rating.y -= posY;
-			rating.acceleration.y = 550 * (playbackRate * playbackRate);
-			rating.velocity.y -= FlxG.random.int(140, 175) * playbackRate;
-			rating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
-			rating.visible = (!ClientPrefs.hideHud && showRating);
-
-			insert(members.indexOf(strumLineNotes), rating);
-
-			if (!PlayState.isPixelStage) {
-				rating.setGraphicSize(Std.int(rating.width * Constants.RATING_SPRITE_SIZE));
-			} else {
-				rating.setGraphicSize(Std.int(rating.width * daPixelZoom * Constants.RATING_SPRITE_SIZE));
-			}
-
-			rating.antialiasing = (ClientPrefs.globalAntialiasing && !PlayState.isPixelStage);
-
-			rating.updateHitbox();
-
-			TweenClass.tween(rating, {alpha: 0}, Constants.RATING_SPRITE_DURATION/ playbackRate, {
-				startDelay: Constants.RATING_SPRITE_DELAY / playbackRate,
-				onComplete: function(_) {
-					rating.destroy();
-				}
-			});
-		}
-	}
-
-	private function loadComboGraphics(comboSprite:Null<FlxSprite>, ?posX:Float = 0.0, ?posY:Float = 0.0, ?addX:Float, addY:Float, ?prefixA:String = '', ?prefixB:String = ''):Void
-	{
-		if (comboSprite != null)
-		{
-			var comboSpr:FlxSprite = comboSprite;
-			comboSpr.loadGraphic(Paths.image('${prefixA}combo${prefixB}'));
-			comboSpr.cameras = [camHUD];
-			comboSpr.screenCenter();
-			comboSpr.x = posX;
-			comboSpr.y = posY;
-			if (!Math.isNaN(addX)) comboSpr.x -= addX;
-			if (!Math.isNaN(addY)) comboSpr.y += addY;
-			comboSpr.acceleration.y = FlxG.random.int(200, 300) * (playbackRate * playbackRate);
-			comboSpr.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
-			comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
-
-			insert(members.indexOf(strumLineNotes), comboSpr);
-
-			if (!PlayState.isPixelStage) {
-				comboSpr.setGraphicSize(Std.int(comboSpr.width * Constants.COMBO_SPRITE_SIZE));
-			} else {
-				comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * Constants.COMBO_SPRITE_SIZE));
-			}
-
-			comboSpr.antialiasing = (ClientPrefs.globalAntialiasing && !PlayState.isPixelStage);
-
-			if (showCombo) {
-				insert(members.indexOf(strumLineNotes), comboSpr);
-			}
-			
-			comboSpr.updateHitbox();
-
-			TweenClass.tween(comboSpr, {alpha: 0}, Constants.COMBO_SPRITE_DURATION / playbackRate, {
-				startDelay: Constants.COMBO_SPRITE_DELAY / playbackRate,
-				onComplete: function(tween:FlxTween) {
-					comboSpr.destroy();
-				}
-			});
-		}
-	}
-
-	private function loadNumericalComboGraphic(numComboSprite:Null<FlxSprite>, ?xPos:Float = 0.0, ?yPos:Float = 0.0, ?xAdd:Float = 0.0, ?yAdd:Float = 0.0, ?indexes:Int = 0, ?firstPrefix:String = '', ?secondPrefix:String = ''):Void
-	{
-		if (numComboSprite != null)
-		{
-			var numCombo:FlxSprite = numComboSprite;
-			numCombo.loadGraphic(Paths.image('${firstPrefix}num${Std.int(indexes)}${secondPrefix}'));
-			numCombo.cameras = [camHUD];
-			numCombo.screenCenter();
-			numCombo.x = /* coolText.x + (40 * daLoop) - 90 */ xPos;
-			numCombo.y = yPos;
-			if (!Math.isNaN(xAdd)) numCombo.x += xAdd;
-			if (!Math.isNaN(yAdd)) numCombo.y += /*70*/ yAdd;
-			numCombo.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
-			numCombo.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
-			numCombo.velocity.x = FlxG.random.float(-5, 5) * playbackRate;
-			numCombo.visible = !ClientPrefs.hideHud;
-
-			numCombo.updateHitbox();
-
-			if (!PlayState.isPixelStage) {
-				numCombo.setGraphicSize(Std.int(numCombo.width * Constants.NUMERICAL_COMBO_SIZE));
-			} else {
-				numCombo.setGraphicSize(Std.int(numCombo.width * daPixelZoom - Constants.NUMERICAL_COMBO_SIZE));
-			}
-
-			numCombo.antialiasing = (ClientPrefs.globalAntialiasing && !PlayState.isPixelStage);
-
-			if(showComboNum)
-				insert(members.indexOf(strumLineNotes), numCombo);
-
-			TweenClass.tween(numCombo, {alpha: 0}, Constants.NUMERICAL_SCORE_DURATION / playbackRate, {
-				startDelay: Constants.NUMERICAL_SCORE_DELAY / playbackRate,
-				onComplete: function(tween:FlxTween) {
-					numCombo.destroy();
-				}
-			});
-		}
 	}
 
 	public var strumsBlocked:Array<Bool> = [];
@@ -5238,7 +5112,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (SONG.needsVoices) {
-			FunkinSound.setVolume(1, 'opponent');
+			FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'opponent');
 		}
 
 		var time:Float = 0.15;
@@ -5346,7 +5220,7 @@ class PlayState extends MusicBeatState
 			}
 			note.wasGoodHit = true;
 
-			FunkinSound.setVolume(1, 'player');
+			FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'player');
 
 			var isSus:Bool = note.isSustainNote; //GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));

@@ -309,7 +309,7 @@ class EditorPlayState extends MusicBeatState
 		startingSong = false;
 
 		FunkinSound.setInstTime(startPos);
-		FunkinSound.setVolume(1, 'instrumental');
+		FunkinSound.setVolume(Constants.INSTRUMENTAL_VOLUME, 'instrumental');
 		FunkinSound.playInst();
 
 		FunkinSound.setVoicesVolume(1);
@@ -772,7 +772,7 @@ class EditorPlayState extends MusicBeatState
 
 			note.wasGoodHit = true;
 
-			FunkinSound.setVolume(1, 'bf');
+			FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'bf');
 
 			if (!note.isSustainNote)
 			{
@@ -801,7 +801,7 @@ class EditorPlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 
-		FunkinSound.setVolume(1, 'bf');
+		FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'bf');
 
 		var placement:String = Std.string(combo);
 

@@ -41,14 +41,6 @@ class CoolUtil
 		if(num == null) num = PlayState.storyDifficulty;
 
 		var fileSuffix:String = difficulties[num];
-		if(fileSuffix != defaultDifficulty)
-		{
-			fileSuffix = '-' + fileSuffix;
-		}
-		else
-		{
-			fileSuffix = '';
-		}
 		return Paths.formatToSongPath(fileSuffix);
 	}
 
@@ -57,6 +49,10 @@ class CoolUtil
 		return difficulties[PlayState.storyDifficulty].toUpperCase();
 	}
 
+	public static function lowerDiffString():String
+	{
+		return difficulties[PlayState.storyDifficulty].toLowerCase().trim();
+	}
 
 	public static function pixelSuffix(?key:String):String
 	{

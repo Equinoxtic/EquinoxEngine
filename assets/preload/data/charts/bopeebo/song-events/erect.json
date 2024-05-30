@@ -1,0 +1,156 @@
+{
+	"song": {
+		"events": [
+			[
+				0,
+				[
+					[
+						"Cinematic Border",
+						"0.25, 1.5",
+						"quadInOut"
+					],
+					[
+						"Set Default Camera Zoom",
+						"1.0",
+						"1.0"
+					]
+				]
+			],
+			[
+				6341.46341463415,
+				[
+					[
+						"Cinematic Border",
+						"0.05, 2.0",
+						"sineInOut"
+					]
+				]
+			],
+			[
+				7317.07317073171,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.1",
+						"1.0"
+					]
+				]
+			],
+			[
+				7804.87804878049,
+				[
+					[
+						"Cinematic Border",
+						"0.65, 0.6",
+						"cubeOut"
+					],
+					[
+						"Set Default Camera Zoom",
+						"0.81",
+						"1.1"
+					]
+				]
+			],
+			[
+				14878.0487804878,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.0",
+						"1.0"
+					]
+				]
+			],
+			[
+				15609.756097561,
+				[
+					[
+						"Cinematic Border",
+						"0.3, 0.25",
+						"cubeOut"
+					],
+					[
+						"Set Default Camera Zoom",
+						"0.7",
+						"1.0"
+					]
+				]
+			],
+			[
+				31219.512195122,
+				[
+					[
+						"Cinematic Border",
+						"0.05, 4.0",
+						"sineInOut"
+					],
+					[
+						"Set Default Camera Zoom",
+						"1.05",
+						"1.0"
+					]
+				]
+			],
+			[
+				33170.7317073171,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.98",
+						"1.0"
+					]
+				]
+			],
+			[
+				35121.9512195122,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.03",
+						"1.0"
+					]
+				]
+			],
+			[
+				37073.1707317073,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.06",
+						"1.0"
+					]
+				]
+			],
+			[
+				39024.3902439024,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.92",
+						"1.0"
+					]
+				]
+			],
+			[
+				42926.8292682927,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.1",
+						"1.0"
+					]
+				]
+			],
+			[
+				46829.2682926829,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.72",
+						"1.0"
+					]
+				]
+			]
+		]
+	}
+}

@@ -1,5 +1,6 @@
 package editors;
 
+import Song.SongDataJson;
 import FunkinSound.FunkinSoundChartEditor;
 #if desktop
 import Discord.DiscordClient;
@@ -171,6 +172,7 @@ class ChartingState extends MusicBeatState
 	var _file:FileReference;
 
 	var UI_box:FlxUITabMenu;
+	var UI_songData:FlxUITabMenu;
 
 	public static var goToPlayState:Bool = false;
 	/**
@@ -213,6 +215,8 @@ class ChartingState extends MusicBeatState
 	var curUndoIndex = 0;
 	var curRedoIndex = 0;
 	var _song:SwagSong;
+	var _song_data:SongDataJson;
+
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -272,24 +276,21 @@ class ChartingState extends MusicBeatState
 		192
 	];
 
-
-
 	var text:String = "";
 	public static var vortex:Bool = false;
 	public var mouseQuant:Bool = false;
 	override function create()
 	{
 		if (PlayState.SONG != null)
+		{
 			_song = PlayState.SONG;
+		}
 		else
 		{
 			CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
 
 			_song = {
 				song: 'Test',
-				credit: 'Artist',
-				extraText: 'Test',
-				charter: 'Person',
 				notes: [],
 				events: [],
 				bpm: 150.0,
@@ -306,6 +307,20 @@ class ChartingState extends MusicBeatState
 			};
 			addSection();
 			PlayState.SONG = _song;
+		}
+
+		if (PlayState.SONG_DATA != null)
+		{
+			_song_data = PlayState.SONG_DATA;
+		}
+		else
+		{
+			_song_data = {
+				artist: 'Artist',
+				charter: 'Person',
+				stringExtra: 'Test'
+			};
+			PlayState.SONG_DATA = _song_data;
 		}
 
 		// Paths.clearMemory();
@@ -355,7 +370,6 @@ class ChartingState extends MusicBeatState
 
 		if(curSec >= _song.notes.length) curSec = _song.notes.length - 1;
 
-		FlxG.mouse.visible = true;
 		//FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		tempBpm = _song.bpm;
@@ -448,6 +462,7 @@ class ChartingState extends MusicBeatState
 			tipText.scrollFactor.set();
 			add(tipText);
 		}
+
 		add(UI_box);
 
 		addSongUI();
@@ -476,6 +491,23 @@ class ChartingState extends MusicBeatState
 
 		updateGrid();
 
+		var tabs_songData = [
+			{name: "Info", label: 'Info'},
+			{name: "Settings", label: 'Settings'}
+		];
+
+		UI_songData = new FlxUITabMenu(null, tabs_songData, true);
+
+		UI_songData.resize(275, 325);
+		UI_songData.x = 15;
+		UI_songData.y = 30;
+		UI_songData.scrollFactor.set();
+
+		add(UI_songData);
+
+		addInfoUI();
+		addSongSettingsUI();
+
 		super.create();
 
 		playVocals = _song.needsVoices;
@@ -491,10 +523,6 @@ class ChartingState extends MusicBeatState
 	var noteSplashesInputText:FlxUIInputText;
 	var stageDropDown:FlxUIDropDownMenuCustom;
 	var sliderRate:FlxUISlider;
-
-	var creditsInputText:FlxUIInputText;
-	var charterInputText:FlxUIInputText;
-	var extraStringInputText:FlxUIInputText;
 
 	function addSongUI():Void
 	{
@@ -533,7 +561,11 @@ class ChartingState extends MusicBeatState
 		var loadEventJson:FlxButton = new FlxButton(loadAutosaveBtn.x, loadAutosaveBtn.y + 30, 'Load Events', function()
 		{
 			var songName:String = Paths.formatToSongPath(_song.song);
-			var eventsPath:String = '${songName}/events' + ((PlayState.instance.erectMode) ? '${FunkinSound.erectModePrefix()}' : '');
+			
+			var eventsPath:String = '${songName}/song-events/default';
+			if (PlayState.storyDifficulty >= 3)
+				eventsPath = '${songName}/song-events/erect';
+
 			var file:String = Paths.json(eventsPath);
 			#if sys
 			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(eventsPath)) || #end FileSystem.exists(file))
@@ -542,7 +574,7 @@ class ChartingState extends MusicBeatState
 			#end
 			{
 				clearEvents();
-				var events:SwagSong = Song.loadFromJson('events', songName, PlayState.instance.erectMode);
+				var events:SwagSong = Song.loadFromJson('events', songName, true, null);
 				_song.events = events.events;
 				changeSection(curSec);
 			}
@@ -689,21 +721,6 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 
-		var songCredit = PlayState.SONG.credit;
-		if (songCredit == null) songCredit = '';
-		creditsInputText = new FlxUIInputText(stageDropDown.x, stageDropDown.y + 34, 125, songCredit, 8);
-		blockPressWhileTypingOn.push(creditsInputText);
-
-		var songCharter = PlayState.SONG.charter;
-		if (songCharter == null) songCharter = '';
-		charterInputText = new FlxUIInputText(creditsInputText.x, creditsInputText.y + 28, 125, songCharter, 8);
-		blockPressWhileTypingOn.push(charterInputText);
-
-		var songExtraText = PlayState.SONG.extraText;
-		if (songExtraText == null) songExtraText = '';
-		extraStringInputText = new FlxUIInputText(charterInputText.x, charterInputText.y + 28, 125, songExtraText, 8);
-		blockPressWhileTypingOn.push(extraStringInputText);
-
 		var skin = PlayState.SONG.arrowSkin;
 		if(skin == null) skin = '';
 		noteSkinInputText = new FlxUIInputText(player2DropDown.x, player2DropDown.y + 50, 150, skin, 8);
@@ -749,13 +766,6 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(stageDropDown);
-
-		tab_group_song.add(new FlxText(creditsInputText.x, creditsInputText.y - 15, 0, 'Song Credits:'));
-		tab_group_song.add(new FlxText(charterInputText.x, charterInputText.y - 15, 0, 'Song Charter:'));
-		tab_group_song.add(new FlxText(extraStringInputText.x, extraStringInputText.y - 15, 0, 'Extra String:'));
-		tab_group_song.add(creditsInputText);
-		tab_group_song.add(charterInputText);
-		tab_group_song.add(extraStringInputText);
 
 		UI_box.addGroup(tab_group_song);
 
@@ -1498,6 +1508,57 @@ class ChartingState extends MusicBeatState
 		UI_box.addGroup(tab_group_chart);
 	}
 
+	var creditsInputText:FlxUIInputText;
+	var charterInputText:FlxUIInputText;
+	var extraStringInputText:FlxUIInputText;
+	function addInfoUI():Void
+	{
+		var tab_group_info = new FlxUI(null, UI_songData);
+		tab_group_info.name = "Info";
+
+		var songCredit = PlayState.SONG_DATA.artist;
+		if (songCredit == null) songCredit = '';
+		creditsInputText = new FlxUIInputText(10, 50, 200, songCredit, 8);
+		blockPressWhileTypingOn.push(creditsInputText);
+
+		var songCharter = PlayState.SONG_DATA.charter;
+		if (songCharter == null) songCharter = '';
+		charterInputText = new FlxUIInputText(creditsInputText.x, creditsInputText.y + 37, 200, songCharter, 8);
+		blockPressWhileTypingOn.push(charterInputText);
+
+		var songExtraText = PlayState.SONG_DATA.stringExtra;
+		if (songExtraText == null) songExtraText = '';
+		extraStringInputText = new FlxUIInputText(charterInputText.x, charterInputText.y + 37, 200, songExtraText, 8);
+		blockPressWhileTypingOn.push(extraStringInputText);
+
+		var saveButton:FlxButton = new FlxButton(charterInputText.x + 5, charterInputText.y + 65, "Save Song Data", function()
+		{
+			saveSongData();
+		});
+
+		tab_group_info.add(new FlxText(5, 5, FlxG.width, '- Song Information -', 14));
+
+		tab_group_info.add(new FlxText(creditsInputText.x, creditsInputText.y - 15, 0, 'Song Credits:'));
+		tab_group_info.add(new FlxText(charterInputText.x, charterInputText.y - 15, 0, 'Song Charter:'));
+		tab_group_info.add(new FlxText(extraStringInputText.x, extraStringInputText.y - 15, 0, 'Extra String:'));
+		tab_group_info.add(creditsInputText);
+		tab_group_info.add(charterInputText);
+		tab_group_info.add(extraStringInputText);
+		tab_group_info.add(saveButton);
+
+		UI_songData.addGroup(tab_group_info);
+	}
+
+	function addSongSettingsUI():Void
+	{
+		var tab_group_settings = new FlxUI(null, UI_songData);
+		tab_group_settings.name = "Settings";
+
+		tab_group_settings.add(new FlxText(5, 5, FlxG.width, '- Song Settings -', 14));
+
+		UI_songData.addGroup(tab_group_settings);
+	}
+
 	function loadSong():Void
 	{
 		FunkinSoundChartEditor.stopSongInst();
@@ -1629,11 +1690,11 @@ class ChartingState extends MusicBeatState
 			if (sender == noteSplashesInputText) {
 				_song.splashSkin = noteSplashesInputText.text;
 			} else if (sender == creditsInputText) {
-				_song.credit = creditsInputText.text;
+				_song_data.artist = creditsInputText.text;
 			} else if (sender == charterInputText) {
-				_song.charter = charterInputText.text;
+				_song_data.charter = charterInputText.text;
 			} else if (sender == extraStringInputText) {
-				_song.extraText = extraStringInputText.text;
+				_song_data.stringExtra = extraStringInputText.text;
 			}
 			else if(curSelectedNote != null)
 			{
@@ -1716,7 +1777,6 @@ class ChartingState extends MusicBeatState
 			strumLineNotes.members[i].y = strumLine.y;
 		}
 
-		FlxG.mouse.visible = true;//cause reasons. trust me
 		camPos.y = strumLine.y;
 		if(!disableAutoScrolling.checked) {
 			if (Math.ceil(strumLine.y) >= gridBG.height)
@@ -1835,7 +1895,6 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.justPressed.ENTER)
 			{
 				autosaveSong();
-				FlxG.mouse.visible = false;
 				PlayState.SONG = _song;
 
 				FunkinSoundChartEditor.stopSong();
@@ -1861,15 +1920,12 @@ class ChartingState extends MusicBeatState
 				PlayState.chartingMode = false;
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				FlxG.mouse.visible = false;
 				return;
 			}
 
 			if(FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
 				undo();
 			}
-
-
 
 			if(FlxG.keys.justPressed.Z && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
 				--curZoom;
@@ -2907,6 +2963,7 @@ class ChartingState extends MusicBeatState
 	private function saveLevel()
 	{
 		if(_song.events != null && _song.events.length > 1) _song.events.sort(sortByTime);
+
 		var json = {
 			"song": _song
 		};
@@ -2919,7 +2976,24 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + ".json");
+			_file.save(data.trim(), CoolUtil.difficultyString().toLowerCase().trim() + ".json");
+		}
+	}
+	private function saveSongData()
+	{	
+		var json = {
+			"song_data": _song_data
+		};
+
+		var data:String = Json.stringify(json, "\t");
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), ((PlayState.instance.erectMode) ? 'erect.json' : 'normal.json'));
 		}
 	}
 

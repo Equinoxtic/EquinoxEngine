@@ -30,18 +30,11 @@ typedef SwagSong =
 	var arrowSkin:String;
 	var splashSkin:String;
 	var validScore:Bool;
-
-	var credit:String;
-	var extraText:String;
-	var charter:String;
 }
 
 class Song
 {
 	public var song:String;
-	public var credit:String;
-	public var extraText:String;
-	public var charter:String;
 	public var notes:Array<SwagSection>;
 	public var events:Array<Dynamic>;
 	public var bpm:Float;
@@ -95,18 +88,63 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String, ?erectCondition:Bool = false):SwagSong
+	/**
+	 * Loads the song from a JSON file.
+	 * @param jsonInput The song JSON.
+	 * @param folder The song's folder.
+	 * @param isEventFile If the song is an ``events.json``
+	 * @param isMappedAnimJson If the song is a character's mapped animations. [``picospeaker.json``]
+	 * @return SwagSong
+	 */
+	public static function loadFromJson(jsonInput:String, ?folder:String, ?isEventFile:Null<Bool> = false, ?isMappedAnimJson:Null<Bool> = false):SwagSong
 	{
 		var rawJson = null;
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
-		var formattedSong:String = Paths.formatToSongPath(jsonInput);
 
-		var erectPrefix:String = FunkinSound.erectModePrefix();
-		if (!erectCondition)
-			erectPrefix = '';
+		var songPath:String = 'charts/${formattedFolder}/song-difficulties/${jsonInput}';
 
-		var songPath:String = 'charts/${formattedFolder}/${formattedSong}${erectPrefix}';
+		/**
+		 * Event JSONs check.
+		 */
+		if (isEventFile != null)
+		{
+			if (isEventFile)
+			{
+				if (PlayState.storyDifficulty >= 3)
+					songPath = 'charts/${formattedFolder}/song-events/erect';
+				else
+					songPath = 'charts/${formattedFolder}/song-events/default';
+			}
+			#if (debug)
+			FlxG.log.add('Loaded song event json of: ${formattedFolder.toUpperCase()}');
+			#end
+		}
+		#if (debug)
+		else
+		{
+			FlxG.log.add('Skipping event jsons check.');
+		}
+		#end
+
+		/**
+		 * Mapped character animations (Like 'picospeaker') JSONs check.
+		 */
+		if (isMappedAnimJson != null)
+		{
+			if (isMappedAnimJson) {
+				songPath = 'charts/${formattedFolder}/character-maps/${jsonInput}';
+			}
+			#if (debug)
+			FlxG.log.add('Loaded character mapped json \'${jsonInput}\' for: ${formattedFolder.toUpperCase()}');
+			#end
+		}
+		#if (debug)
+		else
+		{
+			FlxG.log.add('Skipping mapped character anims check.');
+		}
+		#end
 		
 		#if MODS_ALLOWED
 		var moddyFile:String = Paths.modsJson(songPath);
@@ -126,24 +164,7 @@ class Song
 		while (!rawJson.endsWith("}"))
 		{
 			rawJson = rawJson.substr(0, rawJson.length - 1);
-			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
-
-		// FIX THE CASTING ON WINDOWS/NATIVE
-		// Windows???
-		// trace(songData);
-
-		// trace('LOADED FROM JSON: ' + songData.notes);
-		/* 
-			for (i in 0...songData.notes.length)
-			{
-				trace('LOADED FROM JSON: ' + songData.notes[i].sectionNotes);
-				// songData.notes[i].sectionNotes = songData.notes[i].sectionNotes
-			}
-
-				daNotes = songData.notes;
-				daSong = songData.song;
-				daBpm = songData.bpm; */
 
 		var songJson:Dynamic = parseJSONshit(rawJson);
 		if(jsonInput != 'events') StageData.loadDirectory(songJson);
@@ -156,5 +177,59 @@ class Song
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
 		return swagShit;
+	}
+}
+
+typedef SongDataJson = {
+	var artist:String;
+	var charter:String;
+	var stringExtra:String;
+}
+
+class SongData
+{
+	public var artist:String;
+	public var charter:String;
+	public var stringExtra:String;
+
+	/**
+	 * Load a song's information/data file.
+	 * @param song The song to load.
+	 * @return SongDataJson
+	 */
+	public static function loadSongData(song:String):SongDataJson
+	{
+		if (song == null || song == '')
+			return null;
+
+		var j = null;
+
+		final f:String = Paths.formatToSongPath(song);
+
+		var p:String = 'charts/${f}/song-data/default';
+		if (PlayState.storyDifficulty >= 3)
+			p = 'charts/${f}/song-data/erect';
+		
+		#if MODS_ALLOWED
+		var m:String = Paths.modsJson(p);
+		if (FileSystem.exists(m))
+			j = File.getContent(m).trim();
+		#end
+
+		if (j == null)
+			#if sys j = File.getContent(Paths.json(p).trim()); #else j = Assets.getText(Paths.json(p).trim()); #end
+
+		while (!j.endsWith('}'))
+			j = j.substr(0, j.length - 1);
+
+		var sj:Dynamic = parseData(j);
+
+		return sj;
+	}
+
+	public static function parseData(j:String):SongDataJson
+	{
+		var s:SongDataJson = cast Json.parse(j).song_data;
+		return s;
 	}
 }

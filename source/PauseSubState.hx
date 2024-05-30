@@ -44,6 +44,7 @@ class PauseSubState extends MusicBeatSubstate
 	public function new(x:Float, y:Float)
 	{
 		super();
+
 		if(CoolUtil.difficulties.length < 2) menuItemsOG.remove('Change Difficulty'); //No need to change difficulty if there is only one!
 
 		if(PlayState.chartingMode)
@@ -79,7 +80,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(pauseTexts);
 
 		var levelInfo:FlxText = new FlxText(0, 15, 0, "", 32);
-		levelInfo.text += '${PlayState.SONG.song} - ${PlayState.SONG.credit}';
+		levelInfo.text += '${PlayState.SONG.song} - ${PlayState.SONG_DATA.artist}';
 		pauseTexts.add(levelInfo);
 
 		var difficulty:FlxText = new FlxText(0, 15 + 32, 0, "", 32);
@@ -265,7 +266,6 @@ class PauseSubState extends MusicBeatSubstate
 					}
 
 				case "End Song":
-					FlxG.mouse.visible = true;
 					close();
 					PlayState.instance.finishSong(true);
 

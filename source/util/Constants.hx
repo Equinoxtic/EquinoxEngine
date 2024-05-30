@@ -71,6 +71,20 @@ class Constants
 	 * The current commit hash of the engine's repository.
 	 */
 	public static final GIT_HASH:String = Repository.getGitCommitHash();
+
+	/**
+	 * ============================= SONG VALUES =============================
+	 */
+
+	/**
+	 * The volume for the instrumental.
+	 */
+	public static final INSTRUMENTAL_VOLUME:Float = 0.9;
+
+	/**
+	 * The volume for the vocals.
+	 */
+	public static final VOCALS_VOLUME:Float = 1.0;
 	
 	/**
 	 * ============================= PLAYER ICON VALUES =============================

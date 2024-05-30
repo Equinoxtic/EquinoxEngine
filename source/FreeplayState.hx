@@ -298,7 +298,7 @@ class FreeplayState extends MusicBeatState
 			var selectedSong:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var formattedSong:String = Highscore.formatSong(selectedSong, curDifficulty);
 
-			loadSong(selectedSong, formattedSong);
+			loadSong(selectedSong, CoolUtil.difficulties[curDifficulty].toLowerCase());
 
 			checkChartingInput();
 
@@ -348,25 +348,35 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	private function loadSong(?selectedSong:String, ?formattedSong:String):Void
+	private function loadSong(?selectedSong:String, ?jsonDiff:String):Void
 	{
-		var songPath:String = 'charts/${selectedSong}/${formattedSong}';
+		var songPath:String = Std.string('charts/${selectedSong}/song-difficulties/${jsonDiff}');
 		
 		#if MODS_ALLOWED
-		if (!sys.FileSystem.exists(Paths.modsJson(songPath)) && !sys.FileSystem.exists(Paths.json(songPath))) {
+		if (!sys.FileSystem.exists(Paths.modsJson(songPath)) && !sys.FileSystem.exists(Paths.json(songPath)))
 		#else
-		if (!OpenFlAssets.exists(Paths.json(songPath))) {
+		if (!OpenFlAssets.exists(Paths.json(songPath)))
 		#end
-			trace('Couldnt find file: ${songPath}, gunna load dad battle lolz');
-			formattedSong = 'dad-battle-hard';
+		{
+			#if (debug)
+			FlxG.log.add('Couldnt find file: ${songPath} of ${selectedSong}');
+			#else
+			trace('Couldnt find file: ${songPath} of ${selectedSong}');
+			#end
+
+			jsonDiff = 'hard';
 			selectedSong = 'dad-battle';
 			curDifficulty = 2;
 		}
 
-		trace(formattedSong);
+		#if (debug)
+		FlxG.log.add('Chose Song: ${selectedSong.replace('-', ' ').toUpperCase()} - ${jsonDiff.toUpperCase()}');
+		#else
+		trace('Chose Song: ${selectedSong.replace('-', ' ').toUpperCase()} - ${jsonDiff.toUpperCase()}');
+		#end
 
 		PlayState.storyDifficulty = curDifficulty;
-		PlayState.SONG = Song.loadFromJson(formattedSong, selectedSong);
+		PlayState.SONG = Song.loadFromJson(jsonDiff, selectedSong);
 		PlayState.isStoryMode = false;
 
 		trace('CURRENT WEEK: ${WeekData.getWeekFileName()}');

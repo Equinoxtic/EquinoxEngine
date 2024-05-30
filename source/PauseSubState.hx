@@ -1,5 +1,6 @@
 package;
 
+import ui.FunkinText;
 import flixel.group.FlxGroup.FlxTypedGroupIterator;
 import Controls.Control;
 import flixel.FlxG;
@@ -83,26 +84,24 @@ class PauseSubState extends MusicBeatSubstate
 		levelInfo.text += '${PlayState.SONG.song} - ${PlayState.SONG_DATA.artist}';
 		pauseTexts.add(levelInfo);
 
-		var difficulty:FlxText = new FlxText(0, 15 + 32, 0, "", 32);
+		var difficulty:FlxText = new FunkinText(0, 15 + 32, 0, "", 32, RIGHT, true);
 		difficulty.text += 'Difficulty: ${CoolUtil.difficultyString()}';
 		pauseTexts.add(difficulty);
 
-		var restarts:FlxText = new FlxText(0, 15 + 64, 0, "", 32);
+		var restarts:FlxText = new FunkinText(0, 15 + 64, 0, "", 32, RIGHT, true);
 		restarts.text += 'Restarts: ${PlayState.restartCounter}';
 		pauseTexts.add(restarts);
 
-		var blueballedTxt:FlxText = new FlxText(0, 15 + 96, 0, "", 32);
+		var blueballedTxt:FlxText = new FunkinText(0, 15 + 96, 0, "", 32, RIGHT, true);
 		blueballedTxt.text = "Blueballed: " + PlayState.deathCounter;
 		pauseTexts.add(blueballedTxt);
 
-		currentModeTxt = new FlxText(0, 15 + 128, 512, "", 32);
+		currentModeTxt = new FunkinText(0, 15 + 128, 0, "", 32, RIGHT, true);
 		pauseTexts.add(currentModeTxt);
 
 		pauseTexts.forEach(function(txt:FlxText) {
-			txt.setFormat(Paths.font('phantommuff.ttf'), 32, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			txt.scrollFactor.set();
 			txt.updateHitbox();
-			txt.borderSize = 1.5;
+			txt.borderSize = 2.0;
 			txt.antialiasing = ClientPrefs.globalAntialiasing;
 			txt.alpha = 0;
 			txt.x = FlxG.width - (txt.width + 20);
@@ -112,7 +111,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		pauseTexts.forEach(function(txt:FlxText) {
 			textTweenDelay += 0.1;
-			FlxTween.tween(txt, {alpha: 1, y: txt.y + 5}, 0.4, {ease: FlxEase.cubeOut, startDelay: textTweenDelay});
+			FlxTween.tween(txt, {alpha: 1, y: txt.y + 10}, 0.4, {ease: FlxEase.cubeOut, startDelay: textTweenDelay});
 		});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();

@@ -10,7 +10,7 @@ class RatingSprite extends FlxSprite implements IRatingGraphic
 	{
 		super();
 
-		load(rating.image, PlayState.instance.camHUD);
+		load(rating.image, isPixel, PlayState.instance.camHUD);
 		screenCenter();
 		visible = (!ClientPrefs.hideHud && PlayState.instance.showRating);
 		antialiasing = (ClientPrefs.globalAntialiasing && !isPixel);
@@ -62,5 +62,10 @@ class RatingSprite extends FlxSprite implements IRatingGraphic
 				destroy();
 			}
 		});
+	}
+	
+	override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
 	}
 }

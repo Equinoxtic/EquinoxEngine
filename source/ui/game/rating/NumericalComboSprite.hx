@@ -81,4 +81,9 @@ class NumericalComboSprite extends FlxSprite implements IRatingGraphic
 			}
 		});
 	}
+
+	override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+	}
 }

@@ -10,7 +10,7 @@ class ComboSprite extends FlxSprite implements IRatingGraphic
 	{
 		super();
 		
-		load('combo', PlayState.instance.camHUD);
+		load('combo', isPixel, PlayState.instance.camHUD);
 		screenCenter();
 		visible = (!ClientPrefs.hideHud && PlayState.instance.showCombo);
 		antialiasing = (ClientPrefs.globalAntialiasing && !isPixel);
@@ -80,5 +80,10 @@ class ComboSprite extends FlxSprite implements IRatingGraphic
 				destroy();
 			}
 		});
+	}
+
+	override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
 	}
 }

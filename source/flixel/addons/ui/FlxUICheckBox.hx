@@ -285,6 +285,7 @@ class FlxUICheckBox extends FlxUIGroup implements ILabeled implements IFlxUIClic
 		if (broadcastToFlxUI)
 		{
 			FlxUI.event(FlxUICheckBox.CLICK_EVENT, this, checked, params);
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
 	}
 }

@@ -1,10 +1,10 @@
-package;
+package menus;
 
+import misc.Checkerboard;
 import flixel.util.FlxStringUtil;
 #if desktop
 import Discord.DiscordClient;
 #end
-import editors.ChartingState;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -52,6 +52,8 @@ class FreeplayState extends MusicBeatState
 	var intendedColor:Int;
 	var colorTween:FlxTween;
 
+	var checkerBg:Checkerboard;
+
 	override function create()
 	{
 		persistentUpdate = true;
@@ -92,6 +94,9 @@ class FreeplayState extends MusicBeatState
 		add(bg);
 		bg.screenCenter();
 
+		checkerBg = new Checkerboard(XY, 1, EXTRA_HUGE, .27, 0xFF000000, 0.0, 0.09);
+		add(checkerBg);
+
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
@@ -119,6 +124,12 @@ class FreeplayState extends MusicBeatState
 			add(icon);
 		}
 		WeekData.setDirectoryFromWeek();
+
+		var bars:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menu/menuBars'));
+		bars.antialiasing = ClientPrefs.globalAntialiasing;
+		bars.scrollFactor.set();
+		bars.screenCenter();
+		add(bars);
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 24);
 		scoreText.antialiasing = ClientPrefs.globalAntialiasing;
@@ -194,6 +205,8 @@ class FreeplayState extends MusicBeatState
 	var playingSongInst:Bool = false;
 	override function update(elapsed:Float)
 	{
+		checkerBg.updatePosition(0.0, 0.21);
+
 		if (FlxG.sound.music.volume < 0.7)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;

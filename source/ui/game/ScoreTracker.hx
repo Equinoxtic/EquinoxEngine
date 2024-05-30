@@ -26,14 +26,13 @@ class ScoreTracker extends FlxSpriteGroup
 
 		this.instance = instance;
 
-		scoreTxt = new FlxText(x, y, FlxG.width, "", fontSize);
-		scoreTxt.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, alignment, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		scoreTxt = new FunkinText(x, y, FlxG.width, "", fontSize, CENTER, true);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.screenCenter(X);
 		scoreTxt.scale.set(initialSize, initialSize);
-		scoreTxt.borderSize = 1.3;
-		scoreTxt.antialiasing = ClientPrefs.globalAntialiasing;
 		add(scoreTxt);
+
+		scoreTxt.updateHitbox();
 
 		visible = !ClientPrefs.hideHud;
 	}

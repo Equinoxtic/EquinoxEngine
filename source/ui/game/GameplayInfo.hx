@@ -11,7 +11,7 @@ class GameplayInfo extends FlxSpriteGroup
 {
 	private var instance:FlxBasic;
 
-	private static var gameplayText:FlxText;
+	private static var gameplayText:FunkinText;
 
 	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:Null<String> = "", ?difficultyString:Null<String> = "", ?songCredit:Null<String> = "", ?songText:Null<String> = ""):Void
 	{
@@ -25,10 +25,9 @@ class GameplayInfo extends FlxSpriteGroup
 		
 		this.instance = instance;
 
-		gameplayText = new FlxText(x, y, FlxG.width, "", fontSize);
-		gameplayText.setFormat(Paths.font('phantommuff.ttf'), fontSize, 0xFFFFFFFF, RIGHT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
-		gameplayText.borderSize = 1.3;
-		gameplayText.antialiasing = ClientPrefs.globalAntialiasing;
+		gameplayText = new FunkinText(x, y, FlxG.width, "", fontSize, RIGHT, true);
+		gameplayText.scrollFactor.set();
+		gameplayText.scale.set(initialSize, initialSize);
 		add(gameplayText);
 
 		gameplayText.updateHitbox();

@@ -3,6 +3,7 @@ package;
 /**
  * Main Classes
  */
+import ui.FunkinText;
 import ui.game.rating.RatingSprite;
 import ui.game.rating.ComboSprite;
 import ui.game.rating.NumericalComboSprite;
@@ -1288,8 +1289,7 @@ class PlayState extends MusicBeatState
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
 
-		timeTxt = new FlxText(0, 0, FlxG.width, "", 20);
-		timeTxt.setFormat(Paths.font('phantommuff.ttf'), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt = new FunkinText(0, 0, FlxG.width, "", 20, CENTER, true);
 		timeTxt.screenCenter(X);
 		timeTxt.y = timeBarBG.y - 1.5;
 		timeTxt.alpha = 0;

@@ -18,7 +18,7 @@ class JudgementCounter extends FlxSpriteGroup
 
 	private var instance:FlxBasic;
 	
-	private var judgementText:FlxText;
+	private var judgementText:FunkinText;
 
 	public function new(?instance:FlxBasic, ?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT) {
 		super();
@@ -29,11 +29,12 @@ class JudgementCounter extends FlxSpriteGroup
 
 		this.instance = instance;
 
-		judgementText = new FlxText(x, y, FlxG.width, "", fontSize);
-		judgementText.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, alignment, FlxTextBorderStyle.OUTLINE, 0xFF000000);
-		judgementText.borderSize = 1.45;
-		judgementText.antialiasing = ClientPrefs.globalAntialiasing;
+		judgementText = new FunkinText(x, y, FlxG.width, "", fontSize, LEFT, true);
+		judgementText.scrollFactor.set();
+		judgementText.scale.set(initialSize, initialSize);
 		add(judgementText);
+
+		judgementText.updateHitbox();
 		
 		#if (!debug)
 		visible = ((ClientPrefs.showJudgementCounter) ? !ClientPrefs.hideHud : false);

@@ -1,4 +1,4 @@
-package editors;
+package menus.editors;
 
 #if desktop
 import Discord.DiscordClient;
@@ -672,7 +672,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			}
 
 			if(FlxG.keys.justPressed.ESCAPE) {
-				MusicBeatState.switchState(new editors.MasterEditorMenu());
+				MusicBeatState.switchState(new MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 1);
 				transitioning = true;
 			}

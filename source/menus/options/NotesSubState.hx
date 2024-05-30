@@ -1,4 +1,4 @@
-package options;
+package menus.options;
 
 #if desktop
 import Discord.DiscordClient;

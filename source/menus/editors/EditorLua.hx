@@ -1,4 +1,4 @@
-package editors;
+package menus.editors;
 
 #if LUA_ALLOWED
 import llua.Lua;

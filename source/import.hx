@@ -1,7 +1,12 @@
 #if !macro
+// --------- UTILITIES ---------
 import Paths;
-import util.Constants;
-import util.Rating;
-import util.Ranking;
+import util.*;
+import util.macro.*;
 import flixel.FlxG;
+
+// --------- MENUS AND OTHER STUFF ---------
+import menus.*;
+import menus.options.*;
+import menus.editors.*;
 #end

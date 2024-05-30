@@ -1,4 +1,4 @@
-package editors;
+package menus.editors;
 
 import FunkinSound.FunkinSoundChartEditor;
 import Section.SwagSection;
@@ -118,7 +118,7 @@ class EditorPlayState extends MusicBeatState
 		for (notetype in noteTypeMap.keys()) {
 			var luaToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.lua');
 			if(sys.FileSystem.exists(luaToLoad)) {
-				var lua:editors.EditorLua = new editors.EditorLua(luaToLoad);
+				var lua:EditorLua = new EditorLua(luaToLoad);
 				new FlxTimer().start(0.1, function (tmr:FlxTimer) {
 					lua.stop();
 					lua = null;
@@ -243,7 +243,7 @@ class EditorPlayState extends MusicBeatState
 						swagNote.mustPress = gottaHitNote;
 						swagNote.sustainLength = songNotes[2];
 						swagNote.noteType = songNotes[3];
-						if(!Std.isOfType(songNotes[3], String)) swagNote.noteType = editors.ChartingState.noteTypeList[songNotes[3]]; //Backward compatibility + compatibility with Week 7 charts
+						if(!Std.isOfType(songNotes[3], String)) swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; //Backward compatibility + compatibility with Week 7 charts
 						swagNote.scrollFactor.set();
 
 						var susLength:Float = swagNote.sustainLength;
@@ -323,7 +323,7 @@ class EditorPlayState extends MusicBeatState
 	}
 
 	private function endSong() {
-		LoadingState.loadAndSwitchState(new editors.ChartingState());
+		LoadingState.loadAndSwitchState(new ChartingState());
 	}
 
 	public var noteKillOffset:Float = 350;
@@ -336,7 +336,7 @@ class EditorPlayState extends MusicBeatState
 			
 			FunkinSound.pauseVoices();
 
-			LoadingState.loadAndSwitchState(new editors.ChartingState());
+			LoadingState.loadAndSwitchState(new ChartingState());
 		}
 
 		if (startingSong) {

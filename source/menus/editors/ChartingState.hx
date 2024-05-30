@@ -1,4 +1,4 @@
-package editors;
+package menus.editors;
 
 import Song.SongDataJson;
 import FunkinSound.FunkinSoundChartEditor;
@@ -1890,7 +1890,7 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.justPressed.ESCAPE)
 			{
 				autosaveSong();
-				LoadingState.loadAndSwitchState(new editors.EditorPlayState(sectionStartTime()));
+				LoadingState.loadAndSwitchState(new EditorPlayState(sectionStartTime()));
 			}
 			if (FlxG.keys.justPressed.ENTER)
 			{
@@ -1918,7 +1918,7 @@ class ChartingState extends MusicBeatState
 
 			if (FlxG.keys.justPressed.BACKSPACE) {
 				PlayState.chartingMode = false;
-				MusicBeatState.switchState(new editors.MasterEditorMenu());
+				MusicBeatState.switchState(new MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				return;
 			}

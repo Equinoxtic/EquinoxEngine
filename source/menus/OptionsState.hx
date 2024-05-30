@@ -1,4 +1,4 @@
-package options;
+package menus;
 
 #if desktop
 import Discord.DiscordClient;
@@ -37,17 +37,17 @@ class OptionsState extends MusicBeatState
 	function openSelectedSubstate(label:String) {
 		switch(label) {
 			case 'Note Colors':
-				openSubState(new options.NotesSubState());
+				openSubState(new NotesSubState());
 			case 'Controls':
-				openSubState(new options.ControlsSubState());
+				openSubState(new ControlsSubState());
 			case 'Graphics':
-				openSubState(new options.GraphicsSettingsSubState());
+				openSubState(new GraphicsSettingsSubState());
 			case 'Visuals and UI':
-				openSubState(new options.VisualsUISubState());
+				openSubState(new VisualsUISubState());
 			case 'Gameplay':
-				openSubState(new options.GameplaySettingsSubState());
+				openSubState(new GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
-				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
+				LoadingState.loadAndSwitchState(new NoteOffsetState());
 		}
 	}
 

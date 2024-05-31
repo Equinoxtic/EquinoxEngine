@@ -10,6 +10,8 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
+import openfl.utils.Assets as OpenFlAssets;
+
 using StringTools;
 
 typedef SwagSong =
@@ -103,19 +105,28 @@ class Song
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 
 		var songPath:String = 'charts/${formattedFolder}/difficulties/${jsonInput}';
+		var eventsPath:String = 'charts/${formattedFolder}/events/events${FunkinSound.erectModeSuffix(false)}';
+		var mappedAnimsPath:String = 'charts/${formattedFolder}/character-maps/${jsonInput}';
 
 		/**
 		 * Event JSONs check.
 		 */
-		if (isEventFile != null)
+		if (isEventFile != null || !isEventFile)
 		{
 			if (isEventFile)
 			{
-				songPath = 'charts/${formattedFolder}/events/events${FunkinSound.erectModeSuffix(false)}';
+				#if MODS_ALLOWED
+				if (sys.FileSystem.exists(Paths.modsJson(eventsPath)) || sys.FileSystem.exists(Paths.json(eventsPath)))
+				#else
+				if (OpenFlAssets.exists(eventsPath))
+				#end
+				{
+					songPath = eventsPath;
+					#if (debug)
+					FlxG.log.add('Loaded song events json of: ${formattedFolder.toUpperCase()}');
+					#end
+				}
 			}
-			#if (debug)
-			FlxG.log.add('Loaded song event json of: ${formattedFolder.toUpperCase()}');
-			#end
 		}
 		#if (debug)
 		else
@@ -127,14 +138,22 @@ class Song
 		/**
 		 * Mapped character animations (Like 'picospeaker') JSONs check.
 		 */
-		if (isMappedAnimJson != null)
+		if (isMappedAnimJson != null || !isMappedAnimJson)
 		{
-			if (isMappedAnimJson) {
-				songPath = 'charts/${formattedFolder}/character-maps/${jsonInput}';
+			if (isMappedAnimJson)
+			{
+				#if MODS_ALLOWED
+				if (sys.FileSystem.exists(Paths.modsJson(mappedAnimsPath)) || sys.FileSystem.exists(Paths.json(mappedAnimsPath)))
+				#else
+				if (OpenFlAssets.exists(mappedAnimsPath))
+				#end
+				{
+					songPath = mappedAnimsPath;
+					#if (debug)
+					FlxG.log.add('Loaded character mapped json \'${jsonInput}\' for: ${formattedFolder.toUpperCase()}');
+					#end
+				}
 			}
-			#if (debug)
-			FlxG.log.add('Loaded character mapped json \'${jsonInput}\' for: ${formattedFolder.toUpperCase()}');
-			#end
 		}
 		#if (debug)
 		else

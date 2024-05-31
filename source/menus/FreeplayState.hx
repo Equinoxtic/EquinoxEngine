@@ -57,6 +57,8 @@ class FreeplayState extends MusicBeatState
 	var intendedColor:Int;
 	var colorTween:FlxTween;
 
+	var shittyText:FlxText;
+
 	var checkerBg:Checkerboard;
 
 	override function create()
@@ -143,6 +145,11 @@ class FreeplayState extends MusicBeatState
 		scoreText.antialiasing = ClientPrefs.globalAntialiasing;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		scoreText.borderSize = 3.5;
+		
+		shittyText = new FlxText(FlxG.width * 0.8, 10, 0, "PERSONAL BEST", 48);
+		shittyText.setFormat(Paths.font('phantommuff.ttf'), 48, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
+		shittyText.borderSize = 3.5;
+		add(shittyText);
 
 		scoreBG = new FlxSprite(scoreText.x - 6, 85).makeGraphic(1, 66, 0xFF000000);
 		scoreBG.alpha = 0.000001;
@@ -259,10 +266,10 @@ class FreeplayState extends MusicBeatState
 			ratingSplit[1] += '0';
 		}
 
-		scoreText.text = '- PERSONAL BEST -\n\n'
-			+ 'SCORE: ${lerpScore}\n'
-			+ 'ACCURACY: ${ratingSplit.join('.')}%\n'
-			+ '${intendedRatingFC} - ${intendedRanking}';
+		scoreText.text = '\n\n'
+			+ '> SCORE: ${lerpScore}\n'
+			+ '> ACCURACY: ${ratingSplit.join('.')}%\n'
+			+ '> ${intendedRatingFC} - ${intendedRanking}';
 		
 		positionHighscore();
 
@@ -616,9 +623,12 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	private function positionHighscore() {
-		scoreText.x = FlxG.width - scoreText.width - 6;
+	private function positionHighscore():Void
+	{
+		scoreText.x = FlxG.width - scoreText.width - 10;
 		scoreText.y = scoreBG.y + 15;
+		shittyText.x = FlxG.width - shittyText.width - 10;
+		shittyText.y = scoreBG.y + 5;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 15;
 		scoreBG.scale.y = FlxG.height - scoreText.height + 2;
 		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);

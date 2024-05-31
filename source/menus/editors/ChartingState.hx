@@ -294,7 +294,6 @@ class ChartingState extends MusicBeatState
 				notes: [],
 				events: [],
 				bpm: 150.0,
-				songOffset: 0.0,
 				needsVoices: true,
 				arrowSkin: '',
 				splashSkin: 'noteSplashes',//idk it would crash if i didn't
@@ -373,7 +372,6 @@ class ChartingState extends MusicBeatState
 		//FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		tempBpm = _song.bpm;
-		tempOffset = _song.songOffset;
 
 		addSection();
 
@@ -612,12 +610,6 @@ class ChartingState extends MusicBeatState
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
 
-		var stepperOffset:FlxUINumericStepper = new FlxUINumericStepper(stepperBPM.x + 120, stepperBPM.y, 10, 0, 0, 9999, 2);
-		stepperOffset.value = _song.songOffset;
-		stepperOffset.name = 'song_offset';
-		
-		blockPressWhileTypingOnStepper.push(stepperOffset);
-
 		#if MODS_ALLOWED
 		var directories:Array<String> = [Paths.mods('characters/'), Paths.mods(Paths.currentModDirectory + '/characters/'), Paths.getPreloadPath('characters/')];
 		for(mod in Paths.getGlobalMods())
@@ -747,12 +739,11 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadEventJson);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
-		tab_group_song.add(stepperOffset);
 		tab_group_song.add(reloadNotesButton);
 		tab_group_song.add(noteSkinInputText);
 		tab_group_song.add(noteSplashesInputText);
 		tab_group_song.add(new FlxText(stepperBPM.x, stepperBPM.y - 20, 0, 'Song BPM:'));
-		tab_group_song.add(new FlxText(stepperBPM.x + 100, stepperBPM.y - 15, 0, 'Song Offset:'));
+		// tab_group_song.add(new FlxText(stepperBPM.x + 100, stepperBPM.y - 15, 0, 'Song Offset:'));
 		tab_group_song.add(new FlxText(stepperSpeed.x, stepperSpeed.y - 15, 0, 'Song Speed:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
@@ -1659,7 +1650,6 @@ class ChartingState extends MusicBeatState
 			else if (wname == 'song_offset')
 			{
 				tempOffset = nums.value;
-				_song.songOffset = nums.value;
 			}
 			else if (wname == 'note_susLength')
 			{
@@ -2124,8 +2114,6 @@ class ChartingState extends MusicBeatState
 		}
 
 		_song.bpm = tempBpm;
-		_song.songOffset = tempOffset;
-
 		strumLineNotes.visible = quant.visible = vortex;
 
 		if (FlxG.sound.music.time < 0) {

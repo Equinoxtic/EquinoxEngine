@@ -240,7 +240,6 @@ class FunkinSound
 	{
 		// Play the instrumental.
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), Constants.INSTRUMENTAL_VOLUME, false);
-		setInstTime(PlayState.SONG.songOffset); // May skip the time if you have a chart for a specific song already lol
 		setInstPitch(PlayState.instance.playbackRate);
 		FlxG.sound.music.onComplete = PlayState.instance.finishSong.bind();
 

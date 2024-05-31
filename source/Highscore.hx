@@ -10,13 +10,13 @@ class Highscore
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songRating:Map<String, Float> = new Map();
-	public static var songRatingCombo:Map<String, String> = new Map();
+	public static var songRatingFC:Map<String, String> = new Map();
 	public static var songRanking:Map<String, String> = new Map();
 	#else
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songRating:Map<String, Float> = new Map<String, Float>();
-	public static var songRatingCombo:Map<String, String> = new Map<String, String>();
+	public static var songRatingFC:Map<String, String> = new Map<String, String>();
 	public static var songRanking:Map<String, String> = new Map<String, String>();
 	#end
 
@@ -26,6 +26,8 @@ class Highscore
 		var daSong:String = formatSong(song, diff);
 		setScore(daSong, 0);
 		setRating(daSong, 0);
+		setRatingFC(daSong, 'N/A');
+		setRanking(daSong, 'N/A');
 	}
 
 	public static function resetWeek(week:String, diff:Int = 0):Void
@@ -50,7 +52,7 @@ class Highscore
 		return newValue / tempMult;
 	}
 
-	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1, ?ratingCombo:String = '', ?rank:String = ''):Void
+	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1, ?ratingFC:String = '', ?rank:String = ''):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
@@ -58,17 +60,25 @@ class Highscore
 			if (songScores.get(daSong) < score) {
 				setScore(daSong, score);
 				if (rank != '') setRanking(daSong, rank);
-				if (ratingCombo != '') setRatingCombo(daSong, ratingCombo);
+				if (ratingFC != '') setRatingFC(daSong, ratingFC);
 				if (rating >= 0) setRating(daSong, rating);
 			}
 		} else {
 			setScore(daSong, score);
 			if (rank != '') setRanking(daSong, rank);
-			if (ratingCombo != '') setRatingCombo(daSong, ratingCombo);
+			if (ratingFC != '') setRatingFC(daSong, ratingFC);
 			if (rating >= 0) setRating(daSong, rating);
 		}
 
-		trace('SAVED SCORE BOIS');
+		#if (debug)
+		FlxG.log.add(
+			'Saved score of ${song}\n'
+			+ 'Score: ${score}\n'
+			+ 'Rank: ${rank}\n'
+			+ 'Rating FC: ${ratingFC}\n'
+			+ 'Accuracy: ${rating}\n'
+		);
+		#end
 	}
 
 	public static function saveWeekScore(week:String, score:Int = 0, ?diff:Int = 0):Void
@@ -111,10 +121,10 @@ class Highscore
 		FlxG.save.flush();
 	}
 
-	static function setRatingCombo(song:String, ratingCombo:String):Void
+	static function setRatingFC(song:String, ratingFC:String):Void
 	{
-		songRatingCombo.set(song, ratingCombo);
-		FlxG.save.data.songRatingCombo = songRatingCombo;
+		songRatingFC.set(song, ratingFC);
+		FlxG.save.data.songRatingFC = songRatingFC;
 		FlxG.save.flush();	
 	}
 
@@ -127,7 +137,8 @@ class Highscore
 
 	public static function formatSong(song:String, diff:Int):String
 	{
-		return Paths.formatToSongPath(song) + CoolUtil.getDifficultyFilePath(diff);
+		var path:String = '${Paths.formatToSongPath(song)}/difficulties/${CoolUtil.getDifficultyFilePath(diff)}';
+		return Std.string(path);
 	}
 
 	public static function getScore(song:String, diff:Int):Int
@@ -148,13 +159,13 @@ class Highscore
 		return songRating.get(daSong);
 	}
 
-	public static function getRatingCombo(song:String, diff:Int):String
+	public static function getRatingFC(song:String, diff:Int):String
 	{
 		var daSong:String = formatSong(song, diff);
-		if (!songRatingCombo.exists(daSong))
-			setRatingCombo(daSong, 'N/A');
+		if (!songRatingFC.exists(daSong))
+			setRatingFC(daSong, 'N/A');
 
-		return songRatingCombo.get(daSong);
+		return songRatingFC.get(daSong);
 	}
 
 	public static function getRanking(song:String, diff:Int):String
@@ -193,9 +204,9 @@ class Highscore
 		{
 			songRanking = FlxG.save.data.songRanking;
 		}
-		if (FlxG.save.data.songRatingCombo != null)
+		if (FlxG.save.data.songRatingFC != null)
 		{
-			songRatingCombo = FlxG.save.data.songRatingCombo;
+			songRatingFC = FlxG.save.data.songRatingFC;
 		}
 	}
 }

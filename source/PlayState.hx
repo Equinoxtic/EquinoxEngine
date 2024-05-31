@@ -4457,6 +4457,7 @@ class PlayState extends MusicBeatState
 		updateTime = false;
 
 		FunkinSound.setVolume(0, 'instrumental');
+		FunkinSound.setVoicesVolume(0);
 		FunkinSound.pauseSong();
 
 		if(ClientPrefs.noteOffset <= 0 || ignoreNoteOffset) {
@@ -4519,13 +4520,12 @@ class PlayState extends MusicBeatState
 		if(ret != FunkinLua.Function_Stop && !transitioning) {
 			if (SONG.validScore)
 			{
-				#if !switch
-				if (!cpuControlled && !practiceMode && !chartingMode) {
+				if (!cpuControlled && !practiceMode && !chartingMode)
+				{
 					var percent:Float = ratingPercent;
 					if(Math.isNaN(percent)) percent = 0;
-					Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, ratingFC, ranking);
+					Highscore.saveScore(SONG.song.toLowerCase(), songScore, storyDifficulty, percent, ratingFC, ranking);
 				}
-				#end
 			}
 			playbackRate = 1;
 
@@ -5488,7 +5488,9 @@ class PlayState extends MusicBeatState
 	{
 		super.stepHit();
 
-		FunkinSound.updateSongSync();
+		if (SONG.needsVoices && FlxG.sound.music.time >= -ClientPrefs.noteOffset) {
+			FunkinSound.updateSongSync();
+		}
 
 		if(curStep == lastStepHit) {
 			return;
@@ -5734,8 +5736,8 @@ class PlayState extends MusicBeatState
 
 	// public var ratingName:String = '?';
 	public var ratingPercent:Float = 1.0;
-	public var ratingFC:String = '?';
-	public var ranking:String = '?';
+	public var ratingFC:String = 'N/A';
+	public var ranking:String = 'N/A';
 
 	public function RecalculateRating(badHit:Bool = false) {
 		setOnLuas('score', songScore);

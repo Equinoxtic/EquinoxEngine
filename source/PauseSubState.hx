@@ -96,7 +96,7 @@ class PauseSubState extends MusicBeatSubstate
 		blueballedTxt.text = "Blueballed: " + PlayState.deathCounter;
 		pauseTexts.add(blueballedTxt);
 
-		currentModeTxt = new FunkinText(0, 15 + 128, 0, "", 32, RIGHT, true);
+		currentModeTxt = new FunkinText(0, 15 + 128, FlxG.width, "", 32, RIGHT, true);
 		pauseTexts.add(currentModeTxt);
 
 		pauseTexts.forEach(function(txt:FlxText) {

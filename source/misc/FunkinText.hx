@@ -18,10 +18,10 @@ class FunkinText extends FlxText
 		{
 			borderStyle = FlxTextBorderStyle.OUTLINE;
 			borderColor = 0xFF000000;
-			borderSize = 1.3;
+			borderSize = fontSize / 8.15;
 		}
 
-		antialiasing = (ClientPrefs.globalAntialiasing && !PlayState.isPixelStage);
+		// antialiasing = (ClientPrefs.globalAntialiasing && !PlayState.isPixelStage);
 	}
 
 	override function update(elapsed:Float):Void

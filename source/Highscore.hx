@@ -61,8 +61,7 @@ class Highscore
 				if (ratingCombo != '') setRatingCombo(daSong, ratingCombo);
 				if (rating >= 0) setRating(daSong, rating);
 			}
-		}
-		else {
+		} else {
 			setScore(daSong, score);
 			if (rank != '') setRanking(daSong, rank);
 			if (ratingCombo != '') setRatingCombo(daSong, ratingCombo);
@@ -95,7 +94,7 @@ class Highscore
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 	}
-	
+
 	static function setWeekScore(week:String, score:Int):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
@@ -193,6 +192,10 @@ class Highscore
 		if (FlxG.save.data.songRanking != null)
 		{
 			songRanking = FlxG.save.data.songRanking;
+		}
+		if (FlxG.save.data.songRatingCombo != null)
+		{
+			songRatingCombo = FlxG.save.data.songRatingCombo;
 		}
 	}
 }

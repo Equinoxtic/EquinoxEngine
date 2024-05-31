@@ -341,7 +341,6 @@ class FreeplayState extends MusicBeatState
 			}
 
 			var selectedSong:String = Paths.formatToSongPath(songs[curSelected].songName);
-			var formattedSong:String = Highscore.formatSong(selectedSong, curDifficulty);
 
 			loadSong(selectedSong, CoolUtil.difficulties[curDifficulty].toLowerCase());
 
@@ -376,7 +375,7 @@ class FreeplayState extends MusicBeatState
 
 			Paths.currentModDirectory = songs[curSelected].folder;
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			PlayState.SONG = Song.loadFromJson(poop, CoolUtil.difficulties[curDifficulty].toLowerCase());
 
 			instPlaying = curSelected;
 

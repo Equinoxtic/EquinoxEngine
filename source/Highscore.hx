@@ -95,6 +95,7 @@ class Highscore
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 	}
+	
 	static function setWeekScore(week:String, score:Int):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!

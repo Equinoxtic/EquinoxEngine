@@ -1,5 +1,6 @@
 package ui.game;
 
+import misc.FunkinText;
 import util.Constants;
 import flixel.FlxG;
 import flixel.FlxBasic;

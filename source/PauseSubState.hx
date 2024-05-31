@@ -1,6 +1,6 @@
 package;
 
-import ui.FunkinText;
+import misc.FunkinText;
 import flixel.group.FlxGroup.FlxTypedGroupIterator;
 import Controls.Control;
 import flixel.FlxG;

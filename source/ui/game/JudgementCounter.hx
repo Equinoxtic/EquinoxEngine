@@ -1,5 +1,6 @@
 package ui.game;
 
+import misc.FunkinText;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;

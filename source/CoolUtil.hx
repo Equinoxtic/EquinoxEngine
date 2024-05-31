@@ -20,8 +20,7 @@ class CoolUtil
 	public static var defaultDifficulties:Array<String> = [
 		'Easy',
 		'Normal',
-		'Hard',
-		#if (debug) // No erect mode, figure out how to run this lol
+		'Hard' #if (debug),
 		'Erect'
 		#end
 	];

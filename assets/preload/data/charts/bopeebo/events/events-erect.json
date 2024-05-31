@@ -11,7 +11,7 @@
 					],
 					[
 						"Set Default Camera Zoom",
-						"1.0",
+						"0.8",
 						"1.0"
 					]
 				]
@@ -41,22 +41,32 @@
 				[
 					[
 						"Cinematic Border",
-						"0.65, 0.6",
+						"0.85, 0.6",
 						"cubeOut"
 					],
 					[
 						"Set Default Camera Zoom",
-						"0.81",
+						"0.78",
 						"1.1"
 					]
 				]
 			],
 			[
-				14878.0487804878,
+				14634.1463414634,
 				[
 					[
 						"Set Default Camera Zoom",
-						"1.0",
+						"0.8",
+						"1.0"
+					]
+				]
+			],
+			[
+				15121.9512195122,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.9",
 						"1.0"
 					]
 				]
@@ -66,12 +76,22 @@
 				[
 					[
 						"Cinematic Border",
-						"0.3, 0.25",
+						"0.65, 0.25",
 						"cubeOut"
 					],
 					[
 						"Set Default Camera Zoom",
-						"0.7",
+						"0.68",
+						"1.0"
+					]
+				]
+			],
+			[
+				30000,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.75",
 						"1.0"
 					]
 				]
@@ -80,14 +100,14 @@
 				31219.512195122,
 				[
 					[
-						"Cinematic Border",
-						"0.05, 4.0",
-						"sineInOut"
-					],
-					[
 						"Set Default Camera Zoom",
 						"1.05",
 						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"1.0, 3.5",
+						"sineInOut"
 					]
 				]
 			],
@@ -142,12 +162,282 @@
 				]
 			],
 			[
+				44878.0487804878,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.15",
+						"1.0"
+					]
+				]
+			],
+			[
 				46829.2682926829,
 				[
 					[
 						"Set Default Camera Zoom",
 						"0.72",
 						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.5, 0.8",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				61219.512195122,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.9",
+						"1.0"
+					]
+				]
+			],
+			[
+				62439.0243902439,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.05",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.2, 5",
+						"sineInOut"
+					]
+				]
+			],
+			[
+				64390.243902439,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.87",
+						"1.0"
+					]
+				]
+			],
+			[
+				66341.4634146342,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.15",
+						""
+					]
+				]
+			],
+			[
+				67560.9756097561,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.3",
+						""
+					]
+				]
+			],
+			[
+				68292.6829268293,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.1",
+						"1.0"
+					]
+				]
+			],
+			[
+				70243.9024390244,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.9",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.9, 5",
+						"sineInOut"
+					]
+				]
+			],
+			[
+				78048.7804878049,
+				[
+					[
+						"Cinematic Border",
+						"1.0, 0.6",
+						"cubeOut"
+					],
+					[
+						"Set Default Camera Zoom",
+						"0.8",
+						"1.0"
+					]
+				]
+			],
+			[
+				80000,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.0",
+						"1.0"
+					]
+				]
+			],
+			[
+				81951.2195121951,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.7",
+						"1.0"
+					]
+				]
+			],
+			[
+				83902.4390243903,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.9",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.9, 0.8",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				84756.0975609756,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.1",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.8, 0.8",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				85365.8536585366,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.2",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.6, 0.4",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				85853.6585365854,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.68",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"1.0, 0.8",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				87804.8780487805,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.94",
+						"1.0"
+					]
+				]
+			],
+			[
+				89756.0975609756,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.84",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.1, 5",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				91707.3170731708,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.96",
+						"1.0"
+					]
+				]
+			],
+			[
+				92682.9268292683,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.1",
+						"1.0"
+					]
+				]
+			],
+			[
+				93170.7317073171,
+				[
+					[
+						"Set Default Camera Zoom",
+						"1.35",
+						"1.0"
+					]
+				]
+			],
+			[
+				93658.5365853659,
+				[
+					[
+						"Set Default Camera Zoom",
+						"0.9",
+						"1.0"
+					],
+					[
+						"Cinematic Border",
+						"0.5, 0.6",
+						"cubeOut"
+					]
+				]
+			],
+			[
+				100487.804878049,
+				[
+					[
+						"Play Animation",
+						"hey",
+						"bf"
 					]
 				]
 			]

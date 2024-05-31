@@ -363,7 +363,7 @@ class FreeplayState extends MusicBeatState
 
 	private function loadSong(?selectedSong:String, ?jsonDiff:String):Void
 	{
-		var songPath:String = Std.string('charts/${selectedSong}/song-difficulties/${jsonDiff}');
+		var songPath:String = Std.string('charts/${selectedSong}/difficulties/${jsonDiff}');
 		
 		#if MODS_ALLOWED
 		if (!sys.FileSystem.exists(Paths.modsJson(songPath)) && !sys.FileSystem.exists(Paths.json(songPath)))

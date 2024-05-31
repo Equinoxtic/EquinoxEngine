@@ -1245,7 +1245,6 @@ class PlayState extends MusicBeatState
 		healthBarBG.visible = !ClientPrefs.hideHud;
 		healthBarBG.xAdd = -4;
 		healthBarBG.yAdd = -26;
-		healthBarBG.antialiasing = ClientPrefs.globalAntialiasing;
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 		
 		healthBar = new FlxBar(0, 0, FlxBarFillDirection.RIGHT_TO_LEFT, Std.int(healthBarBG.width * 1), Std.int(healthBarBG.height * 1), this,
@@ -1274,7 +1273,6 @@ class PlayState extends MusicBeatState
 		timeBarBG.setGraphicSize(Std.int(timeBarBG.width * 1.15), Std.int(timeBarBG.height * 1.75));
 		timeBarBG.alpha = 0;
 		timeBarBG.visible = showTime;
-		timeBarBG.antialiasing = ClientPrefs.globalAntialiasing;
 		
 		timeBar = new FlxBar(0, 0, FlxBarFillDirection.LEFT_TO_RIGHT, Std.int(timeBarBG.width * 1), Std.int(timeBarBG.height * 1), this,
 		'lerpTime', 0, 1);
@@ -1290,8 +1288,7 @@ class PlayState extends MusicBeatState
 		timeTxt.screenCenter(X);
 		timeTxt.y = timeBarBG.y - 1.5;
 		timeTxt.alpha = 0;
-		timeTxt.borderSize = 2.5;
-		timeTxt.antialiasing = ClientPrefs.globalAntialiasing;
+		timeTxt.borderSize = 3.0;
 		timeTxt.visible = showTime;
 		if(ClientPrefs.downScroll) timeTxt.y = FlxG.height - 44;
 		updateTime = showTime;
@@ -5030,7 +5027,10 @@ class PlayState extends MusicBeatState
 
 		if(char != null && !daNote.noMissAnimation && char.hasMissAnimations)
 		{
-			var animToPlay:String = singAnimations[Std.int(Math.abs(daNote.noteData))] + 'miss' + daNote.animSuffix;
+			var animToPlay:String = singAnimations[Std.int(Math.abs(daNote.noteData))] + 'miss' + daNote.animSuffix; // Alt animations for all characters.
+			if (char.curCharacter == 'bf-zero') {
+				animToPlay = singAnimations[Std.int(Math.abs(daNote.noteData))] + 'miss'; // Make an exception for ZeroArtist's BF since the JSON schema does not include Alt. Miss Animations.
+			}
 			char.playAnim(animToPlay, true);
 		}
 

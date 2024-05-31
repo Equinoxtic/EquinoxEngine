@@ -1,5 +1,6 @@
 package menus;
 
+import misc.FunkinBG;
 import misc.Checkerboard;
 import flixel.addons.display.FlxBackdrop;
 import util.Constants;
@@ -53,8 +54,9 @@ class MainMenuState extends MusicBeatState
 		'donate'
 		#end
 	];
-
-	var magenta:FlxSprite;
+	
+	var mainBG:FunkinBG;
+	var magentaBG:FunkinBG;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
@@ -92,28 +94,18 @@ class MainMenuState extends MusicBeatState
 
 		var yScroll:Float = (Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1)) * 0.5;
 
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.set(0, yScroll);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
-		bg.updateHitbox();
-		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
-		add(bg);
+		mainBG = new FunkinBG(0, -80, Paths.image('menuBG'), 0.0, yScroll, 0xFFFFFFFF);
+		mainBG.flickers = false;
+		add(mainBG);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 		add(camFollowPos);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.set(0, yScroll);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
-		magenta.updateHitbox();
-		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.antialiasing = ClientPrefs.globalAntialiasing;
-		magenta.color = 0xFFfd719b;
-		add(magenta);
+		magentaBG = new FunkinBG(0, -80, Paths.image('menuDesat'), 0.0, yScroll, 0xFFFD719B);
+		magentaBG.flickers = true;
+		add(magentaBG);
 
 		mainChecker = new Checkerboard(XY, 1, HUGE, 0.3);
 		add(mainChecker);
@@ -125,8 +117,8 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			var offset:Float = 100 + (Math.max(optionShit.length, 4) - 4) * 100;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 180) + offset * 2.75);
+			var offset:Float = 100 + (Math.max(optionShit.length, 4) - 4) * 90;
+			var menuItem:FlxSprite = new FlxSprite(0, (i * 180) + offset);
 			menuItem.scale.x = scale;
 			menuItem.scale.y = scale;
 			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
@@ -224,13 +216,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			/* if (controls.BACK)
-			{
-				selectedSomethin = true;
-				FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new TitleState());
-			} */
-
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate')
@@ -242,7 +227,7 @@ class MainMenuState extends MusicBeatState
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
-					if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+					magentaBG.startFlicker(0.15, 1.1);
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{

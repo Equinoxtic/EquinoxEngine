@@ -562,9 +562,7 @@ class ChartingState extends MusicBeatState
 		{
 			var songName:String = Paths.formatToSongPath(_song.song);
 			
-			var eventsPath:String = '${songName}/song-events/default';
-			if (PlayState.storyDifficulty >= 3)
-				eventsPath = '${songName}/song-events/erect';
+			var eventsPath:String = '${songName}/events/events${FunkinSound.erectModeSuffix(false)}';
 
 			var file:String = Paths.json(eventsPath);
 			#if sys
@@ -1536,7 +1534,7 @@ class ChartingState extends MusicBeatState
 			saveSongData();
 		});
 
-		tab_group_info.add(new FlxText(5, 5, FlxG.width, '- Song Information -', 14));
+		tab_group_info.add(new FlxText(5, 5, FlxG.width, '- Song Data / Information -', 14));
 
 		tab_group_info.add(new FlxText(creditsInputText.x, creditsInputText.y - 15, 0, 'Song Credits:'));
 		tab_group_info.add(new FlxText(charterInputText.x, charterInputText.y - 15, 0, 'Song Charter:'));

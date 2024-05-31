@@ -102,7 +102,7 @@ class Song
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 
-		var songPath:String = 'charts/${formattedFolder}/song-difficulties/${jsonInput}';
+		var songPath:String = 'charts/${formattedFolder}/difficulties/${jsonInput}';
 
 		/**
 		 * Event JSONs check.
@@ -111,10 +111,7 @@ class Song
 		{
 			if (isEventFile)
 			{
-				if (PlayState.storyDifficulty >= 3)
-					songPath = 'charts/${formattedFolder}/song-events/erect';
-				else
-					songPath = 'charts/${formattedFolder}/song-events/default';
+				songPath = 'charts/${formattedFolder}/events/events${FunkinSound.erectModeSuffix(false)}';
 			}
 			#if (debug)
 			FlxG.log.add('Loaded song event json of: ${formattedFolder.toUpperCase()}');
@@ -206,9 +203,7 @@ class SongData
 
 		final f:String = Paths.formatToSongPath(song);
 
-		var p:String = 'charts/${f}/song-data/default';
-		if (PlayState.storyDifficulty >= 3)
-			p = 'charts/${f}/song-data/erect';
+		var p:String = 'charts/${f}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
 		
 		#if MODS_ALLOWED
 		var m:String = Paths.modsJson(p);

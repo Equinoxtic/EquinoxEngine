@@ -221,7 +221,7 @@ class Paths
 	// Use this for the legacy vocals system !!!
 	inline static public function voices(song:String):Any
 	{
-		var songKey:String = '${formatToSongPath(song)}/Voices${FunkinSound.erectModePrefix()}';
+		var songKey:String = '${formatToSongPath(song)}/Voices${FunkinSound.erectModeSuffix()}';
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
@@ -229,14 +229,14 @@ class Paths
 	// Use this for the new seperated vocals system !!!
 	inline static public function playerVoices(song:String, playerId:Int):Any
 	{
-		var songKey:String = '${formatToSongPath(song)}/Voices-${getVoicesFromPlayer(playerId)}${FunkinSound.erectModePrefix()}';
+		var songKey:String = '${formatToSongPath(song)}/Voices-${getVoicesFromPlayer(playerId)}${FunkinSound.erectModeSuffix()}';
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
 	
 	inline static public function inst(song:String):Any
 	{
-		var songKey:String = '${formatToSongPath(song)}/Inst${FunkinSound.erectModePrefix()}';
+		var songKey:String = '${formatToSongPath(song)}/Inst${FunkinSound.erectModeSuffix()}';
 		var inst = returnSound('songs', songKey);
 		return inst;
 	}

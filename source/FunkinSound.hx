@@ -372,12 +372,14 @@ class FunkinSound
 	}
 
 	/**
-	 * Gets the ERECT mode prefix. (Returns '-erect')
+	 * Gets the ERECT mode suffix. (Returns '-erect', otherwise if ERECT mode isn't on and the parameter 'returnBlankSuffix' is true, return '-default' as a suffix)
 	 */
-	public static function erectModePrefix():String
+	public static function erectModeSuffix(returnBlankSuffix:Bool = true):String
 	{
 		if (PlayState.storyDifficulty > 2) {
 			return '-erect';
+		} else {
+			if (!returnBlankSuffix) return '-default';
 		}
 		return '';
 	}

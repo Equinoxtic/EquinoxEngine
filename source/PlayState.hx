@@ -3,7 +3,7 @@ package;
 /**
  * Main Classes
  */
-import ui.FunkinText;
+import misc.FunkinText;
 import ui.game.rating.RatingSprite;
 import ui.game.rating.ComboSprite;
 import ui.game.rating.NumericalComboSprite;
@@ -972,9 +972,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Song Data / Information / Credits JSONs.
 		 */
-		var songDataPath:String = 'charts/${Paths.formatToSongPath(PlayState.SONG.song)}/song-data/default';
-		if (erectMode)
-			songDataPath = 'charts/${Paths.formatToSongPath(PlayState.SONG.song)}/song-data/erect';
+		var songDataPath:String = 'charts/${Paths.formatToSongPath(PlayState.SONG.song)}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
 
 		#if (debug)
 		FlxG.log.add('Loading song data: ${Paths.json(songDataPath)}');
@@ -1476,15 +1474,15 @@ class PlayState extends MusicBeatState
 		// SONG SPECIFIC SCRIPTS
 		#if LUA_ALLOWED
 		var filesPushed:Array<String> = [];
-		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/')];
+		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/charts/${Paths.formatToSongPath(SONG.song)}/scripts/')];
 
 		#if MODS_ALLOWED
-		foldersToCheck.insert(0, Paths.mods('data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/'));
+		foldersToCheck.insert(0, Paths.mods('data/charts/${Paths.formatToSongPath(SONG.song)}/scripts/'));
 		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
-			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/${'data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/'}'));
+			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/${'data/charts/${Paths.formatToSongPath(SONG.song)}/scripts/'}'));
 
 		for(mod in Paths.getGlobalMods())
-			foldersToCheck.insert(0, Paths.mods(mod + 'data/charts/${Paths.formatToSongPath(SONG.song)}/song-scripts/'));// using push instead of insert because these should run after everything else
+			foldersToCheck.insert(0, Paths.mods(mod + 'data/charts/${Paths.formatToSongPath(SONG.song)}/scripts/'));// using push instead of insert because these should run after everything else
 		#end
 
 		for (folder in foldersToCheck)
@@ -1503,7 +1501,7 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						if (file.endsWith('.lua') && file.contains(Std.string('${FunkinSound.erectModePrefix}')) && !filesPushed.contains(file))
+						if (file.endsWith('.lua') && file.contains(Std.string('${FunkinSound.erectModeSuffix()}')) && !filesPushed.contains(file))
 						{
 							luaArray.push(new FunkinLua('${folder}${file}'));
 							filesPushed.push(file);
@@ -2697,9 +2695,7 @@ class PlayState extends MusicBeatState
 
 		var songName:String = Paths.formatToSongPath(SONG.song);
 		
-		var shittyEventsPath = 'charts/${songName}/song-events/default';
-		if (erectMode)
-			shittyEventsPath = 'charts/${songName}/song-events/erect';
+		var shittyEventsPath = 'charts/${songName}/events/events${FunkinSound.erectModeSuffix(false)}';
 
 		var file:String = Paths.json(shittyEventsPath);
 		#if MODS_ALLOWED

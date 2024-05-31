@@ -3,6 +3,10 @@ package;
 /**
  * Main Classes
  */
+import shaders.Shaders.ChromaticAberration;
+import shaders.Shaders.VCRDistortionEffect;
+import shaders.WiggleEffect;
+import shaders.WiggleEffect.WiggleEffectType;
 import misc.FunkinText;
 import ui.game.rating.RatingSprite;
 import ui.game.rating.ComboSprite;
@@ -15,8 +19,6 @@ import Discord.DiscordClient;
 #end
 import Section.SwagSection;
 import Song.SwagSong;
-import WiggleEffect;
-import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -67,7 +69,6 @@ import Achievements;
 import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
-import Shaders;
 import util.Rating;
 import util.Constants;
 import Song.SongData;

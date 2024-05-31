@@ -5,8 +5,6 @@ import misc.Checkerboard;
 import flixel.addons.display.FlxBackdrop;
 import util.Constants;
 import haxe.Http;
-import Shaders.BloomShader as BloomShader;
-import Shaders;
 import openfl.filters.ShaderFilter;
 #if desktop
 import Discord.DiscordClient;

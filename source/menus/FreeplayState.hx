@@ -44,6 +44,8 @@ class FreeplayState extends MusicBeatState
 	var lerpRating:Float = 0;
 	var intendedScore:Int = 0;
 	var intendedRating:Float = 0;
+	var intendedRatingFC:String = '';
+	var intendedRanking:String = '';
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	var grpDifficulties:FlxTypedSpriteGroup<DifficultySprite>;
@@ -134,20 +136,20 @@ class FreeplayState extends MusicBeatState
 		bars.screenCenter();
 		add(bars);
 
-		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, 100);
+		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, FlxG.height * 0.75);
 		add(grpDifficulties);
 
-		scoreText = new FlxText(FlxG.width * 0.72, 18, 0, "", 32);
+		scoreText = new FlxText(FlxG.width * 0.8, 18, 0, "", 32);
 		scoreText.antialiasing = ClientPrefs.globalAntialiasing;
-		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		scoreText.borderSize = 3.5;
 
 		scoreBG = new FlxSprite(scoreText.x - 6, 85).makeGraphic(1, 66, 0xFF000000);
 		scoreBG.alpha = 0.000001;
 		add(scoreBG);
 
-		var diffSelLeft:DifficultySelector = new DifficultySelector(20, grpDifficulties.y - 10, false, controls);
-		var diffSelRight:DifficultySelector = new DifficultySelector(325, grpDifficulties.y - 10, true, controls);
+		var diffSelLeft:DifficultySelector = new DifficultySelector(FlxG.width * 0.7, grpDifficulties.y - 10, false, controls);
+		var diffSelRight:DifficultySelector = new DifficultySelector(diffSelLeft.x + 305, grpDifficulties.y - 10, true, controls);
 		add(diffSelLeft);
 		add(diffSelRight);
 
@@ -205,7 +207,7 @@ class FreeplayState extends MusicBeatState
 			if (diffSprite.difficultyId == CoolUtil.difficulties[curDifficulty].toLowerCase()) diffSprite.visible = true;
 		}
 
-		FlxTween.tween(grpDifficulties, {x: 90}, 0.6, {ease: FlxEase.quartOut});
+		FlxTween.tween(grpDifficulties, {x: diffSelLeft.x + 70}, 0.6, {ease: FlxEase.quartOut});
 	}
 
 	override function closeSubState()
@@ -240,8 +242,8 @@ class FreeplayState extends MusicBeatState
 
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, CoolUtil.boundTo(elapsed * 24, 0, 1)));
 		lerpRating = FlxMath.lerp(lerpRating, intendedRating, CoolUtil.boundTo(elapsed * 12, 0, 1));
-		var intendedRanking:String = '${Highscore.getRanking(songs[curSelected].songName, curDifficulty)}';
-		var intendedRatingCombo:String = '${Highscore.getRatingCombo(songs[curSelected].songName, curDifficulty)}';
+		intendedRanking = '${Highscore.getRanking(songs[curSelected].songName, curDifficulty)}';
+		intendedRatingFC = '${Highscore.getRatingFC(songs[curSelected].songName, curDifficulty)}';
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
@@ -260,7 +262,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.text = '- PERSONAL BEST -\n\n'
 			+ 'SCORE: ${lerpScore}\n'
 			+ 'ACCURACY: ${ratingSplit.join('.')}%\n'
-			+ '${intendedRatingCombo} - ${intendedRanking}';
+			+ '${intendedRatingFC} - ${intendedRanking}';
 		
 		positionHighscore();
 
@@ -631,7 +633,6 @@ class DifficultySprite extends FlxSprite
 	{
 		super();
 		difficultyId = diffId;
-		trace('Loaded: freeplay/freeplay${diffId}');
 		this.loadGraphic(Paths.image('freeplay/freeplay${diffId}'));
 	}
 }

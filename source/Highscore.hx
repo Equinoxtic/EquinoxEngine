@@ -10,11 +10,13 @@ class Highscore
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songRating:Map<String, Float> = new Map();
+	public static var songRatingCombo:Map<String, String> = new Map();
 	public static var songRanking:Map<String, String> = new Map();
 	#else
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songRating:Map<String, Float> = new Map<String, Float>();
+	public static var songRatingCombo:Map<String, String> = new Map<String, String>();
 	public static var songRanking:Map<String, String> = new Map<String, String>();
 	#end
 
@@ -48,7 +50,7 @@ class Highscore
 		return newValue / tempMult;
 	}
 
-	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1, ?rank:String = ''):Void
+	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1, ?ratingCombo:String = '', ?rank:String = ''):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
@@ -56,12 +58,14 @@ class Highscore
 			if (songScores.get(daSong) < score) {
 				setScore(daSong, score);
 				if (rank != '') setRanking(daSong, rank);
+				if (ratingCombo != '') setRatingCombo(daSong, ratingCombo);
 				if (rating >= 0) setRating(daSong, rating);
 			}
 		}
 		else {
 			setScore(daSong, score);
 			if (rank != '') setRanking(daSong, rank);
+			if (ratingCombo != '') setRatingCombo(daSong, ratingCombo);
 			if (rating >= 0) setRating(daSong, rating);
 		}
 
@@ -107,6 +111,13 @@ class Highscore
 		FlxG.save.flush();
 	}
 
+	static function setRatingCombo(song:String, ratingCombo:String):Void
+	{
+		songRatingCombo.set(song, ratingCombo);
+		FlxG.save.data.songRatingCombo = songRatingCombo;
+		FlxG.save.flush();	
+	}
+
 	static function setRanking(song:String, ranking:String):Void
 	{
 		songRanking.set(song, ranking);
@@ -135,6 +146,15 @@ class Highscore
 			setRating(daSong, 0);
 
 		return songRating.get(daSong);
+	}
+
+	public static function getRatingCombo(song:String, diff:Int):String
+	{
+		var daSong:String = formatSong(song, diff);
+		if (!songRatingCombo.exists(daSong))
+			setRatingCombo(daSong, 'N/A');
+
+		return songRatingCombo.get(daSong);
 	}
 
 	public static function getRanking(song:String, diff:Int):String

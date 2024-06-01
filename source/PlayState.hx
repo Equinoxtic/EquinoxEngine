@@ -78,6 +78,7 @@ import Song.SongData;
  */
 import TweenClass;
 import ui.game.JudgementCounter;
+import ui.game.StatisticsHUD;
 import ui.game.GameplayInfo;
 import ui.Watermark;
 
@@ -331,6 +332,7 @@ class PlayState extends MusicBeatState
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
 
+	public var statsHUD:StatisticsHUD;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -1183,6 +1185,7 @@ class PlayState extends MusicBeatState
 		
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
+
 		splash.alpha = 0.0;
 		
 		opponentStrums = new FlxTypedGroup<StrumNote>();
@@ -1325,6 +1328,10 @@ class PlayState extends MusicBeatState
 		hudGroupExcluded = new FlxTypedGroup<FlxSprite>();
 		add(hudGroupExcluded);
 
+		statsHUD = new StatisticsHUD(this, 0, FlxG.height * 0.83, Constants.STATISTICS_HUD_SIZE);
+		statsHUD.x += 25;
+		statsHUD.scrollFactor.set();
+		hudGroupInfo.add(statsHUD);
 		
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font('phantommuff.ttf'), 38, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -3356,7 +3363,11 @@ class PlayState extends MusicBeatState
 			/**
 			 * Update Scores and ratings.
 			 */
+			statsHUD.updateStatistics();
+		}
+		else // Otherwise, check the current mode that the player is in and update the score text to something else other than the score and ratings.
 		{
+			statsHUD.updateStatistics(false);
 		}
 
 		/**
@@ -4693,7 +4704,9 @@ class PlayState extends MusicBeatState
 
 		if(daRating.noteSplash && !note.noteSplashDisabled)
 		{
-			spawnNoteSplashOnNote(note);
+			if (!note.isSustainNote) {
+				spawnNoteSplashOnNote(note);
+			}
 		}
 
 		if (!note.ratingDisabled)
@@ -5124,8 +5137,12 @@ class PlayState extends MusicBeatState
 			if (note.hitCausesMiss)
 			{
 				noteMiss(note);
-				if(!note.noteSplashDisabled && !note.isSustainNote) {
-					spawnNoteSplashOnNote(note);
+
+				if(!note.noteSplashDisabled)
+				{
+					if (!note.isSustainNote) {
+						spawnNoteSplashOnNote(note);
+					}
 				}
 
 				if(!note.noMissAnimation)
@@ -5245,6 +5262,7 @@ class PlayState extends MusicBeatState
 		var hue:Float = 0;
 		var sat:Float = 0;
 		var brt:Float = 0;
+
 		if (data > -1 && data < ClientPrefs.arrowHSV.length)
 		{
 			hue = ClientPrefs.arrowHSV[data][0] / 360;

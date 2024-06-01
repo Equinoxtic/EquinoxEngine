@@ -4,6 +4,7 @@ import flixel.FlxBasic;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.group.FlxSpriteGroup;
+import ui.game.statistics.*;
 
 class StatisticsHUD extends FlxSpriteGroup
 {
@@ -54,20 +55,35 @@ class StatisticsHUD extends FlxSpriteGroup
 
 	public function setNumValues(songScore:Int, songMisses:Int, accuracy:Float, rating:String, ranking:String):Void
 	{
-		scoreText.scoreNum = PlayState.instance.songScore;
-		missesText.comboBreaksNum = PlayState.instance.songMisses;
-		accuracyText.accuracyNum = Highscore.floorDecimal(PlayState.instance.ratingPercent * 100, 2);
-		ratingText.ratingString = PlayState.instance.ratingFC;
-		ratingText.rankingString = PlayState.instance.ranking;
+		scoreText.scoreNum = songScore;
+		missesText.comboBreaksNum = songMisses;
+		accuracyText.accuracyNum = accuracy;
+		ratingText.ratingString = rating;
+		ratingText.rankingString = ranking;
 	}
 
-	public function updateStatistics(songScore:Int, songMisses:Int, accuracy:Float, rating:String, ranking:String):Void
+	public function updateNumValues():Void
 	{
-		setNumValues(songScore, songMisses, accuracy, rating, ranking);
 		scoreText.updateScore();
 		missesText.updateComboBreaks();
 		accuracyText.updateAccuracy();
 		ratingText.updateRating();
+	}
+
+	public function updateStatistics(?autoSet:Bool = true):Void
+	{
+		if (autoSet)
+		{
+			setNumValues(
+				PlayState.instance.songScore,
+				PlayState.instance.songMisses,
+				Highscore.floorDecimal(PlayState.instance.ratingPercent * 100, 2),
+				PlayState.instance.ratingFC,
+				PlayState.instance.ranking
+			);
+		}
+
+		updateNumValues();
 	}
 
 	public override function update(elapsed:Float):Void

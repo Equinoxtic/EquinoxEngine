@@ -10,8 +10,7 @@ class Ranking
 	 * [ 'PFC', 'SFC', 'GFC', 'FC', 'SDCB', 'DDCB', 'TDCB', 'QDCB' ],
 	 */
 	public static var ratingsArray:Array<String> = [
-		'PFC', 'SFC', 'GFC', 'FC',
-		'SDCB', 'DDCB', 'TDCB', 'QDCB'
+		'PFC', 'SFC', 'GFC', 'FC', 'SDCB', 'CLEAR'
 	];
 
 	/**
@@ -36,9 +35,7 @@ class Ranking
 			(misses == 0 && bads >= 1 && shits == 0 && goods >= 0 && sicks >= 0 && marvs >= 0), // GFC (Good FC)
 			(misses == 0), // FC (Full Combo)
 			(misses < 10), // SDCB (Single Digit Combo Breaks)
-			(misses >= 10), // DDCB (Double Digit Combo Breaks)
-			(misses >= 100), // TDCB (Triple Digit Combo Breaks)
-			(misses >= 1000) // QDCB (Quadruple Digit Combo Breaks)
+			(misses >= 10), // CLEAR
 		];
 
 		var ratingKey:String = '';

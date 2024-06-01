@@ -29,7 +29,7 @@ class Watermark extends FlxSpriteGroup
 		this.instance = instance;
 
 		watermarkText = new FlxText(x, y, FlxG.width, '${Constants.VERSION_MAIN} | ${Constants.VERSION_PSYCH}', fontSize);
-		watermarkText.setFormat(Paths.font('phantommuff.ttf'), fontSize, 0xFFFFFFFF, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		watermarkText.setFormat(Paths.font('phantommuff.ttf'), fontSize, 0xFFFFFFFF, CENTER, FlxTextBorderStyle.OUTLINE, 0xFF000000);
 		watermarkText.antialiasing = ClientPrefs.globalAntialiasing;
 		watermarkText.borderSize = 1.3;
 		watermarkText.alpha = 0.5;

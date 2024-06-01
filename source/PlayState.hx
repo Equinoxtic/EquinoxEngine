@@ -1364,7 +1364,8 @@ class PlayState extends MusicBeatState
 		/**
 		 * Watermark.
 		 */
-		engineWatermark = new Watermark(this, 5, FlxG.height - 25, Constants.WATERMARK_SIZE, 12);
+		engineWatermark = new Watermark(this, 0, FlxG.height * 0.97, Constants.WATERMARK_SIZE, 12);
+		engineWatermark.screenCenter(X);
 		engineWatermark.scrollFactor.set();
 		hudGroupExcluded.add(engineWatermark);
 		engineWatermark.playWatermarkAnimation();

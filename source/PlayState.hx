@@ -78,7 +78,6 @@ import Song.SongData;
  */
 import TweenClass;
 import ui.game.JudgementCounter;
-import ui.game.ScoreTracker;
 import ui.game.GameplayInfo;
 import ui.Watermark;
 
@@ -332,7 +331,6 @@ class PlayState extends MusicBeatState
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
 
-	public var scoreTracker:ScoreTracker;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -1327,11 +1325,6 @@ class PlayState extends MusicBeatState
 		hudGroupExcluded = new FlxTypedGroup<FlxSprite>();
 		add(hudGroupExcluded);
 
-		/**
-		 * ScoreTracker, formerly known as scoreTxt.
-		 */
-		scoreTracker = new ScoreTracker(this, 0, healthBarBG.y + 55, Constants.SCORE_TRACKER_SIZE, 17, CENTER);
-		hudGroupInfo.add(scoreTracker);
 		
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font('phantommuff.ttf'), 38, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -3361,19 +3354,9 @@ class PlayState extends MusicBeatState
 		if (!cpuControlled && !practiceMode && !chartingMode) // Check whether or not the player is in BOTPLAY, PRACTICE, or CHARTING MODE
 		{
 			/**
-			 * Update Score Tracker numbers and text.
+			 * Update Scores and ratings.
 			 */
-			scoreTracker.updateScoreText(
-				songScore, // SCORE
-				songMisses, // MISSES
-				Highscore.floorDecimal(ratingPercent * 100, 2), // ACCURACY
-				ratingFC, // RATING
-				ranking // RANKING
-			);
-		}
-		else // Otherwise, check the current mode that the player is in and update the score tracker text.
 		{
-			scoreTracker.checkPlayStateMode();
 		}
 
 		/**
@@ -3396,7 +3379,6 @@ class PlayState extends MusicBeatState
 			botplaySine += 180 * elapsed;
 			var alphaSine:Float = 1 - Math.sin((Math.PI * botplaySine) / 180);
 			botplayTxt.alpha = alphaSine;
-			scoreTracker.alpha = alphaSine;
 		}
 
 		if (controls.PAUSE && startedCountdown && canPause)

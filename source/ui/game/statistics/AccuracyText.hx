@@ -1,4 +1,4 @@
-package ui.game;
+package ui.game.statistics;
 
 import misc.FunkinText;
 
@@ -10,9 +10,9 @@ class AccuracyText extends FunkinText
 
 	public function new(X:Float, Y:Float):Void
 	{
-		super(X, Y, FlxG.width, "Accuracy: N/A", 20, LEFT, true);
+		super(X, Y, FlxG.width, "Accuracy: N/A", Constants.STATISTICS_FONT_SIZE, LEFT, true);
 
-		this.borderSize = 3.0;
+		this.borderSize = Constants.STATISTICS_BORDER_SIZE;
 
 		setup(accuracyString, accuracyNum, shouldRound);
 	}

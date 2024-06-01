@@ -139,14 +139,19 @@ class Constants
 	 */
 
 	/**
-	 * The size of the Score Tracker.
+	 * The size of the Statistics HUD.
 	 */
-	public static final SCORE_TRACKER_SIZE:Float = 1.0;
+	public static final STATISTICS_HUD_SIZE:Float = 1.0;
 
 	/**
-	 * The size that gets added up to the Score Tracker. (Used for the Score Tracker zoom tween)
+	 * The FONT size of each texts in the Statistics HUD.
 	 */
-	public static final SCORE_TRACKER_SIZE_ADDITIVE:Float = 0.075;
+	public static final STATISTICS_FONT_SIZE:Int = 24;
+	
+	/**
+	 * The text's BORDER size in the Statistics HUD.
+	 */
+	public static final STATISTICS_BORDER_SIZE:Float = 2.65;
 
 	/**
 	 * The size of the Judgement Counter.

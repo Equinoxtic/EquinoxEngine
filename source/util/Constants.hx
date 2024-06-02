@@ -151,7 +151,7 @@ class Constants
 	/**
 	 * The text's BORDER size in the Statistics HUD.
 	 */
-	public static final STATISTICS_BORDER_SIZE:Float = 2.65;
+	public static final STATISTICS_BORDER_SIZE:Float = 2.4;
 
 	/**
 	 * The size of the Judgement Counter.

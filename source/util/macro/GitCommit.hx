@@ -20,8 +20,8 @@ class GitCommit
 		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
 		if (process.exitCode() != 0)
 		{
-		var message = process.stderr.readAll().toString();
-		haxe.macro.Context.info('[WARN] Could not determine current git commit; is this a proper Git repository?', pos);
+			var message = process.stderr.readAll().toString();
+			haxe.macro.Context.info('[WARN] Could not determine current git commit; is this a proper Git repository?', pos);
 		}
 
 		// read the output of the process
@@ -52,8 +52,8 @@ class GitCommit
 
 		if (branchProcess.exitCode() != 0)
 		{
-		var message = branchProcess.stderr.readAll().toString();
-		haxe.macro.Context.info('[WARN] Could not determine current git commit; is this a proper Git repository?', pos);
+			var message = branchProcess.stderr.readAll().toString();
+			haxe.macro.Context.info('[WARN] Could not determine current git commit; is this a proper Git repository?', pos);
 		}
 
 		var branchName:String = branchProcess.stdout.readLine();
@@ -81,27 +81,27 @@ class GitCommit
 
 		if (branchProcess.exitCode() != 0)
 		{
-		var message = branchProcess.stderr.readAll().toString();
-		haxe.macro.Context.info('[WARN] Could not determine current git commit; is this a proper Git repository?', pos);
+			var message = branchProcess.stderr.readAll().toString();
+			haxe.macro.Context.info('[WARN] Could not determine current git commit; is this a proper Git repository?', pos);
 		}
 
 		var output:String = '';
 		try
 		{
-		output = branchProcess.stdout.readLine();
+			output = branchProcess.stdout.readLine();
 		}
 		catch (e)
 		{
-		if (e.message == 'Eof')
-		{
-			// Do nothing.
-			// Eof = No output.
-		}
-		else
-		{
-			// Rethrow other exceptions.
-			throw e;
-		}
+			if (e.message == 'Eof')
+			{
+				// Do nothing.
+				// Eof = No output.
+			}
+			else
+			{
+				// Rethrow other exceptions.
+				throw e;
+			}
 		}
 		trace('Git Status Output: ${output}');
 

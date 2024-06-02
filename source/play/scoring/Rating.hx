@@ -1,4 +1,4 @@
-package util;
+package play.scoring;
 
 import util.Constants as Constants;
 

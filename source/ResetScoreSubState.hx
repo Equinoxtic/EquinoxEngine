@@ -3,6 +3,8 @@ import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.util.FlxColor;
 
+import play.scoring.Highscore;
+
 using StringTools;
 
 class ResetScoreSubState extends MusicBeatSubstate

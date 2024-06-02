@@ -19,6 +19,8 @@ import lime.net.curl.CURLCode;
 import flixel.graphics.FlxGraphic;
 import WeekData;
 
+import play.scoring.Highscore;
+
 using StringTools;
 
 class StoryMenuState extends MusicBeatState

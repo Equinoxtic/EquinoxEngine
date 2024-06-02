@@ -33,6 +33,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxSave;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.system.FlxAssets.FlxShader;
+import play.scoring.Highscore;
 
 #if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;

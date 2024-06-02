@@ -1,6 +1,6 @@
-package util;
+package play.scoring;
 
-import Highscore;
+import play.scoring.Highscore;
 
 class Ranking
 {

@@ -1,4 +1,4 @@
-package ui;
+package play.hud;
 
 import flixel.FlxCamera;
 import flixel.FlxSprite;

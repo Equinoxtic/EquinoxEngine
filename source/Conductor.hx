@@ -1,7 +1,7 @@
 package;
 
 import Song.SwagSong;
-import util.Rating;
+import play.scoring.Rating;
 
 /**
  * ...

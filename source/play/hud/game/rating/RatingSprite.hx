@@ -1,8 +1,9 @@
-package ui.game.rating;
+package play.hud.game.rating;
 
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
+import play.scoring.*;
 
 class RatingSprite extends FlxSprite implements IRatingGraphic
 {

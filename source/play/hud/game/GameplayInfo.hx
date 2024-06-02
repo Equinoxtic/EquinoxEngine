@@ -1,4 +1,4 @@
-package ui.game;
+package play.hud.game;
 
 import misc.FunkinText;
 import util.Constants;

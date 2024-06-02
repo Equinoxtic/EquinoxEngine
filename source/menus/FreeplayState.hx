@@ -27,6 +27,8 @@ import SongMetadata;
 import sys.FileSystem;
 #end
 
+import play.scoring.*;
+
 using StringTools;
 
 class FreeplayState extends MusicBeatState

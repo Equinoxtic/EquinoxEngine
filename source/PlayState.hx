@@ -8,9 +8,7 @@ import shaders.Shaders.VCRDistortionEffect;
 import shaders.WiggleEffect;
 import shaders.WiggleEffect.WiggleEffectType;
 import misc.FunkinText;
-import ui.game.rating.RatingSprite;
-import ui.game.rating.ComboSprite;
-import ui.game.rating.NumericalComboSprite;
+import play.hud.game.rating.*;
 import Song.SongDataJson;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
@@ -69,7 +67,6 @@ import Achievements;
 import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
-import util.Rating;
 import util.Constants;
 import Song.SongData;
 
@@ -77,10 +74,14 @@ import Song.SongData;
  * Solarium Classes
  */
 import TweenClass;
-import ui.game.JudgementCounter;
-import ui.game.StatisticsHUD;
-import ui.game.GameplayInfo;
-import ui.Watermark;
+import play.hud.game.*;
+import play.scoring.*;
+import play.scoring.Rating.PlayStateRating;
+import play.hud.Watermark;
+
+#if (debug)
+import play.hud.DebugText;
+#end
 
 /**
  * FNF-Modcharting-Tools (DEPRECATED FOR NOW.)
@@ -386,7 +387,7 @@ class PlayState extends MusicBeatState
 	private var controlArray:Array<String>;
 
 	#if (debug)
-	private var debugText:ui.DebugText;
+	private var debugText:DebugText;
 	#end
 
 	var precacheList:Map<String, String> = new Map<String, String>();
@@ -1371,7 +1372,7 @@ class PlayState extends MusicBeatState
 		engineWatermark.playWatermarkAnimation();
 
 		#if (debug)
-		debugText = new ui.DebugText(this, 1.0, 1.0, 0.3, 16);
+		debugText = new DebugText(this, 1.0, 1.0, 0.3, 16);
 		debugText.scrollFactor.set();
 		hudGroupExcluded.add(debugText);
 		#end

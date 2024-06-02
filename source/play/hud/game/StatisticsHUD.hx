@@ -1,10 +1,11 @@
-package ui.game;
+package play.hud.game;
 
 import flixel.FlxBasic;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.group.FlxSpriteGroup;
-import ui.game.statistics.*;
+import play.scoring.*;
+import play.hud.game.statistics.*;
 
 class StatisticsHUD extends FlxSpriteGroup
 {

@@ -1,4 +1,4 @@
-package ui.game.rating;
+package play.hud.game.rating;
 
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxSprite;

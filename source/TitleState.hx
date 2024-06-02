@@ -38,6 +38,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+import play.scoring.Highscore;
 
 using StringTools;
 typedef TitleData =

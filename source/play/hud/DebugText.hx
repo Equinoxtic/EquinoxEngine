@@ -1,5 +1,5 @@
 #if (debug)
-package ui;
+package play.hud;
 
 import flixel.util.FlxColor;
 import flixel.text.FlxText;

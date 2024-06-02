@@ -19,6 +19,7 @@ import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.tweens.FlxEase.FlxEaseUtil;
+import play.scoring.*;
 
 class PauseSubState extends MusicBeatSubstate
 {

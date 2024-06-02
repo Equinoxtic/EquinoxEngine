@@ -1,4 +1,4 @@
-package ui.game.statistics;
+package play.hud.game.statistics;
 
 import misc.FunkinText;
 

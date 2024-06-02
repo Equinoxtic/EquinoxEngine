@@ -18,7 +18,6 @@ haxelib install layout 1.2.1
 haxelib install box2d 1.2.3
 haxelib install hscript 2.5.0
 haxelib install systools 1.1.0
-haxelib install random 1.4.1
 haxelib install hxCodec 2.5.1
 haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc

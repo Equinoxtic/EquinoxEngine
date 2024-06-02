@@ -136,8 +136,6 @@
 
     <haxelib name="fnf-modcharting-tools" /> -->
 
-	<haxelib name="random" />
-
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
 	<define name="hscriptPos" />

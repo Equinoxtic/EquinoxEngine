@@ -26,7 +26,7 @@ class GitCommit
 
 		// read the output of the process
 		var commitHash:String = process.stdout.readLine();
-		var commitHashSplice:String = commitHash.substr(0, 7);
+		var commitHashSplice:String = commitHash.substr(0, 8);
 
 		trace('Git Commit Hash: ${commitHashSplice}');
 

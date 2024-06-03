@@ -1,6 +1,6 @@
 package menus.editors;
 
-import Song.SongDataJson;
+import SongData;
 import FunkinSound.FunkinSoundChartEditor;
 #if desktop
 import Discord.DiscordClient;

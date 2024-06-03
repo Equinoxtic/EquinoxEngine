@@ -9,7 +9,7 @@ import shaders.WiggleEffect;
 import shaders.WiggleEffect.WiggleEffectType;
 import misc.FunkinText;
 import play.hud.game.rating.*;
-import Song.SongDataJson;
+import SongData;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
 #if desktop
@@ -67,7 +67,6 @@ import Achievements;
 import StageData;
 import DialogueBoxPsych;
 import util.Constants;
-import Song.SongData;
 
 /**
  * Solarium Classes
@@ -2775,7 +2774,7 @@ class PlayState extends MusicBeatState
 				/**
 				 * SHORTENED HOLD NOTE LENGTH SOLUTION: by using ceil instead of floor, we can get more accurate and proper hold note lengths, this seems to work more effectively
 				 */
-				 final susLength:Float = swagNote.sustainLength / (Conductor.stepCrochet / 1.04);
+				final susLength:Float = swagNote.sustainLength / (Conductor.stepCrochet / 1.04);
 				final ceilSus:Int = Math.ceil(susLength);
 
 				if (ceilSus > 0)
@@ -2827,11 +2826,18 @@ class PlayState extends MusicBeatState
 			}
 			daBeats += 1;
 		}
-		for (event in songData.events) //Event Notes
+
+		for (event in songData.events)
 		{
 			for (i in 0...event[1].length)
 			{
-				var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
+				var newEventNote:Array<Dynamic> = [
+					event[0],
+					event[1][i][0],
+					event[1][i][1],
+					event[1][i][2]
+				];
+				
 				var subEvent:EventNote = {
 					strumTime: newEventNote[0] + ClientPrefs.noteOffset,
 					event: newEventNote[1],

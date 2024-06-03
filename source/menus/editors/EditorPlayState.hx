@@ -52,8 +52,6 @@ class EditorPlayState extends MusicBeatState
 	}
 
 	var stepTxt:FlxText;
-	var beatTxt:FlxText;
-	var sectionTxt:FlxText;
 	
 	var timerToStart:Float = 0;
 	private var noteTypeMap:Map<String, Bool> = new Map<String, Bool>();
@@ -78,7 +76,7 @@ class EditorPlayState extends MusicBeatState
 			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_right'))
 		];
 		
-		strumLine = new FlxSprite(ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
+		strumLine = new FlxSprite(PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		if (ClientPrefs.downScroll)
 			strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
@@ -115,20 +113,8 @@ class EditorPlayState extends MusicBeatState
 		
 		noteTypeMap.clear();
 		noteTypeMap = null;
-		
-		sectionTxt = new FlxText(10, 580, FlxG.width - 20, "Section: 0", 20);
-		sectionTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		sectionTxt.scrollFactor.set();
-		sectionTxt.borderSize = 1.25;
-		add(sectionTxt);
-		
-		beatTxt = new FlxText(10, sectionTxt.y + 30, FlxG.width - 20, "Beat: 0", 20);
-		beatTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		beatTxt.scrollFactor.set();
-		beatTxt.borderSize = 1.25;
-		add(beatTxt);
 
-		stepTxt = new FlxText(10, beatTxt.y + 30, FlxG.width - 20, "Step: 0", 20);
+		stepTxt = new FlxText(10, FlxG.height * 0.95, FlxG.width - 20, "Step: 0", 20);
 		stepTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		stepTxt.scrollFactor.set();
 		stepTxt.borderSize = 1.25;
@@ -148,27 +134,7 @@ class EditorPlayState extends MusicBeatState
 
 		super.create();
 	}
-
-	function sayGo()
-	{
-		var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image('go'));
-		go.scrollFactor.set();
-		go.updateHitbox();
-		go.screenCenter();
-		go.antialiasing = ClientPrefs.globalAntialiasing;
-		add(go);
-
-		FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-			ease: FlxEase.cubeInOut,
-			onComplete: function(twn:FlxTween)
-			{
-				go.destroy();
-			}
-		});
-		
-		FlxG.sound.play(Paths.sound('introGo'), 0.6);
-	}
-
+	
 	var startingSong:Bool = true;
 	private function generateSong(dataPath:String):Void
 	{
@@ -239,30 +205,12 @@ class EditorPlayState extends MusicBeatState
 								unspawnNotes.push(sustainNote);
 
 								if (sustainNote.mustPress)
-								{
 									sustainNote.x += FlxG.width / 2;
-								}
-								else if (ClientPrefs.middleScroll)
-								{
-									sustainNote.x += 310;
-									if (daNoteData > 1) {
-										sustainNote.x += FlxG.width / 2 + 25;
-									}
-								}
 							}
 						}
 
 						if (swagNote.mustPress)
-						{
 							swagNote.x += FlxG.width / 2;
-						}
-						else if (ClientPrefs.middleScroll)
-						{
-							swagNote.x += 310;
-							if (daNoteData > 1) {
-								swagNote.x += FlxG.width / 2 + 25;
-							}
-						}
 						
 						if (!noteTypeMap.exists(swagNote.noteType)) {
 							noteTypeMap.set(swagNote.noteType, true);
@@ -304,9 +252,7 @@ class EditorPlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			FunkinSound.pauseInst();
-			
 			FunkinSound.pauseVoices();
-
 			LoadingState.loadAndSwitchState(new ChartingState());
 		}
 
@@ -314,9 +260,8 @@ class EditorPlayState extends MusicBeatState
 		{
 			timerToStart -= elapsed * 1000;
 			Conductor.songPosition = startPos - timerToStart;
-			if (timerToStart < 0) {
+			if (timerToStart < 0)
 				startSong();
-			}
 		}
 		else
 		{
@@ -478,9 +423,7 @@ class EditorPlayState extends MusicBeatState
 
 		keyShit();
 
-		sectionTxt.text = 'Section: ' + curSection;
-		beatTxt.text = 'Beat: ' + curBeat;
-		stepTxt.text = 'Step: ' + curStep;
+		stepTxt.text = 'Step: ${curStep} • Beat: ${curBeat} • Section: ${curSection}';
 		
 		super.update(elapsed);
 	}
@@ -711,7 +654,7 @@ class EditorPlayState extends MusicBeatState
 			}
 
 			if (!note.isSustainNote)
-				popUpScore(note);
+				FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'bf');
 
 			playerStrums.forEach(function(spr:StrumNote)
 			{
@@ -738,44 +681,19 @@ class EditorPlayState extends MusicBeatState
 		FunkinSound.setVolume(0, 'bf');
 	}
 
-	var COMBO_X:Float = 400;
-	var COMBO_Y:Float = 340;
-	private function popUpScore(note:Note = null):Void
-	{
-		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
-		FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'bf');
-	}
-
 	private function generateStaticArrows(player:Int):Void
 	{
 		for (i in 0...4)
 		{
 			var targetAlpha:Float = 1;
-			if (player < 1)
-			{
-				if (ClientPrefs.middleScroll && ClientPrefs.opponentStrumsMiddleScroll) {
-					targetAlpha = 0.35;
-				}
-			}
 
-			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X, strumLine.y, i, player);
+			var babyArrow:StrumNote = new StrumNote(PlayState.STRUM_X, strumLine.y, i, player);
 			babyArrow.alpha = targetAlpha;
 
 			if (player == 1)
-			{
 				playerStrums.add(babyArrow);
-			}
 			else
-			{
-				if(ClientPrefs.middleScroll)
-				{
-					babyArrow.x += 310;
-					if(i > 1) {
-						babyArrow.x += FlxG.width / 2 + 25;
-					}
-				}
 				opponentStrums.add(babyArrow);
-			}
 
 			strumLineNotes.add(babyArrow);
 			babyArrow.postAddedToGroup();

@@ -41,7 +41,8 @@ class HealthIcon extends FlxSprite
 
 	public function changeIcon(char:String):Void
 	{
-		if(this.char != char) {
+		if (this.char != char)
+		{
 			var name:String = 'icons/' + char;
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char; //Older versions of psych engine's support
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face'; //Prevents crash from missing icon

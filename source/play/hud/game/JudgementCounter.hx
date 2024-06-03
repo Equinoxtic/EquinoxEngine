@@ -15,8 +15,6 @@ using StringTools;
 
 class JudgementCounter extends FlxSpriteGroup
 {
-	public var colorArray:Array<Int> = [225, 235, 95];
-
 	private var instance:FlxBasic;
 	
 	private var judgementText:FunkinText;
@@ -42,9 +40,11 @@ class JudgementCounter extends FlxSpriteGroup
 		#end
 	}
 
-	public function updateJudgementCounter() {
-		if (ClientPrefs.detailedJudgementInfo) {
-			judgementText.scale.set(0.985, 0.985);
+	public function updateJudgementCounter():Void
+	{
+		if (ClientPrefs.detailedJudgementInfo)
+		{
+			judgementText.scale.set(0.97, 0.97);
 			judgementText.text = 'TOTAL HITS: ${PlayState.instance.songHits}\n'
 				+ 'COMBO: ${PlayState.instance.combo}\n\n'
 				+ 'MARVELOUS: ${PlayState.instance.marvs}\n'
@@ -53,8 +53,10 @@ class JudgementCounter extends FlxSpriteGroup
 				+ 'BAD: ${PlayState.instance.bads}\n'
 				+ 'SHIT: ${PlayState.instance.shits}'
 				+ '\n\nCOMBO BREAKS: ${PlayState.instance.songMisses}';
-		} else {
-			judgementText.scale.set(1.025, 1.025);
+		}
+		else
+		{
+			judgementText.scale.set(1.0, 1.0);
 			judgementText.text = 'MARVELOUS: ${PlayState.instance.marvs}\n'
 				+ 'SICK: ${PlayState.instance.sicks}\n'
 				+ 'GOOD: ${PlayState.instance.goods}\n'
@@ -63,7 +65,8 @@ class JudgementCounter extends FlxSpriteGroup
 		}
 	}
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float):Void
+	{
 		super.update(elapsed);
 	}
 }

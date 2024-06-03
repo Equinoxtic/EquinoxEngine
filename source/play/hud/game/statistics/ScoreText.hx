@@ -38,7 +38,7 @@ class ScoreText extends FunkinText
 
 	private function changeTextToMode(?botplay:Bool, ?practice:Bool, ?charting:Bool):Void
 	{
-		this.text = '-'
+		this.text = '- '
 			+ ((botplay) ? 'Botplay - ' : '')
 			+ ((practice) ? 'Practice Mode - ' : '')
 			+ ((charting) ? 'Charting Mode -' : '');

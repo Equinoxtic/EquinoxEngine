@@ -19,7 +19,17 @@ class JudgementCounter extends FlxSpriteGroup
 	
 	private var judgementText:FunkinText;
 
-	public function new(?instance:FlxBasic, ?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT) {
+	/**
+	 * Creates a new text field for the Judgement Counter.
+	 * @param instance The current instance of the Judgement Counter. [Default: ``this``]
+	 * @param x The X position of the Judgement Counter.
+	 * @param y The Y position of the Judgement Counter.
+	 * @param initialSize The initial scale of the Judgement Counter. [Default: ``1.0``]
+	 * @param fontSize The font size of the text in the Judgement Counter. [Default: ``21``]
+	 * @param alignment The text alignment of the text in the Judgement Counter. [Default: ``LEFT``]
+	 */
+	public function new(?instance:FlxBasic, ?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT):Void
+	{
 		super();
 
 		if (instance == null) {
@@ -40,6 +50,9 @@ class JudgementCounter extends FlxSpriteGroup
 		#end
 	}
 
+	/**
+	 * Updates the Judgement Counter texts/stats.
+	 */
 	public function updateJudgementCounter():Void
 	{
 		if (ClientPrefs.detailedJudgementInfo)

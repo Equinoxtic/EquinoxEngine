@@ -14,6 +14,18 @@ class GameplayInfo extends FlxSpriteGroup
 
 	private static var gameplayText:FunkinText;
 
+	/**
+	 * Create a text field for Gameplay Info. (i.e. Song Name, Difficulty, Artist, etc.)
+	 * @param instance The instance of the ``GameplayInfo`` class. [Default: ``this``]
+	 * @param x The X position of the text field.
+	 * @param y The Y position of the text field.
+	 * @param initialSize The initial scale of the text field.
+	 * @param fontSize The font size of the text field.
+	 * @param songName The string of the song's name. ( By default it should ``PlayState.SONG.song`` )
+	 * @param difficultyString The string of the player's current difficulty. ( By default it should be ``CoolUtil.difficultyString()`` )
+	 * @param songCredit The string of the artist/credit of the song. ( By default it should be ``PlayState.SONG_DATA.artist`` )
+	 * @param songText The extra/optional string in the text field. ( By default it should be ``PlayState.SONG_DATA.stringExtra`` )
+	 */
 	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:Null<String> = "", ?difficultyString:Null<String> = "", ?songCredit:Null<String> = "", ?songText:Null<String> = ""):Void
 	{
 		super();
@@ -67,7 +79,8 @@ class GameplayInfo extends FlxSpriteGroup
 		gameplayText.text = text;
 	}
 	
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float):Void
+	{
 		super.update(elapsed);
 	}
 }

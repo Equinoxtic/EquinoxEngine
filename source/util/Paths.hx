@@ -1,4 +1,4 @@
-package;
+package util;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.math.FlxPoint;

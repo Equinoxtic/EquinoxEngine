@@ -1,6 +1,5 @@
 #if !macro
 // --------- UTILITIES AND SHADERS ---------
-import Paths;
 import util.*;
 import util.macro.*;
 import shaders.*;

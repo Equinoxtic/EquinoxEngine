@@ -1,6 +1,6 @@
-package;
+package play.song;
 
-import Song.SwagSong;
+import play.song.Song;
 import play.scoring.Rating;
 
 /**

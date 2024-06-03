@@ -9,14 +9,11 @@ import shaders.WiggleEffect;
 import shaders.WiggleEffect.WiggleEffectType;
 import misc.FunkinText;
 import play.hud.game.rating.*;
-import SongData;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
 #end
-import Section.SwagSection;
-import Song.SwagSong;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -64,9 +61,12 @@ import flixel.util.FlxSave;
 import flixel.animation.FlxAnimationController;
 import animateatlas.AtlasFrameMaker;
 import Achievements;
-import StageData;
 import DialogueBoxPsych;
 import util.Constants;
+import play.song.Song;
+import play.song.SongData;
+import play.song.Section;
+import play.song.StageData;
 
 /**
  * Solarium Classes

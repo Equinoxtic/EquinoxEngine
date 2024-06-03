@@ -1,4 +1,4 @@
-package;
+package play.song;
 
 typedef SwagSection =
 {

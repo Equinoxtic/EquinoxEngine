@@ -1,8 +1,5 @@
 package menus.editors;
 
-import FunkinSound.FunkinSoundChartEditor;
-import Section.SwagSection;
-import Song.SwagSong;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxColor;
@@ -19,6 +16,8 @@ import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
+import play.song.Conductor;
+import play.song.Section;
 
 using StringTools;
 

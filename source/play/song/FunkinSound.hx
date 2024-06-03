@@ -1,4 +1,4 @@
-package;
+package play.song;
 
 import flixel.system.FlxSoundGroup;
 import flixel.tweens.FlxTween;

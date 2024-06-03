@@ -1,7 +1,5 @@
 package menus.editors;
 
-import SongData;
-import FunkinSound.FunkinSoundChartEditor;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -9,9 +7,11 @@ import flash.geom.Rectangle;
 import haxe.Json;
 import haxe.format.JsonParser;
 import haxe.io.Bytes;
-import Conductor.BPMChangeEvent;
-import Section.SwagSection;
-import Song.SwagSong;
+import play.song.Conductor.BPMChangeEvent;
+import play.song.Section.SwagSection;
+import play.song.Song.SwagSong;
+import play.song.SongData;
+import play.song.FunkinSound.FunkinSoundChartEditor;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;

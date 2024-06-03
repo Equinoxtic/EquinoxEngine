@@ -1,6 +1,7 @@
-package;
+package play.song;
 
-import Section.SwagSection;
+import play.song.Section;
+import play.song.StageData;
 import haxe.Json;
 
 #if sys

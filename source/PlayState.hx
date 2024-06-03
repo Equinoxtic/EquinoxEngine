@@ -1096,9 +1096,9 @@ class PlayState extends MusicBeatState
 			gfGroup.add(gf);
 			startCharacterLua(gf.curCharacter);
 
-			if(gfVersion == 'pico-speaker')
+			if (gfVersion == 'pico-speaker')
 			{
-				if(!ClientPrefs.lowQuality)
+				if (!ClientPrefs.lowQuality)
 				{
 					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
 					firstTank.resetShit(20, 600, true);
@@ -1346,14 +1346,14 @@ class PlayState extends MusicBeatState
 		/**
 		 * JudgementCounter.
 		 */
-		judgementCounter = new JudgementCounter(this, 25, -25, Constants.JUDGEMENT_COUNTER_SIZE, 18, LEFT);
+		judgementCounter = new JudgementCounter(this, 15, -25, Constants.JUDGEMENT_COUNTER_SIZE, 18, LEFT);
 		judgementCounter.screenCenter(Y);
 		hudGroupInfo.add(judgementCounter);
 
 		/**
 		 * GameplayInfo.
 		 */
-		gameplayInfo = new GameplayInfo(this, -15, FlxG.height - 85, Constants.GAMEPLAY_INFO_SIZE, 17,
+		gameplayInfo = new GameplayInfo(this, -15, FlxG.height - 95, Constants.GAMEPLAY_INFO_SIZE, 17,
 			PlayState.SONG.song.replace('-', ' '),
 			CoolUtil.difficultyString().toUpperCase().trim(),
 			PlayState.SONG_DATA.artist,

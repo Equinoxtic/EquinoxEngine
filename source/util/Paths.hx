@@ -207,6 +207,11 @@ class Paths
 		return sound;
 	}
 
+	inline static public function soundPath(key:String, ?library:String):String
+	{
+		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+	}
+
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String):Sound
 	{
 		return sound(Std.string('${key}${FlxG.random.int(min, max)}'), library);
@@ -266,6 +271,11 @@ class Paths
 		// streamlined the assets process more
 		var returnAsset:FlxGraphic = returnGraphic(key, library);
 		return returnAsset;
+	}
+
+	inline static public function imagePath(key:String, ?library:String):String
+	{
+		return getPath('images/$key.png', IMAGE, library);
 	}
 
 	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String

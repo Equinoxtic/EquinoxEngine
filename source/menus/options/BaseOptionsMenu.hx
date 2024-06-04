@@ -1,5 +1,6 @@
 package menus.options;
 
+import ui.option.Checkbox;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -34,7 +35,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	private var optionsArray:Array<Option>;
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
-	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
+	private var checkboxGroup:FlxTypedGroup<Checkbox>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
 
 	private var boyfriend:Character = null;
@@ -68,7 +69,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		grpTexts = new FlxTypedGroup<AttachedText>();
 		add(grpTexts);
 
-		checkboxGroup = new FlxTypedGroup<CheckboxThingie>();
+		checkboxGroup = new FlxTypedGroup<Checkbox>();
 		add(checkboxGroup);
 
 		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
@@ -97,7 +98,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			grpOptions.add(optionText);
 
 			if(optionsArray[i].type == 'bool') {
-				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
+				var checkbox:Checkbox = new Checkbox(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
 				checkbox.sprTracker = optionText;
 				checkbox.ID = i;
 				checkboxGroup.add(checkbox);

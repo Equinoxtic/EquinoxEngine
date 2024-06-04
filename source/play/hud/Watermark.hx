@@ -40,12 +40,9 @@ class Watermark extends FlxSpriteGroup
 		#end
 	}
 
-	public function playWatermarkAnimation(?durationMultiplier:Float = 0.95):Void {
+	public function playWatermarkAnimation(?durationMultiplier:Float = 0.95):Void
+	{
 		watermarkText.alpha = 0.0;
 		TweenClass.tween(watermarkText, {alpha: 0.5}, 1.0 * durationMultiplier, {ease: FlxEase.sineInOut});
-	}
-
-	override function update(elapsed:Float) {
-		super.update(elapsed);
 	}
 }

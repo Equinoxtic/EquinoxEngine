@@ -35,9 +35,4 @@ class RatingText extends FunkinText
 			this.text = 'CLEAR - N/A';
 		}
 	}
-
-	public override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

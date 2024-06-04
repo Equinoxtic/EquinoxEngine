@@ -46,9 +46,4 @@ class AccuracyText extends FunkinText
 			}
 		}
 	}
-
-	public override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

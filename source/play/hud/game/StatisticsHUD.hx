@@ -108,9 +108,4 @@ class StatisticsHUD extends FlxSpriteGroup
 
 		updateNumValues();
 	}
-
-	public override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

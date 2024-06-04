@@ -77,9 +77,4 @@ class JudgementCounter extends FlxSpriteGroup
 				+ 'SHIT: ${PlayState.instance.shits}';
 		}
 	}
-
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

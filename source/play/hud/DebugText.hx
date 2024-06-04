@@ -35,10 +35,5 @@ class DebugText extends flixel.group.FlxSpriteGroup
 		debugBranch.y = debugText.y + 20;
 		add(debugBranch);
 	}
-
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }
 #end

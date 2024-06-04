@@ -43,9 +43,4 @@ class ScoreText extends FunkinText
 			+ ((practice) ? 'Practice Mode - ' : '')
 			+ ((charting) ? 'Charting Mode -' : '');
 	}
-
-	public override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

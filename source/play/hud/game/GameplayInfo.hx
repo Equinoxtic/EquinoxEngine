@@ -78,9 +78,4 @@ class GameplayInfo extends FlxSpriteGroup
 		 */
 		gameplayText.text = text;
 	}
-	
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

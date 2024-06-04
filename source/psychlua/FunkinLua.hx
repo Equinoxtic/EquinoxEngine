@@ -280,7 +280,7 @@ class FunkinLua {
 			if(!ClientPrefs.shaders) return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
-			if(!PlayState.instance.runtimeShaders.exists(shader) && !initLuaShader(shader))
+			if(!LuaShader.runtimeShaders.exists(shader) && !initLuaShader(shader))
 			{
 				luaTrace('setSpriteShader: Shader $shader is missing!', false, false, FlxColor.RED);
 				return false;
@@ -293,7 +293,7 @@ class FunkinLua {
 			}
 
 			if(leObj != null) {
-				var arr:Array<String> = PlayState.instance.runtimeShaders.get(shader);
+				var arr:Array<String> = LuaShader.runtimeShaders.get(shader);
 				leObj.shader = new FlxRuntimeShader(arr[0], arr[1]);
 				return true;
 			}
@@ -3088,7 +3088,7 @@ class FunkinLua {
 		if (!ClientPrefs.shaders) return false;
 
 		#if (!flash && sys)
-		if(PlayState.instance.runtimeShaders.exists(name)) {
+		if(LuaShader.runtimeShaders.exists(name)) {
 			luaTrace('Shader $name was already initialized!');
 			return true;
 		}
@@ -3129,7 +3129,7 @@ class FunkinLua {
 
 				if(found)
 				{
-					PlayState.instance.runtimeShaders.set(name, [frag, vert]);
+					LuaShader.runtimeShaders.set(name, [frag, vert]);
 					return true;
 				}
 			}

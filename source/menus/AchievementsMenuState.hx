@@ -1,4 +1,4 @@
-package;
+package menus;
 
 #if desktop
 import Discord.DiscordClient;
@@ -27,7 +27,8 @@ class AchievementsMenuState extends MusicBeatState
 	private var achievementIndex:Array<Int> = [];
 	private var descText:FlxText;
 
-	override function create() {
+	override function create():Void
+	{
 		#if desktop
 		DiscordClient.changePresence("Achievements Menu", null);
 		#end

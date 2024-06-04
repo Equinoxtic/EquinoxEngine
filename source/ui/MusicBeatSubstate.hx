@@ -1,4 +1,4 @@
-package;
+package ui;
 
 import play.song.Conductor.BPMChangeEvent;
 import flixel.FlxG;

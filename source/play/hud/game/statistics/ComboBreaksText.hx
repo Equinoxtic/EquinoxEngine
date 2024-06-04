@@ -1,6 +1,6 @@
 package play.hud.game.statistics;
 
-import misc.FunkinText;
+import ui.display.FunkinText;
 
 class ComboBreaksText extends FunkinText
 {

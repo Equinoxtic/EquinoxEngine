@@ -1,4 +1,4 @@
-package misc;
+package ui.display;
 
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.addons.display.FlxBackdrop;

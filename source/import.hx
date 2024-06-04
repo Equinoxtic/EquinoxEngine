@@ -11,4 +11,7 @@ import play.song.*;
 import menus.*;
 import menus.options.*;
 import menus.editors.*;
+import ui.*;
+import ui.display.*;
+import ui.option.*;
 #end

@@ -1,4 +1,4 @@
-package misc;
+package ui.display;
 
 import flixel.effects.FlxFlicker;
 import flixel.system.FlxAssets.FlxGraphicAsset;

@@ -6,7 +6,7 @@
 
 **/
 
-package misc;
+package ui.display;
 
 import openfl.display.Bitmap;
 import flixel.system.ui.FlxSoundTray;

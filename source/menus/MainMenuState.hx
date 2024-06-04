@@ -1,7 +1,5 @@
 package menus;
 
-import misc.FunkinBG;
-import misc.Checkerboard;
 import flixel.addons.display.FlxBackdrop;
 import util.Constants;
 import haxe.Http;

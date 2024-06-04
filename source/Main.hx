@@ -90,7 +90,7 @@ class Main extends Sprite
 		// create() in there, which gets called when it's added to stage
 		// which is why it needs to be added before addChild(game) here
 		@:privateAccess
-		game._customSoundTray = misc.FunkinSoundTray;
+		game._customSoundTray = ui.display.FunkinSoundTray;
 
 		addChild(game);
 

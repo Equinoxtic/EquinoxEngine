@@ -7,7 +7,6 @@ import shaders.Shaders.ChromaticAberration;
 import shaders.Shaders.VCRDistortionEffect;
 import shaders.WiggleEffect;
 import shaders.WiggleEffect.WiggleEffectType;
-import misc.FunkinText;
 import play.hud.game.rating.*;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;

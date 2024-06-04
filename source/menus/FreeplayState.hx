@@ -3,7 +3,6 @@ package menus;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import misc.Checkerboard;
 import flixel.util.FlxStringUtil;
 #if desktop
 import Discord.DiscordClient;

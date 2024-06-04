@@ -1,6 +1,6 @@
 package play.hud.game;
 
-import misc.FunkinText;
+import ui.display.FunkinText;
 import util.Constants;
 import flixel.FlxCamera;
 import flixel.FlxG;

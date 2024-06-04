@@ -301,4 +301,14 @@ class Constants
 	 * The amount of score that the player gains when holding notes. (per second)
 	 */
 	public static final SCORE_HOLD_BONUS:Float = 250.0;
+
+	/**
+	 * The maximum value for the score multiplier.
+	 */
+	public static final SCORE_MULTIPLIER_MAX:Float = 5.0;
+
+	/**
+	 * The maximum value for the miss multiplier.
+	 */
+	public static final MISS_MULTIPLIER_MAX:Float = 7.5;
 }

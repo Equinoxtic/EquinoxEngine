@@ -3329,8 +3329,20 @@ class PlayState extends MusicBeatState
 		/**
 		 * Multipliers for score and misses.
 		 */
-		scoreMultiplier = ((combo * 0.1) * (ratingPercent)) + 1;
-		missMultiplier = ((songMisses * .09) + (comboPeak * .09)) + 1.0;
+		if (scoreMultiplier >= Constants.SCORE_MULTIPLIER_MAX) {
+			scoreMultiplier = Constants.SCORE_MULTIPLIER_MAX;
+		} else {
+			scoreMultiplier = ((combo * 0.1) * (ratingPercent)) + 1.0;
+		}
+
+		if (missMultiplier >= Constants.MISS_MULTIPLIER_MAX) {
+			missMultiplier = Constants.MISS_MULTIPLIER_MAX;
+		} else {
+			missMultiplier = ((songMisses * .09) + (comboPeak * .09)) + 1.0;
+		}
+
+		FlxG.watch.addQuick("Score Multiplier", scoreMultiplier);
+		FlxG.watch.addQuick("Miss Multiplier", missMultiplier);
 
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
@@ -4934,7 +4946,8 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.3, 0.5), false);
 		}
 
-		scoreMultiplier = 1;
+		scoreMultiplier = 1.0;
+		missMultiplier = 1.0;
 		combo = 0;
 		health -= Constants.HEALTH_MISS_PENALTY * healthLoss;
 		

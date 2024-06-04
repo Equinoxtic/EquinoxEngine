@@ -479,7 +479,6 @@ class PlayState extends MusicBeatState
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
 
-		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		borderCam = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -630,7 +629,6 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-
 		// STAGE SCRIPTS
 		#if (MODS_ALLOWED && LUA_ALLOWED)
 		var doPush:Bool = false;
@@ -650,35 +648,13 @@ class PlayState extends MusicBeatState
 		#end
 
 		var gfVersion:String = SONG.gfVersion;
-		if(gfVersion == null || gfVersion.length < 1)
-		{
-			switch (curStage)
-			{
-				case 'limo':
-					gfVersion = 'gf-car';
-				case 'mall' | 'mallEvil':
-					gfVersion = 'gf-christmas';
-				case 'school' | 'schoolEvil':
-					gfVersion = 'gf-pixel';
-				case 'tank':
-					gfVersion = 'gf-tankmen';
-				default:
-					gfVersion = 'gf';
-			}
-
-			switch(Paths.formatToSongPath(SONG.song))
-			{
-				case 'stress':
-					gfVersion = 'pico-speaker';
-			}
-			SONG.gfVersion = gfVersion; //Fix for the Chart Editor
-		}
+		
+		loadGfVersion(gfVersion, curStage);
 
 		if (!stageData.hide_girlfriend)
 		{
 			gf = new Character(0, 0, gfVersion);
 			startCharacterPos(gf);
-			// gf.scrollFactor.set(0.95, 0.95);
 			gf.scrollFactor.set();
 			gfGroup.add(gf);
 			startCharacterLua(gf.curCharacter);
@@ -789,9 +765,6 @@ class PlayState extends MusicBeatState
 
 		add(grpNoteSplashes);
 
-		// After all characters being loaded, it makes then invisible 0.01s later so that the player won't freeze when you change characters
-		// add(strumLine);
-
 		camFollow = new FlxPoint();
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 
@@ -809,7 +782,6 @@ class PlayState extends MusicBeatState
 		add(camFollowPos);
 
 		FlxG.camera.follow(camFollowPos, LOCKON, 1);
-		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow);
 
@@ -848,8 +820,6 @@ class PlayState extends MusicBeatState
 		hudGroup.add(healthBar);
 		hudGroup.add(healthBarBG);
 		
-		// healthBarBG.sprTracker = healthBar;
-
 		reloadHealthBarColors();
 
 		/**
@@ -926,7 +896,7 @@ class PlayState extends MusicBeatState
 		botplayTxt.borderSize = 1.5;
 		botplayTxt.visible = cpuControlled;
 		hudGroupInfo.add(botplayTxt);
-		if(ClientPrefs.downScroll) {
+		if (ClientPrefs.downScroll) {
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
@@ -1660,6 +1630,34 @@ class PlayState extends MusicBeatState
 				
 				if(!ClientPrefs.lowQuality)
 					foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
+		}
+	}
+
+	private function loadGfVersion(gfVersion:Null<String>, curStage:Null<String>):Void
+	{
+		if (gfVersion == null || gfVersion.length < 1)
+		{
+			switch (curStage)
+			{
+				case 'limo':
+					gfVersion = 'gf-car';
+				case 'mall' | 'mallEvil':
+					gfVersion = 'gf-christmas';
+				case 'school' | 'schoolEvil':
+					gfVersion = 'gf-pixel';
+				case 'tank':
+					gfVersion = 'gf-tankmen';
+				default:
+					gfVersion = 'gf';
+			}
+
+			switch (Paths.formatToSongPath(SONG.song))
+			{
+				case 'stress':
+					gfVersion = 'pico-speaker';
+			}
+
+			SONG.gfVersion = gfVersion;
 		}
 	}
 
@@ -3235,7 +3233,7 @@ class PlayState extends MusicBeatState
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x + animOffsetX, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y + animOffsetY, lerpVal));
 			if (!startingSong && !endingSong && boyfriend.animation.curAnim != null && boyfriend.animation.curAnim.name.startsWith('idle')) {
 				boyfriendIdleTime += elapsed;
-				if(boyfriendIdleTime >= 0.15) {
+				if (boyfriendIdleTime >= 0.15) {
 					boyfriendIdled = true;
 				}
 			} else {

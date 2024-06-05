@@ -79,7 +79,7 @@ class Constants
 	/**
 	 * The volume for the instrumental.
 	 */
-	public static final INSTRUMENTAL_VOLUME:Float = 0.9;
+	public static final INSTRUMENTAL_VOLUME:Float = 1.0;
 
 	/**
 	 * The volume for the vocals.

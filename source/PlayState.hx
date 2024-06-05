@@ -591,7 +591,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Song Data / Information / Credits JSONs.
 		 */
-		loadSongData(PlayState.SONG.song);
+		SongLoader.loadSongData(PlayState.SONG.song);
 
 		#if LUA_ALLOWED
 		luaDebugGroup = new FlxTypedGroup<DebugLuaText>();
@@ -609,7 +609,7 @@ class PlayState extends MusicBeatState
 		 */
 		LuaLoader.loadStageScripts(curStage);
 		
-		loadGfVersion(curStage);
+		SongLoader.loadGirlfriendVariant(curStage, PlayState.SONG.song);
 
 		if (!stageData.hide_girlfriend)
 		{
@@ -645,7 +645,7 @@ class PlayState extends MusicBeatState
 		}
 
 		dad = new Character(0, 0, SONG.player2);
-		dad.scrollFactor.set();		
+		dad.scrollFactor.set();
 		startCharacterPos(dad, true);
 		dadGroup.add(dad);
 		startCharacterLua(dad.curCharacter);
@@ -1090,86 +1090,9 @@ class PlayState extends MusicBeatState
 		CustomFadeTransition.nextCamera = camOther;
 	}
 
-	private function loadSongData(?songKey:String = ''):Void
-	{
-		var songDataPath:String = 'charts/${Paths.formatToSongPath(songKey)}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
-
-		#if (debug)
-		FlxG.log.add('Loading song data: ${Paths.json(songDataPath)}');
-		#end
-
-		#if MODS_ALLOWED
-		if (sys.FileSystem.exists(Paths.modsJson(songDataPath)) || sys.FileSystem.exists(Paths.json(songDataPath)))
-		#else
-		if (OpenFlAssets.exists(Paths.json(songDataPath)))
-		#end
-		{
-			#if (debug)
-			FlxG.log.add('Loaded song data of ${songKey}.');
-			#end
-
-			PlayState.SONG_DATA = SongData.loadSongData(songKey);
-		}
-		else
-		{
-			#if (debug)
-			FlxG.log.add('Failed to load song data of ${songKey}, loading dummy JSON.');
-			#end
-
-			var dummyJson = {
-				artist: 'Artist',
-				charter: 'Charter',
-				stringExtra: 'String message'
-			};
-
-			PlayState.SONG_DATA = dummyJson;
-		}
-	}
-
 	private function loadStageData(?stageData:Null<StageFile>):Void
 	{
-		if (stageData == null)
-		{
-			stageData = {
-				directory: "",
-				defaultZoom: 0.9,
-				isPixelStage: false,
-
-				boyfriend: [770, 100],
-				girlfriend: [400, 130],
-				opponent: [100, 100],
-				hide_girlfriend: false,
-
-				camera_boyfriend: [0, 0],
-				camera_opponent: [0, 0],
-				camera_girlfriend: [0, 0],
-				camera_speed: 1
-			};
-		}
-
-		defaultCamZoom = stageData.defaultZoom;
-		isPixelStage = stageData.isPixelStage;
-		BF_X = stageData.boyfriend[0];
-		BF_Y = stageData.boyfriend[1];
-		GF_X = stageData.girlfriend[0];
-		GF_Y = stageData.girlfriend[1];
-		DAD_X = stageData.opponent[0];
-		DAD_Y = stageData.opponent[1];
-
-		if(stageData.camera_speed != null)
-			cameraSpeed = stageData.camera_speed;
-
-		boyfriendCameraOffset = stageData.camera_boyfriend;
-		if(boyfriendCameraOffset == null)
-			boyfriendCameraOffset = [0, 0];
-
-		opponentCameraOffset = stageData.camera_opponent;
-		if(opponentCameraOffset == null)
-			opponentCameraOffset = [0, 0];
-
-		girlfriendCameraOffset = stageData.camera_girlfriend;
-		if(girlfriendCameraOffset == null)
-			girlfriendCameraOffset = [0, 0];
+		SongLoader.loadStageData(stageData);
 
 		boyfriendGroup = new FlxSpriteGroup(BF_X, BF_Y);
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
@@ -1522,35 +1445,6 @@ class PlayState extends MusicBeatState
 				
 				if(!ClientPrefs.lowQuality)
 					foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
-		}
-	}
-
-	private function loadGfVersion(curStage:Null<String>):Void
-	{
-		var gfVersion:String = SONG.gfVersion;
-		if (gfVersion == null || gfVersion.length < 1)
-		{
-			switch (curStage)
-			{
-				case 'limo':
-					gfVersion = 'gf-car';
-				case 'mall' | 'mallEvil':
-					gfVersion = 'gf-christmas';
-				case 'school' | 'schoolEvil':
-					gfVersion = 'gf-pixel';
-				case 'tank':
-					gfVersion = 'gf-tankmen';
-				default:
-					gfVersion = 'gf';
-			}
-
-			switch (Paths.formatToSongPath(SONG.song))
-			{
-				case 'stress':
-					gfVersion = 'pico-speaker';
-			}
-
-			SONG.gfVersion = gfVersion;
 		}
 	}
 
@@ -2504,34 +2398,7 @@ class PlayState extends MusicBeatState
 
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 
-		var songName:String = Paths.formatToSongPath(SONG.song);
-		
-		var shittyEventsPath = 'charts/${songName}/events/events${FunkinSound.erectModeSuffix(false)}';
-
-		var file:String = Paths.json(shittyEventsPath);
-		#if MODS_ALLOWED
-		if (FileSystem.exists(Paths.modsJson(shittyEventsPath)) || FileSystem.exists(file)) {
-		#else
-		if (OpenFlAssets.exists(file)) {
-		#end
-			var eventsData:Array<Dynamic> = Song.loadFromJson('events', songName, true).events;
-			for (event in eventsData) //Event Notes
-			{
-				for (i in 0...event[1].length)
-				{
-					var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
-					var subEvent:EventNote = {
-						strumTime: newEventNote[0] + ClientPrefs.noteOffset,
-						event: newEventNote[1],
-						value1: newEventNote[2],
-						value2: newEventNote[3]
-					};
-					subEvent.strumTime -= eventNoteEarlyTrigger(subEvent);
-					eventNotes.push(subEvent);
-					eventPushed(subEvent);
-				}
-			}
-		}
+		SongLoader.loadSongEvents(PlayState.SONG.song);
 
 		for (section in noteData)
 		{
@@ -2638,6 +2505,7 @@ class PlayState extends MusicBeatState
 					value1: newEventNote[2],
 					value2: newEventNote[3]
 				};
+				
 				subEvent.strumTime -= eventNoteEarlyTrigger(subEvent);
 				eventNotes.push(subEvent);
 				eventPushed(subEvent);
@@ -2652,7 +2520,7 @@ class PlayState extends MusicBeatState
 		generatedMusic = true;
 	}
 
-	function eventPushed(event:EventNote) {
+	public function eventPushed(event:EventNote) {
 		switch(event.event) {
 			case 'Change Character':
 				var charType:Int = 0;
@@ -2731,7 +2599,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function eventNoteEarlyTrigger(event:EventNote):Float {
+	public function eventNoteEarlyTrigger(event:EventNote):Float {
 		var returnedValue:Float = callOnLuas('eventEarlyTrigger', [event.event]);
 		if(returnedValue != 0) {
 			return returnedValue;

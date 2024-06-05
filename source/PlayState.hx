@@ -223,7 +223,6 @@ class PlayState extends MusicBeatState
 	private var timeBarBG:AttachedSprite;
 	public var timeBar:FlxBar;
 
-	public var ratingsData:Array<Rating> = [];
 	public var marvs:Int = 0;
 	public var sicks:Int = 0;
 	public var goods:Int = 0;
@@ -462,7 +461,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Song ratings.
 		 */
-		PlayStateRating.initPlayStateRatings(ratingsData);
+		PlayStateRating.initPlayStateRatings();
 
 		// For the "Just the Two of Us" achievement
 		for (i in 0...keysArray.length)

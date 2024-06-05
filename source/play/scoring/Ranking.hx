@@ -5,45 +5,51 @@ import play.scoring.Highscore;
 class Ranking
 {
 	/**
-	 * The string array for the rating FCs.
-	 * - DEFAULT VALUES:
-	 * [ 'PFC', 'SFC', 'GFC', 'FC', 'SDCB', 'DDCB', 'TDCB', 'QDCB' ],
+	 * Calculates the accuracy given the percentage. (i.e. ``1.0 -> 100.00``)
+	 * @param percentage The percentage of the accuracy. Ranges from ``0.0 - 1.0``
+	 * @return Float
 	 */
-	public static var ratingsArray:Array<String> = [
-		'PFC', 'SFC', 'GFC', 'FC', 'SDCB', 'CLEAR'
-	];
-
-	/**
-	 * The string array for the letter rankings.
-	 * - DEFAULT VALUES:
-	 * [ 'P', 'SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E', 'F' ]
-	 */
-	public static var letterRanksArray:Array<String> =[
-		'P', 'SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E', 'F'
-	];
-
 	public static function calculateAccuracy(?percentage:Null<Float>):Float
 	{
 		return Highscore.floorDecimal(percentage * 100, 2);
 	}
 
-	public static function evaluateRatingFC(?misses:Null<Int>, ?bads:Null<Int>, ?shits:Null<Int>, ?goods:Null<Int>, ?sicks:Null<Int>, ?marvs:Null<Int>):String
+	/**
+	 * Evaluates the FC rating, given the amount of misses, bads, sicks, etc.
+	 * @param misses The amount of the player's ``"misses"`` during a song.
+	 * @param shits The amount of the player's ``"shit"`` during a song.
+	 * @param bads The amount of the player's ``"bad"`` during a song.
+	 * @param goods The amount of the player's ``"goods"`` during a song.
+	 * @param sicks The amount of the player's ``"sicks"`` during a song.
+	 * @param marvs The amount of the player's ``"marvs"`` during a song.
+	 * @return String
+	 */
+	public static function evaluateRatingFC(?misses:Null<Int>, ?shits:Null<Int>, ?bads:Null<Int>, ?goods:Null<Int>, ?sicks:Null<Int>, ?marvs:Null<Int>):String
 	{
-		var fcConditions:Array<Bool> = [
-			(misses == 0 && bads == 0 && shits == 0 && goods == 0 && sicks >= 0 && marvs >= 0), // PFC (Perfect FC)
-			(misses == 0 && bads == 0 && shits == 0 && goods >= 1 && sicks >= 0 && marvs >= 0), // SFC (Sick FC)
-			(misses == 0 && bads >= 1 && shits == 0 && goods >= 0 && sicks >= 0 && marvs >= 0), // GFC (Good FC)
-			(misses == 0), // FC (Full Combo)
-			(misses < 10), // SDCB (Single Digit Combo Breaks)
-			(misses >= 10), // CLEAR
+		/**
+		 * The array for the rating FCs.
+		 * - DEFAULT VALUES:
+		 * 'PFC' - misses = 0, shits = 0, bads = 0, goods = 0, sicks >= 0, marvs >= 0,
+		 * 'SFC' - misses = 0, shits = 0, bads = 0, goods >= 1, sicks >= 0, marvs >= 0,
+		 * 'GFC' - misses = 0, shits = 0, bads >= 1, goods >= 0, sicks >= 0 && marvs >= 0,
+		 * 'FC' - misses = 0,
+		 * 'CLEAR' - misses >= 10,
+		 */
+		final ratings:Array<Dynamic> = [
+			['PFC', (misses == 0 && shits == 0 && bads == 0 && goods == 0 && sicks >= 0 && marvs >= 0)],
+			['SFC', (misses == 0 && shits == 0 && bads == 0 && goods >= 1 && sicks >= 0 && marvs >= 0)],
+			['GFC', (misses == 0 && shits == 0 && bads >= 1 && goods >= 0 && sicks >= 0 && marvs >= 0)],
+			['FC', (misses == 0)],
+			['SDCB', (misses < 10)],
+			['CLEAR', (misses >= 10)]
 		];
 
 		var ratingKey:String = '';
 
-		for (rating in 0...fcConditions.length)
+		for (rating in 0...ratings.length)
 		{
-			if (fcConditions[rating]) {
-				ratingKey = ratingsArray[rating];
+			if (ratings[rating][1]) {
+				ratingKey = ratings[rating][0];
 				break;
 			}
 		}
@@ -51,27 +57,46 @@ class Ranking
 		return ratingKey;
 	}
 
-	public static function evaluateLetterRanking(?accuracyValue:Null<Float>):String
+	/**
+	 * Evaluates the (letter) ranking, given the accuracy.
+	 * @param accuracy The accuracy of the player.
+	 * @return String
+	 */
+	public static function evaluateLetterRanking(?accuracy:Null<Float>):String
 	{
-		var accuracyConditions:Array<Bool> = [
-			accuracyValue >= 99.98,		// P (Perfect)
-			accuracyValue >= 99.00,		// SSS
-			accuracyValue >= 98.00,		// SS
-			accuracyValue >= 93.00,   	// S
-			accuracyValue >= 90.00,		// A
-			accuracyValue >= 80.00,		// B
-			accuracyValue >= 73.50,		// C
-			accuracyValue >= 65.00,		// D
-			accuracyValue >= 60.00,		// E
-			accuracyValue < 50.00,		// F
+		/**
+		 * The array for the letter rankings.
+		 * - DEFAULT VALUES:
+		 * 'P' - 99.98%,
+		 * 'SSS' - 99.00%,
+		 * 'SS' - 98.00%,
+		 * 'S' - 93.00%,
+		 * 'A' - 90.00%,
+		 * 'B' - 80.00%,
+		 * 'C' - 73.50%,
+		 * 'D' - 65.00%,
+		 * 'E' - 60.00%,
+		 * 'F' - <50.00%
+		 */
+		final ranks:Array<Dynamic> = [
+			['P', (accuracy >= 99.98)],
+			['SSS', (accuracy >= 99.00)],
+			['SS', (accuracy >= 98.00)],
+			['S', (accuracy >= 93.00)],
+			['A', (accuracy >= 90.00)],
+			['B', (accuracy >= 80.00)],
+			['C', (accuracy >= 73.50)],
+			['D', (accuracy >= 65.00)],
+			['E', (accuracy >= 60.00)],
+			['F', (accuracy < 60.00)]
 		];
 
 		var rankingKey:String = '';
-
-		for (ranking in 0...accuracyConditions.length)
+		
+		for (ranking in 0...ranks.length)
 		{
-			if (accuracyConditions[ranking]) {
-				rankingKey = letterRanksArray[ranking];
+			if (ranks[ranking][1]) {
+				rankingKey = ranks[ranking][0];
 				break;
 			}
 		}

@@ -101,6 +101,7 @@ class MainMenuState extends MusicBeatState
 
 		magentaBG = new FunkinBG(0, -80, Paths.image('menuDesat'), 0.0, yScroll, 0xFFFD719B);
 		magentaBG.flickers = true;
+		magentaBG.visible = false;
 		add(magentaBG);
 
 		mainChecker = new Checkerboard(XY, 1, HUGE, 0.3);
@@ -222,8 +223,6 @@ class MainMenuState extends MusicBeatState
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-
-					magentaBG.startFlicker(0.15, 1.1);
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{

@@ -9,13 +9,13 @@ class Highscore
 	#if (haxe >= "4.0.0")
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
-	public static var songRating:Map<String, Float> = new Map();
+	public static var songAccuracy:Map<String, Float> = new Map();
 	public static var songRatingFC:Map<String, String> = new Map();
 	public static var songRanking:Map<String, String> = new Map();
 	#else
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
-	public static var songRating:Map<String, Float> = new Map<String, Float>();
+	public static var songAccuracy:Map<String, Float> = new Map<String, Float>();
 	public static var songRatingFC:Map<String, String> = new Map<String, String>();
 	public static var songRanking:Map<String, String> = new Map<String, String>();
 	#end
@@ -25,7 +25,7 @@ class Highscore
 	{
 		var daSong:String = formatSong(song, diff);
 		setScore(daSong, 0);
-		setRating(daSong, 0);
+		setAccuracy(daSong, 0);
 		setRatingFC(daSong, 'N/A');
 		setRanking(daSong, 'N/A');
 	}
@@ -61,13 +61,13 @@ class Highscore
 				setScore(daSong, score);
 				if (rank != '') setRanking(daSong, rank);
 				if (ratingFC != '') setRatingFC(daSong, ratingFC);
-				if (rating >= 0) setRating(daSong, rating);
+				if (rating >= 0) setAccuracy(daSong, rating);
 			}
 		} else {
 			setScore(daSong, score);
 			if (rank != '') setRanking(daSong, rank);
 			if (ratingFC != '') setRatingFC(daSong, ratingFC);
-			if (rating >= 0) setRating(daSong, rating);
+			if (rating >= 0) setAccuracy(daSong, rating);
 		}
 
 		#if (debug)
@@ -113,11 +113,11 @@ class Highscore
 		FlxG.save.flush();
 	}
 
-	static function setRating(song:String, rating:Float):Void
+	static function setAccuracy(song:String, rating:Float):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
-		songRating.set(song, rating);
-		FlxG.save.data.songRating = songRating;
+		songAccuracy.set(song, rating);
+		FlxG.save.data.songAccuracy = songAccuracy;
 		FlxG.save.flush();
 	}
 
@@ -150,13 +150,13 @@ class Highscore
 		return songScores.get(daSong);
 	}
 
-	public static function getRating(song:String, diff:Int):Float
+	public static function getAccuracy(song:String, diff:Int):Float
 	{
 		var daSong:String = formatSong(song, diff);
-		if (!songRating.exists(daSong))
-			setRating(daSong, 0);
+		if (!songAccuracy.exists(daSong))
+			setAccuracy(daSong, 0);
 
-		return songRating.get(daSong);
+		return songAccuracy.get(daSong);
 	}
 
 	public static function getRatingFC(song:String, diff:Int):String
@@ -196,9 +196,9 @@ class Highscore
 		{
 			songScores = FlxG.save.data.songScores;
 		}
-		if (FlxG.save.data.songRating != null)
+		if (FlxG.save.data.songAccuracy != null)
 		{
-			songRating = FlxG.save.data.songRating;
+			songAccuracy = FlxG.save.data.songAccuracy;
 		}
 		if (FlxG.save.data.songRanking != null)
 		{

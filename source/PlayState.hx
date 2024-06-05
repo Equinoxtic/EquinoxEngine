@@ -647,20 +647,21 @@ class PlayState extends MusicBeatState
 		if(doPush)
 			luaArray.push(new FunkinLua(luaFile));
 		#end
-
-		var gfVersion:String = SONG.gfVersion;
 		
-		loadGfVersion(gfVersion, curStage);
+		loadGfVersion(curStage);
 
 		if (!stageData.hide_girlfriend)
 		{
-			gf = new Character(0, 0, gfVersion);
+			/**
+			 * Use "SONG.gfVersion" instead of "gfVersion" as a string alone, as it already reads the "gfVersion" right after "loadGfVersion()" is called.
+			 */
+			gf = new Character(0, 0, SONG.gfVersion);
 			startCharacterPos(gf);
 			gf.scrollFactor.set();
 			gfGroup.add(gf);
 			startCharacterLua(gf.curCharacter);
 
-			if (gfVersion == 'pico-speaker')
+			if (SONG.gfVersion == 'pico-speaker')
 			{
 				if (!ClientPrefs.lowQuality)
 				{
@@ -728,8 +729,6 @@ class PlayState extends MusicBeatState
 			dialogue = CoolUtil.coolTextFile(file);
 		}
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
-		// doof.x += 70;
-		// doof.y = FlxG.height * 0.5;
 		doof.scrollFactor.set();
 		doof.finishThing = startCountdown;
 		doof.nextDialogueThing = startNextDialogue;
@@ -1634,8 +1633,9 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	private function loadGfVersion(gfVersion:Null<String>, curStage:Null<String>):Void
+	private function loadGfVersion(curStage:Null<String>):Void
 	{
+		var gfVersion:String = SONG.gfVersion;
 		if (gfVersion == null || gfVersion.length < 1)
 		{
 			switch (curStage)

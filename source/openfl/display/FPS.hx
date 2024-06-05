@@ -95,9 +95,9 @@ class FPS extends TextField
 			#end
 
 			textColor = 0xFFFFFFFF;
-			if (gameMemory > 3000 || currentFPS <= ClientPrefs.framerate / 2) {
+			if (gameMemory > 2000 || currentFPS <= ClientPrefs.framerate / 2) {
 				textColor = 0xE67E3E;
-			} else if (gameMemory > 1000 || currentFPS <= ClientPrefs.framerate / 4) {
+			} else if (gameMemory > 3000 || currentFPS <= ClientPrefs.framerate / 4) {
 				textColor = 0xBF3434;
 			}
 

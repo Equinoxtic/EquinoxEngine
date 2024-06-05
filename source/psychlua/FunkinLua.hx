@@ -10,29 +10,22 @@ import llua.Convert;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
-import flixel.addons.effects.FlxTrail;
-import flixel.input.keyboard.FlxKey;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
-import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.util.FlxColor;
 import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import openfl.Lib;
 import openfl.display.BlendMode;
-import openfl.filters.BitmapFilter;
 import openfl.utils.Assets;
 import flixel.math.FlxMath;
 import flixel.util.FlxSave;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.system.FlxAssets.FlxShader;
 import play.scoring.Highscore;
 
 #if (!flash && sys)

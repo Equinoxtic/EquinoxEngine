@@ -270,10 +270,10 @@ class PlayState extends MusicBeatState
 	
 	public var noteWiggle:WiggleEffect;
 
-	var noteWiggleAmplitude:Float = 0.06;
-	var noteWiggleFrequency:Float = 10;
-	var noteWiggleSpeed:Float = 1.25 + (Conductor.bpm / 100);
-	var noteWiggleAmplitudeDecay = 6.5 + (Conductor.bpm / 150) + (PlayState.SONG.speed / 2.5);
+	var noteWiggleAmplitude:Float = 0.045;
+	var noteWiggleFrequency:Float = 8.5;
+	var noteWiggleSpeed:Float = 1.1 + (Conductor.bpm / 100);
+	var noteWiggleAmplitudeDecay = 4.5 + (Conductor.bpm / 150) + (PlayState.SONG.speed / 2.5);
 	var lerpAmplitude:Float = 0.0;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];

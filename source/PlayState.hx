@@ -3,6 +3,7 @@ package;
 /**
  * Main Classes
  */
+import play.hud.dialogue.DialogueBox;
 import shaders.Shaders.ChromaticAberration;
 import shaders.Shaders.VCRDistortionEffect;
 import shaders.WiggleEffect;
@@ -60,7 +61,7 @@ import flixel.util.FlxSave;
 import flixel.animation.FlxAnimationController;
 import animateatlas.AtlasFrameMaker;
 import Achievements;
-import DialogueBoxPsych;
+import play.hud.dialogue.DialogueBoxPsych;
 import util.Constants;
 import play.song.Song;
 import play.song.SongData;

@@ -5726,7 +5726,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			ratingFC = Ranking.evaluateRatingFC(songMisses, bads, shits, goods, sicks, marvs);
+			ratingFC = Ranking.evaluateRatingFC(songMisses, shits, bads, goods, sicks, marvs);
 			ranking = Ranking.evaluateLetterRanking(Ranking.calculateAccuracy(ratingPercent));
 		}
 

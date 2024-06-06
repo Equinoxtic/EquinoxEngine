@@ -1,4 +1,5 @@
-package;
+package ui.option;
+
 import flixel.*;
 import flixel.FlxSubState;
 import flixel.addons.ui.FlxUIButton;

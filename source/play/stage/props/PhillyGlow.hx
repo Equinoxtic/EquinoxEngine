@@ -1,4 +1,4 @@
-package play.stage;
+package play.stage.props;
 
 import flixel.FlxSprite;
 import flixel.util.FlxColor;

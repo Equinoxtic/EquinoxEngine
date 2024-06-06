@@ -1,4 +1,4 @@
-package;
+package play.states;
 
 import flixel.group.FlxGroup.FlxTypedGroupIterator;
 import play.player.Controls.Control;

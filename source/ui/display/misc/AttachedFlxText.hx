@@ -1,4 +1,4 @@
-package;
+package ui.display.misc;
 
 import flixel.FlxSprite;
 import flixel.text.FlxText;

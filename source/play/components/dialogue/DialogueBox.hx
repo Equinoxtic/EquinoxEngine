@@ -1,4 +1,4 @@
-package play.hud.dialogue;
+package play.components.dialogue;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

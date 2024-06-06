@@ -1,4 +1,4 @@
-package play.song;
+package play.stage;
 
 #if MODS_ALLOWED
 import sys.io.File;

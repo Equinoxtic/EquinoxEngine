@@ -101,9 +101,6 @@ class TitleState extends MusicBeatState
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
 		WeekData.loadTheFirstEnabledMod();
 
-		// Make sure that it REALLY loads because idfk why it doesn't
-		Highscore.load();
-
 		//trace(path, FileSystem.exists(path));
 
 		/*#if (polymod && !html5)
@@ -163,6 +160,8 @@ class TitleState extends MusicBeatState
 			http.request();
 		}
 		#end
+
+		Highscore.load();
 
 		// IGNORE THIS!!!
 		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));

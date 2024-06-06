@@ -1,12 +1,10 @@
-package;
+package play.loading;
 
-import flixel.system.FlxSound;
 import lime.app.Promise;
 import lime.app.Future;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxTimer;
 import flixel.math.FlxMath;
 

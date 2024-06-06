@@ -1,4 +1,4 @@
-package play.song;
+package play.loading;
 
 import play.notes.Note.EventNote;
 import openfl.utils.Assets as OpenFlAssets;
@@ -7,7 +7,7 @@ import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
 #end
 
-import play.song.StageData.StageFile;
+import play.stage.StageData.StageFile;
 using StringTools;
 
 /**

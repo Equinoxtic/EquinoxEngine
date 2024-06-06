@@ -11,6 +11,9 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 
+import funkin.Paths;
+import funkin.play.player.preferences.ClientPrefs;
+
 /**
  * @author Lars Doucet
  */

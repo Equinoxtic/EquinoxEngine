@@ -15,6 +15,8 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 
+import funkin.Paths;
+
 /**
  * @author Lars Doucet
  */

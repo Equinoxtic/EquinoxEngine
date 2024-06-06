@@ -17,13 +17,13 @@ import lime.app.Application;
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
-import api.discord.Discord.DiscordClient;
+import funkin.api.discord.Discord.DiscordClient;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 #end
 
-import play.player.preferences.ClientPrefs;
+import funkin.play.player.preferences.ClientPrefs;
 
 using StringTools;
 
@@ -31,7 +31,7 @@ class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = menus.title.TitleState; // The FlxState the game starts with.
+	var initialState:Class<FlxState> = funkin.menus.title.TitleState; // The FlxState the game starts with.
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = 60; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
@@ -92,7 +92,7 @@ class Main extends Sprite
 		// create() in there, which gets called when it's added to stage
 		// which is why it needs to be added before addChild(game) here
 		@:privateAccess
-		game._customSoundTray = ui.display.FunkinSoundTray;
+		game._customSoundTray = funkin.ui.display.FunkinSoundTray;
 
 		addChild(game);
 

@@ -18,6 +18,8 @@ import openfl.Lib;
 import openfl.system.System;
 #end
 
+import funkin.play.player.preferences.ClientPrefs;
+
 /**
 	The FPS class provides an easy-to-use monitor to display
 	the current frame rate of an OpenFL project

@@ -30,6 +30,8 @@ import openfl.geom.Rectangle;
 import openfl.utils.AssetType;
 #end
 
+import funkin.Paths;
+
 // TODO: think about filters and text
 
 /**

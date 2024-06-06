@@ -325,6 +325,8 @@ class ChartingState extends MusicBeatState
 
 		// Paths.clearMemory();
 
+		FlxG.mouse.visible = true;
+
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Chart Editor", StringTools.replace(_song.song, '-', ' '));

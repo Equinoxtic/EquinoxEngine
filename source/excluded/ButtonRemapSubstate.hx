@@ -1,4 +1,4 @@
-package;
+package excluded;
 
 import flixel.FlxSubState;
 

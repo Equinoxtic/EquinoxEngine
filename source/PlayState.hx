@@ -2961,6 +2961,27 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		/**
+		 * Note tail wiggle cameras.
+		 */
+		if (erectMode)
+		{
+			// Strum goes first.
+			for (strum in strumLineNotes.members) {
+				strum.cameras = [camStrum];
+			}
+
+			// Sustain notes go first, and then regular notes go next.
+			for (note in notes.members) {
+				if (note.isSustainNote)
+					note.cameras = [camSus];
+				else
+					note.cameras = [camNotes];
+			}
+
+			camSus.setFilters([new ShaderFilter(noteWiggle.shader)]);
+		}
+
+		/**
 		 * Shaders checks and other stuff.
 		 */
 		 if (ClientPrefs.shaders)
@@ -2974,23 +2995,6 @@ class PlayState extends MusicBeatState
 					camGame.setFilters([new ShaderFilter(vcrEffect.shader)]);
 					vcrEffect.update(elapsed);
 			}
-
-			if (erectMode)
-			{	
-				strumLineNotes.forEach(function(strumNote:StrumNote) {
-					strumNote.cameras = [camStrum];
-				});
-
-				notes.forEach(function(note:Note) {
-					if (note.isSustainNote)
-						note.cameras = [camSus];
-					else
-						note.cameras = [camNotes];
-				});
-	
-				camSus.setFilters([new ShaderFilter(noteWiggle.shader)]);
-				
-			}
 			
 			noteWiggle.waveSpeed = noteWiggleSpeed;
 			noteWiggle.waveFrequency = noteWiggleFrequency;
@@ -3002,8 +3006,8 @@ class PlayState extends MusicBeatState
 		/**
 		 * Set any HUD-related cameras to camHUD.
 		 */
-		setCameraRelative(camStrum, camHUD);
 		setCameraRelative(camSus, camHUD);
+		setCameraRelative(camStrum, camHUD);
 		setCameraRelative(camNotes, camHUD);
 
 		/**
@@ -3026,9 +3030,6 @@ class PlayState extends MusicBeatState
 		
 		if (!cpuControlled && !practiceMode && !chartingMode) // Check whether or not the player is in BOTPLAY, PRACTICE, or CHARTING MODE
 		{
-			/**
-			 * Update Scores and ratings.
-			 */
 			statsHUD.updateStatistics();
 		}
 		else // Otherwise, check the current mode that the player is in and update the score text to something else other than the score and ratings.

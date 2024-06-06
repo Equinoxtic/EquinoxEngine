@@ -1,4 +1,4 @@
-package;
+package play;
 
 /**
  * Main Classes
@@ -37,18 +37,22 @@ import flixel.util.FlxTimer;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
-import Note.EventNote;
+import play.notes.Note.EventNote;
 import openfl.events.KeyboardEvent;
 import flixel.util.FlxSave;
 import flixel.animation.FlxAnimationController;
 import animateatlas.AtlasFrameMaker;
-import Achievements;
+import play.player.Achievements;
 import play.hud.dialogue.DialogueBoxPsych;
 import util.Constants;
 import play.song.Song;
 import play.song.SongData;
 import play.song.Section;
 import play.song.StageData;
+import play.notes.Note;
+import play.notes.Note.EventNote;
+import play.notes.NoteSplash;
+import play.notes.StrumNote;
 
 /**
  * Solarium Classes

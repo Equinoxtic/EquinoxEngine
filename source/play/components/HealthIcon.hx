@@ -1,4 +1,4 @@
-package;
+package play.components;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;

@@ -1,4 +1,4 @@
-package;
+package menus.title;
 
 import flixel.text.FlxText.FlxTextBorderStyle as BorderStyle;
 import flixel.text.FlxText.FlxTextAlign as TextAlignment;

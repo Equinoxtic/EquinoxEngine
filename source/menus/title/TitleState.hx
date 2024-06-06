@@ -1,4 +1,4 @@
-package;
+package menus.title;
 
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileCircle;
 import flixel.graphics.FlxGraphic;

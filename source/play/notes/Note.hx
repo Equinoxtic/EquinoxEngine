@@ -1,4 +1,4 @@
-package;
+package play.notes;
 
 import util.Constants;
 import flixel.FlxG;
@@ -7,6 +7,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flash.display.BitmapData;
+import menus.editors.ChartingState;
 
 using StringTools;
 

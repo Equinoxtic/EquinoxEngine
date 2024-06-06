@@ -1,4 +1,4 @@
-package;
+package api.discord;
 
 import Sys.sleep;
 import discord_rpc.DiscordRpc;

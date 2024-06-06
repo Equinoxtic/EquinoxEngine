@@ -3,6 +3,7 @@ package play.hud.game.rating;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
+import tweens.GlobalTweenClass;
 
 class NumericalComboSprite extends FlxSprite implements IRatingGraphic
 {
@@ -32,7 +33,7 @@ class NumericalComboSprite extends FlxSprite implements IRatingGraphic
 	{
 		var k:String = 'num${Std.int(indexes)}';
 		if (isPixel)
-			k = CoolUtil.pixelSuffix('num${Std.int(indexes)}');
+			k = FunkinUtil.pixelSuffix('num${Std.int(indexes)}');
 
 		loadGraphic(Paths.image(Std.string(k)));
 		
@@ -73,7 +74,7 @@ class NumericalComboSprite extends FlxSprite implements IRatingGraphic
 	  */
 	public function fadeAnimation(?rate:Float):Void
 	{
-		TweenClass.tween(this, { alpha: 0 }, Constants.NUMERICAL_SCORE_DURATION / rate, {
+		GlobalTweenClass.tween(this, { alpha: 0 }, Constants.NUMERICAL_SCORE_DURATION / rate, {
 			ease: FlxEaseUtil.getFlxEaseByString("cubeOut"),
 			startDelay: Constants.NUMERICAL_SCORE_DELAY / rate,
 			onComplete: function(_) {

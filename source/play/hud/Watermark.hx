@@ -8,7 +8,7 @@ import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
 import util.Constants;
-import TweenClass;
+import tweens.GlobalTweenClass;
 
 using StringTools;
 
@@ -43,6 +43,6 @@ class Watermark extends FlxSpriteGroup
 	public function playWatermarkAnimation(?durationMultiplier:Float = 0.95):Void
 	{
 		watermarkText.alpha = 0.0;
-		TweenClass.tween(watermarkText, {alpha: 0.5}, 1.0 * durationMultiplier, {ease: FlxEase.sineInOut});
+		GlobalTweenClass.tween(watermarkText, {alpha: 0.5}, 1.0 * durationMultiplier, {ease: FlxEase.sineInOut});
 	}
 }

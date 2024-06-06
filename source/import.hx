@@ -1,5 +1,7 @@
 #if !macro
 // --------- UTILITIES AND SHADERS ---------
+import Paths;
+import util.FunkinUtil;
 import util.*;
 import util.macro.*;
 import shaders.*;
@@ -9,6 +11,7 @@ import play.song.*;
 
 // --------- MENUS AND OTHER STUFF ---------
 import menus.*;
+import menus.title.*;
 import menus.options.*;
 import menus.editors.*;
 import ui.*;
@@ -21,4 +24,5 @@ import ui.transition.CustomFadeTransition;
 import play.PlayState;
 import play.player.*;
 import play.player.preferences.*;
+import play.loading.*;
 #end

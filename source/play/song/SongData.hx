@@ -8,6 +8,8 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
+import sound.FunkinSound;
+
 using StringTools;
 
 typedef SongDataJson = {

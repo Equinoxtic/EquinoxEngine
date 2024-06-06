@@ -18,6 +18,8 @@ import openfl.utils.Assets;
 import haxe.Json;
 import haxe.format.JsonParser;
 
+import play.stage.props.TankmenBG;
+
 using StringTools;
 
 typedef CharacterFile = {

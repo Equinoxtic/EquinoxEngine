@@ -1,8 +1,9 @@
 package menus.options;
 
 import ui.option.Checkbox;
+import play.character.Character;
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flash.text.TextField;
 import flixel.FlxG;

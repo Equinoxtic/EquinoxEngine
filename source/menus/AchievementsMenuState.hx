@@ -1,7 +1,7 @@
 package menus;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;

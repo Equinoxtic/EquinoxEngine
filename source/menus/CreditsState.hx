@@ -1,7 +1,7 @@
 package menus;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
@@ -56,7 +56,7 @@ class CreditsState extends MusicBeatState
 		var path:String = 'modsList.txt';
 		if(FileSystem.exists(path))
 		{
-			var leMods:Array<String> = CoolUtil.coolTextFile(path);
+			var leMods:Array<String> = FunkinUtil.coolTextFile(path);
 			for (i in 0...leMods.length)
 			{
 				if(leMods.length > 1 && leMods[0].length > 0) {
@@ -205,7 +205,7 @@ class CreditsState extends MusicBeatState
 			}
 
 			if(controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)) {
-				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
+				FunkinUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
 			if (controls.BACK)
 			{
@@ -222,7 +222,7 @@ class CreditsState extends MusicBeatState
 		{
 			if(!item.bold)
 			{
-				var lerpVal:Float = CoolUtil.boundTo(elapsed * 12, 0, 1);
+				var lerpVal:Float = FunkinUtil.boundTo(elapsed * 12, 0, 1);
 				if(item.targetY == 0)
 				{
 					var lastX:Float = item.x;

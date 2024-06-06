@@ -1,4 +1,4 @@
-package;
+package util;
 
 import flixel.FlxG;
 import openfl.utils.Assets;
@@ -23,7 +23,7 @@ class FunkinUtil
 		'Hard',
 		'Erect'
 	];
-	
+
 	public static var defaultDifficulty:String = 'Normal';
 
 	public static var difficulties:Array<String> = [];

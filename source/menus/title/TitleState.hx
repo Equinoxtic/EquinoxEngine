@@ -3,7 +3,7 @@ package menus.title;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileCircle;
 import flixel.graphics.FlxGraphic;
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 import sys.thread.Thread;
 #end
 import flixel.FlxG;
@@ -489,7 +489,7 @@ class TitleState extends MusicBeatState
 		}
 		
 		if (newTitle) {
-			titleTimer += CoolUtil.boundTo(elapsed, 0, 1);
+			titleTimer += FunkinUtil.boundTo(elapsed, 0, 1);
 			if (titleTimer > 2) titleTimer -= 2;
 		}
 

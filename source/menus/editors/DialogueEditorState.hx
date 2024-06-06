@@ -1,7 +1,7 @@
 package menus.editors;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -25,7 +25,7 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import flash.net.FileFilter;
 import haxe.Json;
-import play.hud.dialogue.DialogueBoxPsych;
+import play.components.dialogue.DialogueBoxPsych;
 import lime.system.Clipboard;
 import ui.Alphabet;
 #if sys

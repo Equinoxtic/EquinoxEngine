@@ -1,7 +1,7 @@
 package menus;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
@@ -92,7 +92,7 @@ class ModsMenuState extends MusicBeatState
 		var path:String = 'modsList.txt';
 		if(FileSystem.exists(path))
 		{
-			var leMods:Array<String> = CoolUtil.coolTextFile(path);
+			var leMods:Array<String> = FunkinUtil.coolTextFile(path);
 			for (i in 0...leMods.length)
 			{
 				if(leMods.length > 1 && leMods[0].length > 0) {
@@ -594,7 +594,7 @@ class ModsMenuState extends MusicBeatState
 			}
 			else
 			{
-				mod.alphabet.y = FlxMath.lerp(mod.alphabet.y, intendedPos, CoolUtil.boundTo(elapsed * 12, 0, 1));
+				mod.alphabet.y = FlxMath.lerp(mod.alphabet.y, intendedPos, FunkinUtil.boundTo(elapsed * 12, 0, 1));
 			}
 
 			if(i == curSelected)

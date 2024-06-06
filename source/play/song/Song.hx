@@ -1,13 +1,15 @@
 package play.song;
 
 import play.song.Section;
-import play.song.StageData;
+import play.stage.StageData;
 import haxe.Json;
 
 #if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
+
+import sound.FunkinSound;
 
 using StringTools;
 

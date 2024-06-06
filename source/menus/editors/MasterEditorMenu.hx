@@ -1,7 +1,7 @@
 package menus.editors;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -15,6 +15,7 @@ import flixel.system.FlxSound;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
+import play.character.Character;
 
 using StringTools;
 

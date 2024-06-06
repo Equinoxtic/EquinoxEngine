@@ -3,7 +3,6 @@ package play;
 /**
  * Main Classes
  */
-import play.hud.dialogue.DialogueBox;
 import shaders.Shaders.ChromaticAberration;
 import shaders.Shaders.VCRDistortionEffect;
 import shaders.WiggleEffect;
@@ -12,7 +11,7 @@ import play.hud.game.rating.*;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -43,21 +42,30 @@ import flixel.util.FlxSave;
 import flixel.animation.FlxAnimationController;
 import animateatlas.AtlasFrameMaker;
 import play.player.Achievements;
-import play.hud.dialogue.DialogueBoxPsych;
 import util.Constants;
-import play.song.Song;
-import play.song.SongData;
-import play.song.Section;
-import play.song.StageData;
-import play.notes.Note;
-import play.notes.Note.EventNote;
-import play.notes.NoteSplash;
-import play.notes.StrumNote;
+import play.song.*;
+import play.song.Song.SwagSong;
+import play.song.Section.SwagSection;
+import play.loading.SongLoader;
+import play.song.SongData.SongDataJson;
+import play.stage.*;
+import play.stage.props.*;
+import play.stage.StageData.StageFile;
+import play.notes.*;
+import play.character.Boyfriend;
+import play.character.Character;
+import play.components.HealthIcon;
+import play.components.dialogue.*;
+import play.components.dialogue.DialogueBoxPsych.DialogueFile;
+import play.states.PauseSubState;
+import play.states.GameOverSubstate;
+import ui.graphics.effects.CinematicBorder;
+import sound.FunkinSound;
 
 /**
  * Solarium Classes
  */
-import TweenClass;
+import tweens.GlobalTweenClass;
 import play.hud.game.*;
 import play.scoring.*;
 import play.scoring.Rating.PlayStateRating;
@@ -517,7 +525,7 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		#if desktop
-		storyDifficultyText = CoolUtil.difficulties[storyDifficulty];
+		storyDifficultyText = FunkinUtil.difficulties[storyDifficulty];
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
@@ -673,7 +681,7 @@ class PlayState extends MusicBeatState
 
 		var file:String = Paths.txt('charts/${songName}/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
 		if (OpenFlAssets.exists(file)) {
-			dialogue = CoolUtil.coolTextFile(file);
+			dialogue = FunkinUtil.coolTextFile(file);
 		}
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		doof.scrollFactor.set();
@@ -859,7 +867,7 @@ class PlayState extends MusicBeatState
 		 */
 		gameplayInfo = new GameplayInfo(this, -15, FlxG.height - 95, Constants.GAMEPLAY_INFO_SIZE, 17,
 			PlayState.SONG.song.replace('-', ' '),
-			CoolUtil.difficultyString().toUpperCase().trim(),
+			FunkinUtil.difficultyString().toUpperCase().trim(),
 			PlayState.SONG_DATA.artist,
 			PlayState.SONG_DATA.stringExtra
 		);
@@ -956,7 +964,7 @@ class PlayState extends MusicBeatState
 					snapCamFollowToPos(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 					inCutscene = true;
 
-					TweenClass.tween(whiteScreen, {alpha: 0}, 1, {
+					GlobalTweenClass.tween(whiteScreen, {alpha: 0}, 1, {
 						startDelay: 0.1,
 						ease: FlxEase.linear,
 						onComplete: function(twn:FlxTween)
@@ -977,7 +985,7 @@ class PlayState extends MusicBeatState
 					camHUD.visible = false;
 					inCutscene = true;
 
-					TweenClass.tween(blackScreen, {alpha: 0}, 0.7, {
+					GlobalTweenClass.tween(blackScreen, {alpha: 0}, 0.7, {
 						ease: FlxEase.linear,
 						onComplete: function(twn:FlxTween) {
 							remove(blackScreen);
@@ -992,7 +1000,7 @@ class PlayState extends MusicBeatState
 					{
 						camHUD.visible = true;
 						remove(blackScreen);
-						TweenClass.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {
+						GlobalTweenClass.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {
 							ease: FlxEase.quadInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -1762,7 +1770,7 @@ class PlayState extends MusicBeatState
 		{
 			var timeForStuff:Float = Conductor.crochet / 1000 * 4.5;
 			FlxG.sound.music.fadeOut(timeForStuff);
-			TweenClass.tween(FlxG.camera, {zoom: defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
+			GlobalTweenClass.tween(FlxG.camera, {zoom: defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
 			moveCamera(true);
 			startCountdown();
 
@@ -1840,9 +1848,9 @@ class PlayState extends MusicBeatState
 				cutsceneHandler.onStart = function()
 				{
 					tightBars.play(true);
-					TweenClass.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 4, {ease: FlxEase.quadInOut});
-					TweenClass.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2 * 1.2}, 0.5, {ease: FlxEase.quadInOut, startDelay: 4});
-					TweenClass.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 1, {ease: FlxEase.quadInOut, startDelay: 4.5});
+					GlobalTweenClass.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 4, {ease: FlxEase.quadInOut});
+					GlobalTweenClass.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2 * 1.2}, 0.5, {ease: FlxEase.quadInOut, startDelay: 4});
+					GlobalTweenClass.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 1, {ease: FlxEase.quadInOut, startDelay: 4.5});
 				};
 
 				cutsceneHandler.timer(4, function()
@@ -1861,7 +1869,7 @@ class PlayState extends MusicBeatState
 				gfGroup.alpha = 0.00001;
 				boyfriendGroup.alpha = 0.00001;
 				camFollow.set(dad.x + 400, dad.y + 170);
-				TweenClass.tween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut});
+				GlobalTweenClass.tween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut});
 				foregroundSprites.forEach(function(spr:BGSprite)
 				{
 					spr.y += 100;
@@ -1934,8 +1942,8 @@ class PlayState extends MusicBeatState
 
 				cutsceneHandler.timer(15.2, function()
 				{
-					TweenClass.tween(camFollow, {x: 650, y: 300}, 1, {ease: FlxEase.sineOut});
-					TweenClass.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 2.25, {ease: FlxEase.quadInOut});
+					GlobalTweenClass.tween(camFollow, {x: 650, y: 300}, 1, {ease: FlxEase.sineOut});
+					GlobalTweenClass.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 2.25, {ease: FlxEase.quadInOut});
 
 					gfDance.visible = false;
 					gfCutscene.alpha = 1;
@@ -2008,7 +2016,7 @@ class PlayState extends MusicBeatState
 
 					camFollow.set(boyfriend.x + 280, boyfriend.y + 200);
 					cameraSpeed = 12;
-					TweenClass.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 0.25, {ease: FlxEase.elasticOut});
+					GlobalTweenClass.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 0.25, {ease: FlxEase.elasticOut});
 				});
 
 				cutsceneHandler.timer(32.2, function()
@@ -2154,7 +2162,7 @@ class PlayState extends MusicBeatState
 						countdownReady.screenCenter();
 						countdownReady.antialiasing = antialias;
 						insert(members.indexOf(notes), countdownReady);
-						TweenClass.tween(countdownReady, {/*y: countdownReady.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+						GlobalTweenClass.tween(countdownReady, {/*y: countdownReady.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -2174,7 +2182,7 @@ class PlayState extends MusicBeatState
 						countdownSet.screenCenter();
 						countdownSet.antialiasing = antialias;
 						insert(members.indexOf(notes), countdownSet);
-						TweenClass.tween(countdownSet, {/*y: countdownSet.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+						GlobalTweenClass.tween(countdownSet, {/*y: countdownSet.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -2196,7 +2204,7 @@ class PlayState extends MusicBeatState
 						countdownGo.screenCenter();
 						countdownGo.antialiasing = antialias;
 						insert(members.indexOf(notes), countdownGo);
-						TweenClass.tween(countdownGo, {/*y: countdownGo.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+						GlobalTweenClass.tween(countdownGo, {/*y: countdownGo.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -2327,9 +2335,9 @@ class PlayState extends MusicBeatState
 
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
-		TweenClass.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-		TweenClass.tween(timeBarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-		TweenClass.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+		GlobalTweenClass.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+		GlobalTweenClass.tween(timeBarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+		GlobalTweenClass.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
 		switch(curStage)
 		{
@@ -2631,7 +2639,7 @@ class PlayState extends MusicBeatState
 			{
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
-				TweenClass.tween(babyArrow, {y: babyArrow.y + 10, alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				GlobalTweenClass.tween(babyArrow, {y: babyArrow.y + 10, alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 			else
 			{
@@ -2663,7 +2671,7 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
-			TweenClass.globalManager.active = false;
+			GlobalTweenClass.globalManager.active = false;
 
 			if (FlxG.sound.music != null) {
 				FunkinSound.pauseSong();
@@ -2699,7 +2707,7 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
-			TweenClass.globalManager.active = true;
+			GlobalTweenClass.globalManager.active = true;
 
 			if (FlxG.sound.music != null && !startingSong)
 			{
@@ -2917,7 +2925,7 @@ class PlayState extends MusicBeatState
 							}
 
 						case 4:
-							bgLimo.x = FlxMath.lerp(bgLimo.x, -150, CoolUtil.boundTo(elapsed * 9, 0, 1));
+							bgLimo.x = FlxMath.lerp(bgLimo.x, -150, FunkinUtil.boundTo(elapsed * 9, 0, 1));
 							if(Math.round(bgLimo.x) == -150) {
 								bgLimo.x = -150;
 								limoKillingState = 0;
@@ -2950,7 +2958,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if(!inCutscene) {
-			var lerpVal:Float = CoolUtil.boundTo(Math.abs(elapsed * 2.4) * cameraSpeed * playbackRate, 0, 1);
+			var lerpVal:Float = FunkinUtil.boundTo(Math.abs(elapsed * 2.4) * cameraSpeed * playbackRate, 0, 1);
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x + animOffsetX, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y + animOffsetY, lerpVal));
 			if (!startingSong && !endingSong && boyfriend.animation.curAnim != null && boyfriend.animation.curAnim.name.startsWith('idle')) {
 				boyfriendIdleTime += elapsed;
@@ -3044,7 +3052,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Added a cool global tween class. (Basically modified FlxTween, thanks for @Quackerona for teaching me this a while back)
 		 */
-		TweenClass.globalManager.update(elapsed);
+		GlobalTweenClass.globalManager.update(elapsed);
 
 		if (combo >= 10) showCombo = true;
 
@@ -3092,11 +3100,11 @@ class PlayState extends MusicBeatState
 		if (health > Constants.HEALTH_MAX) health = Constants.HEALTH_MAX;
 		if (health < Constants.HEALTH_MIN) health = Constants.HEALTH_MIN;
 
-		iconP1.scaleIcon(FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
+		iconP1.scaleIcon(FlxMath.lerp(1, iconP1.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
 		iconP1.offsetIcon(Constants.ICON_OFFSET, true);
 		iconP1.updateHealthIcon();
 
-		iconP2.scaleIcon(FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
+		iconP2.scaleIcon(FlxMath.lerp(1, iconP2.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
 		iconP2.offsetIcon(Constants.ICON_OFFSET, false);
 		iconP2.updateHealthIcon();
 
@@ -3154,7 +3162,7 @@ class PlayState extends MusicBeatState
 					// Putting each "timeFormat" in an array because I can.
 					var timeFormats:Array<String> = [
 						// SONG - DIFFICULTY
-						'${SONG.song} - ${CoolUtil.difficultyString().toUpperCase()}',
+						'${SONG.song} - ${FunkinUtil.difficultyString().toUpperCase()}',
 						// CURRENT TIME / TOTAL TIME
 						'${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(songLengthButReal, false)}',
 						// PERCENTAGE%
@@ -3215,8 +3223,8 @@ class PlayState extends MusicBeatState
 
 		if (camZooming)
 		{
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
-			camHUD.zoom = FlxMath.lerp(Constants.CAMERA_HUD_ZOOM, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
+			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, FunkinUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
+			camHUD.zoom = FlxMath.lerp(Constants.CAMERA_HUD_ZOOM, camHUD.zoom, FunkinUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
 		}
 
 		if (erectMode) {
@@ -3568,7 +3576,7 @@ class PlayState extends MusicBeatState
 						dadbattleBlack.visible = false;
 						dadbattleLight.visible = false;
 						defaultCamZoom -= 0.12;
-						TweenClass.tween(dadbattleSmokes, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
+						GlobalTweenClass.tween(dadbattleSmokes, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
 						{
 							dadbattleSmokes.visible = false;
 						}});
@@ -3847,7 +3855,7 @@ class PlayState extends MusicBeatState
 						borderCameraTween.cancel();
 					}
 
-					borderCameraTween = TweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
+					borderCameraTween = GlobalTweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
 						borderCameraTween = null;
 					}});
 
@@ -3957,7 +3965,7 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					songSpeedTween = TweenClass.tween(this, {songSpeed: newValue}, val2 / playbackRate, {ease: FlxEase.quadInOut, onComplete:
+					songSpeedTween = GlobalTweenClass.tween(this, {songSpeed: newValue}, val2 / playbackRate, {ease: FlxEase.quadInOut, onComplete:
 						function (twn:FlxTween)
 						{
 							songSpeedTween = null;
@@ -4041,7 +4049,7 @@ class PlayState extends MusicBeatState
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
 			{
-				cameraTwn = TweenClass.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
+				cameraTwn = GlobalTweenClass.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
 					function (twn:FlxTween)
 					{
 						cameraTwn = null;
@@ -4054,7 +4062,7 @@ class PlayState extends MusicBeatState
 
 	function tweenCamIn() {
 		if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3) {
-			cameraTwn = TweenClass.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
+			cameraTwn = GlobalTweenClass.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
 				function (twn:FlxTween) {	
 					cameraTwn = null;
 				}
@@ -4237,7 +4245,7 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					var difficulty:String = CoolUtil.getDifficultyFilePath();
+					var difficulty:String = FunkinUtil.getDifficultyFilePath();
 
 					trace('LOADING NEXT SONG');
 					trace(Paths.formatToSongPath(PlayState.storyPlaylist[0]) + difficulty);
@@ -4457,7 +4465,7 @@ class PlayState extends MusicBeatState
 
 		coolText.text = Std.string(seperatedScore);
 
-		TweenClass.tween(coolText, { y: 1, x : 1 }, Constants.NUMERICAL_SCORE_DURATION / playbackRate, {
+		GlobalTweenClass.tween(coolText, { y: 1, x : 1 }, Constants.NUMERICAL_SCORE_DURATION / playbackRate, {
 			startDelay: Constants.NUMERICAL_SCORE_DELAY / playbackRate,
 			onComplete: function(_) {
 				coolText.destroy();
@@ -5062,15 +5070,15 @@ class PlayState extends MusicBeatState
 			camHUD.zoom = camHUD.zoom + 0.03;
 
 			if(!camZooming) { //Just a way for preventing it to be permanently zoomed until Skid & Pump hits a note
-				TweenClass.tween(FlxG.camera, {zoom: defaultCamZoom}, 0.5);
-				TweenClass.tween(camHUD, {zoom: camHUD.zoom - 0.03}, 0.5);
+				GlobalTweenClass.tween(FlxG.camera, {zoom: defaultCamZoom}, 0.5);
+				GlobalTweenClass.tween(camHUD, {zoom: camHUD.zoom - 0.03}, 0.5);
 			}
 		}
 
 		if(ClientPrefs.flashing) {
 			halloweenWhite.alpha = 0.4;
-			TweenClass.tween(halloweenWhite, {alpha: 0.5}, 0.075);
-			TweenClass.tween(halloweenWhite, {alpha: 0}, 0.25, {startDelay: 0.15});
+			GlobalTweenClass.tween(halloweenWhite, {alpha: 0.5}, 0.075);
+			GlobalTweenClass.tween(halloweenWhite, {alpha: 0}, 0.25, {startDelay: 0.15});
 		}
 	}
 
@@ -5473,7 +5481,7 @@ class PlayState extends MusicBeatState
 				
 				if (achievementName.contains(WeekData.getWeekFileName()) && achievementName.endsWith('nomiss')) // any FC achievements, name should be "weekFileName_nomiss", e.g: "weekd_nomiss";
 				{
-					if(isStoryMode && campaignMisses + songMisses < 1 && CoolUtil.difficultyString() == 'HARD'
+					if(isStoryMode && campaignMisses + songMisses < 1 && FunkinUtil.difficultyString() == 'HARD'
 						&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
 						unlock = true;
 				}

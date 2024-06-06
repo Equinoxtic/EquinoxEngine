@@ -1,7 +1,7 @@
 package menus.editors;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -31,7 +31,8 @@ import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
 #end
-import WeekData;
+import play.song.WeekData;
+import play.components.HealthIcon;
 
 using StringTools;
 

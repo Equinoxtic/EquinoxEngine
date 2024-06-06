@@ -14,6 +14,9 @@ import flixel.FlxG;
 import flixel.ui.FlxBar;
 import flixel.math.FlxPoint;
 
+import play.character.Character;
+import play.stage.BGSprite;
+
 using StringTools;
 
 class NoteOffsetState extends MusicBeatState

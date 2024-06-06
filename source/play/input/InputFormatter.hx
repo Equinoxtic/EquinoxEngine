@@ -1,3 +1,5 @@
+package play.input;
+
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
 

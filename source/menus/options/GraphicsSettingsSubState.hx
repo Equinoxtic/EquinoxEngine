@@ -1,7 +1,7 @@
 package menus.options;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flash.text.TextField;
 import flixel.FlxCamera;

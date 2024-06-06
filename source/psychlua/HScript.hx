@@ -6,6 +6,7 @@ import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.addons.display.FlxRuntimeShader;
+import play.character.Character;
 
 #if hscript
 import hscript.Parser;

@@ -16,10 +16,10 @@ import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
-import play.song.Conductor;
-import play.song.Section;
-import play.notes.StrumNote;
-import play.notes.Note;
+import play.song.*;
+import play.song.Section.SwagSection;
+import play.notes.*;
+import sound.FunkinSound;
 
 using StringTools;
 

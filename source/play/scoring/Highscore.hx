@@ -137,7 +137,7 @@ class Highscore
 
 	public static function formatSong(song:String, diff:Int):String
 	{
-		var path:String = '${Paths.formatToSongPath(song)}/difficulties/${CoolUtil.getDifficultyFilePath(diff)}';
+		var path:String = '${Paths.formatToSongPath(song)}/difficulties/${FunkinUtil.getDifficultyFilePath(diff)}';
 		return Std.string(path);
 	}
 

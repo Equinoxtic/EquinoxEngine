@@ -40,7 +40,7 @@ import sys.io.File;
 import Type.ValueType;
 import play.player.Controls;
 import play.notes.StrumNote;
-import play.hud.dialogue.DialogueBoxPsych;
+import play.components.dialogue.DialogueBoxPsych;
 
 #if hscript
 import hscript.Parser;
@@ -49,8 +49,11 @@ import hscript.Expr;
 #end
 
 #if desktop
-import Discord;
+import api.discord.Discord;
 #end
+
+import play.states.*;
+import play.character.Character;
 
 using StringTools;
 
@@ -128,7 +131,7 @@ class FunkinLua {
 		set('isStoryMode', PlayState.isStoryMode);
 		set('difficulty', PlayState.storyDifficulty);
 
-		var difficultyName:String = CoolUtil.difficulties[PlayState.storyDifficulty];
+		var difficultyName:String = FunkinUtil.difficulties[PlayState.storyDifficulty];
 		set('difficultyName', difficultyName);
 		set('difficultyPath', Paths.formatToSongPath(difficultyName));
 		set('weekRaw', PlayState.storyWeek);
@@ -1536,10 +1539,10 @@ class FunkinLua {
 			Paths.returnGraphic(name);
 		});
 		Lua_helper.add_callback(lua, "precacheSound", function(name:String) {
-			CoolUtil.precacheSound(name);
+			FunkinUtil.precacheSound(name);
 		});
 		Lua_helper.add_callback(lua, "precacheMusic", function(name:String) {
-			CoolUtil.precacheMusic(name);
+			FunkinUtil.precacheMusic(name);
 		});
 		Lua_helper.add_callback(lua, "triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic) {
 			var value1:String = arg1;

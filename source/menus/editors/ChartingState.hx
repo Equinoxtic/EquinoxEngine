@@ -1,7 +1,7 @@
 package menus.editors;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flash.geom.Rectangle;
 import haxe.Json;
@@ -11,7 +11,7 @@ import play.song.Conductor.BPMChangeEvent;
 import play.song.Section.SwagSection;
 import play.song.Song.SwagSong;
 import play.song.SongData;
-import play.song.FunkinSound.FunkinSoundChartEditor;
+import sound.FunkinSound.FunkinSoundChartEditor;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -51,14 +51,21 @@ import openfl.utils.ByteArray;
 import ui.display.misc.AttachedFlxText;
 import play.notes.StrumNote;
 import play.notes.Note;
+import play.components.HealthIcon;
+import ui.editor.FlxUIDropDownMenuCustom;
+import sound.FunkinSound;
+import play.loading.LoadingState;
+import play.stage.StageData;
+import play.character.Character;
+import play.character.Character.CharacterFile;
 
-using StringTools;
 #if sys
 import flash.media.Sound;
 import sys.FileSystem;
 import sys.io.File;
 #end
 
+using StringTools;
 
 @:access(flixel.system.FlxSound._sound)
 @:access(openfl.media.Sound.__buffer)
@@ -290,7 +297,7 @@ class ChartingState extends MusicBeatState
 		}
 		else
 		{
-			CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
+			FunkinUtil.difficulties = FunkinUtil.defaultDifficulties.copy();
 
 			_song = {
 				song: 'Test',
@@ -624,7 +631,7 @@ class ChartingState extends MusicBeatState
 		#end
 
 		var tempMap:Map<String, Bool> = new Map<String, Bool>();
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
+		var characters:Array<String> = FunkinUtil.coolTextFile(Paths.txt('characterList'));
 		for (i in 0...characters.length) {
 			tempMap.set(characters[i], true);
 		}
@@ -680,7 +687,7 @@ class ChartingState extends MusicBeatState
 		#end
 
 		tempMap.clear();
-		var stageFile:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
+		var stageFile:Array<String> = FunkinUtil.coolTextFile(Paths.txt('stageList'));
 		var stages:Array<String> = [];
 		for (i in 0...stageFile.length) { //Prevent duplicates
 			var stageToCheck:String = stageFile[i];
@@ -2505,7 +2512,7 @@ class ChartingState extends MusicBeatState
 		var rawJson = OpenFlAssets.getText(path);
 		#end
 
-		var json:Character.CharacterFile = cast Json.parse(rawJson);
+		var json:CharacterFile = cast Json.parse(rawJson);
 		return json.healthicon;
 	}
 
@@ -2925,12 +2932,12 @@ class ChartingState extends MusicBeatState
 	{
 		//shitty null fix, i fucking hate it when this happens
 		//make it look sexier if possible
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != CoolUtil.defaultDifficulty)
+		if (FunkinUtil.difficulties[PlayState.storyDifficulty] != FunkinUtil.defaultDifficulty)
 		{
-			if (CoolUtil.difficulties[PlayState.storyDifficulty] == null) {
+			if (FunkinUtil.difficulties[PlayState.storyDifficulty] == null) {
 				PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 			} else {
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
+				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + FunkinUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
 			}
 		} else {
 			PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
@@ -2967,7 +2974,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), CoolUtil.difficultyString().toLowerCase().trim() + ".json");
+			_file.save(data.trim(), FunkinUtil.difficultyString().toLowerCase().trim() + ".json");
 		}
 	}
 	private function saveSongData()

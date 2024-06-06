@@ -1,7 +1,7 @@
 package menus.editors;
 
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
@@ -29,10 +29,13 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import haxe.Json;
-import Character;
 import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import lime.system.Clipboard;
 import flixel.animation.FlxAnimation;
+import play.character.Character;
+import play.components.HealthIcon;
+import play.stage.*;
+import ui.editor.FlxUIDropDownMenuCustom;
 
 #if MODS_ALLOWED
 import sys.FileSystem;
@@ -528,7 +531,7 @@ class CharacterEditorState extends MusicBeatState
 
 		var decideIconColor:FlxButton = new FlxButton(reloadImage.x, reloadImage.y + 30, "Get Icon Color", function()
 			{
-				var coolColor = FlxColor.fromInt(CoolUtil.dominantColor(leHealthIcon));
+				var coolColor = FlxColor.fromInt(FunkinUtil.dominantColor(leHealthIcon));
 				healthColorStepperR.value = coolColor.red;
 				healthColorStepperG.value = coolColor.green;
 				healthColorStepperB.value = coolColor.blue;
@@ -1073,7 +1076,7 @@ class CharacterEditorState extends MusicBeatState
 			}
 		}
 		#else
-		characterList = CoolUtil.coolTextFile(Paths.txt('characterList'));
+		characterList = FunkinUtil.coolTextFile(Paths.txt('characterList'));
 		#end
 
 		charDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(characterList, true));

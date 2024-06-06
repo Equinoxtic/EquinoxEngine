@@ -5,7 +5,7 @@ import util.Constants;
 import haxe.Http;
 import openfl.filters.ShaderFilter;
 #if desktop
-import Discord.DiscordClient;
+import api.discord.Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -196,7 +196,7 @@ class MainMenuState extends MusicBeatState
 
 		mainChecker.updatePosition();
 
-		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
+		var lerpVal:Float = FunkinUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
 		if (!selectedSomethin)
@@ -217,7 +217,7 @@ class MainMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
-					CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
+					FunkinUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
 				}
 				else
 				{

@@ -19,6 +19,7 @@ import flixel.util.FlxTimer;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import play.scoring.*;
+import sound.FunkinSound;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -45,7 +46,7 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		super();
 
-		if(CoolUtil.difficulties.length < 2) menuItemsOG.remove('Change Difficulty'); //No need to change difficulty if there is only one!
+		if(FunkinUtil.difficulties.length < 2) menuItemsOG.remove('Change Difficulty'); //No need to change difficulty if there is only one!
 
 		if(PlayState.chartingMode)
 		{
@@ -63,8 +64,8 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		menuItems = menuItemsOG;
 
-		for (i in 0...CoolUtil.difficulties.length) {
-			var diff:String = '' + CoolUtil.difficulties[i];
+		for (i in 0...FunkinUtil.difficulties.length) {
+			var diff:String = '' + FunkinUtil.difficulties[i];
 			difficultyChoices.push(diff);
 		}
 		difficultyChoices.push('BACK');
@@ -84,7 +85,7 @@ class PauseSubState extends MusicBeatSubstate
 		pauseTexts.add(levelInfo);
 
 		var difficulty:FlxText = new FunkinText(0, 15 + 40, 0, "", 32, RIGHT, true);
-		difficulty.text += 'Difficulty: ${CoolUtil.difficultyString()}';
+		difficulty.text += 'Difficulty: ${FunkinUtil.difficultyString()}';
 		pauseTexts.add(difficulty);
 
 		var restarts:FlxText = new FunkinText(0, 15 + 80, 0, "", 32, RIGHT, true);

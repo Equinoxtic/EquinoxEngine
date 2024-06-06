@@ -7,6 +7,8 @@ import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
 #end
 
+import sound.FunkinSound;
+
 import play.stage.StageData.StageFile;
 using StringTools;
 

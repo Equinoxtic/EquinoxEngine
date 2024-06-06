@@ -22,7 +22,7 @@ class GameplayInfo extends FlxSpriteGroup
 	 * @param initialSize The initial scale of the text field.
 	 * @param fontSize The font size of the text field.
 	 * @param songName The string of the song's name. ( By default it should ``PlayState.SONG.song`` )
-	 * @param difficultyString The string of the player's current difficulty. ( By default it should be ``CoolUtil.difficultyString()`` )
+	 * @param difficultyString The string of the player's current difficulty. ( By default it should be ``FunkinUtil.difficultyString()`` )
 	 * @param songCredit The string of the artist/credit of the song. ( By default it should be ``PlayState.SONG_DATA.artist`` )
 	 * @param songText The extra/optional string in the text field. ( By default it should be ``PlayState.SONG_DATA.stringExtra`` )
 	 */

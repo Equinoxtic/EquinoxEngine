@@ -1,5 +1,9 @@
 package menus.editors;
 
+#if (desktop)
+import api.discord.Discord.DiscordClient;
+#end
+
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.LuaL;
@@ -161,7 +165,7 @@ class EditorLua {
 			}
 		});
 
-		Discord.DiscordClient.addLuaCallbacks(lua);
+		DiscordClient.addLuaCallbacks(lua);
 
 		call('onCreate', []);
 		#end

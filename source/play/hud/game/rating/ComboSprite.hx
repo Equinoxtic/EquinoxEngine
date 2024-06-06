@@ -3,6 +3,7 @@ package play.hud.game.rating;
 import flixel.FlxCamera;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxSprite;
+import tweens.GlobalTweenClass;
 
 class ComboSprite extends FlxSprite implements IRatingGraphic
 {
@@ -24,7 +25,7 @@ class ComboSprite extends FlxSprite implements IRatingGraphic
 	{
 		var k:String = '${key}';
 		if (isPixel)
-			k = CoolUtil.pixelSuffix('${key}');
+			k = FunkinUtil.pixelSuffix('${key}');
 
 		loadGraphic(Paths.image(Std.string(k)));
 		
@@ -73,7 +74,7 @@ class ComboSprite extends FlxSprite implements IRatingGraphic
 	 */
 	public function fadeAnimation(?rate:Float):Void
 	{
-		TweenClass.tween(this, { alpha: 0 }, Constants.COMBO_SPRITE_DURATION / rate, {
+		GlobalTweenClass.tween(this, { alpha: 0 }, Constants.COMBO_SPRITE_DURATION / rate, {
 			startDelay: Constants.COMBO_SPRITE_DELAY / rate,
 			ease: FlxEaseUtil.getFlxEaseByString("cubeOut"),	
 			onComplete: function(_) {

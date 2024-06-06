@@ -9,6 +9,7 @@ import openfl.utils.Assets;
 import haxe.Json;
 import haxe.format.JsonParser;
 import play.song.Song;
+import play.stage.StageData;
 
 using StringTools;
 

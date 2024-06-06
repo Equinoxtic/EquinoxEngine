@@ -1,4 +1,4 @@
-package play.song;
+package sound;
 
 import flixel.system.FlxSoundGroup;
 import flixel.tweens.FlxTween;
@@ -13,7 +13,6 @@ import flixel.util.FlxColor;
 import flash.geom.Rectangle;
 import flixel.math.FlxMath;
 import openfl.utils.ByteArray;
-import CoolUtil as FunkinUtil;
 
 using StringTools;
 

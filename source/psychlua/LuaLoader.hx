@@ -4,6 +4,8 @@ package psychlua;
 import sys.FileSystem;
 #end
 
+import sound.FunkinSound;
+
 import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;

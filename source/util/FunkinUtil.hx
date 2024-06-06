@@ -15,7 +15,7 @@ import openfl.utils.Assets;
 
 using StringTools;
 
-class CoolUtil
+class FunkinUtil
 {
 	public static var defaultDifficulties:Array<String> = [
 		'Easy',
@@ -23,6 +23,7 @@ class CoolUtil
 		'Hard',
 		'Erect'
 	];
+	
 	public static var defaultDifficulty:String = 'Normal';
 
 	public static var difficulties:Array<String> = [];

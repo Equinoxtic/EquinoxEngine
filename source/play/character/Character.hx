@@ -1,4 +1,4 @@
-package;
+package play.character;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;

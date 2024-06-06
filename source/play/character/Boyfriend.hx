@@ -1,4 +1,4 @@
-package;
+package play.character;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

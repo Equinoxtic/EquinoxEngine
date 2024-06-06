@@ -1,4 +1,4 @@
-package;
+package play.player;
 
 import flixel.FlxG;
 import flixel.input.FlxInput;

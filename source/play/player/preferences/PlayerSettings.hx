@@ -1,6 +1,6 @@
-package;
+package play.player.preferences;
 
-import Controls;
+import play.player.Controls;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.util.FlxSignal;

@@ -59,7 +59,7 @@ class Constants
 		var version:String = Http.requestStringFrom('https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/gitVersion.txt');
 		return '${MAIN_APPLICATION_TITLE} - v${version}';
 		#else
-		return '${MAIN_APPLICATION_TITLE} - DEV : ${GIT_BRANCH} @ ${GIT_HASH}';
+		return '${MAIN_APPLICATION_TITLE.trim()} - DEV : ${GIT_BRANCH} @ ${GIT_HASH}';
 		#end
 	}
 

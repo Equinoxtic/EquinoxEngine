@@ -1,13 +1,10 @@
-package;
+package play.song;
 
 #if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
 #end
-import lime.utils.Assets;
-import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
-import haxe.format.JsonParser;
 
 using StringTools;
 

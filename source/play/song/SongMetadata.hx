@@ -1,4 +1,4 @@
-package util;
+package play.song;
 
 class SongMetadata
 {

@@ -1,4 +1,4 @@
-package;
+package graphics.effects;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;

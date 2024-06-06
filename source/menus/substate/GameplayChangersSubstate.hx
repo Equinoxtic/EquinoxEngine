@@ -1,4 +1,4 @@
-package;
+package menus.substate;
 
 import ui.option.Checkbox;
 import flixel.group.FlxGroup.FlxTypedGroup;

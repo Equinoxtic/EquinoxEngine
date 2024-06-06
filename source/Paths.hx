@@ -1,4 +1,4 @@
-package util;
+package;
 
 import openfl.system.System;
 import flixel.FlxG;

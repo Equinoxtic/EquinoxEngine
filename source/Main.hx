@@ -23,6 +23,8 @@ import sys.io.File;
 import sys.io.Process;
 #end
 
+import play.player.preferences.ClientPrefs;
+
 using StringTools;
 
 class Main extends Sprite

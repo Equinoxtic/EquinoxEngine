@@ -21,7 +21,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
-import Achievements;
+import play.player.Achievements;
 import flixel.input.keyboard.FlxKey;
 
 using StringTools;

@@ -18,6 +18,8 @@ import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import play.song.Conductor;
 import play.song.Section;
+import play.notes.StrumNote;
+import play.notes.Note;
 
 using StringTools;
 

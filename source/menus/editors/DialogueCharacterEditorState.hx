@@ -29,7 +29,7 @@ import play.hud.dialogue.DialogueBoxPsych;
 import flixel.FlxCamera;
 import flixel.group.FlxSpriteGroup;
 import lime.system.Clipboard;
-import Alphabet;
+import ui.Alphabet;
 #if sys
 import sys.io.File;
 #end

@@ -48,7 +48,9 @@ import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.ByteArray;
-import AttachedFlxText;
+import ui.display.misc.AttachedFlxText;
+import play.notes.StrumNote;
+import play.notes.Note;
 
 using StringTools;
 #if sys

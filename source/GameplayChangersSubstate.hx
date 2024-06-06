@@ -7,7 +7,7 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import ui.option.GameplayOption;
-import Controls;
+import play.player.Controls;
 
 using StringTools;
 

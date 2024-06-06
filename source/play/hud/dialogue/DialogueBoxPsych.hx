@@ -12,7 +12,7 @@ import flixel.util.FlxTimer;
 import flixel.FlxSubState;
 import haxe.Json;
 import haxe.format.JsonParser;
-import Alphabet;
+import ui.Alphabet;
 #if sys
 import sys.FileSystem;
 import sys.io.File;

@@ -2,6 +2,8 @@ package play.song;
 
 import play.song.Song;
 import play.scoring.Rating;
+import play.notes.Note;
+import play.player.preferences.ClientPrefs;
 
 /**
  * ...

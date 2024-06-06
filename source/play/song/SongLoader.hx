@@ -1,6 +1,6 @@
 package play.song;
 
-import Note.EventNote;
+import play.notes.Note.EventNote;
 import openfl.utils.Assets as OpenFlAssets;
 
 #if sys

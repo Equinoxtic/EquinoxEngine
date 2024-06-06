@@ -205,4 +205,8 @@
 	<icon path="art/icons/ICON_MAIN_ALT.png" size='32'/>
 	<icon path="art/icons/ICON_MAIN_ALT.png" size='64'/>
 	<icon path="art/icons/ICON_MAIN.png" />
+
+	<!-- Run before and after building -->
+	<prebuild haxe="source/PreBuild.hx" if="desktop"/>
+	<postbuild haxe="source/PostBuild.hx" if="desktop"/>
 </project>

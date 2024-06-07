@@ -18,7 +18,7 @@ import openfl.Lib;
 import openfl.system.System;
 #end
 
-import funkin.play.player.preferences.ClientPrefs;
+import funkin.Preferences;
 
 /**
 	The FPS class provides an easy-to-use monitor to display
@@ -81,7 +81,7 @@ class FPS extends TextField
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
-		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
+		if (currentFPS > Preferences.framerate) currentFPS = Preferences.framerate;
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
@@ -97,9 +97,9 @@ class FPS extends TextField
 			#end
 
 			textColor = 0xFFFFFFFF;
-			if (gameMemory > 2000 || currentFPS <= ClientPrefs.framerate / 2) {
+			if (gameMemory > 2000 || currentFPS <= Preferences.framerate / 2) {
 				textColor = 0xE67E3E;
-			} else if (gameMemory > 3000 || currentFPS <= ClientPrefs.framerate / 4) {
+			} else if (gameMemory > 3000 || currentFPS <= Preferences.framerate / 4) {
 				textColor = 0xBF3434;
 			}
 

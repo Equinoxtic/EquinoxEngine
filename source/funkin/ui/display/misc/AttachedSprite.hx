@@ -30,7 +30,7 @@ class AttachedSprite extends FlxSprite
 			loadGraphic(Paths.image(file));
 		}
 
-		antialiasing = ClientPrefs.globalAntialiasing;
+		antialiasing = Preferences.globalAntialiasing;
 
 		scrollFactor.set();
 	}

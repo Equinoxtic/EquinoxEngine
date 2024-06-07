@@ -634,7 +634,7 @@ class Controls extends FlxActionSet
 			removeKeyboard();
 
 		keyboardScheme = scheme;
-		var keysMap = ClientPrefs.keyBinds;
+		var keysMap = Preferences.keyBinds;
 		
 		#if (haxe >= "4.0.0")
 		switch (scheme)

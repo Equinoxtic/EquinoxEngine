@@ -125,11 +125,11 @@ class Note extends FlxSprite
 	private function set_noteType(value:String):String {
 		noteSplashTexture = PlayState.SONG.splashSkin;
 
-		if (noteData > -1 && noteData < ClientPrefs.arrowHSV.length)
+		if (noteData > -1 && noteData < Preferences.arrowHSV.length)
 		{
-			colorSwap.hue = ClientPrefs.arrowHSV[noteData][0] / 360;
-			colorSwap.saturation = ClientPrefs.arrowHSV[noteData][1] / 100;
-			colorSwap.brightness = ClientPrefs.arrowHSV[noteData][2] / 100;
+			colorSwap.hue = Preferences.arrowHSV[noteData][0] / 360;
+			colorSwap.saturation = Preferences.arrowHSV[noteData][1] / 100;
+			colorSwap.brightness = Preferences.arrowHSV[noteData][2] / 100;
 		}
 
 		if(noteData > -1 && noteType != value) {
@@ -178,11 +178,11 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 		this.inEditor = inEditor;
 
-		x += (ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
+		x += (Preferences.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
-		if(!inEditor) this.strumTime += ClientPrefs.noteOffset;
+		if(!inEditor) this.strumTime += Preferences.noteOffset;
 
 		this.noteData = noteData;
 
@@ -212,7 +212,7 @@ class Note extends FlxSprite
 
 			hitsoundDisabled = true;
 
-			if(ClientPrefs.downScroll) flipY = true;
+			if(Preferences.downScroll) flipY = true;
 
 			offsetX += width / 2;
 			copyAngle = false;
@@ -313,7 +313,7 @@ class Note extends FlxSprite
 		} else {
 			frames = Paths.getSparrowAtlas(blahblah);
 			loadNoteAnims();
-			antialiasing = ClientPrefs.globalAntialiasing;
+			antialiasing = Preferences.globalAntialiasing;
 		}
 		if(isSustainNote) {
 			scale.y = lastScaleY;

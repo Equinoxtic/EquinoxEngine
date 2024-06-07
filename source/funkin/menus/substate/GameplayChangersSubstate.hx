@@ -7,7 +7,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import funkin.ui.option.Checkbox;
 import funkin.ui.option.GameplayOption;
-import funkin.play.player.Controls;
+import funkin.input.Controls;
 
 using StringTools;
 
@@ -162,7 +162,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 		if (controls.BACK) {
 			close();
-			ClientPrefs.saveSettings();
+			Preferences.saveSettings();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 

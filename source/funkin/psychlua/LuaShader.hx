@@ -16,7 +16,7 @@ class LuaShader
 	public static var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
 	public static function createRuntimeShader(name:String):FlxRuntimeShader
 	{
-		if(!ClientPrefs.shaders) return new FlxRuntimeShader();
+		if(!Preferences.shaders) return new FlxRuntimeShader();
 
 		#if (!flash && MODS_ALLOWED && sys)
 		if (!runtimeShaders.exists(name) && !initLuaShader(name)) {
@@ -34,7 +34,7 @@ class LuaShader
 
 	public static function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
-		if (!ClientPrefs.shaders) return false;
+		if (!Preferences.shaders) return false;
 
 		if (runtimeShaders.exists(name)) {
 			FlxG.log.warn('Shader $name was already initialized!');

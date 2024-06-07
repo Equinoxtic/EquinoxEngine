@@ -126,7 +126,7 @@ class DebugInfoState extends MusicBeatState
 								}
 							}
 						);
-						if (ClientPrefs.flashing) {
+						if (Preferences.flashing) {
 							bg.color = 0xFFFFFFFF;
 							Tween.color(bg, 2.75, 0xFFFFFFFF, 0xFF000000, {ease: EaseUtil.getFlxEaseByString('cubeOut')});
 							flixel.FlxG.camera.flash(0xFFFFFFFF, 2.75, null, true);

@@ -5,7 +5,7 @@ import flixel.FlxSubState;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
 import funkin.play.song.Conductor.BPMChangeEvent;
-import funkin.play.player.Controls;
+import funkin.input.Controls;
 
 class MusicBeatSubstate extends FlxSubState
 {
@@ -52,7 +52,7 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		var lastChange = Conductor.getBPMFromSeconds(Conductor.songPosition);
 
-		var shit = ((Conductor.songPosition - ClientPrefs.noteOffset) - lastChange.songTime) / lastChange.stepCrochet;
+		var shit = ((Conductor.songPosition - Preferences.noteOffset) - lastChange.songTime) / lastChange.stepCrochet;
 		curDecStep = lastChange.stepTime + shit;
 		curStep = lastChange.stepTime + Math.floor(shit);
 	}

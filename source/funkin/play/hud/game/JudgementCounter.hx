@@ -46,7 +46,7 @@ class JudgementCounter extends FlxSpriteGroup
 		judgementText.updateHitbox();
 		
 		#if (!debug)
-		visible = ((ClientPrefs.showJudgementCounter) ? !ClientPrefs.hideHud : false);
+		visible = ((Preferences.showJudgementCounter) ? !Preferences.hideHud : false);
 		#end
 	}
 
@@ -55,7 +55,7 @@ class JudgementCounter extends FlxSpriteGroup
 	 */
 	public function updateJudgementCounter():Void
 	{
-		if (ClientPrefs.detailedJudgementInfo)
+		if (Preferences.detailedJudgementInfo)
 		{
 			judgementText.scale.set(0.97, 0.97);
 			judgementText.text = 'TOTAL HITS: ${PlayState.instance.songHits}\n'

@@ -13,8 +13,8 @@ class NumericalComboSprite extends FlxSprite implements IRatingGraphic
 
 		loadNumericalIndexes(indexes, isPixel, PlayState.instance.camHUD);
 		screenCenter();
-		visible = (!ClientPrefs.hideHud && PlayState.instance.showComboNum);
-		antialiasing = (ClientPrefs.globalAntialiasing && !isPixel);
+		visible = (!Preferences.hideHud && PlayState.instance.showComboNum);
+		antialiasing = (Preferences.globalAntialiasing && !isPixel);
 		updateHitbox();
 	}
 

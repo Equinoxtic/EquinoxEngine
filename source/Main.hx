@@ -23,7 +23,7 @@ import sys.io.File;
 import sys.io.Process;
 #end
 
-import funkin.play.player.preferences.ClientPrefs;
+import funkin.Preferences;
 
 using StringTools;
 
@@ -83,7 +83,7 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 	
-		ClientPrefs.loadDefaultKeys();
+		Preferences.loadDefaultKeys();
 		
 		// Thanks to @Quackerona for sending a patch to this one
 		var game:FlxGame = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
@@ -102,7 +102,7 @@ class Main extends Sprite
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.showFPS;
+			fpsVar.visible = Preferences.showFPS;
 		}
 		#end
 

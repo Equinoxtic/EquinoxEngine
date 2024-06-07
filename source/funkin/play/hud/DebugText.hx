@@ -21,7 +21,7 @@ class DebugText extends flixel.group.FlxSpriteGroup
 		debugText.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		debugText.borderSize = 1.3;
 		debugText.alpha = alphaOverride;
-		debugText.antialiasing = ClientPrefs.globalAntialiasing;
+		debugText.antialiasing = Preferences.globalAntialiasing;
 		debugText.x -= xAdd;
 		debugText.y += yAdd;
 		add(debugText);
@@ -30,7 +30,7 @@ class DebugText extends flixel.group.FlxSpriteGroup
 		debugBranch.setFormat(Paths.font('phantommuff.ttf'), fontSize - 2, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		debugBranch.borderSize = 1.3;
 		debugBranch.alpha = alphaOverride;
-		debugBranch.antialiasing = ClientPrefs.globalAntialiasing;
+		debugBranch.antialiasing = Preferences.globalAntialiasing;
 		debugBranch.x = debugText.x;
 		debugBranch.y = debugText.y + 20;
 		add(debugBranch);

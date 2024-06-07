@@ -51,7 +51,7 @@ import funkin.animateatlas.AtlasFrameMaker;
 import funkin.play.GameOverSubstate;
 import funkin.play.PauseSubState;
 import funkin.play.character.Character;
-import funkin.play.player.Controls;
+import funkin.input.Controls;
 import funkin.play.notes.StrumNote;
 import funkin.play.scoring.Highscore;
 import funkin.play.components.dialogue.DialogueBoxPsych;
@@ -196,29 +196,29 @@ class FunkinLua {
 		set('gfName', PlayState.SONG.gfVersion);
 
 		// Some settings, no jokes
-		set('downscroll', ClientPrefs.downScroll);
-		set('middlescroll', ClientPrefs.middleScroll);
-		set('framerate', ClientPrefs.framerate);
-		set('ghostTapping', ClientPrefs.ghostTapping);
-		set('hideHud', ClientPrefs.hideHud);
-		set('timeBarType', ClientPrefs.timeBarType);
-		// set('scoreZoom', ClientPrefs.scoreZoom);
-		set('cameraZoomOnBeat', ClientPrefs.camZooms);
-		set('flashingLights', ClientPrefs.flashing);
-		set('noteOffset', ClientPrefs.noteOffset);
-		set('healthBarAlpha', ClientPrefs.healthBarAlpha);
-		set('noResetButton', ClientPrefs.noReset);
-		set('lowQuality', ClientPrefs.lowQuality);
-		set('shadersEnabled', ClientPrefs.shaders);
+		set('downscroll', Preferences.downScroll);
+		set('middlescroll', Preferences.middleScroll);
+		set('framerate', Preferences.framerate);
+		set('ghostTapping', Preferences.ghostTapping);
+		set('hideHud', Preferences.hideHud);
+		set('timeBarType', Preferences.timeBarType);
+		// set('scoreZoom', Preferences.scoreZoom);
+		set('cameraZoomOnBeat', Preferences.camZooms);
+		set('flashingLights', Preferences.flashing);
+		set('noteOffset', Preferences.noteOffset);
+		set('healthBarAlpha', Preferences.healthBarAlpha);
+		set('noResetButton', Preferences.noReset);
+		set('lowQuality', Preferences.lowQuality);
+		set('shadersEnabled', Preferences.shaders);
 
 		/**
 		 * Engine Preferences.
 		 */
-		set('showJudgementCounter', ClientPrefs.showJudgementCounter);
-		set('detailedJudgementInfo', ClientPrefs.detailedJudgementInfo);
-		set('showGameplayInfo', ClientPrefs.showGameplayInfo);
-		set('noWatermark', ClientPrefs.noWatermark);
-		set('directionalCameraMovement', ClientPrefs.directionalCameraMovement);
+		set('showJudgementCounter', Preferences.showJudgementCounter);
+		set('detailedJudgementInfo', Preferences.detailedJudgementInfo);
+		set('showGameplayInfo', Preferences.showGameplayInfo);
+		set('noWatermark', Preferences.noWatermark);
+		set('directionalCameraMovement', Preferences.directionalCameraMovement);
 
 		set('scriptName', scriptName);
 		set('currentModDirectory', Paths.currentModDirectory);
@@ -264,7 +264,7 @@ class FunkinLua {
 
 		// shader shit
 		Lua_helper.add_callback(lua, "initLuaShader", function(name:String, glslVersion:Int = 120) {
-			if(!ClientPrefs.shaders) return false;
+			if(!Preferences.shaders) return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
 			return initLuaShader(name, glslVersion);
@@ -275,7 +275,7 @@ class FunkinLua {
 		});
 		
 		Lua_helper.add_callback(lua, "setSpriteShader", function(obj:String, shader:String) {
-			if(!ClientPrefs.shaders) return false;
+			if(!Preferences.shaders) return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
 			if(!LuaShader.runtimeShaders.exists(shader) && !initLuaShader(shader))
@@ -1751,7 +1751,7 @@ class FunkinLua {
 			{
 				leSprite.loadGraphic(Paths.image(image));
 			}
-			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
+			leSprite.antialiasing = Preferences.globalAntialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
@@ -1761,7 +1761,7 @@ class FunkinLua {
 			var leSprite:ModchartSprite = new ModchartSprite(x, y);
 
 			loadFrames(leSprite, image, spriteType);
-			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
+			leSprite.antialiasing = Preferences.globalAntialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 		});
 
@@ -3083,7 +3083,7 @@ class FunkinLua {
 	
 	function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
-		if (!ClientPrefs.shaders) return false;
+		if (!Preferences.shaders) return false;
 
 		#if (!flash && sys)
 		if(LuaShader.runtimeShaders.exists(name)) {

@@ -12,7 +12,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 
 import funkin.Paths;
-import funkin.play.player.preferences.ClientPrefs;
+import funkin.Preferences;
 
 /**
  * @author Lars Doucet
@@ -86,7 +86,7 @@ class FlxUICheckBox extends FlxUIGroup implements ILabeled implements IFlxUIClic
 			box = cast Box;
 		} else {
 			box = new FlxSprite();
-			box.antialiasing = ClientPrefs.globalAntialiasing;
+			box.antialiasing = Preferences.globalAntialiasing;
 			box.setGraphicSize(Std.int(box.width * 1.05), Std.int(box.height * 1.05));
 			box.loadGraphic(Box, true);
 		}
@@ -117,7 +117,7 @@ class FlxUICheckBox extends FlxUIGroup implements ILabeled implements IFlxUIClic
 			mark = cast Check;
 		} else {
 			mark = new FlxSprite();
-			mark.antialiasing = ClientPrefs.globalAntialiasing;
+			mark.antialiasing = Preferences.globalAntialiasing;
 			mark.loadGraphic(Check);
 		}
 

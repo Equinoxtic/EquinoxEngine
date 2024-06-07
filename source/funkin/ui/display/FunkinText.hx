@@ -21,7 +21,7 @@ class FunkinText extends FlxText
 			borderSize = fontSize / 8.15;
 		}
 
-		antialiasing = (ClientPrefs.globalAntialiasing && !PlayState.isPixelStage);
+		antialiasing = (Preferences.globalAntialiasing && !PlayState.isPixelStage);
 	}
 
 	override function update(elapsed:Float):Void

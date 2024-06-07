@@ -23,12 +23,11 @@ import openfl.utils.Assets as OpenFlAssets;
 import funkin.play.song.*;
 import funkin.play.scoring.*;
 import funkin.play.components.HealthIcon;
+import funkin.input.Controls;
 import funkin.menus.substate.*;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
-
-import play.scoring.*;
 
 using StringTools;
 
@@ -100,7 +99,7 @@ class FreeplayState extends MusicBeatState
 		WeekData.loadTheFirstEnabledMod();
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.antialiasing = Preferences.globalAntialiasing;
 		add(bg);
 		bg.screenCenter();
 
@@ -113,7 +112,7 @@ class FreeplayState extends MusicBeatState
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-			songText.antialiasing = ClientPrefs.globalAntialiasing;
+			songText.antialiasing = Preferences.globalAntialiasing;
 			songText.isMenuItem = true;
 			songText.targetY = i - curSelected;
 			grpSongs.add(songText);
@@ -127,7 +126,7 @@ class FreeplayState extends MusicBeatState
 
 			Paths.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.antialiasing = ClientPrefs.globalAntialiasing;
+			icon.antialiasing = Preferences.globalAntialiasing;
 			icon.sprTracker = songText;
 
 			iconArray.push(icon);
@@ -136,7 +135,7 @@ class FreeplayState extends MusicBeatState
 		WeekData.setDirectoryFromWeek();
 
 		var bars:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menu/menuBars'));
-		bars.antialiasing = ClientPrefs.globalAntialiasing;
+		bars.antialiasing = Preferences.globalAntialiasing;
 		bars.scrollFactor.set();
 		bars.screenCenter();
 		add(bars);
@@ -145,7 +144,7 @@ class FreeplayState extends MusicBeatState
 		add(grpDifficulties);
 
 		scoreText = new FlxText(FlxG.width * 0.8, 18, 0, "", 32);
-		scoreText.antialiasing = ClientPrefs.globalAntialiasing;
+		scoreText.antialiasing = Preferences.globalAntialiasing;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		scoreText.borderSize = 3.5;
 		
@@ -194,7 +193,7 @@ class FreeplayState extends MusicBeatState
 		
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
-		text.antialiasing = ClientPrefs.globalAntialiasing;
+		text.antialiasing = Preferences.globalAntialiasing;
 		text.scrollFactor.set();
 		add(text);
 

@@ -25,7 +25,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
-import funkin.play.player.Controls;
+import funkin.input.Controls;
 
 using StringTools;
 
@@ -60,7 +60,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.antialiasing = Preferences.globalAntialiasing;
 		add(bg);
 
 		// avoids lagspikes while scrolling through menus!

@@ -23,7 +23,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
-import funkin.play.player.Controls;
+import funkin.input.Controls;
 
 using StringTools;
 
@@ -64,7 +64,7 @@ class OptionsState extends MusicBeatState
 		bg.updateHitbox();
 
 		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.antialiasing = Preferences.globalAntialiasing;
 		add(bg);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -84,14 +84,14 @@ class OptionsState extends MusicBeatState
 		add(selectorRight);
 
 		changeSelection();
-		ClientPrefs.saveSettings();
+		Preferences.saveSettings();
 
 		super.create();
 	}
 
 	override function closeSubState() {
 		super.closeSubState();
-		ClientPrefs.saveSettings();
+		Preferences.saveSettings();
 	}
 
 	override function update(elapsed:Float) {

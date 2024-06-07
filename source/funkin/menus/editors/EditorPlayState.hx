@@ -71,14 +71,14 @@ class EditorPlayState extends MusicBeatState
 		add(bg);
 
 		keysArray = [
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_left')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_down')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_up')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_right'))
+			Preferences.copyKey(Preferences.keyBinds.get('note_left')),
+			Preferences.copyKey(Preferences.keyBinds.get('note_down')),
+			Preferences.copyKey(Preferences.keyBinds.get('note_up')),
+			Preferences.copyKey(Preferences.keyBinds.get('note_right'))
 		];
 		
 		strumLine = new FlxSprite(PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
-		if (ClientPrefs.downScroll)
+		if (Preferences.downScroll)
 			strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
 		
@@ -127,7 +127,7 @@ class EditorPlayState extends MusicBeatState
 		tipText.scrollFactor.set();
 		add(tipText);
 
-		if(!ClientPrefs.controllerMode)
+		if(!Preferences.controllerMode)
 		{
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
@@ -322,7 +322,7 @@ class EditorPlayState extends MusicBeatState
 				
 				if (daNote.copyY)
 				{
-					if (ClientPrefs.downScroll)
+					if (Preferences.downScroll)
 					{
 						daNote.y = (strumY + 0.45 * (Conductor.songPosition - daNote.strumTime) * PlayState.SONG.speed);
 						if (daNote.isSustainNote)
@@ -449,7 +449,7 @@ class EditorPlayState extends MusicBeatState
 
 		if (generatedMusic)
 		{
-			notes.sort(FlxSort.byY, ClientPrefs.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
+			notes.sort(FlxSort.byY, Preferences.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 		}
 	}
 
@@ -477,14 +477,14 @@ class EditorPlayState extends MusicBeatState
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 
-		if (key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode))
+		if (key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || Preferences.controllerMode))
 		{
 			if (generatedMusic)
 			{
 				var lastTime:Float = Conductor.songPosition;
 				Conductor.songPosition = FlxG.sound.music.time;
 
-				var canMiss:Bool = !ClientPrefs.ghostTapping;
+				var canMiss:Bool = !Preferences.ghostTapping;
 
 				var pressNotes:Array<Note> = [];
 				var notesStopped:Bool = false;
@@ -523,7 +523,7 @@ class EditorPlayState extends MusicBeatState
 
 					}
 				}
-				else if (canMiss && ClientPrefs.ghostTapping)
+				else if (canMiss && Preferences.ghostTapping)
 				{
 					noteMiss();
 				}
@@ -593,7 +593,7 @@ class EditorPlayState extends MusicBeatState
 
 		var controlHoldArray:Array<Bool> = [left, down, up, right];
 		
-		if (ClientPrefs.controllerMode)
+		if (Preferences.controllerMode)
 		{
 			var controlArray:Array<Bool> = [controls.NOTE_LEFT_P, controls.NOTE_DOWN_P, controls.NOTE_UP_P, controls.NOTE_RIGHT_P];
 			if (controlArray.contains(true))
@@ -618,7 +618,7 @@ class EditorPlayState extends MusicBeatState
 			});
 		}
 
-		if (ClientPrefs.controllerMode)
+		if (Preferences.controllerMode)
 		{
 			var controlArray:Array<Bool> = [controls.NOTE_LEFT_R, controls.NOTE_DOWN_R, controls.NOTE_UP_R, controls.NOTE_RIGHT_R];
 			if(controlArray.contains(true))
@@ -722,7 +722,7 @@ class EditorPlayState extends MusicBeatState
 	{
 		FunkinSound.stopSong();
 
-		if(!ClientPrefs.controllerMode)
+		if(!Preferences.controllerMode)
 		{
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);

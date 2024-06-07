@@ -4,6 +4,7 @@ import flixel.effects.FlxFlicker;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
+import funkin.input.Controls;
 
 class FunkinBG extends FlxSprite
 {
@@ -34,14 +35,14 @@ class FunkinBG extends FlxSprite
 		this.updateHitbox();
 		this.screenCenter();
 		this.color = bgColor;
-		this.antialiasing = ClientPrefs.globalAntialiasing;
+		this.antialiasing = Preferences.globalAntialiasing;
 	}
 
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
-		if (flickers && ClientPrefs.flashing)
+		if (flickers && Preferences.flashing)
 		{
 			if (controls.ACCEPT) {
 				FlxFlicker.flicker(this, 1.1, 0.15, false);

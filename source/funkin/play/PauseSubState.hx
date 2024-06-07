@@ -17,7 +17,7 @@ import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.tweens.FlxEase.FlxEaseUtil;
-import funkin.play.player.Controls.Control;
+import funkin.input.Controls.Control;
 import funkin.play.scoring.*;
 import funkin.sound.FunkinSound;
 
@@ -70,7 +70,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		difficultyChoices.push('BACK');
 
-		playPauseMusic(ClientPrefs.pauseMusic);
+		playPauseMusic(Preferences.pauseMusic);
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
@@ -102,7 +102,7 @@ class PauseSubState extends MusicBeatSubstate
 		pauseTexts.forEach(function(txt:FlxText) {
 			txt.updateHitbox();
 			txt.borderSize = 3.5;
-			txt.antialiasing = ClientPrefs.globalAntialiasing;
+			txt.antialiasing = Preferences.globalAntialiasing;
 			txt.alpha = 0;
 			txt.x = FlxG.width - (txt.width + 20);
 		});
@@ -129,7 +129,7 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		pauseMusic = new FlxSound();
 
-		if (musicString != null && OpenFlAssets.exists(Paths.formatToSongPath(ClientPrefs.pauseMusic)) && pauseMusic != null)
+		if (musicString != null && OpenFlAssets.exists(Paths.formatToSongPath(Preferences.pauseMusic)) && pauseMusic != null)
 		{
 			if (songName != null)
 				pauseMusic.loadEmbedded(Paths.music(songName), true, true);
@@ -204,7 +204,7 @@ class PauseSubState extends MusicBeatSubstate
 				}
 		}
 
-		if (accepted && (cantUnpause <= 0 || !ClientPrefs.controllerMode))
+		if (accepted && (cantUnpause <= 0 || !Preferences.controllerMode))
 		{
 			if (menuItems == difficultyChoices)
 			{

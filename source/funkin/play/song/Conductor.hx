@@ -3,7 +3,7 @@ package funkin.play.song;
 import funkin.play.song.Song;
 import funkin.play.scoring.Rating;
 import funkin.play.notes.Note;
-import funkin.play.player.preferences.ClientPrefs;
+import funkin.Preferences;
 
 /**
  * ...
@@ -28,7 +28,7 @@ class Conductor
 	public static var offset:Float = 0;
 
 	//public static var safeFrames:Int = 10;
-	public static var safeZoneOffset:Float = (ClientPrefs.safeFrames / 60) * 1000; // is calculated in create(), is safeFrames in milliseconds
+	public static var safeZoneOffset:Float = (Preferences.safeFrames / 60) * 1000; // is calculated in create(), is safeFrames in milliseconds
 
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 

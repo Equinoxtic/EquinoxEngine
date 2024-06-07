@@ -14,8 +14,8 @@ class RatingSprite extends FlxSprite implements IRatingGraphic
 
 		load(rating.image, isPixel, PlayState.instance.camHUD);
 		screenCenter();
-		visible = (!ClientPrefs.hideHud && PlayState.instance.showRating);
-		antialiasing = (ClientPrefs.globalAntialiasing && !isPixel);
+		visible = (!Preferences.hideHud && PlayState.instance.showRating);
+		antialiasing = (Preferences.globalAntialiasing && !isPixel);
 	}
 
 	public function load(key:String, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void

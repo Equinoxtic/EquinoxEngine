@@ -48,7 +48,7 @@ class GameplayInfo extends FlxSpriteGroup
 		createGameplayText(songName, difficultyString, songCredit, songText);
 
 		#if (!debug)
-		visible = ((ClientPrefs.showGameplayInfo) ? !ClientPrefs.hideHud : false);
+		visible = ((Preferences.showGameplayInfo) ? !Preferences.hideHud : false);
 		#end
 	}
 

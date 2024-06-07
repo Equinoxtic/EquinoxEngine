@@ -84,7 +84,7 @@ class Checkerboard extends FlxBackdrop
 	 */
 	public function updatePosition(ix:Float = 0.47, iy:Float = 0.16):Void
 	{
-		x -= ix / (ClientPrefs.framerate / 60);
-		y -= iy / (ClientPrefs.framerate / 60);
+		x -= ix / (Preferences.framerate / 60);
+		y -= iy / (Preferences.framerate / 60);
 	}
 }

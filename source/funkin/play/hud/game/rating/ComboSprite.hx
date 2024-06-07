@@ -13,8 +13,8 @@ class ComboSprite extends FlxSprite implements IRatingGraphic
 		
 		load('combo', isPixel, PlayState.instance.camHUD);
 		screenCenter();
-		visible = (!ClientPrefs.hideHud && PlayState.instance.showCombo);
-		antialiasing = (ClientPrefs.globalAntialiasing && !isPixel);
+		visible = (!Preferences.hideHud && PlayState.instance.showCombo);
+		antialiasing = (Preferences.globalAntialiasing && !isPixel);
 		updateHitbox();
 	}
 

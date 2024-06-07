@@ -73,7 +73,7 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 		
-		debugKeys = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
+		debugKeys = Preferences.copyKey(Preferences.keyBinds.get('debug_1'));
 
 		camGame = new FlxCamera();
 		camAchievement = new FlxCamera();
@@ -128,14 +128,14 @@ class MainMenuState extends MusicBeatState
 			var scr:Float = (optionShit.length - 4) * 0.35;
 			if(optionShit.length < 6) scr = 0;
 			menuItem.scrollFactor.set(0, scr);
-			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
+			menuItem.antialiasing = Preferences.globalAntialiasing;
 			menuItem.updateHitbox();
 		}
 
 		var bars:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menu/menuBars'));
 		bars.scrollFactor.set();
 		bars.screenCenter();
-		bars.antialiasing = ClientPrefs.globalAntialiasing;
+		bars.antialiasing = Preferences.globalAntialiasing;
 		add(bars);
 
 		FlxG.camera.follow(camFollowPos, null, 1);
@@ -150,7 +150,7 @@ class MainMenuState extends MusicBeatState
 		menuTexts.add(fnfVersion);
 
 		menuTexts.forEach(function(txt:FlxText) {
-			txt.antialiasing = ClientPrefs.globalAntialiasing;
+			txt.antialiasing = Preferences.globalAntialiasing;
 			txt.scrollFactor.set();
 			txt.setFormat(Paths.font('phantommuff.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		});
@@ -167,7 +167,7 @@ class MainMenuState extends MusicBeatState
 			if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
 				Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
 				giveAchievement();
-				ClientPrefs.saveSettings();
+				Preferences.saveSettings();
 			}
 		}
 		#end

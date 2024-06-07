@@ -23,6 +23,8 @@ class RatingGraphic extends FlxSprite
 
 		loadRatingSprite(key, isPixelStage);
 
+		cameras = [ PlayState.instance.camHUD ];
+
 		antialiasing = (Preferences.globalAntialiasing && !isPixelStage);
 		visible = !Preferences.hideHud;
 	}

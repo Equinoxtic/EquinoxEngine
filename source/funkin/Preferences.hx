@@ -1,11 +1,11 @@
-package funkin.play.player.preferences;
+package funkin;
 
 import flixel.FlxG;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
-import funkin.play.player.Controls;
+import funkin.input.Controls;
 
-class ClientPrefs
+class Preferences
 {
 	public static var downScroll:Bool = false;
 	public static var middleScroll:Bool = false;

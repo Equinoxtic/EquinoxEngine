@@ -21,6 +21,7 @@ import funkin.ui.option.*;
 import funkin.ui.transition.CustomFadeTransition;
 
 // --------- PLAYER STUFF ---------
+import funkin.Preferences;
 import funkin.play.PlayState;
 import funkin.play.player.*;
 import funkin.play.player.preferences.*;

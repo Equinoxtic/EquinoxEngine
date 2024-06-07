@@ -24,5 +24,4 @@ import funkin.ui.transition.CustomFadeTransition;
 import funkin.play.PlayState;
 import funkin.play.player.*;
 import funkin.play.player.preferences.*;
-import funkin.play.loading.*;
 #end

@@ -47,23 +47,14 @@ class DebugInfoState extends MusicBeatState
 		watermarkSprite.antialiasing = true;
 		add(watermarkSprite);
 
-		debugText = new Text(0, 250, flixel.FlxG.width, '', 28);
-		debugText.screenCenter(X);
-		debugText.setFormat(
-			Paths.font('phantommuff.ttf'),
-			28,
-			0xFFFFFFFF,
-			TextAlignment.CENTER,
-			BorderStyle.OUTLINE,
-			0xFF000000
-		);
-		debugText.borderSize = 1.5;
+		debugText = new FunkinText(0, 0, flixel.FlxG.width, '', 28, CENTER, false);
+		debugText.screenCenter();
+		debugText.y -= 50;
 		add(debugText);
 
-		debugText.text = 'You are now testing a DEBUG build\n
-		of ${Constants.MAIN_APPLICATION_TITLE}!\n
-		Everything may be unstable and buggy, here be dragons, player!\n
-		Current Branch: ${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}\n\n
+		debugText.text = 'You are now testing a DEBUG build of ${Constants.MAIN_APPLICATION_TITLE}!
+		Everything may be unstable and buggy, here be dragons, player!
+		Current Branch: ${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}\n
 		Press ESC to Exit the Application | Press Enter to Continue\n\nEnjoy! :)
 		';
 
@@ -107,6 +98,7 @@ class DebugInfoState extends MusicBeatState
 							confirmedSound.volume = 1;
 							confirmedSound.play();
 						}
+						Tween.tween(debugText, { alpha: 0.0 }, 0.7, { ease: EaseUtil.getFlxEaseByString('cubeOut') });
 						Tween.tween(
 							FlxG.camera,
 							{

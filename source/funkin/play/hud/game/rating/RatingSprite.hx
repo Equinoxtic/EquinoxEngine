@@ -6,68 +6,28 @@ import flixel.FlxSprite;
 import funkin.tweens.GlobalTweenClass;
 import funkin.play.scoring.*;
 
-class RatingSprite extends FlxSprite implements IRatingGraphic
+class RatingSprite extends RatingGraphic
 {
-	public function new(?rating:Rating, isPixel:Bool = false):Void
+	public function new(rating:Rating):Void
 	{
-		super();
+		if (rating == null)
+			rating.image = "sick";
 
-		load(rating.image, isPixel, PlayState.instance.camHUD);
+		super(rating.image, PlayState.isPixelStage);
+
+		scaleSprite(Constants.RATING_SPRITE_SIZE, PlayState.isPixelStage);
 		screenCenter();
-		visible = (!Preferences.hideHud && PlayState.instance.showRating);
-		antialiasing = (Preferences.globalAntialiasing && !isPixel);
-	}
+		scrollFactor.set();
 
-	public function load(key:String, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void
-	{
-		var k:String = '${key}';
-		if (isPixel)
-			k = FunkinUtil.pixelSuffix('${key}');
-
-		loadGraphic(Paths.image(Std.string(k)));
-
-		if (camera != null)
-			cameras = [camera];
-	}
-
-	public function loadNumericalIndexes(indexes:Int, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void
-	{
-		return;
-	}
-
-	public function accelerateSprite(?rate:Float):Void
-	{
-		acceleration.y = 550 * (rate);
-	}
-
-	public function velocitateSprite(?rate:Float):Void
-	{
+		acceleration.y = 550 * Math.pow(rate, 2);
 		velocity.x -= FlxG.random.int(0, 10) * rate;
 		velocity.y -= FlxG.random.int(140, 175) * rate;
-	}
-
-	public function scaleSprite(?isPixel:Bool, ?pixelZoom:Float):Void
-	{
-		if (!isPixel)
-			setGraphicSize(Std.int(width * Constants.RATING_SPRITE_SIZE));
-		else
-			setGraphicSize(Std.int(width * pixelZoom * Constants.RATING_SPRITE_SIZE));
-		updateHitbox();
-	}
-
-	public function fadeAnimation(?rate:Float):Void
-	{
-		GlobalTweenClass.tween(this, { alpha: 0 }, Constants.RATING_SPRITE_DURATION / rate, {
-			startDelay: Constants.RATING_SPRITE_DELAY / rate,
-			ease: FlxEaseUtil.getFlxEaseByString("cubeOut"),
-			onComplete: function(_) {
-				destroy();
-			}
-		});
 	}
 	
 	override function update(elapsed:Float):Void
 	{
+
 		super.update(elapsed);
+		fadeAnimation(Constants.RATING_SPRITE_DURATION, Constants.RATING_SPRITE_DELAY);
 	}
 }

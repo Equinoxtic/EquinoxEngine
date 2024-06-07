@@ -4,87 +4,26 @@ import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import funkin.tweens.GlobalTweenClass;
+import funkin.play.hud.game.rating.RatingGraphic;
 
-class NumericalComboSprite extends FlxSprite implements IRatingGraphic
+class NumericalComboSprite extends RatingGraphic
 {
-	public function new(indexes:Int, ?isPixel:Bool)
+	public function new(indexes:Int):Void
 	{
-		super();
+		super('num${Std.string(indexes)}', PlayState.isPixelStage);
 
-		loadNumericalIndexes(indexes, isPixel, PlayState.instance.camHUD);
+		scaleSprite(Constants.NUMERICAL_COMBO_SIZE, PlayState.isPixelStage);
 		screenCenter();
-		visible = (!Preferences.hideHud && PlayState.instance.showComboNum);
-		antialiasing = (Preferences.globalAntialiasing && !isPixel);
-		updateHitbox();
-	}
+		scrollFactor.set();
 
-	/**
-	 * Loads the current rating's image/graphic.
-	 */
-	public function load(key:String, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void
-	{
-		return;
-	}
-
-	 /**
-	  * Loads rating images/graphics in numerical indexes.
-	  */
-	public function loadNumericalIndexes(indexes:Int, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void
-	{
-		var k:String = 'num${Std.int(indexes)}';
-		if (isPixel)
-			k = FunkinUtil.pixelSuffix('num${Std.int(indexes)}');
-
-		loadGraphic(Paths.image(Std.string(k)));
-		
-		if (camera != null)
-			cameras = [camera];
-	}
-
-	/**
-	 * Sets the acceleration of the rating graphic.
-	 */
-	public function accelerateSprite(?rate:Float):Void
-	{
-		acceleration.y = FlxG.random.int(200, 300) * (rate);
-	}
-
-	 /**
-	  * Sets the velocity of the rating graphic.
-	  */
-	public function velocitateSprite(?rate:Float):Void
-	{
-		velocity.y -= FlxG.random.int(140, 160) * rate;
+		acceleration.y = FlxG.random.int(200, 300) * Math.pow(rate, 2);
 		velocity.x = FlxG.random.float(-5, 5) * rate;
-	}
- 
-	 /**
-	  * Sets the scale/graphic size of the rating graphic.
-	  */
-	public function scaleSprite(?isPixel:Bool, ?pixelZoom:Float):Void
-	{
-		if (!isPixel)
-			setGraphicSize(Std.int(width * Constants.NUMERICAL_COMBO_SIZE));
-		else
-			setGraphicSize(Std.int(width * pixelZoom - Constants.NUMERICAL_COMBO_SIZE));
-	}
- 
-	 /**
-	  * Plays the fading animation of the graphic, and destroys it.
-	  */
-	public function fadeAnimation(?rate:Float):Void
-	{
-		GlobalTweenClass.tween(this, { alpha: 0 }, Constants.NUMERICAL_SCORE_DURATION / rate, {
-			ease: FlxEaseUtil.getFlxEaseByString("cubeOut"),
-			startDelay: Constants.NUMERICAL_SCORE_DELAY / rate,
-			onComplete: function(_) {
-				destroy();
-			}
-		});
+		velocity.y -= FlxG.random.int(140, 160) * rate;
 	}
 
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		fadeAnimation(Constants.NUMERICAL_SCORE_DURATION, Constants.NUMERICAL_SCORE_DELAY);
 	}
 }

@@ -5,86 +5,24 @@ import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxSprite;
 import funkin.tweens.GlobalTweenClass;
 
-class ComboSprite extends FlxSprite implements IRatingGraphic
+class ComboSprite extends RatingGraphic
 {
-	public function new(?isPixel:Bool = false):Void
+	public function new():Void
 	{
-		super();
-		
-		load('combo', isPixel, PlayState.instance.camHUD);
+		super('combo', PlayState.isPixelStage);
+
+		scaleSprite(Constants.COMBO_SPRITE_SIZE, PlayState.isPixelStage);
 		screenCenter();
-		visible = (!Preferences.hideHud && PlayState.instance.showCombo);
-		antialiasing = (Preferences.globalAntialiasing && !isPixel);
-		updateHitbox();
-	}
+		scrollFactor.set();
 
-	/**
-	 * Loads the current rating's image/graphic.
-	 */
-	public function load(key:String, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void
-	{
-		var k:String = '${key}';
-		if (isPixel)
-			k = FunkinUtil.pixelSuffix('${key}');
-
-		loadGraphic(Paths.image(Std.string(k)));
-		
-		if (camera != null)
-			cameras = [camera];
-	}
-
-	/**
-	 * Loads rating images/graphics in numerical indexes.
-	 */
-	public function loadNumericalIndexes(indexes:Int, ?isPixel:Bool, ?camera:Null<FlxCamera>):Void
-	{
-		return;
-	}
-
-	/**
-	 * Sets the acceleration of the rating graphic.
-	 */
-	public function accelerateSprite(?rate:Float):Void
-	{
-		acceleration.y = FlxG.random.int(200, 300) * (rate);
-	}
-
-	/**
-	 * Sets the velocity of the rating graphic.
-	 */
-	public function velocitateSprite(?rate:Float):Void
-	{
-		velocity.x += FlxG.random.int(1, 10) * rate;
+		acceleration.y = FlxG.random.int(200, 300) * Math.pow(rate, 2);
 		velocity.y -= FlxG.random.int(140, 160) * rate;
-	}
-
-	/**
-	 * Sets the scale/graphic size of the rating graphic.
-	 */
-	public function scaleSprite(?isPixel:Bool, ?pixelZoom:Float):Void
-	{
-		if (!isPixel)
-			setGraphicSize(Std.int(width * Constants.COMBO_SPRITE_SIZE));
-		else
-			setGraphicSize(Std.int(width * pixelZoom * Constants.COMBO_SPRITE_SIZE));
-	}
-
-	/**
-	 * Plays the fading animation of the graphic, and destroys it.
-	 */
-	public function fadeAnimation(?rate:Float):Void
-	{
-		GlobalTweenClass.tween(this, { alpha: 0 }, Constants.COMBO_SPRITE_DURATION / rate, {
-			startDelay: Constants.COMBO_SPRITE_DELAY / rate,
-			ease: FlxEaseUtil.getFlxEaseByString("cubeOut"),	
-			onComplete: function(_) {
-				destroy();
-			}
-		});
+		velocity.x += FlxG.random.int(1, 10) * rate;
 	}
 
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		fadeAnimation(Constants.COMBO_SPRITE_DURATION, Constants.COMBO_SPRITE_DELAY);
 	}
 }

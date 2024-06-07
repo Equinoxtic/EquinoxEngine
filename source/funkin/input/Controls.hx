@@ -1,4 +1,4 @@
-package funkin.play.player;
+package funkin.input;
 
 import flixel.FlxG;
 import flixel.input.FlxInput;

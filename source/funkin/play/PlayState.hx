@@ -4451,9 +4451,8 @@ class PlayState extends MusicBeatState
 		comboSprite.velocitateSprite(playbackRate);
 		comboSprite.scaleSprite(PlayState.isPixelStage, daPixelZoom);
 		
-		if (showCombo)
+		if (showCombo && !daRating.comboBreak)
 			insert(members.indexOf(strumLineNotes), comboSprite);
-		
 		comboSprite.fadeAnimation(playbackRate);
 		ratingSprite.fadeAnimation(playbackRate);
 
@@ -4913,9 +4912,15 @@ class PlayState extends MusicBeatState
 
 		ratingHealthGain = daRating.healthGain;
 
-		if (!note.isSustainNote)  {
-			combo++;
-			health += (ratingHealthGain * healthGain);
+		if (!note.isSustainNote)
+		{
+			if (!daRating.comboBreak) {
+				combo++;
+				health += (ratingHealthGain * healthGain);
+			} else {
+				noteMiss(note);
+			}
+
 			popUpScore(note);
 		}
 	}

@@ -50,7 +50,6 @@ import funkin.sound.FunkinSound;
 import funkin.play.notes.StrumNote;
 import funkin.play.notes.Note;
 import funkin.play.components.HealthIcon;
-import funkin.play.loading.LoadingState;
 import funkin.play.stage.StageData;
 import funkin.play.character.Character;
 import funkin.play.character.Character.CharacterFile;

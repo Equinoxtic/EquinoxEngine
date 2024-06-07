@@ -1,4 +1,4 @@
-package funkin.play.states;
+package funkin.play;
 
 import flixel.group.FlxGroup.FlxTypedGroupIterator;
 import flixel.FlxG;

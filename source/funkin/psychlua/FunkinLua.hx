@@ -48,7 +48,8 @@ import funkin.api.discord.Discord;
 #end
 
 import funkin.animateatlas.AtlasFrameMaker;
-import funkin.play.states.*;
+import funkin.play.GameOverSubstate;
+import funkin.play.PauseSubState;
 import funkin.play.character.Character;
 import funkin.play.player.Controls;
 import funkin.play.notes.StrumNote;

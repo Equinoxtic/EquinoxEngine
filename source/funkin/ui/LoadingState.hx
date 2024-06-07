@@ -1,4 +1,4 @@
-package funkin.play.loading;
+package funkin.ui;
 
 import lime.app.Promise;
 import lime.app.Future;

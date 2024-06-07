@@ -4403,12 +4403,9 @@ class PlayState extends MusicBeatState
 			pixelShitPart2 = '-pixel';
 		}
 
-		var ratingSprite:RatingSprite = new RatingSprite(daRating, PlayState.isPixelStage);
+		var ratingSprite:RatingSprite = new RatingSprite(daRating);
 		ratingSprite.x = coolText.x - 40;
 		ratingSprite.y -= 20;
-		ratingSprite.accelerateSprite(Math.pow(playbackRate, 2));
-		ratingSprite.velocitateSprite(playbackRate);
-		ratingSprite.scaleSprite(PlayState.isPixelStage, daPixelZoom);
 
 		insert(members.indexOf(strumLineNotes), ratingSprite);
 		
@@ -4424,37 +4421,27 @@ class PlayState extends MusicBeatState
 
 		for (i in seperatedScore)
 		{
-			var numericalComboSprite:NumericalComboSprite = new NumericalComboSprite(i, PlayState.isPixelStage);
+			var numericalComboSprite:NumericalComboSprite = new NumericalComboSprite(i);
 			numericalComboSprite.x = coolText.x + (42 * daLoop) - 75;
 			numericalComboSprite.y = ratingSprite.y;
-			numericalComboSprite.x += -25;
-			numericalComboSprite.y += 85;
-			numericalComboSprite.accelerateSprite(Math.pow(playbackRate, 2));
-			numericalComboSprite.velocitateSprite(playbackRate);
-			numericalComboSprite.scaleSprite(PlayState.isPixelStage, daPixelZoom);
+			numericalComboSprite.x += -5;
+			numericalComboSprite.y += 100;
 			
 			if (showComboNum)
 				insert(members.indexOf(strumLineNotes), numericalComboSprite);
-			
-			numericalComboSprite.fadeAnimation(playbackRate);
 			
 			daLoop++;
 
 			if (numericalComboSprite.x > xThing) xThing = numericalComboSprite.x;
 		}
 
-		var comboSprite:ComboSprite = new ComboSprite(PlayState.isPixelStage);
-		comboSprite.x = xThing + 12;
+		var comboSprite:ComboSprite = new ComboSprite();
+		comboSprite.x = xThing + 85;
 		comboSprite.y = ratingSprite.y;
-		comboSprite.y += 55;
-		comboSprite.accelerateSprite(Math.pow(playbackRate, 2));
-		comboSprite.velocitateSprite(playbackRate);
-		comboSprite.scaleSprite(PlayState.isPixelStage, daPixelZoom);
+		comboSprite.y += 85;
 		
 		if (showCombo && !daRating.comboBreak)
 			insert(members.indexOf(strumLineNotes), comboSprite);
-		comboSprite.fadeAnimation(playbackRate);
-		ratingSprite.fadeAnimation(playbackRate);
 
 		coolText.text = Std.string(seperatedScore);
 

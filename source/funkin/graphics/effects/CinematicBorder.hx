@@ -1,4 +1,4 @@
-package funkin.ui.graphics.effects;
+package funkin.graphics.effects;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;

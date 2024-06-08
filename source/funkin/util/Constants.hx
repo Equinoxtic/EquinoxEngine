@@ -312,4 +312,9 @@ class Constants
 	 * The maximum value for the miss multiplier.
 	 */
 	public static final MISS_MULTIPLIER_MAX:Float = 7.5;
+	
+	/**
+	 * The global cap for all integers.
+	 */
+	public static final GLOBAL_NUMBER_CAP:Int = 999999;
 }

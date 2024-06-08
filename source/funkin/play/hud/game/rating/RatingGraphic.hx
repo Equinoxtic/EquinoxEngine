@@ -45,7 +45,7 @@ class RatingGraphic extends FlxSprite
 	/**
 	 * Sets the scale/graphic size of the rating graphic.
 	 */
-	public function scaleSprite(size:Null<Float>, ?isPixel:Bool = false, ?pixelZoom:Float = 0.6):Void
+	public function scaleSprite(size:Null<Float>, ?isPixel:Bool = false, ?pixelZoom:Float = 6):Void
 	{
 		if (!isPixel)
 			setGraphicSize(Std.int(width * size));

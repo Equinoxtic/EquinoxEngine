@@ -4,7 +4,7 @@ import funkin.Paths;
 import funkin.util.FunkinUtil;
 import funkin.util.*;
 import funkin.util.macro.*;
-import funkin.shaders.*;
+import funkin.graphics.shaders.*;
 import flixel.FlxG;
 import funkin.psychlua.*;
 import funkin.play.song.*;

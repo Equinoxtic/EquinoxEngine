@@ -1,10 +1,10 @@
-package funkin.shaders;
+package funkin.graphics.shaders;
 
 import flixel.system.FlxAssets.FlxShader;
 import flixel.util.FlxColor;
 
 /**
- * From FNF Source Code. 
+ * From Base Game FNF Source. [PureColor.hx] 
  * 
  * :: https://github.com/FunkinCrew/Funkin/blob/main/source/funkin/graphics/shaders/PureColor.hx
  */

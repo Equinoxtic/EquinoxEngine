@@ -258,10 +258,10 @@ class PlayState extends MusicBeatState
 	
 	public var noteWiggle:WiggleEffect;
 
-	var noteWiggleAmplitude:Float = 0.045;
-	var noteWiggleFrequency:Float = 8.5;
-	var noteWiggleSpeed:Float = 1.1 + (Conductor.bpm / 100);
-	var noteWiggleAmplitudeDecay = 4.5 + (Conductor.bpm / 150) + (PlayState.SONG.speed / 2.5);
+	var noteWiggleAmplitude:Float = 0.035;
+	var noteWiggleFrequency:Float = 10;
+	var noteWiggleSpeed:Float = 1.15 + (Conductor.bpm / 100);
+	var noteWiggleAmplitudeDecay = 4.25 + (Conductor.bpm / 150) + (PlayState.SONG.speed / 3.0);
 	var lerpAmplitude:Float = 0.0;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
@@ -3033,15 +3033,6 @@ class PlayState extends MusicBeatState
 		 * Update Judgement Counter ratings.
 		 */
 		judgementCounter.updateJudgementCounter();
-		
-		if (!cpuControlled && !practiceMode && !chartingMode) // Check whether or not the player is in BOTPLAY, PRACTICE, or CHARTING MODE
-		{
-			statsHUD.updateStatistics();
-		}
-		else // Otherwise, check the current mode that the player is in and update the score text to something else other than the score and ratings.
-		{
-			statsHUD.updateStatistics(false);
-		}
 
 		/**
 		 * Added a cool global tween class. (Basically modified FlxTween, thanks for @Quackerona for teaching me this a while back)

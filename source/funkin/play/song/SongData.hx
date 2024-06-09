@@ -1,6 +1,5 @@
 package funkin.play.song;
 
-import funkin.play.song.Section;
 import haxe.Json;
 
 #if sys

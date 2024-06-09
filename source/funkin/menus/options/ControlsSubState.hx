@@ -24,7 +24,7 @@ import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import funkin.input.Controls;
-import funkin.play.input.InputFormatter;
+import funkin.backend.input.InputFormatter;
 
 using StringTools;
 

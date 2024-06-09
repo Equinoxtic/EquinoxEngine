@@ -42,7 +42,6 @@ import funkin.util.Constants;
 import funkin.play.song.*;
 import funkin.play.song.Song.SwagSong;
 import funkin.play.song.Section.SwagSection;
-import funkin.play.song.SongLoader;
 import funkin.play.song.SongData.SongDataJson;
 import funkin.play.stage.StageData.StageFile;
 import funkin.play.notes.Note.EventNote;
@@ -64,6 +63,7 @@ import funkin.play.hud.game.*;
 import funkin.play.scoring.*;
 import funkin.play.scoring.Rating.PlayStateRating;
 import funkin.play.hud.Watermark;
+import funkin.backend.*;
 
 #if (debug)
 import funkin.play.hud.DebugText;

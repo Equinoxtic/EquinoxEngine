@@ -1,4 +1,4 @@
-package funkin.play.hud.game.statistics;
+package funkin.play.components.statistics;
 
 import funkin.play.scoring.Highscore;
 import funkin.tweens.GlobalTweenClass;

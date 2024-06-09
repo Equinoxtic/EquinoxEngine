@@ -1,4 +1,4 @@
-package funkin.play.hud.game;
+package funkin.play.components;
 
 import flixel.FlxCamera;
 import flixel.group.FlxGroup.FlxTypedGroup;

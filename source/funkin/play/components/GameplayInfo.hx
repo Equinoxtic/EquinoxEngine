@@ -1,4 +1,4 @@
-package funkin.play.hud.game;
+package funkin.play.components;
 
 import funkin.ui.display.FunkinText;
 import funkin.util.Constants;

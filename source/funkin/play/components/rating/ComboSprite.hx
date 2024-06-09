@@ -1,4 +1,4 @@
-package funkin.play.hud.game.rating;
+package funkin.play.components.rating;
 
 import flixel.FlxCamera;
 import flixel.tweens.FlxEase.FlxEaseUtil;

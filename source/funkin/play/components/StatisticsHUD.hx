@@ -1,9 +1,9 @@
-package funkin.play.hud.game;
+package funkin.play.components;
 
 import flixel.FlxSprite;
 import flixel.FlxBasic;
 import flixel.group.FlxSpriteGroup;
-import funkin.play.hud.game.statistics.StatisticsText;
+import funkin.play.components.statistics.StatisticsText;
 
 class StatisticsHUD extends FlxTypedSpriteGroup<FlxSprite>
 {

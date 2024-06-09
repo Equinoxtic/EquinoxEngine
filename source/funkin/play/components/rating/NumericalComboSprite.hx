@@ -1,10 +1,9 @@
-package funkin.play.hud.game.rating;
+package funkin.play.components.rating;
 
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import funkin.tweens.GlobalTweenClass;
-import funkin.play.hud.game.rating.RatingGraphic;
 
 class NumericalComboSprite extends RatingGraphic
 {

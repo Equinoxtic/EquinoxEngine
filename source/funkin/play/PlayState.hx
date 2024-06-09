@@ -36,7 +36,6 @@ import funkin.graphics.shaders.Shaders.ChromaticAberration;
 import funkin.graphics.shaders.Shaders.VCRDistortionEffect;
 import funkin.graphics.shaders.WiggleEffect;
 import funkin.graphics.shaders.WiggleEffect.WiggleEffectType;
-import funkin.play.hud.game.rating.*;
 import funkin.animateatlas.AtlasFrameMaker;
 import funkin.util.Constants;
 import funkin.play.song.*;
@@ -51,7 +50,8 @@ import funkin.play.stage.props.*;
 import funkin.play.notes.*;
 import funkin.play.character.Boyfriend;
 import funkin.play.character.Character;
-import funkin.play.components.HealthIcon;
+import funkin.play.components.*;
+import funkin.play.components.rating.*;
 import funkin.play.components.dialogue.*;
 import funkin.play.components.dialogue.DialogueBoxPsych.DialogueFile;
 import funkin.play.PauseSubState;
@@ -59,14 +59,13 @@ import funkin.play.GameOverSubstate;
 import funkin.graphics.effects.CinematicBorder;
 import funkin.sound.FunkinSound;
 import funkin.tweens.GlobalTweenClass;
-import funkin.play.hud.game.*;
 import funkin.play.scoring.*;
 import funkin.play.scoring.Rating.PlayStateRating;
-import funkin.play.hud.Watermark;
+import funkin.ui.debug.Watermark;
 import funkin.backend.*;
 
 #if (debug)
-import funkin.play.hud.DebugText;
+import funkin.ui.debug.DebugText;
 #end
 
 /**
@@ -3026,7 +3025,6 @@ class PlayState extends MusicBeatState
 		 * Smooth as hell linear interpolation on these numbers. 😎
 		 */
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .15);
-		// lerpScore = Math.round(FlxMath.lerp(lerpScore, songScore, .5));
 		lerpTime = FlxMath.lerp(lerpTime, songPercent, .15);
 
 		/**

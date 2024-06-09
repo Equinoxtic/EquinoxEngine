@@ -103,7 +103,7 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
-			'Dadbattle Spotlight', 
+			'Dadbattle Spotlight',
 			"Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"
 		],
 
@@ -118,17 +118,17 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
-			'Hey!', 
+			'Hey!',
 			"Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"
 		],
 
 		[
-			'Set GF Speed', 
+			'Set GF Speed',
 			"Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"
 		],
 
 		[
-			'Philly Glow', 
+			'Philly Glow',
 			"Exclusive to Week 3\nValue 1: 0/1/2 = OFF/ON/Reset Gradient\n \nNo, i won't add it to other weeks."
 		],
 
@@ -143,25 +143,25 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
-			'BG Freaks Expression', 
+			'BG Freaks Expression',
 			"Should be used only in \"school\" Stage!"
 		],
 
 		[
-			'Trigger BG Ghouls', 
+			'Trigger BG Ghouls',
 			"Should be used only in \"schoolEvil\" Stage!"
 		],
 
 		[
-			'Play Animation', 
+			'Play Animation',
 			"Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"
 		],
 
 		[
-			'Camera Follow Pos', 
+			'Camera Follow Pos',
 			"Value 1: X\nValue 2: Y\n\nThe camera won't change the follow point\nafter using this, for getting it back\nto normal, leave both values blank."
 		],
-		
+
 		[
 			'Alt Idle Animation',
 			"Sets a specified suffix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New suffix (Leave it blank to disable)"
@@ -173,17 +173,17 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
-			'Change Character', 
+			'Change Character',
 			"Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"
 		],
 
 		[
-			'Change Scroll Speed', 
+			'Change Scroll Speed',
 			"Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."
 		],
 
 		[
-			'Set Property', 
+			'Set Property',
 			"Value 1: Variable name\nValue 2: New value"
 		],
 	];
@@ -323,7 +323,9 @@ class ChartingState extends MusicBeatState
 				stage: 'stage',
 				validScore: false
 			};
+
 			addSection();
+
 			PlayState.SONG = _song;
 		}
 
@@ -338,6 +340,7 @@ class ChartingState extends MusicBeatState
 				charter: 'Person',
 				stringExtra: 'Test'
 			};
+
 			PlayState.SONG_DATA = _song_data;
 		}
 
@@ -580,7 +583,7 @@ class ChartingState extends MusicBeatState
 		var loadEventJson:FlxButton = new FlxButton(loadAutosaveBtn.x, loadAutosaveBtn.y + 30, 'Load Events', function()
 		{
 			var songName:String = Paths.formatToSongPath(_song.song);
-			
+
 			var eventsPath:String = '${songName}/events/events${FunkinSound.erectModeSuffix(false)}';
 
 			var file:String = Paths.json(eventsPath);
@@ -927,7 +930,7 @@ class ChartingState extends MusicBeatState
 		});
 		clearSectionButton.color = FlxColor.RED;
 		clearSectionButton.label.color = FlxColor.WHITE;
-		
+
 		check_notesSec = new FlxUICheckBox(10, clearSectionButton.y + 25, null, null, "Notes", 100);
 		check_notesSec.checked = true;
 		check_eventsSec = new FlxUICheckBox(check_notesSec.x + 100, check_notesSec.y, null, null, "Events", 100);
@@ -982,7 +985,7 @@ class ChartingState extends MusicBeatState
 		});
 		copyLastButton.setGraphicSize(80, 30);
 		copyLastButton.updateHitbox();
-		
+
 		stepperCopy = new FlxUINumericStepper(copyLastButton.x + 100, copyLastButton.y, 1, 1, -999, 999, 0);
 		blockPressWhileTypingOnStepper.push(stepperCopy);
 
@@ -1483,7 +1486,7 @@ class ChartingState extends MusicBeatState
 		voicesVolume.value = 1;
 		voicesVolume.name = 'voices_volume';
 		blockPressWhileTypingOnStepper.push(voicesVolume);
-		
+
 		#if !html5
 		/*
 		sliderRate = new FlxUISlider(this, 'playbackSpeed', 120, 120, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
@@ -1521,6 +1524,7 @@ class ChartingState extends MusicBeatState
 	var creditsInputText:FlxUIInputText;
 	var charterInputText:FlxUIInputText;
 	var extraStringInputText:FlxUIInputText;
+
 	function addInfoUI():Void
 	{
 		var tab_group_info = new FlxUI(null, UI_songData);
@@ -1585,7 +1589,7 @@ class ChartingState extends MusicBeatState
 	function generateSong()
 	{
 		FunkinSoundChartEditor.loadSongInst(currentSongName);
-		
+
 		if (instVolume != null) {
 			FunkinSoundChartEditor.setInstVolume(instVolume.value);
 		}
@@ -2083,7 +2087,7 @@ class ChartingState extends MusicBeatState
 					var increase:Float = 1 / snap;
 
 					FunkinSoundChartEditor.tweenedQuantizeInst(beat, snap, increase, FlxEase.circInOut);
-					
+
 					FunkinSoundChartEditor.pauseAndResyncVocals(FlxG.sound.music.time);
 
 					var dastrum = 0;
@@ -2312,7 +2316,7 @@ class ChartingState extends MusicBeatState
 		}
 		else nextGridBG = new FlxSprite().makeGraphic(1, 1, FlxColor.TRANSPARENT);
 		nextGridBG.y = gridBG.height;
-		
+
 		gridLayer.add(nextGridBG);
 		gridLayer.add(gridBG);
 
@@ -2362,11 +2366,11 @@ class ChartingState extends MusicBeatState
 			gridBG.height,
 			gridBG.width
 		);
-		
+
 		var steps:Int = Math.round(getSectionBeats() * 4);
 		var st:Float = sectionStartTime();
 		var et:Float = st + (Conductor.stepCrochet * steps);
-		
+
 		FunkinSoundChartEditor.updateWaveforms(
 			st,
 			et,
@@ -2439,14 +2443,14 @@ class ChartingState extends MusicBeatState
 			{
 				FunkinSoundChartEditor.pauseAndResyncInst(sectionStartTime());
 				FunkinSoundChartEditor.pauseAndResyncVocals(FlxG.sound.music.time);
-				
+
 				updateCurStep();
 			}
 
 			var blah1:Float = getSectionBeats();
 			var blah2:Float = getSectionBeats(curSec + 1);
 			if(sectionStartTime(1) > FlxG.sound.music.length) blah2 = 0;
-	
+
 			if(blah1 != lastSecBeats || blah2 != lastSecBeatsNext)
 			{
 				reloadGridLayer();
@@ -2918,7 +2922,7 @@ class ChartingState extends MusicBeatState
 		if(!doZoomCalc) leZoom = 1;
 		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height * leZoom);
 	}
-	
+
 	function getYfromStrumNotes(strumTime:Float, beats:Float):Float
 	{
 		var value:Float = strumTime / (beats * 4 * Conductor.stepCrochet);
@@ -3057,7 +3061,7 @@ class ChartingState extends MusicBeatState
 	{
 		if (section == null) section = curSec;
 		var val:Null<Float> = null;
-		
+
 		if(_song.notes[section] != null) val = _song.notes[section].sectionBeats;
 		return val != null ? val : 4;
 	}

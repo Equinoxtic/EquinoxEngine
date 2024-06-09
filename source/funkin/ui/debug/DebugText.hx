@@ -1,5 +1,5 @@
 #if (debug)
-package funkin.play.hud;
+package funkin.ui.debug;
 
 import flixel.util.FlxColor;
 import flixel.text.FlxText;

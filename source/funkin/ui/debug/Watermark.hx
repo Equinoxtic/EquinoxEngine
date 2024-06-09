@@ -1,4 +1,4 @@
-package funkin.play.hud;
+package funkin.ui.debug;
 
 import flixel.FlxCamera;
 import flixel.FlxSprite;

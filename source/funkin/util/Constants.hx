@@ -31,12 +31,12 @@ class Constants
 	 * The version of Funkin' / FNF.
 	 */
 	public static var VERSION_FUNKIN(get, never):String;
-	
+
 	/**
 	 * The version of Psych Engine.
 	 */
 	public static var VERSION_PSYCH(get, never):String;
-	
+
 	/**
 	 * The version of the current engine.
 	 */
@@ -86,7 +86,7 @@ class Constants
 	 * The volume for the vocals.
 	 */
 	public static final VOCALS_VOLUME:Float = 1.0;
-	
+
 	/**
 	 * ============================= PLAYER ICON VALUES =============================
 	 */
@@ -133,7 +133,7 @@ class Constants
 	/**
 	 * The alpha/transparency of the Note Tail.
 	 */
-	public static final NOTE_TAIL_ALPHA:Float = 0.75;
+	public static final NOTE_TAIL_ALPHA:Float = 0.6;
 
 	/**
 	 * ============================= UI RELATED VALUES =============================
@@ -148,7 +148,7 @@ class Constants
 	 * The FONT size of each texts in the Statistics HUD.
 	 */
 	public static final STATISTICS_FONT_SIZE:Int = 24;
-	
+
 	/**
 	 * The text's BORDER size in the Statistics HUD.
 	 */
@@ -242,7 +242,7 @@ class Constants
 	/**
 	 * ============================= HEALTH VALUES =============================
 	 */
-	
+
 	/**
 	 * The minimum amount of health that the player can have.
 	 */
@@ -312,7 +312,7 @@ class Constants
 	 * The maximum value for the miss multiplier.
 	 */
 	public static final MISS_MULTIPLIER_MAX:Float = 7.5;
-	
+
 	/**
 	 * The global cap for all integers.
 	 */

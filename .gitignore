@@ -21,3 +21,6 @@ export/*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Others...
+.BUILD_TIME

@@ -1,4 +1,4 @@
-package funkin.play.song;
+package funkin.backend;
 
 import funkin.play.notes.Note.EventNote;
 import openfl.utils.Assets as OpenFlAssets;

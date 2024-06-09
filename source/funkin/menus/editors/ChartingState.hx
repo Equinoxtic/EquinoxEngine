@@ -1,5 +1,6 @@
 package funkin.menus.editors;
 
+import funkin.play.song.SongSettings.SongSettingsJSON;
 #if desktop
 import funkin.api.discord.Discord.DiscordClient;
 #end
@@ -66,6 +67,14 @@ import sys.io.File;
 #end
 
 using StringTools;
+
+enum SaveType
+{
+	CHART;
+	EVENTS;
+	DATA;
+	METADATA;
+}
 
 @:access(flixel.system.FlxSound._sound)
 @:access(openfl.media.Sound.__buffer)
@@ -547,7 +556,7 @@ class ChartingState extends MusicBeatState
 
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
 		{
-			saveLevel();
+			saveChartData(CHART);
 		});
 
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + 90, saveButton.y, "Reload Audio", function()
@@ -590,7 +599,7 @@ class ChartingState extends MusicBeatState
 
 		var saveEvents:FlxButton = new FlxButton(110, reloadSongJson.y, 'Save Events', function ()
 		{
-			saveEvents();
+			saveChartData(EVENTS);
 		});
 
 		var clear_events:FlxButton = new FlxButton(320, 310, 'Clear events', function()
@@ -1534,7 +1543,7 @@ class ChartingState extends MusicBeatState
 
 		var saveButton:FlxButton = new FlxButton(charterInputText.x + 5, charterInputText.y + 65, "Save Song Data", function()
 		{
-			saveSongData();
+			saveChartData(DATA);
 		});
 
 		tab_group_info.add(new FlxText(5, 5, FlxG.width, '- Song Data / Information -', 14));
@@ -2958,30 +2967,42 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 	}
 
-	private function saveLevel()
+	private function saveChartData(?type:Null<SaveType> = CHART):Void
 	{
-		if(_song.events != null && _song.events.length > 1) _song.events.sort(sortByTime);
+		if (type == SaveType.EVENTS)
+			if (_song.events != null && _song.events.length > 1) _song.events.sort(sortByTime);
 
-		var json = {
-			"song": _song
-		};
+		var json = {};
+		var saveFileString:String = "";
 
-		var data:String = Json.stringify(json, "\t");
-
-		if ((data != null) && (data.length > 0))
+		switch (type)
 		{
-			_file = new FileReference();
-			_file.addEventListener(Event.COMPLETE, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), FunkinUtil.difficultyString().toLowerCase().trim() + ".json");
+			case CHART:
+				json = {
+					"song": _song
+				};
+				saveFileString = '${FunkinUtil.difficultyString().toLowerCase().trim()}.json';
+			case EVENTS:
+				var eventsSong:Dynamic = {
+					events: _song.events
+				};
+				json = {
+					"song": eventsSong
+				};
+				saveFileString = 'events${FunkinSound.erectModeSuffix()}.json';
+			case DATA:
+				json = {
+					"song_data": _song_data
+				};
+				saveFileString = 'songdata${FunkinSound.erectModeSuffix()}.json';
+			case METADATA:
+				json = {
+					"metadata": _metadata
+				};
+				saveFileString = 'metadata.json';
 		}
-	}
-	private function saveSongData()
-	{	
-		var json = {
-			"song_data": _song_data
-		};
+
+		trace('Saving... [${saveFileString}.json]');
 
 		var data:String = Json.stringify(json, "\t");
 
@@ -2991,35 +3012,13 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), "songdata" + FunkinSound.erectModeSuffix() + ".json");
+			_file.save(data.trim(), saveFileString);
 		}
 	}
 
 	function sortByTime(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
-	}
-
-	private function saveEvents()
-	{
-		if(_song.events != null && _song.events.length > 1) _song.events.sort(sortByTime);
-		var eventsSong:Dynamic = {
-			events: _song.events
-		};
-		var json = {
-			"song": eventsSong
-		}
-
-		var data:String = Json.stringify(json, "\t");
-
-		if ((data != null) && (data.length > 0))
-		{
-			_file = new FileReference();
-			_file.addEventListener(Event.COMPLETE, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), "events.json");
-		}
 	}
 
 	function onSaveComplete(_):Void

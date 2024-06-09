@@ -1,4 +1,4 @@
-package funkin.psychlua;
+package funkin.backend;
 
 #if (sys)
 import sys.FileSystem;

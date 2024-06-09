@@ -28,6 +28,20 @@ class SongLoader
 		return dummyJson;
 	}
 
+	static function getDummySongSettings():Dynamic
+	{
+		var dummyJson = {
+			songDisplayName: 'Test',
+			difficulties: ["easy", "normal", "hard"],
+			variations: ["default", "erect"],
+			hasCountdown: true,
+			hasNoteWiggle: false,
+			beatMod: 4
+		};
+
+		return dummyJson;
+	}
+
 	static function getDummyStageData():Dynamic
 	{
 		var stageData = {
@@ -56,7 +70,7 @@ class SongLoader
 	{
 		if (song != null && song != '')
 		{
-			var songDataPath:String = 'charts/${Paths.formatToSongPath(song)}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
+			final songDataPath:String = 'charts/${Paths.formatToSongPath(song)}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
 
 			#if MODS_ALLOWED
 			if (sys.FileSystem.exists(Paths.modsJson(songDataPath)) || sys.FileSystem.exists(Paths.json(songDataPath)))
@@ -64,19 +78,46 @@ class SongLoader
 			if (OpenFlAssets.exists(Paths.json(songDataPath)))
 			#end
 			{
-				// Load if the song's data exists.
 				PlayState.SONG_DATA = SongData.loadSongData(song);
 			}
 			else
 			{
-				// Otherwise, load a dummy JSON if the song's data does not exists.
 				PlayState.SONG_DATA = getDummySongData();
 			}
 		}
 		else
 		{
-			// If given parameter 'song' is null, then load a dummy JSON.
 			PlayState.SONG_DATA = getDummySongData();
+		}
+	}
+
+	/**
+	 * Loads the song's settings / "metadata" file.
+	 * * [i.e. ``~/(SONG)/metadata.json``]
+	 * @param song The string of the song to be loaded.
+	 */
+	public static function loadSongSettings(?song:Null<String>):Void
+	{
+		if (song != null && song != "")
+		{
+			final songSettingsPath:String = 'charts/${Paths.formatToSongPath(song)}/metadata';
+
+			#if (MODS_ALLOWED)
+			if (sys.FileSystem.exists(Paths.modsJson(songSettingsPath)) || sys.FileSystem.exists(Paths.json(songSettingsPath)))
+			#else
+			if (OpenFlAssets.exists(Paths.json(songsongSettingsPath)))
+			#end
+			{
+				PlayState.SONG_METADATA = SongSettings.loadSongSettings(song);
+			}
+			else
+			{
+				PlayState.SONG_METADATA = getDummySongSettings();
+			}
+		}
+		else
+		{
+			PlayState.SONG_METADATA = getDummySongSettings();
 		}
 	}
 
@@ -88,11 +129,11 @@ class SongLoader
 	{
 		if (song == null || song == '') return;
 
-		var shittyEventsPath = 'charts/${song}/events/events${FunkinSound.erectModeSuffix(false)}';
+		final eventsPath = 'charts/${song}/events/events${FunkinSound.erectModeSuffix(false)}';
 
-		var file:String = Paths.json(shittyEventsPath);
+		var file:String = Paths.json(eventsPath);
 		#if MODS_ALLOWED
-		if (FileSystem.exists(Paths.modsJson(shittyEventsPath)) || FileSystem.exists(file)) {
+		if (FileSystem.exists(Paths.modsJson(eventsPath)) || FileSystem.exists(file)) {
 		#else
 		if (OpenFlAssets.exists(file)) {
 		#end

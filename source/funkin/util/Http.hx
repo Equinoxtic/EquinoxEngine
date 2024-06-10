@@ -6,7 +6,7 @@ using StringTools;
 
 /**
  * From CNE (Codename Engine)
- * 
+ *
  * Source: https://github.com/FNF-CNE-Devs/CodenameEngine/blob/main/source/funkin/backend/utils/HttpUtil.hx
  */
 class Http
@@ -20,7 +20,7 @@ class Http
 		if (url != null && url != '')
 		{
 			var httpData:HaxeHTTP = new HaxeHTTP(url);
-			
+
 			httpData.setHeader('User-Agent', userAgent);
 
 			httpData.onData = function(data:String):Void

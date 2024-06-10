@@ -92,7 +92,7 @@ class Ranking
 		];
 
 		var rankingKey:String = '';
-		
+
 		for (ranking in 0...ranks.length)
 		{
 			if (ranks[ranking][1]) {
@@ -100,7 +100,7 @@ class Ranking
 				break;
 			}
 		}
-		
+
 		return rankingKey;
 	}
 }

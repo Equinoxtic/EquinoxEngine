@@ -306,7 +306,7 @@ class Constants
 	/**
 	 * The maximum value for the score multiplier.
 	 */
-	public static final SCORE_MULTIPLIER_MAX:Float = 5.0;
+	public static final SCORE_MULTIPLIER_MAX:Float = 8.0;
 
 	/**
 	 * The maximum value for the miss multiplier.

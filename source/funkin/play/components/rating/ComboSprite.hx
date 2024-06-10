@@ -6,7 +6,12 @@ class ComboSprite extends RatingGraphic
 	{
 		super('combo', PlayState.isPixelStage);
 
-		scaleSprite(Constants.COMBO_SPRITE_SIZE, PlayState.isPixelStage);
+		var initialSize:Float = Constants.COMBO_SPRITE_SIZE;
+		if (PlayState.isPixelStage) {
+			initialSize = Constants.COMBO_SPRITE_SIZE + 0.1;
+		}
+
+		scaleSprite(initialSize, PlayState.isPixelStage);
 		screenCenter();
 		scrollFactor.set();
 

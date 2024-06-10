@@ -53,7 +53,7 @@ class RatingGraphic extends FlxSprite
 		if (!isPixel) {
 			setGraphicSize(Std.int(width * size));
 		} else {
-			setGraphicSize(Std.int(width * pixelZoom / (size * 2.5)));
+			setGraphicSize(Std.int(width * pixelZoom * size));
 		}
 		updateHitbox();
 	}

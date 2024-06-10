@@ -6,7 +6,12 @@ class NumericalComboSprite extends RatingGraphic
 	{
 		super('num${Std.string(indexes)}', PlayState.isPixelStage);
 
-		scaleSprite(Constants.NUMERICAL_COMBO_SIZE, PlayState.isPixelStage);
+		var initialSize:Float = Constants.NUMERICAL_COMBO_SIZE;
+		if (PlayState.isPixelStage) {
+			initialSize = Constants.NUMERICAL_COMBO_SIZE + 0.2;
+		}
+
+		scaleSprite(initialSize, PlayState.isPixelStage);
 		screenCenter();
 		scrollFactor.set();
 

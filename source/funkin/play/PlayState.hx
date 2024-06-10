@@ -1098,7 +1098,7 @@ class PlayState extends MusicBeatState
 	{
 		if (stageKey == null || stageKey == '') return;
 
-		switch (stageKey.toLowerCase().replace(' ', '-').trim())
+		switch (stageKey)
 		{
 			case 'stage': //Week 1
 
@@ -2821,7 +2821,7 @@ class PlayState extends MusicBeatState
 			case 'tank':
 				moveTank(elapsed);
 			case 'schoolEvil':
-				if(!Preferences.lowQuality && bgGhouls.animation.curAnim.finished) {
+				if (!Preferences.lowQuality && bgGhouls.animation.curAnim.finished) {
 					bgGhouls.visible = false;
 				}
 

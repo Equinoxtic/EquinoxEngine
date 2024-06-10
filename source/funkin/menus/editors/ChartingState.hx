@@ -233,8 +233,10 @@ class ChartingState extends MusicBeatState
 	var curEventSelected:Int = 0;
 	var curUndoIndex = 0;
 	var curRedoIndex = 0;
+
 	var _song:SwagSong;
 	var _song_data:SongDataJson;
+	var _metadata:SongSettingsJSON;
 
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
@@ -342,6 +344,24 @@ class ChartingState extends MusicBeatState
 			};
 
 			PlayState.SONG_DATA = _song_data;
+		}
+
+		if (PlayState.SONG_METADATA != null)
+		{
+			_metadata = PlayState.SONG_METADATA;
+		}
+		else
+		{
+			_metadata = {
+				songDisplayName: 'Test',
+				difficulties: ["easy", "normal", "hard"],
+				variations: ["default", "erect"],
+				hasCountdown: true,
+				hasNoteWiggle: false,
+				beatMod: 4
+			};
+
+			PlayState.SONG_METADATA = _metadata;
 		}
 
 		// Paths.clearMemory();
@@ -1545,7 +1565,7 @@ class ChartingState extends MusicBeatState
 		extraStringInputText = new FlxUIInputText(charterInputText.x, charterInputText.y + 37, 200, songExtraText, 8);
 		blockPressWhileTypingOn.push(extraStringInputText);
 
-		var saveButton:FlxButton = new FlxButton(charterInputText.x + 5, charterInputText.y + 65, "Save Song Data", function()
+		var saveButton:FlxButton = new FlxButton(charterInputText.x + 5, charterInputText.y + 65, "Save", function()
 		{
 			saveChartData(DATA);
 		});
@@ -1563,12 +1583,52 @@ class ChartingState extends MusicBeatState
 		UI_songData.addGroup(tab_group_info);
 	}
 
+	var songDisplayNameInput:FlxUIInputText;
+	var countdownCheckbox:FlxUICheckBox;
+	var noteWiggleCheckbox:FlxUICheckBox;
+	var beatModInput:FlxUINumericStepper;
+
 	function addSongSettingsUI():Void
 	{
 		var tab_group_settings = new FlxUI(null, UI_songData);
 		tab_group_settings.name = "Settings";
 
+		var songDisplayName:String = PlayState.SONG_METADATA.songDisplayName;
+		if (songDisplayName == null) songDisplayName = "";
+		songDisplayNameInput = new FlxUIInputText(10, 50, 200, songDisplayName, 8);
+		blockPressWhileTypingOn.push(songDisplayNameInput);
+
+		countdownCheckbox = new FlxUICheckBox(10, songDisplayNameInput.y + 35, null, null, "Countdown on Start");
+		countdownCheckbox.checked = _metadata.hasCountdown;
+		countdownCheckbox.callback = function() {
+			_metadata.hasCountdown = countdownCheckbox.checked;
+		};
+
+		noteWiggleCheckbox = new FlxUICheckBox(countdownCheckbox.x + 100, songDisplayNameInput.y + 35, null, null, "Note Tail Wiggles on Beat");
+		noteWiggleCheckbox.checked = _metadata.hasNoteWiggle;
+		noteWiggleCheckbox.callback = function() {
+			_metadata.hasNoteWiggle = noteWiggleCheckbox.checked;
+		};
+
+		beatModInput = new FlxUINumericStepper(10, noteWiggleCheckbox.y + 65, 1, 4, 1, 24, 1);
+		beatModInput.value = _metadata.beatMod;
+		beatModInput.name = 'beat_mod';
+		blockPressWhileTypingOnStepper.push(beatModInput);
+
+		var saveButton:FlxButton = new FlxButton(beatModInput.x, beatModInput.y + 65, "Save", function ()
+		{
+			saveChartData(METADATA);
+		});
+
 		tab_group_settings.add(new FlxText(5, 5, FlxG.width, '- Song Settings -', 14));
+
+		tab_group_settings.add(new FlxText(songDisplayNameInput.x, songDisplayNameInput.y - 15, 0, "Song Display Name:"));
+		tab_group_settings.add(new FlxText(beatModInput.x, beatModInput.y - 15, 0, "Camera Beat Modulo (Per Beat):"));
+		tab_group_settings.add(songDisplayNameInput);
+		tab_group_settings.add(countdownCheckbox);
+		tab_group_settings.add(noteWiggleCheckbox);
+		tab_group_settings.add(beatModInput);
+		tab_group_settings.add(saveButton);
 
 		UI_songData.addGroup(tab_group_settings);
 	}
@@ -1698,6 +1758,10 @@ class ChartingState extends MusicBeatState
 				// vocalsSecond.volume = nums.value;
 				FunkinSoundChartEditor.setVocalsVolume(nums.value);
 			}
+			else if (wname == 'beat_mod')
+			{
+				_metadata.beatMod = Std.int(nums.value);
+			}
 		}
 		else if (id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			if (sender == noteSplashesInputText) {
@@ -1708,6 +1772,8 @@ class ChartingState extends MusicBeatState
 				_song_data.charter = charterInputText.text;
 			} else if (sender == extraStringInputText) {
 				_song_data.stringExtra = extraStringInputText.text;
+			} else if (sender == songDisplayNameInput) {
+				_metadata.songDisplayName = songDisplayNameInput.text;
 			}
 			else if(curSelectedNote != null)
 			{
@@ -2985,7 +3051,7 @@ class ChartingState extends MusicBeatState
 				json = {
 					"song": _song
 				};
-				saveFileString = '${FunkinUtil.difficultyString().toLowerCase().trim()}.json';
+				saveFileString = '${FunkinUtil.difficultyString().toLowerCase().trim()}';
 			case EVENTS:
 				var eventsSong:Dynamic = {
 					events: _song.events
@@ -2993,17 +3059,17 @@ class ChartingState extends MusicBeatState
 				json = {
 					"song": eventsSong
 				};
-				saveFileString = 'events${FunkinSound.erectModeSuffix()}.json';
+				saveFileString = 'events${FunkinSound.erectModeSuffix()}';
 			case DATA:
 				json = {
 					"song_data": _song_data
 				};
-				saveFileString = 'songdata${FunkinSound.erectModeSuffix()}.json';
+				saveFileString = 'songdata${FunkinSound.erectModeSuffix()}';
 			case METADATA:
 				json = {
 					"metadata": _metadata
 				};
-				saveFileString = 'metadata.json';
+				saveFileString = 'metadata';
 		}
 
 		trace('Saving... [${saveFileString}.json]');
@@ -3016,7 +3082,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), saveFileString);
+			_file.save(data.trim(), saveFileString + '.json');
 		}
 	}
 

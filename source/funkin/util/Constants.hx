@@ -178,7 +178,7 @@ class Constants
 	/**
 	 * The size of the 'Combo' sprite.
 	 */
-	public static final COMBO_SPRITE_SIZE:Float = 0.5;
+	public static final COMBO_SPRITE_SIZE:Float = 0.4;
 
 	/**
 	 * The size for the 'Numerical Combo' sprites.

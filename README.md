@@ -1,32 +1,32 @@
-<center>
-
 <header>
 <h1>
+<p align="center">
 Friday Night Funkin': Equinox Engine
+</p>
 </h1>
 </header>
 
 <br>
-	<div style='text-align:center'>
-		<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/document_separator.png?raw=true' align='center'>
-	</div>
+<p align="center">
+<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/document_separator.png?raw=true'>
+</p>
 </br>
 
 <br>
-	<div style='text-align:center'>
-		<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/icons/ICON_WATERMARK.png?raw=true' width=120 align='center'>
-	</div>
+<p align="center">
+<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/icons/ICON_WATERMARK.png?raw=true' width=120 >
+</p>
 </br>
 
- <i><b>Equinox Engine</b> is a fork of [``Psych Engine``](https://github.com/ShadowMario/FNF-PsychEngine.git) and a revision of a previous engine -- [``Geode``](https://github.com/Equinoxtic/Geode.git). Equinox Engine provides and adds new additions, QoL features, and bug fixes.</i>
+<p align="center">
+ <i><b>Equinox Engine</b> is a fork of <a href="https://github.com/ShadowMario/FNF-PsychEngine.git">Psych Engine</a> and a revision of a previous engine -- <a href="https://github.com/Equinoxtic/Geode.git">Geode</a>. Equinox Engine provides and adds new additions, QoL features, and bug fixes to Psych Engine.</i>
+</p>
 
 <br>
-	<div style='text-align:center'>
-		<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/document_separator.png?raw=true' align='center'>
-	</div>
+<p align="center">
+<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/document_separator.png?raw=true'>
+</p>
 </br>
-
-</center>
 
 * <i>Learn how to build Equinox Engine here: [``EquinoxEngine BUILDING.md``](https://github.com/Equinoxtic/EquinoxEngine/blob/master/docs/BUILDING.md)</i>
 

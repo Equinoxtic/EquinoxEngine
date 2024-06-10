@@ -344,7 +344,7 @@ class VignetteEffect extends Effect
 		shader.intensityMultiplier.value = [intensityMultiplier];
 	}
 
-	public function update(elapsed:Float) {
+	override function update(elapsed:Float) {
 		shader.uTime.value[0] = elapsed;
 	}
 
@@ -503,7 +503,7 @@ class VCRDistortionEffect extends Effect
 		shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
 	}
 
-	public function update(elapsed:Float){
+	override function update(elapsed:Float){
 		shader.iTime.value[0] += elapsed;
 		shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
 	}

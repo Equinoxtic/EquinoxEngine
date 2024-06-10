@@ -113,6 +113,11 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
+			'Grayscale Effect',
+			"Creates a Grayscale effect on the screen. (Tweened)\nVALUE 1: Strength, Tween Duration, Delay.\n[DEFAULT: 0.0, 1.0, 0.0]\nVALUE 2: The ease of the tween.\n[DEFAULT: sineInOut"
+		],
+
+		[
 			'Set Default Camera Zoom',
 			"VALUE 1: How much it should zoom.\n[DEFAULT: 0.1]\n\nVALUE 2: Multiply it by?\n[DEFAULT: 1.0]"
 		],

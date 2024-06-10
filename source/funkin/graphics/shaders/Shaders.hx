@@ -34,14 +34,14 @@ class GlitchEffect
         shader.uSpeed.value = [waveSpeed];
         return v;
     }
-    
+
     function set_waveFrequency(v:Float):Float
     {
         waveFrequency = v;
         shader.uFrequency.value = [waveFrequency];
         return v;
     }
-    
+
     function set_waveAmplitude(v:Float):Float
     {
         waveAmplitude = v;
@@ -76,14 +76,14 @@ class DistortBGEffect
         shader.uSpeed.value = [waveSpeed];
         return v;
     }
-    
+
     function set_waveFrequency(v:Float):Float
     {
         waveFrequency = v;
         shader.uFrequency.value = [waveFrequency];
         return v;
     }
-    
+
     function set_waveAmplitude(v:Float):Float
     {
         waveAmplitude = v;
@@ -129,14 +129,14 @@ class PulseEffect
         shader.uEnabled.value = [Enabled];
         return v;
     }
-    
+
     function set_waveFrequency(v:Float):Float
     {
         waveFrequency = v;
         shader.uFrequency.value = [waveFrequency];
         return v;
     }
-    
+
     function set_waveAmplitude(v:Float):Float
     {
         waveAmplitude = v;
@@ -160,17 +160,17 @@ class GlitchShader extends FlxShader
 
     //modified version of the wave shader to create weird garbled corruption like messes
     uniform float uTime;
-    
+
     /**
      * How fast the waves move over time
      */
     uniform float uSpeed;
-    
+
     /**
      * Number of waves over time
      */
     uniform float uFrequency;
-    
+
     /**
      * How much the pixels are going to stretch over the waves
      */
@@ -180,7 +180,7 @@ class GlitchShader extends FlxShader
     {
         float x = 0.0;
         float y = 0.0;
-        
+
         float offsetX = sin(pt.y * uFrequency + uTime * uSpeed) * (uWaveAmplitude / pt.x * pt.y);
         float offsetY = sin(pt.x * uFrequency - uTime * uSpeed) * (uWaveAmplitude / pt.y * pt.x);
         pt.x += offsetX; // * (pt.y - 1.0); // <- Uncomment to stop bottom part of the screen from moving
@@ -205,7 +205,7 @@ class InvertShader extends FlxShader
 {
     @:glFragmentSource('
     #pragma header
-    
+
 
     vec4 sineWave(vec4 pt)
     {
@@ -234,17 +234,17 @@ class DistortBGShader extends FlxShader
 
     //gives the character a glitchy, distorted outline
     uniform float uTime;
-    
+
     /**
      * How fast the waves move over time
      */
     uniform float uSpeed;
-    
+
     /**
      * Number of waves over time
      */
     uniform float uFrequency;
-    
+
     /**
      * How much the pixels are going to stretch over the waves
      */
@@ -254,7 +254,7 @@ class DistortBGShader extends FlxShader
     {
         float x = 0.0;
         float y = 0.0;
-        
+
         float offsetX = sin(pt.x * uFrequency + uTime * uSpeed) * (uWaveAmplitude / pt.x * pt.y);
         float offsetY = sin(pt.y * uFrequency - uTime * uSpeed) * (uWaveAmplitude);
         pt.x += offsetX; // * (pt.y - 1.0); // <- Uncomment to stop bottom part of the screen from moving
@@ -289,19 +289,19 @@ class PulseShader extends FlxShader
 
     //modified version of the wave shader to create weird garbled corruption like messes
     uniform float uTime;
-    
+
     /**
      * How fast the waves move over time
      */
     uniform float uSpeed;
-    
+
     /**
      * Number of waves over time
      */
     uniform float uFrequency;
 
     uniform bool uEnabled;
-    
+
     /**
      * How much the pixels are going to stretch over the waves
      */
@@ -367,7 +367,7 @@ class VignetteShader extends FlxShader
 		uv *=  1.0 - uv.yx;   //vec2(1.0)- uv.yx; -> 1.-u.yx; Thanks FabriceNeyret !
 		float vig = uv.x*uv.y * 15.0; // multiply with sth for intensity
 		vig = pow(vig, 0.25) * intensityMultiplier; // change pow for modifying the extend of the  vignette
-		fragColor = vec4(vig); 
+		fragColor = vec4(vig);
 	}')
 
 	public function new()
@@ -391,7 +391,7 @@ class BloomShader extends FlxShader
 {
 	@:glFragmentSource('
 	#pragma header
-	
+
 	uniform float intensity;
 	uniform float blurSize;
 	void main()
@@ -401,7 +401,7 @@ class BloomShader extends FlxShader
 		int j;
 		int i;
 
-		//thank you! http://www.gamerendering.com/2008/10/11/gaussian-blur-filter-shader/ for the 
+		//thank you! http://www.gamerendering.com/2008/10/11/gaussian-blur-filter-shader/ for the
 		//blur tutorial
 		// blur in y (vertical)
 		// take nine samples, with the distance blurSize between them
@@ -414,7 +414,7 @@ class BloomShader extends FlxShader
 		sum += flixel_texture2D(bitmap, vec2(texcoord.x + 2.0*blurSize, texcoord.y)) * 0.12;
 		sum += flixel_texture2D(bitmap, vec2(texcoord.x + 3.0*blurSize, texcoord.y)) * 0.09;
 		sum += flixel_texture2D(bitmap, vec2(texcoord.x + 4.0*blurSize, texcoord.y)) * 0.05;
-			
+
 			// blur in y (vertical)
 		// take nine samples, with the distance blurSize between them
 		sum += flixel_texture2D(bitmap, vec2(texcoord.x, texcoord.y - 4.0*blurSize)) * 0.05;
@@ -428,7 +428,7 @@ class BloomShader extends FlxShader
 		sum += flixel_texture2D(bitmap, vec2(texcoord.x, texcoord.y + 4.0*blurSize)) * 0.05;
 
 		//increase blur with intensity!
-		gl_FragColor = sum*intensity + flixel_texture2D(bitmap, texcoord); 
+		gl_FragColor = sum*intensity + flixel_texture2D(bitmap, texcoord);
 		// if(sin(iTime) > 0.0)
 		//    fragColor = sum * sin(iTime)+ texture(iChannel0, texcoord);
 		// else
@@ -658,13 +658,5 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 	public function new()
 	{
 		super();
-	}
-}
-
-
-
-class Effect {
-	public function setValue(shader:FlxShader, variable:String, value:Float){
-		Reflect.setProperty(Reflect.getProperty(shader, 'variable'), 'value', [value]);
 	}
 }

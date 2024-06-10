@@ -3874,6 +3874,9 @@ class PlayState extends MusicBeatState
 					borderCameraTween.start();
 				}
 
+			case 'Grayscale Effect':
+				// TODO: Add Grayscale Effect Event
+
 			case 'Set Default Camera Zoom':
 				var amount:Float = 0.0;
 				var multiplier:Float = 0.0;

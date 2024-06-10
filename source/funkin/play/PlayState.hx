@@ -4428,18 +4428,18 @@ class PlayState extends MusicBeatState
 
 		for (i in seperatedScore)
 		{
-			var numericalComboSprite:NumericalComboSprite = new NumericalComboSprite(i);
-			numericalComboSprite.x = coolText.x + (42 * daLoop) - 75;
-			numericalComboSprite.y = ratingSprite.y;
-			numericalComboSprite.x += -5;
-			numericalComboSprite.y += 100;
+			var tallyCounter:TallyCounter = new TallyCounter(i);
+			tallyCounter.x = coolText.x + (42 * daLoop) - 75;
+			tallyCounter.y = ratingSprite.y;
+			tallyCounter.x += -5;
+			tallyCounter.y += 100;
 
 			if (showComboNum)
-				insert(members.indexOf(strumLineNotes), numericalComboSprite);
+				insert(members.indexOf(strumLineNotes), tallyCounter);
 
 			daLoop++;
 
-			if (numericalComboSprite.x > xThing) xThing = numericalComboSprite.x;
+			if (tallyCounter.x > xThing) xThing = tallyCounter.x;
 		}
 
 		var comboSprite:ComboSprite = new ComboSprite();

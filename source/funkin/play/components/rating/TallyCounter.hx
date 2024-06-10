@@ -1,6 +1,6 @@
 package funkin.play.components.rating;
 
-class NumericalComboSprite extends RatingGraphic
+class TallyCounter extends RatingGraphic
 {
 	public function new(indexes:Int):Void
 	{

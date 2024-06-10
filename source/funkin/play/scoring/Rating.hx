@@ -25,9 +25,9 @@ class Rating
 	public var hitWindow:Null<Int> = 0;
 
 	/**
-	 * The amount of accuracy lost/gained the rating.
+	 * The amount of accuracy lost/gained from the rating.
 	 */
-	public var ratingMod:Float = 1;
+	public var ratingMod:Float = 1.0;
 
 	/**
 	 * The amount of score gained from the rating.
@@ -92,7 +92,7 @@ class PlayStateRating
 		ratingSick.healthGain = Constants.HEALTH_SICK_BONUS;
 		ratingSick.noteSplash = true;
 		ratingSick.comboBreak = false;
-	
+
 		/**
 		* 'Good!' Rating.
 		*/
@@ -102,7 +102,7 @@ class PlayStateRating
 		ratingGood.healthGain = Constants.HEALTH_GOOD_BONUS;
 		ratingGood.noteSplash = false;
 		ratingGood.comboBreak = false;
-		
+
 		/**
 		* 'Bad.' Rating.
 		*/
@@ -112,17 +112,17 @@ class PlayStateRating
 		ratingBad.healthGain = Constants.HEALTH_BAD_BONUS;
 		ratingBad.noteSplash = false;
 		ratingBad.comboBreak = false;
-		
+
 		/**
 		* 'Shit.' Rating.
 		*/
 		final ratingShit:Rating = new Rating('shit');
 		ratingShit.ratingMod = 0;
-		ratingShit.score = 50;
+		ratingShit.score = -100;
 		ratingShit.healthGain = Constants.HEALTH_SHIT_BONUS;
 		ratingShit.noteSplash = false;
 		ratingShit.comboBreak = true;
-		
+
 		ratingsData.push(ratingSick);
 		ratingsData.push(ratingGood);
 		ratingsData.push(ratingBad);

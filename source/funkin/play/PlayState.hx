@@ -3856,7 +3856,7 @@ class PlayState extends MusicBeatState
 						borderCameraTween.cancel();
 					}
 
-					borderCameraTween = GlobalTweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
+					borderCameraTween = GlobalTweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration / playbackRate, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
 						borderCameraTween = null;
 					}});
 

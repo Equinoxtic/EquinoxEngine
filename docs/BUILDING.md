@@ -31,14 +31,14 @@ $ git clone --depth=1 --recursive "https://github.com/Equinoxtic/EquinoxEngine.g
 * We will need to set up ``Visual Studio`` first. Open the ``Visual Studio Installer``, you will be then lead to an interface where you can see your installations. If none are installed, you can click on the *``"Available"``* tab from the *top-right* corrner.
 
 <center>
-<img src='../art/readmeFiles/doc_build_img01.png' width='720'>
+<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/doc_build_img01.png?raw=true' width='720'>
 </center>
 
 * It can be either Visual Studio 2019/2022. Now you will need to click on the button named *``"Modify"``*.
 * From there, you will see an interface where you can install "Components". We will only need to install two of these components. You will now need to click on *``"Individual Components"``*
 
 <center>
-<img src='../art/readmeFiles/doc_build_img02.png' width='480'>
+<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/doc_build_img02.png?raw=true' width='480'>
 </center>
 
 * From there, you will be lead to another interface where you can install standalone components. Now you will need to search and install the following:
@@ -94,7 +94,7 @@ $ lime build windows # Only build but don't run the executable.
 * In your ``cmd`` or ``powershel``, type in ``cd EquinoxEngine`` and then type in ``code .``, this opens ``Visual Studio Code``. After that you will want to press ``CTRL+SHIFT+X``. This opens up your installed extensions.
 
 <center>
-<img src='../art/readmeFiles/doc_build_img05.png' width='360'>
+<img src='https://github.com/Equinoxtic/equinoxengine.art/blob/4675594841d342af88ccbc461aa9d70549df111c/readmeFiles/doc_build_img05.png?raw=true' width='360'>
 </center>
 
 * In the search bar, you may search and install the following extensions:

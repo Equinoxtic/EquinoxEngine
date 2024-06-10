@@ -1,10 +1,5 @@
 package funkin.play.components.rating;
 
-import flixel.FlxCamera;
-import flixel.tweens.FlxEase.FlxEaseUtil;
-import flixel.FlxSprite;
-import funkin.tweens.GlobalTweenClass;
-
 class ComboSprite extends RatingGraphic
 {
 	public function new():Void

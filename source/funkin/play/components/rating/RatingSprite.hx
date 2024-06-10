@@ -1,10 +1,6 @@
 package funkin.play.components.rating;
 
-import flixel.tweens.FlxEase.FlxEaseUtil;
-import flixel.FlxCamera;
-import flixel.FlxSprite;
-import funkin.tweens.GlobalTweenClass;
-import funkin.play.scoring.*;
+import funkin.play.scoring.Rating;
 
 class RatingSprite extends RatingGraphic
 {

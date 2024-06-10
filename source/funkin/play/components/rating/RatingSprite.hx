@@ -23,10 +23,9 @@ class RatingSprite extends RatingGraphic
 		velocity.x -= FlxG.random.int(0, 10) * rate;
 		velocity.y -= FlxG.random.int(140, 175) * rate;
 	}
-	
+
 	override function update(elapsed:Float):Void
 	{
-
 		super.update(elapsed);
 		fadeAnimation(Constants.RATING_SPRITE_DURATION, Constants.RATING_SPRITE_DELAY);
 	}

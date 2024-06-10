@@ -31,8 +31,8 @@ class RatingGraphic extends FlxSprite
 
 	/**
 	 * Loads the images/graphics for the rating sprite.
-	 * @param ratingImage 
-	 * @param isPixel = false 
+	 * @param ratingImage The graphic of the rating.
+	 * @param isPixel Whether to use the ``'-pixel'`` suffix.
 	 */
 	private function loadRatingSprite(ratingImage:Null<String>, ?isPixel = false):Void
 	{
@@ -44,18 +44,24 @@ class RatingGraphic extends FlxSprite
 	}
 	/**
 	 * Sets the scale/graphic size of the rating graphic.
+	 * @param size The base / initial size of the rating graphic.
+	 * @param isPixel Whether the graphic should be smaller than the regular scale.
+	 * @param pixelZoom The scale of the graphic when 'isPixel' is set to true.
 	 */
 	public function scaleSprite(size:Null<Float>, ?isPixel:Bool = false, ?pixelZoom:Float = 6):Void
 	{
-		if (!isPixel)
+		if (!isPixel) {
 			setGraphicSize(Std.int(width * size));
-		else
-			setGraphicSize(Std.int(width * pixelZoom * size));
+		} else {
+			setGraphicSize(Std.int(width * pixelZoom / (size * 2.5)));
+		}
 		updateHitbox();
 	}
 
 	/**
 	 * Plays the fading animation of the graphic, and destroys it.
+	 * @param duration The duration of the tween.
+	 * @param delay The starting delay of the tween.
 	 */
 	public function fadeAnimation(duration:Null<Float>, delay:Null<Float>):Void
 	{

@@ -1,5 +1,6 @@
 package funkin.play.song;
 
+import funkin.play.song.Song.SwagSong;
 import funkin.sound.FunkinSound;
 import funkin.play.stage.StageData;
 import funkin.play.stage.StageData;
@@ -24,13 +25,11 @@ enum ParseType
 
 class Chart
 {
-	public function new():Void {}
-
 	public static function loadChartData(song:String, input:String, ?parseType:Null<ParseType> = SONG):Dynamic
 	{
 		var JSON = null;
 
-		var stringPath:String = "";
+		var stringPath:String = getDataPathOfSong(song, input, 'difficulties/');
 
 		switch (parseType)
 		{
@@ -53,42 +52,39 @@ class Chart
 		}
 		#end
 
-		if (JSON == null) {
-			JSON = File.getContent(Paths.json(stringPath).trim());
+		if (JSON == null)
+		{
+			#if (sys)
+			JSON = File.getContent(Paths.json(stringPath)).trim();
+			#else
+			JSON = Assets.getText(Paths.json(stringPath)).trim();
+			#end
 		}
 
 		while (!JSON.endsWith("}")) {
 			JSON = JSON.substr(0, JSON.length - 1);
 		}
 
-		var parsedJSON:Dynamic = parseChartData(JSON, parseType);
+		var parsedJSON:Null<Dynamic> = null;
 
-		if (parseType == ParseType.SONG) {
-			if (parseType != ParseType.EVENTS && input != 'events') {
+		switch(parseType)
+		{
+			case SONG | EVENTS | CHARACTER_MAP:
+				parsedJSON = Song.parseJSONshit(JSON);
+			case DATA:
+				parsedJSON = SongData.parseData(JSON);
+			case METADATA:
+				parsedJSON = SongSettings.parseData(JSON);
+		}
+
+		if (parseType.equals(ParseType.SONG)) {
+			if (input != 'events' && !parseType.equals(ParseType.EVENTS)) {
 				StageData.loadDirectory(parsedJSON);
 			}
 			onLoadJson(parsedJSON);
 		}
 
 		return parsedJSON;
-	}
-
-	public static function parseChartData(rawJsonFilePath:String, ?parseType:Null<ParseType> = SONG):Dynamic
-	{
-		var data:Dynamic = null;
-
-		switch (parseType)
-		{
-			case SONG | CHARACTER_MAP | EVENTS:
-				data = cast Json.parse(rawJsonFilePath).song;
-				data.validScore = true;
-			case DATA:
-				data = cast Json.parse(rawJsonFilePath).song_data;
-			case METADATA:
-				data = cast Json.parse(rawJsonFilePath).metadata;
-		}
-
-		return data;
 	}
 
 	private static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = "", ?blankErectSuffix:Bool = false):String

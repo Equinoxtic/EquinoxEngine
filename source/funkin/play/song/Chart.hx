@@ -6,6 +6,7 @@ import funkin.play.stage.StageData;
 import funkin.play.stage.StageData;
 import funkin.play.song.Section.SwagSection;
 import haxe.Json;
+import openfl.utils.Assets as OpenFLAssets;
 
 #if (sys)
 import sys.io.File;
@@ -29,20 +30,20 @@ class Chart
 	{
 		var JSON = null;
 
-		var stringPath:String = getDataPathOfSong(song, input, 'difficulties/');
+		var stringPath:String = getDataPathOfSong(song, input, "difficulties/");
 
 		switch (parseType)
 		{
 			case SONG:
-				stringPath = getDataPathOfSong(song, input, 'difficulties/');
+				stringPath = getDataPathOfSong(song, input, "difficulties/");
 			case EVENTS:
-				stringPath = getDataPathOfSong(song, input, 'events/', false);
+				stringPath = getDataPathOfSong(song, input, "events/", false);
 			case DATA:
-				stringPath = getDataPathOfSong(song, input, 'songdata/', false);
+				stringPath = getDataPathOfSong(song, input, "songdata/", false);
 			case METADATA:
-				stringPath = getDataPathOfSong(song, input, '', true);
+				stringPath = getDataPathOfSong(song, input, "", true);
 			case CHARACTER_MAP:
-				stringPath = getDataPathOfSong(song, input, 'character-maps/');
+				stringPath = getDataPathOfSong(song, input, "character-maps/");
 		}
 
 		#if (MODS_ALLOWED)
@@ -89,9 +90,6 @@ class Chart
 
 	private static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = "", ?blankErectSuffix:Bool = false):String
 	{
-		if (song == null || song.length <= 0)
-			return "";
-
 		final songPath:String = Paths.formatToSongPath(song);
 
 		var filePath:String = 'charts/${songPath}/${library}${key}';
@@ -99,11 +97,25 @@ class Chart
 			filePath = 'charts/${songPath}/${library}${key}${FunkinSound.erectModeSuffix(blankErectSuffix)}';
 		}
 
+		#if (MODS_ALLOWED)
+		if (FileSystem.exists(Paths.json(filePath)) || FileSystem.exists(Paths.modsJson(filePath)))
+		#else
+		if (OpenFLAssets.exists(Paths.json(filePath)))
+		#end
+		{
+			#if (debug)
+			FlxG.log.add('Loaded ${filePath}!');
+			#end
+			return filePath;
+		}
 		#if (debug)
-		FlxG.log.add('Loaded $filePath !');
+		else
+		{
+			FlxG.log.warn('Failed to load ${filePath}!')
+		}
 		#end
 
-		return filePath;
+		return "";
 	}
 
 	private static function onLoadJson(songJson:Dynamic):Void

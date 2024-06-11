@@ -163,11 +163,6 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
-			'Rotate Notes',
-			"Rotates the notes 360 style. (Tweened)\nValue 1: Duration of the tween.\n[Default: 0.8]\n\nValue 2: Easing of the tween\n[Default: cubeInOut]"
-		],
-
-		[
 			'Play Animation',
 			"Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"
 		],

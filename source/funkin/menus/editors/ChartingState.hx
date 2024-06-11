@@ -143,6 +143,11 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
+			'Instant Camera Zoom',
+			"A more instantaneous camera zoom.\nValue 1: Camera zoom add (Default: 0.015)\nValue2: HUD zoom add (Default: 0.03)"
+		],
+
+		[
 			'Add Camera Zoom',
 			"Used on MILF on that one \"hard\" part\nValue 1: Camera zoom add (Default: 0.015)\nValue 2: UI zoom add (Default: 0.03)\nLeave the values blank if you want to use Default."
 		],

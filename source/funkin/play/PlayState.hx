@@ -3877,6 +3877,9 @@ class PlayState extends MusicBeatState
 			case 'Grayscale Effect':
 				// TODO: Add Grayscale Effect Event
 
+			case 'Instant Camera Zoom':
+				// TODO: Add Instant Camera Zoom Event
+
 			case 'Set Default Camera Zoom':
 				var amount:Float = 0.0;
 				var multiplier:Float = 0.0;

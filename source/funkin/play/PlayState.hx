@@ -260,11 +260,11 @@ class PlayState extends MusicBeatState
 
 	public var noteWiggle:WiggleEffect;
 
-	var noteWiggleAmplitude:Float = 0.035;
-	var noteWiggleFrequency:Float = 10;
-	var noteWiggleSpeed:Float = 1.15 + (Conductor.bpm / 100);
-	var noteWiggleAmplitudeDecay = 4.25 + (Conductor.bpm / 150) + (PlayState.SONG.speed / 3.0);
-	var lerpAmplitude:Float = 0.0;
+	var noteWiggleAmplitude:Float = 0.0325;
+	var noteWiggleFrequency:Float = 8;
+	var noteWiggleSpeed:Float = 2.25 + (Conductor.bpm / 100);
+	var noteWiggleAmplitudeDecay = 4.0 + (Conductor.bpm / 150) + (PlayState.SONG.speed / 3.0);
+	var lerpAmplitude:Float;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
@@ -3236,7 +3236,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (erectMode) {
-			lerpAmplitude = FlxMath.lerp(lerpAmplitude, 0, elapsed * noteWiggleAmplitudeDecay);
+			lerpAmplitude = FlxMath.lerp(lerpAmplitude, 0.0005, elapsed * noteWiggleAmplitudeDecay);
 		}
 
 		FlxG.watch.addQuick("secShit", curSection);

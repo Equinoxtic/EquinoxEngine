@@ -111,7 +111,7 @@ class SongLoader
 			if (OpenFlAssets.exists(Paths.json(songSettingsPath)))
 			#end
 			{
-				PlayState.SONG_METADATA = SongSettings.loadSongSettings(song);
+				PlayState.SONG_METADATA = Chart.loadChartData(PlayState.SONG.song, 'metadata', METADATA);
 			}
 			else
 			{
@@ -140,7 +140,7 @@ class SongLoader
 		#else
 		if (OpenFlAssets.exists(file)) {
 		#end
-			var eventsData:Array<Dynamic> = Song.loadFromJson('events', song, true).events;
+			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', EVENTS).events;
 
 			for (event in eventsData)
 			{
@@ -188,13 +188,13 @@ class SongLoader
 
 			if (song != null)
 			{
-				switch (Paths.formatToSongPath(song))
+				switch (song.toLowerCase())
 				{
 					case 'stress': gf = "pico-speaker";
 				}
 			}
 
-			PlayState.SONG.gfVersion = Std.string(gf).trim();
+			PlayState.SONG.gfVersion = Std.string(gf);
 		}
 		else
 		{

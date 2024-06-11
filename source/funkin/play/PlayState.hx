@@ -1,5 +1,6 @@
 package funkin.play;
 
+import funkin.play.song.Chart.ParseType;
 import funkin.play.song.SongSettings.SongSettingsJSON;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import flixel.graphics.FlxGraphic;
@@ -4162,7 +4163,7 @@ class PlayState extends MusicBeatState
 		updateTime = false;
 
 		FunkinSound.setVolume(0, 'instrumental');
-		FunkinSound.setVoicesVolume(0);
+		// FunkinSound.setVoicesVolume(0);
 		FunkinSound.pauseSong();
 
 		if(Preferences.noteOffset <= 0 || ignoreNoteOffset) {
@@ -4302,7 +4303,7 @@ class PlayState extends MusicBeatState
 					prevCamFollow = camFollow;
 					prevCamFollowPos = camFollowPos;
 
-					PlayState.SONG = Song.loadFromJson(difficulty, PlayState.storyPlaylist[0]);
+					PlayState.SONG = Chart.loadChartData(PlayState.storyPlaylist[0], difficulty, ParseType.SONG);
 					FlxG.sound.music.stop();
 
 					if(winterHorrorlandNext) {

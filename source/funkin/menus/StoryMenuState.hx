@@ -155,7 +155,7 @@ class StoryMenuState extends MusicBeatState
 			lastDifficultyName = FunkinUtil.defaultDifficulty;
 		}
 		curDifficulty = Math.round(Math.max(0, FunkinUtil.defaultDifficulties.indexOf(lastDifficultyName)));
-		
+
 		sprDifficulty = new FlxSprite(0, leftArrow.y);
 		sprDifficulty.antialiasing = Preferences.globalAntialiasing;
 		difficultySelectors.add(sprDifficulty);
@@ -321,7 +321,7 @@ class StoryMenuState extends MusicBeatState
 
 			PlayState.storyDifficulty = curDifficulty;
 
-			PlayState.SONG = Song.loadFromJson(diffic, PlayState.storyPlaylist[0].toLowerCase());
+			PlayState.SONG = Chart.loadChartData(PlayState.storyPlaylist[0].toLowerCase(), diffic, SONG);
 			PlayState.campaignScore = 0;
 			PlayState.campaignMisses = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -436,7 +436,7 @@ class StoryMenuState extends MusicBeatState
 				FunkinUtil.difficulties = diffs;
 			}
 		}
-		
+
 		if(FunkinUtil.difficulties.contains(FunkinUtil.defaultDifficulty))
 		{
 			curDifficulty = Math.round(Math.max(0, FunkinUtil.defaultDifficulties.indexOf(FunkinUtil.defaultDifficulty)));

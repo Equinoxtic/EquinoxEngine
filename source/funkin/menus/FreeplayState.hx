@@ -147,7 +147,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.antialiasing = Preferences.globalAntialiasing;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		scoreText.borderSize = 3.5;
-		
+
 		shittyText = new FlxText(FlxG.width * 0.8, 10, 0, "PERSONAL BEST", 48);
 		shittyText.setFormat(Paths.font('phantommuff.ttf'), 48, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		shittyText.borderSize = 3.5;
@@ -173,7 +173,7 @@ class FreeplayState extends MusicBeatState
 			lastDifficultyName = FunkinUtil.defaultDifficulty;
 		}
 		curDifficulty = Math.round(Math.max(0, FunkinUtil.defaultDifficulties.indexOf(lastDifficultyName)));
-		
+
 		changeSelection();
 		changeDiff();
 
@@ -190,7 +190,7 @@ class FreeplayState extends MusicBeatState
 		var leText:String = "Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
 		var size:Int = 18;
 		#end
-		
+
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.antialiasing = Preferences.globalAntialiasing;
@@ -199,7 +199,7 @@ class FreeplayState extends MusicBeatState
 
 		super.create();
 
-		for (i in 0...FunkinUtil.difficulties.length) 
+		for (i in 0...FunkinUtil.difficulties.length)
 		{
 			var diffSprite:DifficultySprite = new DifficultySprite(FunkinUtil.difficulties[i].toLowerCase());
 			diffSprite.difficultyId = FunkinUtil.difficulties[i].toLowerCase();
@@ -209,7 +209,7 @@ class FreeplayState extends MusicBeatState
 		grpDifficulties.group.forEach(function(spr) {
 			spr.visible = false;
 		});
-	
+
 		for (diffSprite in grpDifficulties.group.members)
 		{
 			if (diffSprite == null) continue;
@@ -263,7 +263,7 @@ class FreeplayState extends MusicBeatState
 		if (ratingSplit.length < 2) {
 			ratingSplit.push('');
 		}
-		
+
 		while (ratingSplit[1].length < 2) {
 			ratingSplit[1] += '0';
 		}
@@ -272,7 +272,7 @@ class FreeplayState extends MusicBeatState
 			+ '> SCORE: ${lerpScore}\n'
 			+ '> ACCURACY: ${ratingSplit.join('.')}%\n'
 			+ '> ${intendedRatingFC} - ${intendedRanking}';
-		
+
 		positionHighscore();
 
 		var upP = controls.UI_UP_P;
@@ -406,7 +406,7 @@ class FreeplayState extends MusicBeatState
 	private function loadSong(?selectedSong:String, ?jsonDiff:String):Void
 	{
 		var songPath:String = Std.string('charts/${selectedSong}/difficulties/${jsonDiff}');
-		
+
 		#if MODS_ALLOWED
 		if (!sys.FileSystem.exists(Paths.modsJson(songPath)) && !sys.FileSystem.exists(Paths.json(songPath)))
 		#else
@@ -431,7 +431,7 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		PlayState.storyDifficulty = curDifficulty;
-		PlayState.SONG = Song.loadFromJson(jsonDiff, selectedSong);
+		PlayState.SONG = Chart.loadChartData(selectedSong, jsonDiff, SONG);
 		PlayState.isStoryMode = false;
 
 		trace('CURRENT WEEK: ${WeekData.getWeekFileName()}');
@@ -487,7 +487,7 @@ class FreeplayState extends MusicBeatState
 		grpDifficulties.group.forEach(function(spr) {
 			spr.visible = false;
 		});
-		
+
 		for (diffSprite in grpDifficulties.group.members)
 		{
 			if (diffSprite == null) continue;
@@ -529,7 +529,7 @@ class FreeplayState extends MusicBeatState
 			curSelected = songs.length - 1;
 		if (curSelected >= songs.length)
 			curSelected = 0;
-			
+
 		var newColor:Int = songs[curSelected].color;
 		if(newColor != intendedColor) {
 			if(colorTween != null) {
@@ -559,7 +559,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		iconArray[curSelected].alpha = 1;
-		
+
 		switch(songs[curSelected].songName.toLowerCase())
 		{
 			case 'tutorial':
@@ -580,7 +580,7 @@ class FreeplayState extends MusicBeatState
 				item.alpha = 1;
 			}
 		}
-		
+
 		Paths.currentModDirectory = songs[curSelected].folder;
 		PlayState.storyWeek = songs[curSelected].week;
 
@@ -607,7 +607,7 @@ class FreeplayState extends MusicBeatState
 				FunkinUtil.difficulties = diffs;
 			}
 		}
-		
+
 		if (FunkinUtil.difficulties.contains(FunkinUtil.defaultDifficulty))
 		{
 			curDifficulty = Math.round(Math.max(0, FunkinUtil.defaultDifficulties.indexOf(FunkinUtil.defaultDifficulty)));

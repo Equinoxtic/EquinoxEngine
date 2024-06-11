@@ -130,40 +130,38 @@ class SongLoader
 	 */
 	public static function loadSongEvents(?song:Null<String>):Void
 	{
-		if (song == null || song == '') return;
+		if (song == null || song == '')
+			return;
 
-		final eventsPath = 'charts/${song}/events/events${FunkinSound.erectModeSuffix(false)}';
+		// Standardised way of loading events. (Using Chart.loadChartData(...))
+		var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', EVENTS).events;
 
-		var file:String = Paths.json(eventsPath);
-		#if MODS_ALLOWED
-		if (FileSystem.exists(Paths.modsJson(eventsPath)) || FileSystem.exists(file)) {
-		#else
-		if (OpenFlAssets.exists(file)) {
-		#end
-			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', EVENTS).events;
+		// Legacy / old way of loading events.
+		if (eventsData == null || eventsData.length <= 0) {
+			eventsData = Song.loadFromJson('events', song, true).events;
+		}
 
-			for (event in eventsData)
+		for (event in eventsData)
+		{
+			for (i in 0...event[1].length)
 			{
-				for (i in 0...event[1].length)
-				{
-					var newEventNote:Array<Dynamic> = [
-						event[0],
-						event[1][i][0],
-						event[1][i][1],
-						event[1][i][2]
-					];
+				var newEventNote:Array<Dynamic> = [
+					event[0],
+					event[1][i][0],
+					event[1][i][1],
+					event[1][i][2]
+				];
 
-					var subEvent:EventNote = {
-						strumTime: newEventNote[0] + Preferences.noteOffset,
-						event: newEventNote[1],
-						value1: newEventNote[2],
-						value2: newEventNote[3]
-					};
+				var subEvent:EventNote = {
+					strumTime: newEventNote[0] + Preferences.noteOffset,
+					event: newEventNote[1],
+					value1: newEventNote[2],
+					value2: newEventNote[3]
+				};
 
-					subEvent.strumTime -= PlayState.instance.eventNoteEarlyTrigger(subEvent);
-					PlayState.instance.eventNotes.push(subEvent);
-					PlayState.instance.eventPushed(subEvent);
-				}
+				subEvent.strumTime -= PlayState.instance.eventNoteEarlyTrigger(subEvent);
+				PlayState.instance.eventNotes.push(subEvent);
+				PlayState.instance.eventPushed(subEvent);
 			}
 		}
 	}

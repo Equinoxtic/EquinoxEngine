@@ -3880,6 +3880,9 @@ class PlayState extends MusicBeatState
 			case 'Instant Camera Zoom':
 				// TODO: Add Instant Camera Zoom Event
 
+			case 'Rotate Notes':
+				// TODO: Add Rotate Notes Event
+
 			case 'Set Default Camera Zoom':
 				var amount:Float = 0.0;
 				var multiplier:Float = 0.0;

@@ -417,10 +417,6 @@ class PlayState extends MusicBeatState
 	var doCameraZoomEvent:Bool = false;
 	var borderCameraTween:FlxTween;
 
-	var cameraZoomAmount:Float = 1.0;
-	var cameraZoomDuration:Float = 0.8;
-	var cameraZoomEase:String = 'cubeInOut';
-
 	override public function create()
 	{
 		FlxG.mouse.visible = false;

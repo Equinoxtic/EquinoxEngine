@@ -178,27 +178,33 @@ class SongLoader
 			{
 				switch (stage)
 				{
-					case 'limo': gf = "gf-car";
-					case 'mall' | 'mallEvil': gf = "gf-christmas";
-					case 'school' | 'schoolEvil': gf = "gf-pixel";
-					case 'tank': gf = "gf-tankmen";
-					default: gf = "gf";
+					case 'limo':
+						gf = "gf-car";
+					case 'mall' | 'mallEvil':
+						gf = "gf-christmas";
+					case 'school' | 'schoolEvil':
+						gf = "gf-pixel";
+					case 'tank':
+						gf = "gf-tankmen";
+					default:
+						gf = "gf";
 				}
 			}
 
 			if (song != null)
 			{
-				switch (song.toLowerCase())
+				switch (Paths.formatToSongPath(song))
 				{
-					case 'stress': gf = "pico-speaker";
+					case 'stress':
+						gf = "pico-speaker";
 				}
 			}
 
-			PlayState.SONG.gfVersion = Std.string(gf);
+			PlayState.SONG.gfVersion = Std.string(gf).trim();
 		}
 		else
 		{
-			PlayState.SONG.gfVersion = "gf";
+			return;
 		}
 	}
 

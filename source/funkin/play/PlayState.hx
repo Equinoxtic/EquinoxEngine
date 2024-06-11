@@ -3852,7 +3852,7 @@ class PlayState extends MusicBeatState
 
 				if (Math.isNaN(amount) || amount < 0)
 					amount = 0;
-				if (Math.isNaN(duration) || amount < 0)
+				if (Math.isNaN(duration) || duration < 0)
 					duration = 0;
 				if (ease == null || ease == '')
 					ease = 'sineInOut';

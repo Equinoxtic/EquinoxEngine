@@ -32,6 +32,7 @@ class SongLoader
 	{
 		var dummyJson = {
 			songDisplayName: 'Test',
+			songAlbum: 'volume1',
 			difficulties: ["easy", "normal", "hard"],
 			variations: ["default", "erect"],
 			hasCountdown: true,
@@ -100,12 +101,14 @@ class SongLoader
 	{
 		if (song != null && song != "")
 		{
-			final songSettingsPath:String = 'charts/${Paths.formatToSongPath(song)}/metadata';
+			final songSettingsPath:String = 'charts/${Paths.formatToSongPath(song)}/metadata${FunkinSound.erectModeSuffix()}';
+
+			trace(songSettingsPath);
 
 			#if (MODS_ALLOWED)
 			if (sys.FileSystem.exists(Paths.modsJson(songSettingsPath)) || sys.FileSystem.exists(Paths.json(songSettingsPath)))
 			#else
-			if (OpenFlAssets.exists(Paths.json(songsongSettingsPath)))
+			if (OpenFlAssets.exists(Paths.json(songSettingsPath)))
 			#end
 			{
 				PlayState.SONG_METADATA = SongSettings.loadSongSettings(song);
@@ -175,7 +178,7 @@ class SongLoader
 			{
 				switch (stage)
 				{
-					case 'limo': gf = "gf-car"; 
+					case 'limo': gf = "gf-car";
 					case 'mall' | 'mallEvil': gf = "gf-christmas";
 					case 'school' | 'schoolEvil': gf = "gf-pixel";
 					case 'tank': gf = "gf-tankmen";

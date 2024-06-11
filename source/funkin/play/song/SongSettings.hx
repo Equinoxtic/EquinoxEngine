@@ -1,5 +1,6 @@
 package funkin.play.song;
 
+import funkin.sound.FunkinSound;
 import haxe.Json;
 
 #if (sys)
@@ -11,6 +12,7 @@ using StringTools;
 
 typedef SongSettingsJSON = {
 	var songDisplayName:String;
+	var songAlbum:String;
 	var difficulties:Array<String>;
 	var variations:Array<String>;
 	var hasCountdown:Bool;
@@ -21,6 +23,7 @@ typedef SongSettingsJSON = {
 class SongSettings
 {
 	public var songDisplayName:String = 'Test';
+	public var songAlbum:String = 'volume1';
 	public var difficuties:Array<String> = [];
 	public var variations:Array<String> = [];
 	public var hasCountdown:Bool = true;
@@ -33,10 +36,10 @@ class SongSettings
 			return null;
 
 		var JSON = null;
-		
+
 		final songPath:String = Paths.formatToSongPath(song);
 
-		var filePath:String = 'charts/${songPath}/metadata';
+		var filePath:String = 'charts/${songPath}/metadata${FunkinSound.erectModeSuffix()}';
 
 		#if MODS_ALLOWED
 		var modFile:String = Paths.modsJson(filePath);

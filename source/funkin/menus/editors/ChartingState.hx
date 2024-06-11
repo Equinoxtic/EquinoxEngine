@@ -364,6 +364,7 @@ class ChartingState extends MusicBeatState
 		{
 			_metadata = {
 				songDisplayName: 'Test',
+				songAlbum: 'volume1',
 				difficulties: ["easy", "normal", "hard"],
 				variations: ["default", "erect"],
 				hasCountdown: true,
@@ -1594,6 +1595,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	var songDisplayNameInput:FlxUIInputText;
+	var albumTextInput:FlxUIInputText;
 	var countdownCheckbox:FlxUICheckBox;
 	var noteWiggleCheckbox:FlxUICheckBox;
 	var beatModInput:FlxUINumericStepper;
@@ -1608,24 +1610,29 @@ class ChartingState extends MusicBeatState
 		songDisplayNameInput = new FlxUIInputText(10, 50, 200, songDisplayName, 8);
 		blockPressWhileTypingOn.push(songDisplayNameInput);
 
-		countdownCheckbox = new FlxUICheckBox(10, songDisplayNameInput.y + 35, null, null, "Countdown on Start");
+		var songAlbum:String = PlayState.SONG_METADATA.songAlbum;
+		if (songAlbum == null) songAlbum = "";
+		albumTextInput = new FlxUIInputText(10, songDisplayNameInput.y + 50, 100, songAlbum, 8);
+		blockPressWhileTypingOn.push(albumTextInput);
+
+		countdownCheckbox = new FlxUICheckBox(10, albumTextInput.y + 35, null, null, "Countdown on Start");
 		countdownCheckbox.checked = _metadata.hasCountdown;
 		countdownCheckbox.callback = function() {
 			_metadata.hasCountdown = countdownCheckbox.checked;
 		};
 
-		noteWiggleCheckbox = new FlxUICheckBox(countdownCheckbox.x + 100, songDisplayNameInput.y + 35, null, null, "Note Tail Wiggles on Beat");
+		noteWiggleCheckbox = new FlxUICheckBox(10, countdownCheckbox.y + 40, null, null, "Note Tail Wiggles on Beat");
 		noteWiggleCheckbox.checked = _metadata.hasNoteWiggle;
 		noteWiggleCheckbox.callback = function() {
 			_metadata.hasNoteWiggle = noteWiggleCheckbox.checked;
 		};
 
-		beatModInput = new FlxUINumericStepper(10, noteWiggleCheckbox.y + 65, 1, 4, 1, 24, 1);
+		beatModInput = new FlxUINumericStepper(10, noteWiggleCheckbox.y + 50, 1, 4, 1, 24, 1);
 		beatModInput.value = _metadata.beatMod;
 		beatModInput.name = 'beat_mod';
 		blockPressWhileTypingOnStepper.push(beatModInput);
 
-		var saveButton:FlxButton = new FlxButton(beatModInput.x, beatModInput.y + 65, "Save", function ()
+		var saveButton:FlxButton = new FlxButton(beatModInput.x, beatModInput.y + 35, "Save", function ()
 		{
 			saveChartData(METADATA);
 		});
@@ -1633,8 +1640,10 @@ class ChartingState extends MusicBeatState
 		tab_group_settings.add(new FlxText(5, 5, FlxG.width, '- Song Settings -', 14));
 
 		tab_group_settings.add(new FlxText(songDisplayNameInput.x, songDisplayNameInput.y - 15, 0, "Song Display Name:"));
+		tab_group_settings.add(new FlxText(albumTextInput.x, albumTextInput.y - 15, 0, "Song Album:"));
 		tab_group_settings.add(new FlxText(beatModInput.x, beatModInput.y - 15, 0, "Camera Beat Modulo (Per Beat):"));
 		tab_group_settings.add(songDisplayNameInput);
+		tab_group_settings.add(albumTextInput);
 		tab_group_settings.add(countdownCheckbox);
 		tab_group_settings.add(noteWiggleCheckbox);
 		tab_group_settings.add(beatModInput);
@@ -1784,6 +1793,8 @@ class ChartingState extends MusicBeatState
 				_song_data.stringExtra = extraStringInputText.text;
 			} else if (sender == songDisplayNameInput) {
 				_metadata.songDisplayName = songDisplayNameInput.text;
+			} else if (sender == albumTextInput) {
+				_metadata.songAlbum = albumTextInput.text;
 			}
 			else if(curSelectedNote != null)
 			{
@@ -2327,47 +2338,6 @@ class ChartingState extends MusicBeatState
 		zoomTxt.text = 'Zoom: ' + zoomThing;
 		reloadGridLayer();
 	}
-
-	/*
-	function loadAudioBuffer() {
-		if(audioBuffers[0] != null) {
-			audioBuffers[0].dispose();
-		}
-		audioBuffers[0] = null;
-		#if MODS_ALLOWED
-		if(FileSystem.exists(Paths.modFolders('songs/' + currentSongName + '/Inst.ogg'))) {
-			audioBuffers[0] = AudioBuffer.fromFile(Paths.modFolders('songs/' + currentSongName + '/Inst.ogg'));
-			//trace('Custom vocals found');
-		}
-		else { #end
-			var leVocals:String = Paths.getPath(currentSongName + '/Inst.' + Paths.SOUND_EXT, SOUND, 'songs');
-			if (OpenFlAssets.exists(leVocals)) { //Vanilla inst
-				audioBuffers[0] = AudioBuffer.fromFile('./' + leVocals.substr(6));
-				//trace('Inst found');
-			}
-		#if MODS_ALLOWED
-		}
-		#end
-
-		if(audioBuffers[1] != null) {
-			audioBuffers[1].dispose();
-		}
-		audioBuffers[1] = null;
-		#if MODS_ALLOWED
-		if(FileSystem.exists(Paths.modFolders('songs/' + currentSongName + '/Voices.ogg'))) {
-			audioBuffers[1] = AudioBuffer.fromFile(Paths.modFolders('songs/' + currentSongName + '/Voices.ogg'));
-			//trace('Custom vocals found');
-		} else { #end
-			var leVocals:String = Paths.getPath(currentSongName + '/Voices.' + Paths.SOUND_EXT, SOUND, 'songs');
-			if (OpenFlAssets.exists(leVocals)) { //Vanilla voices
-				audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));
-				//trace('Voices found, LETS FUCKING GOOOO');
-			}
-		#if MODS_ALLOWED
-		}
-		#end
-	}
-	*/
 
 	var lastSecBeats:Float = 0;
 	var lastSecBeatsNext:Float = 0;
@@ -3092,7 +3062,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), saveFileString + '.json');
+			_file.save(data.trim(), saveFileString + '${FunkinSound.erectModeSuffix()}.json');
 		}
 	}
 

@@ -12,7 +12,7 @@ import sys.io.File;
 class PreBuild
 {
 	static inline final FILE:String = ".BUILD_TIME";
-	
+
 	static function main():Void
 	{
 		var s:String = '';
@@ -24,13 +24,14 @@ class PreBuild
 			+ "\t* Special thanks to the Psych Engine team.\n"
 			+ "\t  - Check out PE's repository here: https://github.com/ShadowMario/FNF-PsychEngine\n\n"
 
-			+ "\t* Custom Sound System [FunkinSound.hx] for seperate vocals made by @Equinoxtic !!!\n\n"
+			+ "\t* Custom Sound System [FunkinSound.hx] for vocal separation made by @Equinoxtic !!!\n\n"
 			+ "\t( Some FNF V-Slice features are added in this engine, i.e. ERECT mode and etc. )\n\n"
+			+ "\t> Check out Equinox Engine here: https://github.com/Equinoxtic/EquinoxEngine/tree/master\n\n"
 
 			+ "    <--------------------------------------------------------------------------------------->\n\n"
 		;
 
-		Sys.print(Std.string(s));
+		Sys.stdout().writeString(s);
 
 		save();
 	}

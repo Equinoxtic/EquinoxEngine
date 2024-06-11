@@ -19,14 +19,14 @@ class PostBuild
 		s += '\n\t[ Finished Buiding Equinox Engine! ]\n\n'
 
 			+ '\t* For future updates, check the repository here: ${REPOSITORY}\n\n'
-			
+
 			+ '\t[ INFO - EquinoxEngine - MAIN ]:\n'
 			+ '\t> Name: \"Friday Night Funkin\': Equinox Engine\"'
 			+ '\t> Version: NULL\n'
 			+ '\t> Funkin\' Version: 0.3.3 (V-Slice)\n\n'
 		;
 
-		Sys.print(Std.string(s));
+		Sys.stdout().writeString(s);
 
 		displayBuildTime();
 	}
@@ -39,7 +39,7 @@ class PostBuild
 		if (FileSystem.exists(FILE))
 		{
 			var f:FileInput = File.read(FILE);
-			
+
 			if (f != null)
 			{
 				var s:Float = f.readDouble();
@@ -49,7 +49,7 @@ class PostBuild
 				t = roundToTwoDecimals(e - s);
 			}
 
-			Sys.print('[POSTBUILD INFO]: Build time took ${t}s ... \n\n');
+			Sys.print('> [POSTBUILD INFO]: Build time took ${t}s ... \n\n');
 		}
 	}
 

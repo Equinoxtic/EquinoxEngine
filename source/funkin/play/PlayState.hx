@@ -5335,9 +5335,9 @@ class PlayState extends MusicBeatState
 	{
 		noteWiggleModLeft = !noteWiggleModLeft;
 		if (noteWiggleModLeft) {
-			lerpAmplitude = noteWiggleAmplitude;
-		} else {
 			lerpAmplitude = -noteWiggleAmplitude;
+		} else {
+			lerpAmplitude = noteWiggleAmplitude;
 		}
 	}
 

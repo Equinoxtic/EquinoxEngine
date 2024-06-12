@@ -121,7 +121,7 @@ class Chart
 		#if (debug)
 		else
 		{
-			FlxG.log.warn('Failed to load ${filePath}!')
+			FlxG.log.warn('Failed to load ${filePath}!');
 		}
 		#end
 

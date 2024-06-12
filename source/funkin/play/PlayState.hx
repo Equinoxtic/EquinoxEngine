@@ -256,11 +256,13 @@ class PlayState extends MusicBeatState
 	 * Shaders
 	 */
 	public var aberrationEffect:ChromaticAberration;
-
 	public var vcrEffect:VCRDistortionEffect;
-
 	public var noteWiggle:WiggleEffect;
+	public var grayscale:Grayscale;
 
+	/**
+	 * Shader values
+	 */
 	var noteWiggleAmplitude:Float = 0.0325;
 	var noteWiggleFrequency:Float = 8;
 	var noteWiggleSpeed:Float = 2.25 + (Conductor.bpm / 100);
@@ -402,6 +404,7 @@ class PlayState extends MusicBeatState
 	private var hudGroup:FlxTypedGroup<FlxSprite>;
 	private var hudGroupInfo:FlxTypedGroup<FlxSprite>;
 	private var hudGroupExcluded:FlxTypedGroup<FlxSprite>;
+	private var shaderCameraGroup:Array<FlxCamera> = [];
 	private var updateShaderGroup:Array<Dynamic> = [];
 
 	public var focusedCharacter:Character;
@@ -417,6 +420,7 @@ class PlayState extends MusicBeatState
 	var tweenedZoomCameraTween:FlxTween;
 	var doCameraZoomEvent:Bool = false;
 	var borderCameraTween:FlxTween;
+	var grayscaleTween:FlxTween;
 
 	override public function create()
 	{
@@ -492,6 +496,12 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camExternalInfo, false);
 		FlxG.cameras.add(camOther, false);
 
+		shaderCameraGroup.push(camGame);
+		shaderCameraGroup.push(camHUD);
+		shaderCameraGroup.push(camSus);
+		shaderCameraGroup.push(camStrum);
+		shaderCameraGroup.push(camNotes);
+
 		camHUD.zoom = Constants.CAMERA_HUD_ZOOM;
 
 		aberrationEffect = new ChromaticAberration(0.0);
@@ -501,6 +511,17 @@ class PlayState extends MusicBeatState
 
 		noteWiggle = new WiggleEffect();
 		noteWiggle.effectType = WiggleEffectType.DREAMY;
+
+		grayscale = new Grayscale();
+		grayscale.strength = 0.0;
+
+		if (Preferences.shaders)
+		{
+			for (camera in shaderCameraGroup)
+			{
+				camera.setFilters([new ShaderFilter(grayscale.shader)]);
+			}
+		}
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 
@@ -3047,6 +3068,8 @@ class PlayState extends MusicBeatState
 					vcrEffect.update(elapsed);
 			}
 
+			grayscale.update(elapsed);
+
 			noteWiggle.waveSpeed = noteWiggleSpeed;
 			noteWiggle.waveFrequency = noteWiggleFrequency;
 			noteWiggle.waveAmplitude = lerpAmplitude;
@@ -3892,7 +3915,49 @@ class PlayState extends MusicBeatState
 				}
 
 			case 'Grayscale Effect':
-				// TODO: Add Grayscale Effect Event
+				var strength:Float = 0.0;
+				var duration:Float = 0.0;
+				var delay:Float = 0.0;
+				var ease:String = "";
+
+				var split = value1.split(',');
+
+				if (split[0] != null)
+					strength = Std.parseFloat(split[0].trim());
+				if (split[1] != null)
+					duration = Std.parseFloat(split[1].trim());
+				if (split[2] != null)
+					delay = Std.parseFloat(split[2]);
+				if (value2 != null)
+					ease = Std.string(value2);
+
+				if (Math.isNaN(strength) || strength < 0)
+					strength = 0.5;
+				if (Math.isNaN(duration) || duration < 0)
+					duration = 1.0;
+				if (Math.isNaN(delay) || delay < 0)
+					duration = 0.0;
+				if (ease == null || ease == "")
+					ease = "sineInOut";
+
+				if (strength >= 0 && duration >= 0 && delay >= 0 && ease != null)
+				{
+					if (Preferences.shaders)
+					{
+						if (grayscaleTween != null) {
+							grayscaleTween.cancel();
+						}
+
+						grayscaleTween = GlobalTweenClass.tween(grayscale, {strength: strength}, duration / playbackRate, {
+							ease: FlxEaseUtil.getFlxEaseByString(ease),
+							onComplete: function(_:FlxTween) {
+								grayscaleTween = null;
+							}
+						});
+
+						grayscaleTween.start();
+					}
+				}
 
 			case 'Instant Camera Zoom':
 				// TODO: Add Instant Camera Zoom Event

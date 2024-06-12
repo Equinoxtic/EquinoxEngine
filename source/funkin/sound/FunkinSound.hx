@@ -51,7 +51,7 @@ class FunkinSound
 
 			FlxG.sound.list.add(voicesPlayer);
 			FlxG.sound.list.add(voicesOpponent);
-			
+
 			if (voicesPlayer != null)
 				voicesPlayer.onComplete = destroyVoicesOf.bind('player');
 
@@ -372,14 +372,17 @@ class FunkinSound
 	/**
 	 * Gets the ERECT mode suffix. (Returns '-erect', otherwise if ERECT mode isn't on and the parameter 'returnBlankSuffix' is true, return '-default' as a suffix)
 	 */
-	public static function erectModeSuffix(returnBlankSuffix:Bool = true):String
+	public static function erectModeSuffix(?returnBlankSuffix:Bool = true):String
 	{
-		if (PlayState.storyDifficulty > 2) {
-			return '-erect';
+		var suffix = '';
+		if (PlayState.storyDifficulty >= 3) {
+			suffix = '-erect';
 		} else {
-			if (!returnBlankSuffix) return '-default';
+			if (!returnBlankSuffix) {
+				suffix = '-default';
+			}
 		}
-		return '';
+		return '$suffix';
 	}
 
 	/**
@@ -532,7 +535,7 @@ class FunkinSoundChartEditor
 	{
 		if (value != null && value >= 0)
 		{
-			if (vocalsPlayer != null) 
+			if (vocalsPlayer != null)
 				vocalsPlayer.time = value;
 			if (vocalsOpponent != null)
 				vocalsOpponent.time = value;
@@ -604,7 +607,7 @@ class FunkinSoundChartEditor
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.pause();
-			
+
 		}
 	}
 

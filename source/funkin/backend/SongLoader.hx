@@ -71,7 +71,7 @@ class SongLoader
 	{
 		if (song != null && song != '')
 		{
-			final songDataPath:String = 'charts/${Paths.formatToSongPath(song)}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
+			final songDataPath:String = Chart.getDataPathOfSong(song, 'songdata', 'songdata');
 
 			#if MODS_ALLOWED
 			if (sys.FileSystem.exists(Paths.modsJson(songDataPath)) || sys.FileSystem.exists(Paths.json(songDataPath)))
@@ -101,7 +101,7 @@ class SongLoader
 	{
 		if (song != null && song != "")
 		{
-			final songSettingsPath:String = 'charts/${Paths.formatToSongPath(song)}/metadata${FunkinSound.erectModeSuffix()}';
+			final songSettingsPath:String = Chart.getDataPathOfSong(song, 'metadata', null);
 
 			trace(songSettingsPath);
 
@@ -133,35 +133,44 @@ class SongLoader
 		if (song == null || song == '')
 			return;
 
-		// Standardised way of loading events. (Using Chart.loadChartData(...))
-		var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', EVENTS).events;
+		final eventsPath:String = Chart.getDataPathOfSong(song, 'events', 'events');
 
-		// Legacy / old way of loading events.
-		if (eventsData == null || eventsData.length <= 0) {
-			eventsData = Song.loadFromJson('events', song, true).events;
-		}
-
-		for (event in eventsData)
+		#if (MODS_ALLOWED)
+		if (FileSystem.exists(Paths.json(eventsPath)) || FileSystem.exists(Paths.modsJson(eventsPath)))
+		#else
+		if (OpenFlAssets.exists(Paths.json(eventsPath)))
+		#end
 		{
-			for (i in 0...event[1].length)
+			// Standardised way of loading events. (Using Chart.loadChartData(...))
+			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', EVENTS).events;
+
+			// Legacy / old way of loading events.
+			if (eventsData == null || eventsData.length <= 0) {
+				eventsData = Song.loadFromJson('events', song, true).events;
+			}
+
+			for (event in eventsData)
 			{
-				var newEventNote:Array<Dynamic> = [
-					event[0],
-					event[1][i][0],
-					event[1][i][1],
-					event[1][i][2]
-				];
+				for (i in 0...event[1].length)
+				{
+					var newEventNote:Array<Dynamic> = [
+						event[0],
+						event[1][i][0],
+						event[1][i][1],
+						event[1][i][2]
+					];
 
-				var subEvent:EventNote = {
-					strumTime: newEventNote[0] + Preferences.noteOffset,
-					event: newEventNote[1],
-					value1: newEventNote[2],
-					value2: newEventNote[3]
-				};
+					var subEvent:EventNote = {
+						strumTime: newEventNote[0] + Preferences.noteOffset,
+						event: newEventNote[1],
+						value1: newEventNote[2],
+						value2: newEventNote[3]
+					};
 
-				subEvent.strumTime -= PlayState.instance.eventNoteEarlyTrigger(subEvent);
-				PlayState.instance.eventNotes.push(subEvent);
-				PlayState.instance.eventPushed(subEvent);
+					subEvent.strumTime -= PlayState.instance.eventNoteEarlyTrigger(subEvent);
+					PlayState.instance.eventNotes.push(subEvent);
+					PlayState.instance.eventPushed(subEvent);
+				}
 			}
 		}
 	}

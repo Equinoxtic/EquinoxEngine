@@ -35,15 +35,15 @@ class Chart
 		switch (parseType)
 		{
 			case SONG:
-				stringPath = getDataPathOfSong(song, input, "difficulties/");
+				stringPath = getDataPathOfSong(song, input, "difficulties");
 			case EVENTS:
-				stringPath = getDataPathOfSong(song, input, "events/", false);
+				stringPath = getDataPathOfSong(song, input, "events");
 			case DATA:
-				stringPath = getDataPathOfSong(song, input, "songdata/", false);
+				stringPath = getDataPathOfSong(song, input, "songdata");
 			case METADATA:
-				stringPath = getDataPathOfSong(song, input, "", true);
+				stringPath = getDataPathOfSong(song, input, null);
 			case CHARACTER_MAP:
-				stringPath = getDataPathOfSong(song, input, "character-maps/");
+				stringPath = getDataPathOfSong(song, input, "character-maps");
 		}
 
 		#if (MODS_ALLOWED)
@@ -56,9 +56,9 @@ class Chart
 		if (JSON == null)
 		{
 			#if (sys)
-			JSON = File.getContent(Paths.json(stringPath)).trim();
+			JSON = File.getContent(Paths.json(stringPath).trim());
 			#else
-			JSON = Assets.getText(Paths.json(stringPath)).trim();
+			JSON = Assets.getText(Paths.json(stringPath).trim());
 			#end
 		}
 
@@ -88,14 +88,24 @@ class Chart
 		return parsedJSON;
 	}
 
-	private static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = "", ?blankErectSuffix:Bool = false):String
+	public static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = ""):String
 	{
 		final songPath:String = Paths.formatToSongPath(song);
 
-		var filePath:String = 'charts/${songPath}/${library}${key}';
-		if (library != "difficulties/" && library != "character-maps") {
-			filePath = 'charts/${songPath}/${library}${key}${FunkinSound.erectModeSuffix(blankErectSuffix)}';
+		var filePathString = 'charts/${songPath}/${((library != '' && library != null) ? '$library/' : '')}${key}';
+
+		var filePath = filePathString;
+		switch(library)
+		{
+			case 'events' | 'songdata' | 'character-maps':
+				filePath = '${filePathString}${FunkinSound.erectModeSuffix(false)}';
+			case 'difficulties':
+				filePath = filePathString;
+			default:
+				filePath = '${filePathString}${FunkinSound.erectModeSuffix(true)}';
 		}
+
+		trace(Paths.json(filePath));
 
 		#if (MODS_ALLOWED)
 		if (FileSystem.exists(Paths.json(filePath)) || FileSystem.exists(Paths.modsJson(filePath)))

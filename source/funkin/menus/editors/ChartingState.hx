@@ -114,7 +114,7 @@ class ChartingState extends MusicBeatState
 
 		[
 			'Grayscale Effect',
-			"Creates a Grayscale effect on the screen. (Tweened)\nVALUE 1: Strength, Tween Duration, Delay.\n[DEFAULT: 0.0, 1.0, 0.0]\nVALUE 2: The ease of the tween.\n[DEFAULT: sineInOut"
+			"Creates a Grayscale effect on the screen. (Tweened)\nVALUE 1: Strength, Tween Duration, Delay.\n[DEFAULT: 0.0, 1.0, 0.0]\nVALUE 2: The ease of the tween.\n[DEFAULT: sineInOut]"
 		],
 
 		[
@@ -3031,7 +3031,7 @@ class ChartingState extends MusicBeatState
 				json = {
 					"song": _song
 				};
-				saveFileString = '${FunkinUtil.difficultyString().toLowerCase().trim()}';
+				saveFileString = '${FunkinUtil.lowerDiffString()}';
 			case EVENTS:
 				var eventsSong:Dynamic = {
 					events: _song.events
@@ -3039,17 +3039,17 @@ class ChartingState extends MusicBeatState
 				json = {
 					"song": eventsSong
 				};
-				saveFileString = 'events${FunkinSound.erectModeSuffix()}';
+				saveFileString = 'events${FunkinSound.erectModeSuffix(false)}';
 			case DATA:
 				json = {
 					"song_data": _song_data
 				};
-				saveFileString = 'songdata${FunkinSound.erectModeSuffix()}';
+				saveFileString = 'songdata${FunkinSound.erectModeSuffix(false)}';
 			case METADATA:
 				json = {
 					"metadata": _metadata
 				};
-				saveFileString = 'metadata';
+				saveFileString = 'metadata${FunkinSound.erectModeSuffix()}';
 		}
 
 		trace('Saving... [${saveFileString}.json]');
@@ -3062,7 +3062,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), saveFileString + '${FunkinSound.erectModeSuffix()}.json');
+			_file.save(data.trim(), saveFileString + '.json');
 		}
 	}
 

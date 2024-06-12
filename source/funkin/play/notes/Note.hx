@@ -175,7 +175,7 @@ class Note extends FlxSprite
 			prevNote = this;
 
 		this.prevNote = prevNote;
-		this.isSustainNote = sustainNote;
+		isSustainNote = sustainNote;
 		this.inEditor = inEditor;
 
 		x += (Preferences.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;

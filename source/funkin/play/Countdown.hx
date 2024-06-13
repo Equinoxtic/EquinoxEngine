@@ -36,17 +36,18 @@ class Countdown extends flixel.group.FlxSpriteGroup
 
 		switch(counter)
 		{
-			case 1:
+			case 0:
 				playSound('intro3', soundSuffix);
-			case 2:
+			case 1:
 				createSprite('ready', introAssets);
 				playSound('intro2', soundSuffix);
-			case 3:
+			case 2:
 				createSprite('set', introAssets);
 				playSound('intro1', soundSuffix);
-			case 4:
+			case 3:
 				createSprite('go', introAssets);
 				playSound('introGo', soundSuffix);
+			case 4:
 				PlayState.instance.canPause = true;
 		}
 	}
@@ -61,40 +62,46 @@ class Countdown extends flixel.group.FlxSpriteGroup
 		{
 			case 'ready':
 				countdownReady = new FlxSprite().loadGraphic(Paths.image(introAssets[0]));
-				countdownReady.antialiasing = antialias;
 				countdownReady.scrollFactor.set();
 				countdownReady.screenCenter();
+				countdownReady.antialiasing = antialias;
 				countdownReady.updateHitbox();
 
 				if (PlayState.isPixelStage) {
 					countdownReady.setGraphicSize(Std.int(countdownReady.width * PlayState.daPixelZoom));
 				}
 
+				add(countdownReady);
+
 				startTween(countdownReady);
 
 			case 'set':
 				countdownSet = new FlxSprite().loadGraphic(Paths.image(introAssets[1]));
-				countdownSet.antialiasing = antialias;
 				countdownSet.scrollFactor.set();
 				countdownSet.screenCenter();
+				countdownSet.antialiasing = antialias;
 				countdownSet.updateHitbox();
 
 				if (PlayState.isPixelStage) {
 					countdownSet.setGraphicSize(Std.int(countdownSet.width * PlayState.daPixelZoom));
 				}
 
+				add(countdownSet);
+
 				startTween(countdownSet);
 
 			case 'go':
 				countdownGo = new FlxSprite().loadGraphic(Paths.image(introAssets[2]));
-				countdownGo.antialiasing = antialias;
 				countdownGo.scrollFactor.set();
 				countdownGo.screenCenter();
+				countdownGo.antialiasing = antialias;
 				countdownGo.updateHitbox();
 
 				if (PlayState.isPixelStage) {
 					countdownGo.setGraphicSize(Std.int(countdownGo.width * PlayState.daPixelZoom));
 				}
+
+				add(countdownGo);
 
 				startTween(countdownGo);
 		}

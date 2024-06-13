@@ -393,7 +393,7 @@ class PlayState extends MusicBeatState
 	var songCreditTxt:String = "";
 	var songExtraTxt:String = "";
 
-	var canPause:Bool = false;
+	public var canPause:Bool = false;
 	private var scoreMultiplier:Float = 1.0;
 	private var missMultiplier:Float = 1.0;
 	private var displayedHealth:Float = Constants.HEALTH_START;
@@ -2176,24 +2176,9 @@ class PlayState extends MusicBeatState
 					santa.dance(true);
 				}
 
-				if (PlayState.SONG_METADATA.hasCountdown)
-				{
-					playIntro(swagCounter, antialias, introAlts, introSoundsSuffix);
-				}
-				else
-				{
-					switch (swagCounter)
-					{
-						case 1:
-							// Do nothing...
-						case 2:
-							// Do nothing...
-						case 3:
-							// Do nothing...
-						case 4:
-							canPause = true;
-					}
-				}
+				var countdown:Countdown = new Countdown(this, 0, 0, Preferences.globalAntialiasing, introAlts);
+				insert(members.indexOf(notes), countdown);
+				countdown.startCountdown(swagCounter, !PlayState.SONG_METADATA.hasCountdown, introAlts);
 
 				notes.forEachAlive(function(note:Note)
 				{
@@ -2211,95 +2196,6 @@ class PlayState extends MusicBeatState
 				swagCounter += 1;
 			}, 5);
 		}
-	}
-
-	private function addReadySprite(?antialias:Bool, ?introAlts:Array<String>):Void
-	{
-		countdownReady = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
-		countdownReady.cameras = [camHUD];
-		countdownReady.scrollFactor.set();
-		countdownReady.updateHitbox();
-
-		if (PlayState.isPixelStage)
-			countdownReady.setGraphicSize(Std.int(countdownReady.width * daPixelZoom));
-
-		countdownReady.screenCenter();
-		countdownReady.antialiasing = antialias;
-		insert(members.indexOf(notes), countdownReady);
-		GlobalTweenClass.tween(countdownReady, {/*y: countdownReady.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
-			ease: FlxEase.cubeOut,
-			onComplete: function(twn:FlxTween)
-			{
-				remove(countdownReady);
-				countdownReady.destroy();
-			}
-		});
-	}
-
-	private function playIntro(counter:Int, antialias:Bool, introAlts:Array<String>, ?introSoundSuffix:String):Void
-	{
-		switch (counter)
-		{
-			case 0:
-				FlxG.sound.play(Paths.sound('intro3${introSoundSuffix}'), 0.6);
-			case 1:
-				addReadySprite(antialias, introAlts);
-				FlxG.sound.play(Paths.sound('intro2${introSoundSuffix}'), 0.6);
-			case 2:
-				addSetSprite(antialias, introAlts);
-				FlxG.sound.play(Paths.sound('intro1${introSoundSuffix}'), 0.6);
-			case 3:
-				addGoSprite(antialias, introAlts);
-				FlxG.sound.play(Paths.sound('introGo${introSoundSuffix}'), 0.6);
-			case 4:
-				canPause = true;
-		}
-	}
-
-	private function addSetSprite(?antialias:Bool, ?introAlts:Array<String>):Void
-	{
-		countdownSet = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
-		countdownSet.cameras = [camHUD];
-		countdownSet.scrollFactor.set();
-
-		if (PlayState.isPixelStage)
-			countdownSet.setGraphicSize(Std.int(countdownSet.width * daPixelZoom));
-
-		countdownSet.screenCenter();
-		countdownSet.antialiasing = antialias;
-		insert(members.indexOf(notes), countdownSet);
-		GlobalTweenClass.tween(countdownSet, {/*y: countdownSet.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
-			ease: FlxEase.cubeInOut,
-			onComplete: function(twn:FlxTween)
-			{
-				remove(countdownSet);
-				countdownSet.destroy();
-			}
-		});
-	}
-
-	private function addGoSprite(?antialias:Bool, ?introAlts:Array<String>):Void
-	{
-		countdownGo = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
-		countdownGo.cameras = [camHUD];
-		countdownGo.scrollFactor.set();
-
-		if (PlayState.isPixelStage)
-			countdownGo.setGraphicSize(Std.int(countdownGo.width * daPixelZoom));
-
-		countdownGo.updateHitbox();
-
-		countdownGo.screenCenter();
-		countdownGo.antialiasing = antialias;
-		insert(members.indexOf(notes), countdownGo);
-		GlobalTweenClass.tween(countdownGo, {/*y: countdownGo.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
-			ease: FlxEase.cubeInOut,
-			onComplete: function(twn:FlxTween)
-			{
-				remove(countdownGo);
-				countdownGo.destroy();
-			}
-		});
 	}
 
 	public function addBehindGF(obj:FlxObject)

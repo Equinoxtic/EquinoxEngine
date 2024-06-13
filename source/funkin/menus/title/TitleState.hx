@@ -66,7 +66,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
-	
+
 	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
 
@@ -137,6 +137,7 @@ class TitleState extends MusicBeatState
 
 		Preferences.loadPrefs();
 
+		/*
 		#if (CHECK_FOR_UPDATES && !debug)
 		if(Preferences.checkForUpdates && !closedState) {
 			trace('checking for update');
@@ -160,6 +161,7 @@ class TitleState extends MusicBeatState
 			http.request();
 		}
 		#end
+		*/
 
 		Highscore.load();
 
@@ -228,7 +230,7 @@ class TitleState extends MusicBeatState
 				MusicBeatState.switchState(new DebugInfoState());
 			}
 			#end
-			
+
 			if (initialized)
 				startIntro();
 			else
@@ -371,25 +373,25 @@ class TitleState extends MusicBeatState
 			titleText.animation.findByPrefix(animFrames, "ENTER IDLE");
 			titleText.animation.findByPrefix(animFrames, "ENTER FREEZE");
 		}
-		
+
 		if (animFrames.length > 0) {
 			newTitle = true;
-			
+
 			titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
 			titleText.animation.addByPrefix('press', Preferences.flashing ? "ENTER PRESSED" : "ENTER FREEZE", 24);
 		}
 		else {
 			newTitle = false;
-			
+
 			titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 			titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		}
-		
+
 		titleText.antialiasing = Preferences.globalAntialiasing;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
-		
+
 		funkySpriteGroup.add(titleText);
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
@@ -453,7 +455,7 @@ class TitleState extends MusicBeatState
 
 	var transitioning:Bool = false;
 	private static var playJingle:Bool = false;
-	
+
 	var newTitle:Bool = false;
 	var titleTimer:Float = 0;
 
@@ -487,7 +489,7 @@ class TitleState extends MusicBeatState
 				pressedEnter = true;
 			#end
 		}
-		
+
 		if (newTitle) {
 			titleTimer += FunkinUtil.boundTo(elapsed, 0, 1);
 			if (titleTimer > 2) titleTimer -= 2;
@@ -502,36 +504,37 @@ class TitleState extends MusicBeatState
 				var timer:Float = titleTimer;
 				if (timer >= 1)
 					timer = (-timer) + 2;
-				
+
 				timer = FlxEase.quadInOut(timer);
-				
+
 				titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
-			
+
 			if(pressedEnter)
 			{
 				titleText.color = FlxColor.WHITE;
 				titleText.alpha = 1;
-				
+
 				if(titleText != null) titleText.animation.play('press');
 
 				FlxG.camera.flash(Preferences.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 				transitioning = true;
-				// FlxG.sound.music.stop();
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
+					/*
 					if (mustUpdate) {
 						MusicBeatState.switchState(new OutdatedState());
 					} else {
 						MusicBeatState.switchState(new MainMenuState());
 					}
+					*/
+					MusicBeatState.switchState(new MainMenuState());
 					closedState = true;
 				});
-				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 			}
 			#if TITLE_SCREEN_EASTER_EGG
 			else if (FlxG.keys.firstJustPressed() != FlxKey.NONE)
@@ -786,7 +789,7 @@ class TitleState extends MusicBeatState
 			{
 				remove(ngSpr);
 				remove(credGroup);
-				
+
 				funkySpriteGroup.forEach(function(spr:FlxSprite) {
 					spr.visible = true;
 				});

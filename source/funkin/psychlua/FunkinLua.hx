@@ -74,7 +74,7 @@ class FunkinLua {
 	#if hscript
 	public static var hscript:HScript = null;
 	#end
-	
+
 	public function new(script:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
@@ -102,9 +102,9 @@ class FunkinLua {
 			trace(e);
 			return;
 		}
-		
+
 		scriptName = script;
-		
+
 		initHaxeModule();
 
 		trace('lua file loaded succesfully:' + script);
@@ -160,7 +160,7 @@ class FunkinLua {
 		set('rating', 0);
 		set('ranking', '');
 		set('ratingFC', '');
-		set('version', MainMenuState.psychEngineVersion.trim());
+		// set('version', MainMenuState.psychEngineVersion.trim());
 
 		set('inGameOver', false);
 		set('mustHitSection', false);
@@ -273,7 +273,7 @@ class FunkinLua {
 			#end
 			return false;
 		});
-		
+
 		Lua_helper.add_callback(lua, "setSpriteShader", function(obj:String, shader:String) {
 			if(!Preferences.shaders) return false;
 
@@ -1824,7 +1824,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addAnimationByIndicesLoop", function(obj:String, name:String, prefix:String, indices:String, framerate:Int = 24) {
 			return addAnimByIndices(obj, name, prefix, indices, framerate, true);
 		});
-		
+
 
 		Lua_helper.add_callback(lua, "playAnim", function(obj:String, name:String, forced:Bool = false, ?reverse:Bool = false, ?startFrame:Int = 0)
 		{
@@ -2131,7 +2131,7 @@ class FunkinLua {
 			}
 			return false;
 		});
-		
+
 		Lua_helper.add_callback(lua, "getPixelColor", function(obj:String, x:Int, y:Int)
 		{
 			var s:Array<String> = obj.split('.');
@@ -2149,17 +2149,17 @@ class FunkinLua {
 
 			return 0;
 		});
-		
+
 		Lua_helper.add_callback(lua, "getRandomInt", function(min:Int, max:Int = FlxMath.MAX_VALUE_INT, exclude:String = '')
 		{
 			var excludeArray:Array<String> = exclude.split(',');
 			var toExclude:Array<Int> = [];
-			
+
 			for (i in 0...excludeArray.length)
 			{
 				toExclude.push(Std.parseInt(excludeArray[i].trim()));
 			}
-			
+
 			return FlxG.random.int(min, max, toExclude);
 		});
 
@@ -2167,7 +2167,7 @@ class FunkinLua {
 		{
 			var excludeArray:Array<String> = exclude.split(',');
 			var toExclude:Array<Float> = [];
-			
+
 			for (i in 0...excludeArray.length)
 			{
 				toExclude.push(Std.parseFloat(excludeArray[i].trim()));
@@ -2175,7 +2175,7 @@ class FunkinLua {
 
 			return FlxG.random.float(min, max, toExclude);
 		});
-		
+
 		Lua_helper.add_callback(lua, "getRandomBool", function(chance:Float = 50)
 		{
 			return FlxG.random.bool(chance);
@@ -2184,7 +2184,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null)
 		{
 			var path:String;
-			
+
 			#if MODS_ALLOWED
 			path = Paths.modsJson(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
 			if (!FileSystem.exists(path)) {
@@ -2279,7 +2279,7 @@ class FunkinLua {
 				PlayState.instance.modchartSounds.get(tag).pause();
 			}
 		});
-		
+
 		Lua_helper.add_callback(lua, "resumeSound", function(tag:String)
 		{
 			if (tag != null && tag.length > 1 && PlayState.instance.modchartSounds.exists(tag)) {
@@ -2385,7 +2385,7 @@ class FunkinLua {
 			if (text5 == null) text5 = '';
 			luaTrace('' + text1 + text2 + text3 + text4 + text5, true, false);
 		});
-		
+
 		Lua_helper.add_callback(lua, "close", function()
 		{
 			closed = true;
@@ -2428,7 +2428,7 @@ class FunkinLua {
 			luaTrace("setTextSize: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
 			return false;
 		});
-		
+
 		Lua_helper.add_callback(lua, "setTextWidth", function(tag:String, width:Float)
 		{
 			var obj:FlxText = getTextObject(tag);
@@ -2454,9 +2454,9 @@ class FunkinLua {
 				obj.borderColor = colorNum;
 				return true;
 			}
-			
+
 			luaTrace("setTextBorder: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
-			
+
 			return false;
 		});
 
@@ -2473,7 +2473,7 @@ class FunkinLua {
 				obj.color = colorNum;
 				return true;
 			}
-			
+
 			luaTrace("setTextColor: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
 
 			return false;
@@ -2517,7 +2517,7 @@ class FunkinLua {
 				}
 				return true;
 			}
-			
+
 			luaTrace("setTextAlignment: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
 
 			return false;
@@ -2543,7 +2543,7 @@ class FunkinLua {
 			luaTrace("getTextSize: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
 			return -1;
 		});
-		
+
 		Lua_helper.add_callback(lua, "getTextFont", function(tag:String)
 		{
 			var obj:FlxText = getTextObject(tag);
@@ -2641,7 +2641,7 @@ class FunkinLua {
 				Reflect.setField(PlayState.instance.modchartSaves.get(name).data, field, value);
 				return;
 			}
-			
+
 			luaTrace('setDataFromSave: Save file not initialized: ' + name, false, false, FlxColor.RED);
 		});
 
@@ -2814,7 +2814,7 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.get(tag).animation.play(name, forced);
 			}
 		});
-		
+
 		Lua_helper.add_callback(lua, "setLuaSpriteCamera", function(tag:String, camera:String = '')
 		{
 			luaTrace("setLuaSpriteCamera is deprecated! Use setObjectCamera instead", false, true);
@@ -2825,7 +2825,7 @@ class FunkinLua {
 				return true;
 			}
 			luaTrace("Lua sprite with tag: " + tag + " doesn't exist!");
-			
+
 			return false;
 		});
 
@@ -2838,14 +2838,14 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.get(tag).scrollFactor.set(scrollX, scrollY);
 				return true;
 			}
-			
+
 			return false;
 		});
 
 		Lua_helper.add_callback(lua, "scaleLuaSprite", function(tag:String, x:Float, y:Float)
 		{
 			luaTrace("scaleLuaSprite is deprecated! Use scaleObject instead", false, true);
-			
+
 			if (PlayState.instance.modchartSprites.exists(tag))
 			{
 				var modchartSprite:ModchartSprite = PlayState.instance.modchartSprites.get(tag);
@@ -2853,7 +2853,7 @@ class FunkinLua {
 				modchartSprite.updateHitbox();
 				return true;
 			}
-			
+
 			return false;
 		});
 
@@ -2877,7 +2877,7 @@ class FunkinLua {
 
 			return null;
 		});
-		
+
 		Lua_helper.add_callback(lua, "setPropertyLuaSprite", function(tag:String, variable:String, value:Dynamic)
 		{
 			luaTrace("setPropertyLuaSprite is deprecated! Use setProperty instead", false, true);
@@ -2898,7 +2898,7 @@ class FunkinLua {
 				return true;
 			}
 			luaTrace("setPropertyLuaSprite: Lua sprite with tag: " + tag + " doesn't exist!");
-			
+
 			return false;
 		});
 
@@ -2933,7 +2933,7 @@ class FunkinLua {
 		{
 			return str.trim();
 		});
-		
+
 		Lua_helper.add_callback(lua, "directoryFileList", function(folder:String)
 		{
 			var list:Array<String> = [];
@@ -2984,7 +2984,7 @@ class FunkinLua {
 		if (s.length > 1)
 		{
 			var v:Dynamic = null;
-			
+
 			if(PlayState.instance.variables.exists(s[0]))
 			{
 				var r:Dynamic = PlayState.instance.variables.get(s[0]);
@@ -3008,7 +3008,7 @@ class FunkinLua {
 			}
 			return v;
 		}
-			
+
 		if(PlayState.instance.variables.exists(variable))
 		{
 			PlayState.instance.variables.set(variable, value);
@@ -3080,7 +3080,7 @@ class FunkinLua {
 		return null;
 	}
 	#end
-	
+
 	function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
 		if (!Preferences.shaders) return false;
@@ -3102,7 +3102,7 @@ class FunkinLua {
 		{
 			foldersToCheck.insert(0, Paths.mods(mod + '/shaders/'));
 		}
-		
+
 		for (folder in foldersToCheck)
 		{
 			if (FileSystem.exists(folder))
@@ -3136,7 +3136,7 @@ class FunkinLua {
 		#else
 		luaTrace('This platform doesn\'t support Runtime Shaders!', false, false, FlxColor.RED);
 		#end
-		
+
 		return false;
 	}
 
@@ -3268,7 +3268,7 @@ class FunkinLua {
 			PlayState.instance.modchartTimers.remove(tag);
 		}
 	}
-	
+
 	function getFlxEaseByString(?ease:String = ''):Null<Float->Float>
 	{
 		if (ease.trim() != null && ease.trim() != '')
@@ -3498,7 +3498,7 @@ class FunkinLua {
 		{
 			return false;
 		}
-		
+
 		return (result == 'true');
 	}
 	#end

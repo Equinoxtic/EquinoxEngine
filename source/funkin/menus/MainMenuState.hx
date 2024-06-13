@@ -28,13 +28,12 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = Constants.VERSION_PSYCH; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
-	
+
 	var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
@@ -50,7 +49,7 @@ class MainMenuState extends MusicBeatState
 		'donate'
 		#end
 	];
-	
+
 	var mainBG:FunkinBG;
 	var magentaBG:FunkinBG;
 	var camFollow:FlxObject;
@@ -72,7 +71,7 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-		
+
 		debugKeys = Preferences.copyKey(Preferences.keyBinds.get('debug_1'));
 
 		camGame = new FlxCamera();
@@ -106,7 +105,7 @@ class MainMenuState extends MusicBeatState
 
 		mainChecker = new Checkerboard(XY, 1, HUGE, 0.3);
 		add(mainChecker);
-		
+
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 

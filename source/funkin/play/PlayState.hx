@@ -3044,11 +3044,17 @@ class PlayState extends MusicBeatState
 		 */
 		if (PlayState.SONG_METADATA.hasNoteWiggle || erectMode)
 		{
-			for (note in notes.members)
-			{
-				if (note.isSustainNote)
+			strumLineNotes.forEach(function(strum:StrumNote):Void {
+				strum.cameras = [camStrum];
+			});
+
+			notes.forEach(function(note:Note):Void {
+				if (note.isSustainNote) {
 					note.cameras = [camSus];
-			}
+				} else {
+					note.cameras = [camNotes];
+				}
+			});
 
 			camSus.setFilters([new ShaderFilter(noteWiggle.shader)]);
 		}

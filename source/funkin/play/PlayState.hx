@@ -2177,6 +2177,7 @@ class PlayState extends MusicBeatState
 				}
 
 				var countdown:Countdown = new Countdown(this, 0, 0, Preferences.globalAntialiasing, introAlts);
+				countdown.cameras = [camHUD];
 				insert(members.indexOf(notes), countdown);
 				countdown.startCountdown(swagCounter, !PlayState.SONG_METADATA.hasCountdown, introAlts);
 

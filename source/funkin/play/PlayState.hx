@@ -1123,29 +1123,29 @@ class PlayState extends MusicBeatState
 				var stageStuff:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 				add(stageStuff);
 
-				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+				var bg:BGSprite = new BGSprite('stageback', -600, -200);
 				stageStuff.add(bg);
 
-				var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.2));
+				var stageFront:BGSprite = new BGSprite('stagefront', -780, 600);
+				// stageFront.setGraphicSize(Std.int(stageFront.width * 3.0), Std.int(stageFront.height * 3.0));
 				stageStuff.add(stageFront);
 
 				var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
-				stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
+				// stageLight.setGraphicSize(Std.int(stageLight.width * 1.05));
 				stageStuff.add(stageLight);
 
 				var stageLight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
-				stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
+				// stageLight.setGraphicSize(Std.int(stageLight.width * 1.05));
 				stageLight.flipX = true;
 				stageStuff.add(stageLight);
 
-				var stageCurtains:BGSprite = new BGSprite('stagecurtains', -640, -300, 1.3, 1.3);
-				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+				var stageCurtains:BGSprite = new BGSprite('stagecurtains', -720, -360, 1.1, 1.1);
+				// stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 				stageStuff.add(stageCurtains);
 
 				stageStuff.forEach(function(sprite:FlxSprite) {
 					sprite.antialiasing = Preferences.globalAntialiasing;
-					sprite.setGraphicSize(Std.int(sprite.width * 1.05), Std.int(sprite.height * 1.05));
+					sprite.setGraphicSize(Std.int(sprite.width * 1.2), Std.int(sprite.height * 1.2));
 					sprite.updateHitbox();
 				});
 
@@ -1153,10 +1153,10 @@ class PlayState extends MusicBeatState
 
 			case 'spooky': //Week 2
 				if (!Preferences.lowQuality)
-					halloweenBG = new BGSprite('halloween_bg', -200, -100, ['halloweem bg0', 'halloweem bg lightning strike']);
+					halloweenBG = new BGSprite('halloween_bg', -180, -120, ['halloweem bg0', 'halloweem bg lightning strike']);
 				else
-					halloweenBG = new BGSprite('halloween_bg_low', -200, -100);
-
+					halloweenBG = new BGSprite('halloween_bg_low', -180, -120);
+				halloweenBG.setGraphicSize(Std.int(halloweenBG.width * 1.2), Std.int(halloweenBG.height * 1.2));
 				add(halloweenBG);
 
 				halloweenWhite = new BGSprite(null, -800, -400, 0, 0);

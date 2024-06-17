@@ -24,7 +24,7 @@ class FunkinText extends FlxText
 	 * @param textAligment The alignment of the text field.
 	 * @param border Should the text field have a border?
 	 */
-	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAligment:FlxTextAlign, ?border:Bool = true):Void
+	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAligment:FlxTextAlign, ?border:Bool = true, ?borderSize:Float = 2.5):Void
 	{
 		super(X, Y, fieldWidth, text, fontSize);
 
@@ -52,15 +52,12 @@ class FunkinText extends FlxText
 		setFormat(Paths.font('${fontString}.${fontExt}'), fontSize, 0xFFFFFFFF, textAligment);
 
 		if (border) {
-			borderStyle = FlxTextBorderStyle.OUTLINE;
-			borderColor = 0xFF000000;
+			this.setBorderStyle(OUTLINE, 0xFF000000, 0.0, 5);
 
-			if (fontString != 'vcr') {
-				borderSize = fontSize / 8.15;
-			} else {
-				borderSize = fontSize / 5.2;
-				this.size = fontSize + 1;
-			}
+			if (!(borderSize < 0))
+				this.borderSize = borderSize;
+			else
+				this.borderSize = 2.5;
 		}
 
 		antialiasing = (Preferences.globalAntialiasing && !PlayState.isPixelStage);

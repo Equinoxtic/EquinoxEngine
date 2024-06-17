@@ -2949,7 +2949,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Note tail wiggle cameras.
 		 */
-		if (PlayState.SONG_METADATA.hasNoteWiggle || erectMode)
+		if (PlayState.SONG_METADATA.hasNoteWiggle)
 		{
 			strumLineNotes.forEach(function(strum:StrumNote):Void {
 				strum.cameras = [camStrum];
@@ -3192,7 +3192,7 @@ class PlayState extends MusicBeatState
 			camHUD.zoom = FlxMath.lerp(Constants.CAMERA_HUD_ZOOM, camHUD.zoom, FunkinUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
 		}
 
-		if (erectMode) {
+		if (PlayState.SONG_METADATA.hasNoteWiggle) {
 			lerpAmplitude = FlxMath.lerp(lerpAmplitude, 0.0005, elapsed * noteWiggleAmplitudeDecay);
 		}
 
@@ -4837,8 +4837,6 @@ class PlayState extends MusicBeatState
 			{
 				noteMiss(note);
 
-				trace('Is Sustain Note: ${note.isSustainNote}');
-
 				if (!note.noteSplashDisabled) {
 					spawnNoteSplashOnNote(note, note.isSustainNote);
 				}
@@ -4946,8 +4944,10 @@ class PlayState extends MusicBeatState
 				noteMiss(note);
 			}
 
-			if (note.sustainLength > 0) {
-				spawnNoteSplashOnNote(note, true);
+			if (!PlayState.SONG_METADATA.hasNoteWiggle) {
+				if (note.sustainLength > 0) {
+					spawnNoteSplashOnNote(note, true);
+				}
 			}
 
 			popUpScore(note);
@@ -5244,7 +5244,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Note / Strum Tail wiggles to the beat.
 		 */
-		if (PlayState.SONG_METADATA.hasNoteWiggle || erectMode) {
+		if (PlayState.SONG_METADATA.hasNoteWiggle) {
 			if (curBeat % 1 == 0) {
 				noteTailWiggleToBeat();
 			}
@@ -5340,9 +5340,6 @@ class PlayState extends MusicBeatState
 		callOnLuas('onBeatHit', []);
 	}
 
-	/**
-	 * Erect Mode soon™... 👀
-	 */
 	var noteWiggleModLeft:Bool = false;
 	private function noteTailWiggleToBeat():Void
 	{

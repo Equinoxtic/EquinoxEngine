@@ -1621,7 +1621,7 @@ class ChartingState extends MusicBeatState
 			_metadata.hasCountdown = countdownCheckbox.checked;
 		};
 
-		noteWiggleCheckbox = new FlxUICheckBox(10, countdownCheckbox.y + 40, null, null, "Note Tail Wiggles on Beat");
+		noteWiggleCheckbox = new FlxUICheckBox(10, countdownCheckbox.y + 40, null, null, "Note Tail Wiggles on Beat (Experimental)");
 		noteWiggleCheckbox.checked = _metadata.hasNoteWiggle;
 		noteWiggleCheckbox.callback = function() {
 			_metadata.hasNoteWiggle = noteWiggleCheckbox.checked;

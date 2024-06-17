@@ -1,5 +1,6 @@
 package funkin.play;
 
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.tweens.GlobalTweenClass;
@@ -65,11 +66,6 @@ class Countdown extends flixel.group.FlxSpriteGroup
 				countdownReady.scrollFactor.set();
 				countdownReady.screenCenter();
 				countdownReady.antialiasing = antialias;
-				countdownReady.updateHitbox();
-
-				if (PlayState.isPixelStage) {
-					countdownReady.setGraphicSize(Std.int(countdownReady.width * PlayState.daPixelZoom));
-				}
 
 				add(countdownReady);
 
@@ -80,11 +76,6 @@ class Countdown extends flixel.group.FlxSpriteGroup
 				countdownSet.scrollFactor.set();
 				countdownSet.screenCenter();
 				countdownSet.antialiasing = antialias;
-				countdownSet.updateHitbox();
-
-				if (PlayState.isPixelStage) {
-					countdownSet.setGraphicSize(Std.int(countdownSet.width * PlayState.daPixelZoom));
-				}
 
 				add(countdownSet);
 
@@ -95,11 +86,6 @@ class Countdown extends flixel.group.FlxSpriteGroup
 				countdownGo.scrollFactor.set();
 				countdownGo.screenCenter();
 				countdownGo.antialiasing = antialias;
-				countdownGo.updateHitbox();
-
-				if (PlayState.isPixelStage) {
-					countdownGo.setGraphicSize(Std.int(countdownGo.width * PlayState.daPixelZoom));
-				}
 
 				add(countdownGo);
 
@@ -122,10 +108,22 @@ class Countdown extends flixel.group.FlxSpriteGroup
 			return;
 		}
 
+		var wSpriteSize:Float = sprite.scale.x;
+		var hSpriteSize:Float = sprite.scale.y;
+
+		if (!PlayState.isPixelStage) {
+			scale.set(wSpriteSize + 0.2, hSpriteSize + 0.2);
+		} else {
+			scale.set((wSpriteSize * PlayState.daPixelZoom) + 0.2, (hSpriteSize * PlayState.daPixelZoom) + 0.2);
+		}
+
+		GlobalTweenClass.tween(sprite, {alpha: 0.0}, Conductor.crochet / 1000, {startDelay: 0.085 / PlayState.instance.playbackRate, ease: FlxEaseUtil.getFlxEaseByString('cubeOut')});
+
 		GlobalTweenClass.tween(sprite, {
-				"scale.x": 1.0, "scale.y": 1.0, alpha: 0.0
+				"scale.x": 1.0, "scale.y": 1.0
 			},
 			Conductor.crochet / 1000, {
+				startDelay: 0.035 / PlayState.instance.playbackRate,
 				ease: FlxEaseUtil.getFlxEaseByString('cubeOut'),
 				onComplete: function(_:FlxTween):Void {
 					remove(sprite);

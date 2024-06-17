@@ -35,7 +35,7 @@ class Preferences
 	public static var checkForUpdates:Bool = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
-		'scrolltype' => 'multiplicative', 
+		'scrolltype' => 'multiplicative',
 		// anyone reading this, amod is multiplicative speed mod, cmod is constant speed mod, and xmod is bpm based speed mod.
 		// an amod example would be chartSpeed * multiplier
 		// cmod would just be constantSpeed = chartSpeed
@@ -71,6 +71,7 @@ class Preferences
 	public static var showGameplayInfo:Bool = false;
 	public static var noWatermark:Bool = false;
 	public static var directionalCameraMovement:Bool = true;
+	public static var fontFace:String = 'Default';
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -79,21 +80,21 @@ class Preferences
 		'note_down'		=> [S, DOWN],
 		'note_up'		=> [W, UP],
 		'note_right'	=> [D, RIGHT],
-		
+
 		'ui_left'		=> [A, LEFT],
 		'ui_down'		=> [S, DOWN],
 		'ui_up'			=> [W, UP],
 		'ui_right'		=> [D, RIGHT],
-		
+
 		'accept'		=> [SPACE, ENTER],
 		'back'			=> [BACKSPACE, ESCAPE],
 		'pause'			=> [ENTER, ESCAPE],
 		'reset'			=> [R, NONE],
-		
+
 		'volume_mute'	=> [ZERO, NONE],
 		'volume_up'		=> [NUMPADPLUS, PLUS],
 		'volume_down'	=> [NUMPADMINUS, MINUS],
-		
+
 		'debug_1'		=> [SEVEN, NONE],
 		'debug_2'		=> [EIGHT, NONE]
 	];
@@ -148,7 +149,8 @@ class Preferences
 		FlxG.save.data.showGameplayInfo = showGameplayInfo;
 		FlxG.save.data.noWatermark = noWatermark;
 		FlxG.save.data.directionalCameraMovement = directionalCameraMovement;
-	
+		FlxG.save.data.fontFace = fontFace;
+
 		FlxG.save.flush();
 
 		var save:FlxSave = new FlxSave();
@@ -238,7 +240,7 @@ class Preferences
 		if(FlxG.save.data.comboOffset != null) {
 			comboOffset = FlxG.save.data.comboOffset;
 		}
-		
+
 		if(FlxG.save.data.ratingOffset != null) {
 			ratingOffset = FlxG.save.data.ratingOffset;
 		}
@@ -274,7 +276,7 @@ class Preferences
 				gameplaySettings.set(name, value);
 			}
 		}
-		
+
 		// flixel automatically saves your volume!
 		if(FlxG.save.data.volume != null)
 		{
@@ -300,13 +302,17 @@ class Preferences
 		if (FlxG.save.data.showGameplayInfo != null) {
 			showGameplayInfo = FlxG.save.data.showGameplayInfo;
 		}
-		
+
 		if (FlxG.save.data.noWatermark != null) {
 			noWatermark = FlxG.save.data.noWatermark;
 		}
 
 		if (FlxG.save.data.directionalCameraMovement != null) {
 			directionalCameraMovement = FlxG.save.data.directionalCameraMovement;
+		}
+
+		if (FlxG.save.data.fontFace != null) {
+			fontFace = FlxG.save.data.fontFace;
 		}
 
 		var save:FlxSave = new FlxSave();

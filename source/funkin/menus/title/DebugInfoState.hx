@@ -21,7 +21,7 @@ class DebugInfoState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
-	var debugText:flixel.text.FlxText;
+	var debugText:FunkinText;
 	var confirmedSound:Sound;
 	var exitSound:Sound;
 
@@ -31,7 +31,7 @@ class DebugInfoState extends MusicBeatState
 	var allowInteraction:Bool = false;
 
 	override function create():Void
-	{	
+	{
 		confirmedSound = new Sound().loadEmbedded(Paths.sound('confirmMenuFancy'));
 		FlxG.sound.list.add(confirmedSound);
 
@@ -48,6 +48,8 @@ class DebugInfoState extends MusicBeatState
 		add(watermarkSprite);
 
 		debugText = new FunkinText(0, 0, flixel.FlxG.width, '', 28, CENTER, false);
+		debugText.usePreferredFont = true;
+		debugText.preferredFont = 'phantommuff.ttf';
 		debugText.screenCenter();
 		debugText.y -= 50;
 		add(debugText);

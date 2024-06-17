@@ -245,7 +245,7 @@ class FunkinSound
 		// Play the vocals.
 		playVoices();
 
-		trace(
+		Sys.stdout().writeString(
 			'\n\n\t- [ Funkin\' Sound System ] : Song Loaded! -'
 			+ '\n\t    * SONG: ${PlayState.SONG.song} - ${FunkinUtil.difficultyString().toUpperCase()}'
 			+ '\n\t    * BF VOCALS:  ${checkPlaying(voicesPlayer)}'
@@ -411,7 +411,8 @@ class FunkinSound
 				case 'opponent' | 'dad' | '1':
 					if (voicesOpponent != null)
 						voicesOpponent.destroy();
-				default: trace('Invalid player ID: ${playerId}');
+				default:
+					trace('Invalid player ID: ${playerId}');
 			}
 		}
 	}
@@ -459,7 +460,7 @@ class FunkinSoundChartEditor
 			}
 			FlxG.sound.list.add(vocalsOpponent);
 
-			trace('${loadedString}\n');
+			Sys.stdout().writeString('${loadedString}\n');
 		}
 	}
 
@@ -581,7 +582,7 @@ class FunkinSoundChartEditor
 		if (song != null && song != '')
 		{
 			FlxG.sound.playMusic(Paths.inst(song), 1.0);
-			trace(
+			Sys.stdout().writeString(
 				'\n\n\t- [ Funkin\' Sound System @ Chart Editor ] : Song INSTRUMENTAL Loaded! -'
 				+ '\n\t    * SONG: ${song.toUpperCase()} - ${FunkinUtil.difficultyString().toUpperCase()}\n'
 			);

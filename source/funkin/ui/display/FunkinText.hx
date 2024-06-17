@@ -21,10 +21,10 @@ class FunkinText extends FlxText
 	 * @param fieldWidth The text field's width.
 	 * @param text The content / text of the text field.
 	 * @param fontSize The scale of the font in the text field.
-	 * @param textAligment The alignment of the text field.
+	 * @param textAlignment The alignment of the text field.
 	 * @param border Should the text field have a border?
 	 */
-	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAligment:FlxTextAlign, ?border:Bool = true, ?borderSize:Float = 2.5):Void
+	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAlignment:FlxTextAlign, ?border:Bool = true, ?borderSize:Float = 2.5):Void
 	{
 		super(X, Y, fieldWidth, text, fontSize);
 
@@ -49,15 +49,20 @@ class FunkinText extends FlxText
 			}
 		}
 
-		setFormat(Paths.font('${fontString}.${fontExt}'), fontSize, 0xFFFFFFFF, textAligment);
+		if (!this.usePreferredFont) {
+			setFormat(Paths.font('${fontString}.${fontExt}'), fontSize, 0xFFFFFFFF, textAlignment);
+		} else {
+			setFormat(Paths.font(fontString), fontSize, 0xFFFFFFFF, textAlignment);
+		}
 
 		if (border) {
 			this.setBorderStyle(OUTLINE, 0xFF000000, 0.0, 5);
 
-			if (!(borderSize < 0))
+			if (!(borderSize < 0)) {
 				this.borderSize = borderSize;
-			else
+			} else {
 				this.borderSize = 2.5;
+			}
 		}
 
 		antialiasing = (Preferences.globalAntialiasing && !PlayState.isPixelStage);

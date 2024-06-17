@@ -111,16 +111,23 @@ class Countdown extends flixel.group.FlxSpriteGroup
 		var wSpriteSize:Float = sprite.scale.x;
 		var hSpriteSize:Float = sprite.scale.y;
 
+		var defultScale:Float = 1.0;
+		var scaleAdd:Float = 0.2;
+		if (PlayState.isPixelStage) {
+			defultScale = 1.0 * PlayState.daPixelZoom;
+			scaleAdd = 0.45;
+		}
+
 		if (!PlayState.isPixelStage) {
-			scale.set(wSpriteSize + 0.2, hSpriteSize + 0.2);
+			sprite.scale.set(wSpriteSize + scaleAdd, hSpriteSize + scaleAdd);
 		} else {
-			scale.set((wSpriteSize * PlayState.daPixelZoom) + 0.2, (hSpriteSize * PlayState.daPixelZoom) + 0.2);
+			sprite.scale.set((wSpriteSize * PlayState.daPixelZoom) + scaleAdd, (hSpriteSize * PlayState.daPixelZoom) + scaleAdd);
 		}
 
 		GlobalTweenClass.tween(sprite, {alpha: 0.0}, Conductor.crochet / 1000, {startDelay: 0.085 / PlayState.instance.playbackRate, ease: FlxEaseUtil.getFlxEaseByString('cubeOut')});
 
 		GlobalTweenClass.tween(sprite, {
-				"scale.x": 1.0, "scale.y": 1.0
+				"scale.x": defultScale, "scale.y": defultScale
 			},
 			Conductor.crochet / 1000, {
 				startDelay: 0.035 / PlayState.instance.playbackRate,

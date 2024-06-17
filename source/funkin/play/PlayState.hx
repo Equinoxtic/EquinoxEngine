@@ -2186,7 +2186,8 @@ class PlayState extends MusicBeatState
 					santa.dance(true);
 				}
 
-				var countdown:Countdown = new Countdown(this, 0, 0, Preferences.globalAntialiasing, introAlts);
+				var countdown:Countdown = new Countdown(this, 0, 0, (Preferences.globalAntialiasing && !PlayState.isPixelStage), introAlts);
+				countdown.soundSuffix = introSoundsSuffix;
 				countdown.cameras = [camHUD];
 				insert(members.indexOf(notes), countdown);
 				countdown.startCountdown(swagCounter, !PlayState.SONG_METADATA.hasCountdown, introAlts);

@@ -197,6 +197,7 @@ class PlayState extends MusicBeatState
 	public var opponentStrums:FlxTypedGroup<StrumNote>;
 	public var playerStrums:FlxTypedGroup<StrumNote>;
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
+	public var grpHoldCovers:FlxTypedGroup<HoldCover>;
 
 	public var camZooming:Bool = true;
 	public var camZoomingMult:Float = 1.1;
@@ -422,6 +423,8 @@ class PlayState extends MusicBeatState
 	var borderCameraTween:FlxTween;
 	var grayscaleTween:FlxTween;
 
+	var onHoldSplash:Array<HoldCover> = [];
+
 	override public function create()
 	{
 		FlxG.mouse.visible = false;
@@ -524,6 +527,7 @@ class PlayState extends MusicBeatState
 		}
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
+		grpHoldCovers = new FlxTypedGroup<HoldCover>();
 
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 		CustomFadeTransition.nextCamera = camOther;
@@ -724,6 +728,10 @@ class PlayState extends MusicBeatState
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
 
+		var holdSplash:HoldCover = new HoldCover(100, 100, 0);
+		grpHoldCovers.add(holdSplash);
+
+		holdSplash.alpha = 0.0;
 		splash.alpha = 0.0;
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
@@ -738,6 +746,7 @@ class PlayState extends MusicBeatState
 		add(playfieldRenderer);*/
 
 		add(grpNoteSplashes);
+		add(grpHoldCovers);
 
 		camFollow = new FlxPoint();
 		camFollowPos = new FlxObject(0, 0, 1, 1);
@@ -910,6 +919,7 @@ class PlayState extends MusicBeatState
 
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
+		grpHoldCovers.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
@@ -2407,9 +2417,9 @@ class PlayState extends MusicBeatState
 						sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));
 						sustainNote.noteType = swagNote.noteType;
 						sustainNote.scrollFactor.set();
-						swagNote.tail.push(sustainNote);
 						sustainNote.parent = swagNote;
 						unspawnNotes.push(sustainNote);
+						swagNote.tail.push(sustainNote);
 
 						if (sustainNote.mustPress)
 						{
@@ -4384,23 +4394,20 @@ class PlayState extends MusicBeatState
 		note.rating = daRating.name;
 		score = daRating.score;
 
-		if(daRating.noteSplash && !note.noteSplashDisabled)
-		{
-			if (!note.isSustainNote) {
-				spawnNoteSplashOnNote(note);
-			}
-		}
-
 		if (!note.ratingDisabled)
 		{
-			if (!note.isSustainNote)
-			{
+			if (!note.isSustainNote) {
 				songScore += score * Std.int(scoreMultiplier);
 			}
 
 			songHits++;
 			totalPlayed++;
 			RecalculateRating(false);
+		}
+
+		if (!note.noteSplashDisabled && daRating.noteSplash)
+		{
+			spawnNoteSplashOnNote(note, false);
 		}
 
 		var pixelShitPart1:String = "";
@@ -4609,8 +4616,31 @@ class PlayState extends MusicBeatState
 				if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && parsedHoldArray[daNote.noteData] && daNote.canBeHit
 				&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
 					goodNoteHit(daNote);
+					if (onHoldSplash[daNote.noteData] != null)
+					{
+						if (daNote.animation.curAnim.name.endsWith('holdend'))
+						{
+							onHoldSplash[daNote.noteData].alpha = 1.0;
+							onHoldSplash[daNote.noteData].endHoldAnimation(true);
+							onHoldSplash[daNote.noteData] = null;
+						}
+					}
 				}
 			});
+
+			for (i in 0...4)
+			{
+				if (onHoldSplash != null)
+				{
+					if (onHoldSplash[i] != null && onHoldSplash[i].animation.curAnim.name == 'hold') {
+						if (!parsedHoldArray[i]) {
+							onHoldSplash[i].alpha = 0.0;
+						} else {
+							onHoldSplash[i].setCoverPosition(playerStrums.members[i].x, playerStrums.members[i].y);
+						}
+					}
+				}
+			}
 
 			if (parsedHoldArray.contains(true) && !endingSong) {
 				#if ACHIEVEMENTS_ALLOWED
@@ -4807,11 +4837,10 @@ class PlayState extends MusicBeatState
 			{
 				noteMiss(note);
 
-				if(!note.noteSplashDisabled)
-				{
-					if (!note.isSustainNote) {
-						spawnNoteSplashOnNote(note);
-					}
+				trace('Is Sustain Note: ${note.isSustainNote}');
+
+				if (!note.noteSplashDisabled) {
+					spawnNoteSplashOnNote(note, note.isSustainNote);
 				}
 
 				if(!note.noMissAnimation)
@@ -4889,6 +4918,7 @@ class PlayState extends MusicBeatState
 			var isSus:Bool = note.isSustainNote; //GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));
 			var leType:String = note.noteType;
+
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
 
 			if (!note.isSustainNote)
@@ -4908,8 +4938,7 @@ class PlayState extends MusicBeatState
 
 		ratingHealthGain = daRating.healthGain;
 
-		if (!note.isSustainNote)
-		{
+		if (!note.isSustainNote) {
 			if (!daRating.comboBreak) {
 				combo++;
 				health += (ratingHealthGain * healthGain);
@@ -4917,22 +4946,31 @@ class PlayState extends MusicBeatState
 				noteMiss(note);
 			}
 
+			if (note.sustainLength > 0) {
+				spawnNoteSplashOnNote(note, true);
+			}
+
 			popUpScore(note);
 		}
 	}
 
-	public function spawnNoteSplashOnNote(note:Note) {
+	public function spawnNoteSplashOnNote(note:Note, ?sustainNote:Bool = false):Void
+	{
 		if(Preferences.noteSplashes && note != null) {
 			var strum:StrumNote = playerStrums.members[note.noteData];
 			if(strum != null) {
-				spawnNoteSplash(strum.x, strum.y, note.noteData, note);
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note, sustainNote);
 			}
 		}
 	}
 
-	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null) {
+	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, ?sustainNote:Bool = false):Void
+	{
 		var skin:String = 'noteSplashes';
-		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
+
+		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) {
+			skin = PlayState.SONG.splashSkin;
+		}
 
 		var hue:Float = 0;
 		var sat:Float = 0;
@@ -4951,9 +4989,16 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
-		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
-		grpNoteSplashes.add(splash);
+		if (sustainNote) {
+			var holdCover:HoldCover = grpHoldCovers.recycle(HoldCover);
+			holdCover.setup(x, y, data, skin, hue, sat, brt);
+			grpHoldCovers.add(holdCover);
+			onHoldSplash[note.noteData] = holdCover;
+		} else {
+			var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
+			splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
+			grpNoteSplashes.add(splash);
+		}
 	}
 
 	var fastCarCanDrive:Bool = true;

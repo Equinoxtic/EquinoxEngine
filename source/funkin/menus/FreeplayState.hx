@@ -36,7 +36,7 @@ class FreeplayState extends MusicBeatState
 	var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
-	private static var curSelected:Int = 0;
+	public static var curSelected:Int = 0;
 	var curDifficulty:Int = -1;
 	private static var lastDifficultyName:String = '';
 
@@ -55,9 +55,8 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
-	var bg:FlxSprite;
+	var bg:FunkinBG;
 	var intendedColor:Int;
-	var colorTween:FlxTween;
 
 	var shittyText:FlxText;
 
@@ -98,10 +97,9 @@ class FreeplayState extends MusicBeatState
 		}
 		WeekData.loadTheFirstEnabledMod();
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = Preferences.globalAntialiasing;
-		add(bg);
+		bg = new FunkinBG(0, 0, Paths.image('menuDesat'), 1.0, 1.0, songs[curSelected].color, true);
 		bg.screenCenter();
+		add(bg);
 
 		checkerBg = new Checkerboard(XY, 1, EXTRA_HUGE, .27, 0xFF000000, 0.0, 0.09);
 		add(checkerBg);
@@ -328,9 +326,6 @@ class FreeplayState extends MusicBeatState
 		if (controls.BACK)
 		{
 			persistentUpdate = false;
-			if(colorTween != null) {
-				colorTween.cancel();
-			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
 		}
@@ -346,10 +341,6 @@ class FreeplayState extends MusicBeatState
 		else if (accepted)
 		{
 			persistentUpdate = false;
-
-			if (colorTween != null) {
-				cancelColorTweens();
-			}
 
 			var selectedSong:String = Paths.formatToSongPath(songs[curSelected].songName);
 
@@ -435,11 +426,6 @@ class FreeplayState extends MusicBeatState
 		PlayState.isStoryMode = false;
 
 		trace('CURRENT WEEK: ${WeekData.getWeekFileName()}');
-	}
-
-	private function cancelColorTweens():Void
-	{
-		colorTween.cancel();
 	}
 
 	private function checkChartingInput():Void
@@ -530,18 +516,7 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		var newColor:Int = songs[curSelected].color;
-		if(newColor != intendedColor) {
-			if(colorTween != null) {
-				colorTween.cancel();
-			}
-			intendedColor = newColor;
-			colorTween = FlxTween.color(bg, 1, bg.color, intendedColor, {
-				onComplete: function(twn:FlxTween) {
-					colorTween = null;
-				}
-			});
-		}
+		bg.updateColor(songs, curSelected);
 
 		// selector.y = (70 * curSelected) + 30;
 

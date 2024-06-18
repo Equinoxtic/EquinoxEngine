@@ -423,7 +423,7 @@ class PlayState extends MusicBeatState
 	var borderCameraTween:FlxTween;
 	var grayscaleTween:FlxTween;
 
-	var onHoldSplash:Array<HoldCover> = [];
+	var onPlayerHoldCover:Array<HoldCover> = [];
 
 	override public function create()
 	{
@@ -4408,7 +4408,7 @@ class PlayState extends MusicBeatState
 
 		if (!note.noteSplashDisabled && daRating.noteSplash)
 		{
-			spawnNoteSplashOnNote(note, false);
+			spawnNoteSplashOnNote(note);
 		}
 
 		var pixelShitPart1:String = "";
@@ -4617,31 +4617,11 @@ class PlayState extends MusicBeatState
 				if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && parsedHoldArray[daNote.noteData] && daNote.canBeHit
 				&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
 					goodNoteHit(daNote);
-					if (onHoldSplash[daNote.noteData] != null)
-					{
-						if (daNote.animation.curAnim.name.endsWith('holdend'))
-						{
-							onHoldSplash[daNote.noteData].alpha = 1.0;
-							onHoldSplash[daNote.noteData].endHoldAnimation(true);
-							onHoldSplash[daNote.noteData] = null;
-						}
-					}
+					endHoldSplash(onPlayerHoldCover, daNote);
 				}
 			});
 
-			for (i in 0...4)
-			{
-				if (onHoldSplash != null)
-				{
-					if (onHoldSplash[i] != null && onHoldSplash[i].animation.curAnim.name == 'hold') {
-						if (!parsedHoldArray[i]) {
-							onHoldSplash[i].alpha = 0.0;
-						} else {
-							onHoldSplash[i].setCoverPosition(playerStrums.members[i].x, playerStrums.members[i].y);
-						}
-					}
-				}
-			}
+			processHoldSplash(parsedHoldArray, onPlayerHoldCover, playerStrums);
 
 			if (parsedHoldArray.contains(true) && !endingSong) {
 				#if ACHIEVEMENTS_ALLOWED
@@ -4806,11 +4786,15 @@ class PlayState extends MusicBeatState
 			FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'opponent');
 		}
 
+
 		var time:Float = 0.15;
-		if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
+
+		if (note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
 			time += 0.15;
 		}
+
 		StrumPlayAnim(true, Std.int(Math.abs(note.noteData)), time);
+
 		note.hitByOpponent = true;
 
 		callOnLuas('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
@@ -4838,8 +4822,8 @@ class PlayState extends MusicBeatState
 			{
 				noteMiss(note);
 
-				if (!note.noteSplashDisabled) {
-					spawnNoteSplashOnNote(note, note.isSustainNote);
+				if (!note.noteSplashDisabled && !note.isSustainNote) {
+					spawnNoteSplashOnNote(note);
 				}
 
 				if(!note.noMissAnimation)
@@ -4947,7 +4931,7 @@ class PlayState extends MusicBeatState
 
 			if (!PlayState.SONG_METADATA.hasNoteWiggle) {
 				if (note.sustainLength > 0) {
-					spawnNoteSplashOnNote(note, true);
+					spawnHoldSplashOnNote(playerStrums, note, false);
 				}
 			}
 
@@ -4955,17 +4939,65 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function spawnNoteSplashOnNote(note:Note, ?sustainNote:Bool = false):Void
+	public function spawnNoteSplashOnNote(note:Note):Void
 	{
 		if(Preferences.noteSplashes && note != null) {
 			var strum:StrumNote = playerStrums.members[note.noteData];
-			if(strum != null) {
-				spawnNoteSplash(strum.x, strum.y, note.noteData, note, sustainNote);
+			if (strum != null) {
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note, false);
 			}
 		}
 	}
 
-	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, ?sustainNote:Bool = false):Void
+	public function spawnHoldSplashOnNote(strums:Null<FlxTypedGroup<StrumNote>>, note:Note, ?isDad:Bool = false):Void
+	{
+		if (strums != null) {
+			if (Preferences.noteSplashes && note != null) {
+				var strum:StrumNote = strums.members[note.noteData];
+				if (strum != null) {
+					spawnNoteSplash(strum.x, strum.y, note.noteData, note, true, isDad);
+				}
+			}
+		}
+	}
+
+	public function processHoldSplash(parsedHoldArray:Null<Array<Bool>>, holdSplashArray:Null<Array<HoldCover>>, targetStrumline:Null<FlxTypedGroup<StrumNote>>):Void
+	{
+		if (parsedHoldArray == null || holdSplashArray == null)
+			return;
+
+		for (i in 0...4)
+		{
+			if (holdSplashArray != null)
+			{
+				if (holdSplashArray[i] != null && holdSplashArray[i].animation.curAnim.name == 'hold') {
+					if (!parsedHoldArray[i]) {
+						holdSplashArray[i].alpha = 0.0;
+					} else {
+						holdSplashArray[i].setCoverPosition(targetStrumline.members[i].x, targetStrumline.members[i].y);
+					}
+				}
+			}
+		}
+	}
+
+	public function endHoldSplash(holdSplashArray:Null<Array<HoldCover>>, note:Note):Void
+	{
+		if (holdSplashArray == null)
+			return;
+
+		if (holdSplashArray[note.noteData] != null)
+		{
+			if (note.animation.curAnim.name.endsWith('holdend'))
+			{
+				holdSplashArray[note.noteData].alpha = 1.0;
+				holdSplashArray[note.noteData].endHoldAnimation(true);
+				holdSplashArray[note.noteData] = null;
+			}
+		}
+	}
+
+	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, ?sustainNote:Bool = false, ?isDad:Bool = false):Void
 	{
 		var skin:String = 'noteSplashes';
 
@@ -4994,7 +5026,7 @@ class PlayState extends MusicBeatState
 			var holdCover:HoldCover = grpHoldCovers.recycle(HoldCover);
 			holdCover.setup(x, y, data, skin, hue, sat, brt);
 			grpHoldCovers.add(holdCover);
-			onHoldSplash[note.noteData] = holdCover;
+			onPlayerHoldCover[note.noteData] = holdCover;
 		} else {
 			var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
 			splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);

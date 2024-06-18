@@ -47,22 +47,20 @@ class DebugInfoState extends MusicBeatState
 		watermarkSprite.antialiasing = true;
 		add(watermarkSprite);
 
-		debugText = new FunkinText(0, 0, flixel.FlxG.width, '', 28, CENTER, false);
-		debugText.usePreferredFont = true;
-		debugText.preferredFont = 'phantommuff.ttf';
+		debugText = new FunkinText(0, 0, flixel.FlxG.width, '', 28, CENTER, false, null, true);
 		debugText.screenCenter();
 		debugText.y -= 50;
 		add(debugText);
+
+		watermarkSprite.y = debugText.y - 270;
+
+		super.create();
 
 		debugText.text = 'You are now testing a DEBUG build of ${Constants.MAIN_APPLICATION_TITLE}!
 		Everything may be unstable and buggy, here be dragons, player!
 		Current Branch: ${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}\n
 		Press ESC to Exit the Application | Press Enter to Continue\n\nEnjoy! :)
 		';
-
-		watermarkSprite.y = debugText.y - 270;
-
-		super.create();
 
 		FlxG.camera.zoom = 3.5;
 		FlxG.camera.alpha = 0.000001;

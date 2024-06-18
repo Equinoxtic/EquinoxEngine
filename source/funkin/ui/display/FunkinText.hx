@@ -4,8 +4,6 @@ import flixel.text.FlxText;
 
 class FunkinText extends FlxText
 {
-	public var forceDefaultFont:Bool = false;
-
 	/**
 	 * Create a new text field that extends with [``FlxText``](https://api.haxeflixel.com/flixel/text/FlxText.html).
 	 * @param X The x position of the text field.
@@ -15,8 +13,9 @@ class FunkinText extends FlxText
 	 * @param fontSize The scale of the font in the text field.
 	 * @param textAlignment The alignment of the text field.
 	 * @param border Should the text field have a border?
+	 * @param forceDefaultFont Should the text be forced to use the default font? [``phantommuff.ttf``]
 	 */
-	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAlignment:FlxTextAlign = CENTER, ?border:Bool = true, ?borderSize:Float = 2.5):Void
+	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAlignment:FlxTextAlign = CENTER, border:Bool = true, ?borderSize:Float = 2.5, ?forceDefaultFont:Bool = false):Void
 	{
 		super(X, Y, fieldWidth, text, fontSize);
 
@@ -55,10 +54,5 @@ class FunkinText extends FlxText
 		}
 
 		antialiasing = (Preferences.globalAntialiasing && !PlayState.isPixelStage);
-	}
-
-	public override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
 	}
 }

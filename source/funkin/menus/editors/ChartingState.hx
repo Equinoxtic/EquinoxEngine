@@ -123,6 +123,11 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
+			'Instant Camera Zoom',
+			"A more instantaneous camera zoom with no\ncap to the zoom amount.\nValue 1: Camera zoom add (Default: 0.015)\nValue2: HUD zoom add (Default: 0.03)"
+		],
+
+		[
 			'Camera Flash',
 			"VALUE 1: The strength, duration, and delay\nof the flash.\n[DEFAULT: 1.0, 0.8, 0.0]\n\nVALUE 2: The ease of the flash.\n[DEFAULT: linear]"
 		],
@@ -145,11 +150,6 @@ class ChartingState extends MusicBeatState
 		[
 			'Kill Henchmen',
 			"For Mom's songs, don't use this please, i love them :("
-		],
-
-		[
-			'Instant Camera Zoom',
-			"A more instantaneous camera zoom.\nValue 1: Camera zoom add (Default: 0.015)\nValue2: HUD zoom add (Default: 0.03)"
 		],
 
 		[

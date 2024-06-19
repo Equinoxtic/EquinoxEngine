@@ -3875,7 +3875,22 @@ class PlayState extends MusicBeatState
 				}
 
 			case 'Instant Camera Zoom':
-				// TODO: Add Instant Camera Zoom Event
+				if (Preferences.camZooms)
+				{
+					var camZoom:Float = Std.parseFloat(value1);
+					var hudZoom:Float = Std.parseFloat(value2);
+
+					if (Math.isNaN(camZoom)) {
+						camZoom = 0.015;
+					}
+
+					if (Math.isNaN(hudZoom)) {
+						hudZoom = 0.03;
+					}
+
+					FlxG.camera.zoom = FlxG.camera.zoom + camZoom;
+					camHUD.zoom = camHUD.zoom + hudZoom;
+				}
 
 			case 'Set Default Camera Zoom':
 				var amount:Float = 0.0;

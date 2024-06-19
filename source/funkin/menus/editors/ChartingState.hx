@@ -2994,18 +2994,17 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		//shitty null fix, i fucking hate it when this happens
-		//make it look sexier if possible
 		if (FunkinUtil.difficulties[PlayState.storyDifficulty] != FunkinUtil.defaultDifficulty)
 		{
 			if (FunkinUtil.difficulties[PlayState.storyDifficulty] == null) {
 				PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 			} else {
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + FunkinUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
+				PlayState.SONG = Song.loadFromJson('${song.toLowerCase()}${FunkinUtil.difficulties[PlayState.storyDifficulty].toLowerCase()}', song.toLowerCase());
 			}
 		} else {
 			PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 		}
+
 		MusicBeatState.resetState();
 	}
 
@@ -3024,8 +3023,11 @@ class ChartingState extends MusicBeatState
 
 	private function saveChartData(?type:Null<SaveType> = CHART):Void
 	{
-		if (type == SaveType.EVENTS)
-			if (_song.events != null && _song.events.length > 1) _song.events.sort(sortByTime);
+		if (type == SaveType.EVENTS) {
+			if (_song.events != null && _song.events.length > 1) {
+				_song.events.sort(sortByTime);
+			}
+		}
 
 		var json = {};
 		var saveFileString:String = "";
@@ -3037,6 +3039,7 @@ class ChartingState extends MusicBeatState
 					"song": _song
 				};
 				saveFileString = '${FunkinUtil.lowerDiffString()}';
+
 			case EVENTS:
 				var eventsSong:Dynamic = {
 					events: _song.events
@@ -3045,11 +3048,13 @@ class ChartingState extends MusicBeatState
 					"song": eventsSong
 				};
 				saveFileString = 'events${FunkinSound.erectModeSuffix(false)}';
+
 			case DATA:
 				json = {
 					"song_data": _song_data
 				};
 				saveFileString = 'songdata${FunkinSound.erectModeSuffix(false)}';
+
 			case METADATA:
 				json = {
 					"metadata": _metadata

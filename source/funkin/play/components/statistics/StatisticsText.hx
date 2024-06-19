@@ -17,6 +17,9 @@ enum StatisticType
 
 class StatisticsText extends FunkinText
 {
+	/**
+	 * The type of statistic to display.
+	 */
 	public var statisticType:StatisticType = SCORE;
 
 	/**

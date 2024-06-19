@@ -1,5 +1,6 @@
 package funkin.play;
 
+import funkin.graphics.effects.FlashEffect;
 import funkin.play.song.Chart.ParseType;
 import funkin.play.song.SongSettings.SongSettingsJSON;
 import flixel.tweens.FlxEase.FlxEaseUtil;
@@ -3892,7 +3893,32 @@ class PlayState extends MusicBeatState
 				}
 
 			case 'Camera Flash':
-				// TODO: Add Camera Flash Event
+				var strength:Float = 1.0;
+				var duration:Float = 0.8;
+				var delay:Float = 0.0;
+				var ease:String = 'linear';
+
+				var split:Array<String> = null;
+
+				if (value1 != null) {
+					split = value1.split(',');
+					if (split[0] != null)
+						strength = Std.parseFloat(split[0].trim());
+					if (split[1] != null)
+						duration = Std.parseFloat(split[1].trim());
+					if (split[2] != null)
+						delay = Std.parseFloat(split[2].trim());
+				}
+
+				if (value2 != null) {
+					ease = Std.string(value2);
+				}
+
+				if (strength >= 0.0 && duration >= 0.0 && delay >= 0.0 && ease != null)
+				{
+					var flashEffect:FlashEffect = new FlashEffect(strength, duration, delay, ease);
+					add(flashEffect);
+				}
 
 			case 'Change Character':
 				var charType:Int = 0;

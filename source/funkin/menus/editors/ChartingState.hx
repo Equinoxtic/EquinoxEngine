@@ -123,6 +123,11 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
+			'Camera Flash',
+			"VALUE 1: The strength, duration, and delay\nof the flash.\n[DEFAULT: 1.0, 0.8, 0.0]\n\nVALUE 2: The ease of the flash.\n[DEFAULT: linear]"
+		],
+
+		[
 			'Hey!',
 			"Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"
 		],

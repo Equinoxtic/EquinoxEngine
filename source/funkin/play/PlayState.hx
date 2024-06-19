@@ -3891,6 +3891,9 @@ class PlayState extends MusicBeatState
 					defaultCamZoom = amount * multiplier;
 				}
 
+			case 'Camera Flash':
+				// TODO: Add Camera Flash Event
+
 			case 'Change Character':
 				var charType:Int = 0;
 				switch(value1.toLowerCase().trim()) {

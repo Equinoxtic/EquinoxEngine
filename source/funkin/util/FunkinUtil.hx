@@ -34,13 +34,18 @@ class FunkinUtil
 		trace(snap);
 		return (m / snap);
 	}
-	
+
 	public static function getDifficultyFilePath(num:Null<Int> = null)
 	{
 		if(num == null) num = PlayState.storyDifficulty;
 
 		var fileSuffix:String = difficulties[num];
 		return Paths.formatToSongPath(fileSuffix);
+	}
+
+	public static function getSongDisplayName():String
+	{
+		return ((PlayState.SONG_METADATA.songDisplayName != "Test") ? PlayState.SONG_METADATA.songDisplayName : PlayState.SONG.song.replace('-', ' '));
 	}
 
 	public static function difficultyString():String

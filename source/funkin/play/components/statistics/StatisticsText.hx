@@ -66,7 +66,7 @@ class StatisticsText extends FunkinText
 				if (!Math.isNaN(value)) {
 					this.text = 'Accuracy: ${value}%';
 				}
-			
+
 			case RATING:
 				var rating:String = PlayState.instance.ratingFC;
 				var ranking:String = PlayState.instance.ranking;
@@ -92,7 +92,7 @@ class StatisticsText extends FunkinText
 			{
 				case SCORE:
 					this.text =
-						"- " + ((PlayState.instance.cpuControlled) ? " BOTPLAY -" : "")
+						"-" + ((PlayState.instance.cpuControlled) ? " BOTPLAY -" : "")
 						+ ((PlayState.instance.practiceMode) ? " PRACTICE MODE -" : "")
 						+ ((PlayState.chartingMode) ? " CHARTING MODE -" : "");
 				case MISSES:

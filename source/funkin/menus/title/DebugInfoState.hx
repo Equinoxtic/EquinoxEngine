@@ -47,7 +47,8 @@ class DebugInfoState extends MusicBeatState
 		watermarkSprite.antialiasing = true;
 		add(watermarkSprite);
 
-		debugText = new FunkinText(0, 0, flixel.FlxG.width, '', 28, CENTER, false, null, true);
+		debugText = new FunkinText(0, 0, flixel.FlxG.width, '', 28, CENTER, false, null);
+		debugText.forceDefaultFont = true;
 		debugText.screenCenter();
 		debugText.y -= 50;
 		add(debugText);

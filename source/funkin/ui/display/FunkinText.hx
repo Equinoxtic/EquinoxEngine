@@ -5,6 +5,19 @@ import flixel.text.FlxText;
 class FunkinText extends FlxText
 {
 	/**
+	 * Forces the given default font. [ Default: ``false`` ]
+	 */
+	public var forceDefaultFont:Bool = false;
+
+	/**
+	 * The default font to be forced. [ Default: ``phantommuff.ttf`` ]
+	 */
+	public var defaultFont:String = 'phantommuff.ttf';
+
+	private var _fontKey:String = null;
+	private var _updatedFont:Bool = false;
+
+	/**
 	 * Create a new text field that extends with [``FlxText``](https://api.haxeflixel.com/flixel/text/FlxText.html).
 	 * @param X The x position of the text field.
 	 * @param Y The y position of the text field.
@@ -13,35 +26,34 @@ class FunkinText extends FlxText
 	 * @param fontSize The scale of the font in the text field.
 	 * @param textAlignment The alignment of the text field.
 	 * @param border Should the text field have a border?
-	 * @param forceDefaultFont Should the text be forced to use the default font? [``phantommuff.ttf``]
 	 */
-	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAlignment:FlxTextAlign = CENTER, border:Bool = true, ?borderSize:Float = 2.5, ?forceDefaultFont:Bool = false):Void
+	public function new(X:Float, Y:Float, fieldWidth:Float = 0, ?text:String = "", ?fontSize:Int = 16, ?textAlignment:FlxTextAlign = CENTER, border:Bool = true, ?borderSize:Float = 2.5):Void
 	{
 		super(X, Y, fieldWidth, text, fontSize);
 
 		var fontString:String = 'phantommuff';
 		var fontExt:String = 'ttf';
 
-		if (!forceDefaultFont)
+		switch(Preferences.fontFace)
 		{
-			switch(Preferences.fontFace)
-			{
-				case 'Default': // Default Equinox Engine font.
-					fontString = 'phantommuff';
-				case 'Classic': // Classic FNF Font.
-					fontString = 'vcr';
-				case 'Engine Legacy': // Legacy Equinox Engine font.
-					fontString = 'azonix';
-					fontExt = 'otf';
-				default:
-					fontString = 'phantommuff';
-			}
-
-			if (PlayState.isPixelStage)
+			case 'Default': // Default Equinox Engine font.
+				fontString = 'phantommuff';
+			case 'Classic': // Classic FNF Font.
 				fontString = 'vcr';
+			case 'Engine Legacy': // Legacy Equinox Engine font.
+				fontString = 'azonix';
+				fontExt = 'otf';
+			default:
+				fontString = 'phantommuff';
 		}
 
-		setFormat(Paths.font(Std.string('$fontString.$fontExt')), fontSize, 0xFFFFFFFF, textAlignment);
+		if (PlayState.isPixelStage) {
+			fontString = 'vcr';
+		}
+
+		this._fontKey = '${fontString}.${fontExt}';
+
+		setFormat(Paths.font(Std.string('${fontString}.${fontExt}')), fontSize, 0xFFFFFFFF, textAlignment);
 
 		if (border)
 		{
@@ -54,5 +66,28 @@ class FunkinText extends FlxText
 		}
 
 		antialiasing = (Preferences.globalAntialiasing && !PlayState.isPixelStage);
+	}
+
+	private function _updateFont():Void
+	{
+		if (_updatedFont) {
+			return;
+		}
+
+		var fontString:String = this._fontKey;
+		if (forceDefaultFont) {
+			fontString = defaultFont;
+		}
+
+		font = Paths.font(fontString);
+
+		_updatedFont = true;
+	}
+
+	public override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+
+		_updateFont();
 	}
 }

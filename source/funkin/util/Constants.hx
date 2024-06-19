@@ -186,6 +186,16 @@ class Constants
 	public static final NUMERICAL_COMBO_SIZE:Float = 0.5;
 
 	/**
+	 * The duration of the song's credits pop-up.
+	 */
+	public static final CREDITS_HUD_DURATION:Float = 0.8;
+
+	/**
+	 * The starting delay of the song's credits pop-up
+	 */
+	public static final CREDITS_HUD_DELAY:Float = CREDITS_HUD_DURATION + 2.35;
+
+	/**
 	 * The zoom of the main camera. (camGame | FlxG.camera.zoom)
 	 */
 	public static final CAMERA_GAME_ZOOM:Float = 1.0;

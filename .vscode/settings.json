@@ -1,8 +1,16 @@
 {
+	"editor.insertSpaces": false,
+	"editor.stickyTabStops": true,
 	"editor.tabSize": 4,
 	"editor.indentSize": "tabSize",
+
 	"editor.minimap.enabled": true,
+
 	"editor.codeLens": true,
+
 	"editor.bracketPairColorization.enabled": true,
-	"editor.bracketPairColorization.independentColorPoolPerBracketType": true
+	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+
+	"files.autoSave": "afterDelay",
+	"files.autoSaveDelay": 5000
 }

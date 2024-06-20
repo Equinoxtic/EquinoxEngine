@@ -1,16 +1,31 @@
 {
-	"lineEnds": {
-		"leftCurly": "both",
-		"rightCurly": "both",
-		"emptyCurly": "break",
-		"objectLiteralCurly": {
-			"leftCurly": "after"
-		}
+	"disableFormatting": false,
+
+	"indentation": {
+		"character": "tab",
+		"tabWidth": 4,
+		"indentCaseLabels": true
 	},
+
+	"lineEnds": {
+		"anonFunctionCurly": {
+			"emptyCurly": "break",
+			"leftCurly": "after",
+			"rightCurly": "both"
+		},
+		"leftCurly": "both",
+		"rightCurly": "both"
+	},
+
 	"sameLine": {
+		"ifBody": "same",
 		"ifElse": "next",
 		"doWhile": "next",
 		"tryBody": "next",
 		"tryCatch": "next"
+	},
+
+	"whitespace": {
+		"switchPolicy": "around"
 	}
 }

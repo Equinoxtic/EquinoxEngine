@@ -51,7 +51,7 @@ class PauseSubState extends MusicBeatSubstate
 		if(PlayState.chartingMode)
 		{
 			menuItemsOG.insert(2, 'Leave Charting Mode');
-			
+
 			var num:Int = 0;
 			if(!PlayState.instance.startingSong)
 			{
@@ -137,7 +137,7 @@ class PauseSubState extends MusicBeatSubstate
 				pauseMusic.loadEmbedded(Paths.music(Paths.formatToSongPath(musicString)), true, true);
 
 			pauseMusic.volume = 0;
-			
+
 			pauseMusic.play(false);
 			FlxG.sound.list.add(pauseMusic);
 
@@ -155,7 +155,7 @@ class PauseSubState extends MusicBeatSubstate
 		super.update(elapsed);
 
 		currentModeTxt.visible = (PlayState.instance.practiceMode || PlayState.instance.cpuControlled || PlayState.chartingMode);
-		
+
 		updateCurrentModeText();
 
 		updateSkipTextStuff();
@@ -208,12 +208,12 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			if (menuItems == difficultyChoices)
 			{
-				if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) {
+				if (menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) {
 					var name:String = PlayState.SONG.song;
 					var poop = Highscore.formatSong(name, curSelected);
 					PlayState.SONG = Song.loadFromJson(poop, name);
 					PlayState.storyDifficulty = curSelected;
-					MusicBeatState.resetState();
+					MusicBeatState.reloadState(FlxG.state);
 					FlxG.sound.music.volume = 0;
 					PlayState.changedDifficulty = true;
 					PlayState.chartingMode = false;
@@ -318,19 +318,16 @@ class PauseSubState extends MusicBeatSubstate
 	public static function restartSong(noTrans:Bool = false)
 	{
 		PlayState.restartCounter++;
-		
+
 		PlayState.instance.paused = true; // For lua
 		FlxG.sound.music.volume = 0;
 		FunkinSound.muteVoices(false);
 
-		if(noTrans)
-		{
+		if(noTrans) {
 			FlxTransitionableState.skipNextTransOut = true;
 			FlxG.resetState();
-		}
-		else
-		{
-			MusicBeatState.resetState();
+		} else {
+			MusicBeatState.reloadState(FlxG.state);
 		}
 	}
 
@@ -441,7 +438,7 @@ class PauseSubState extends MusicBeatSubstate
 		curSelected = 0;
 		changeSelection();
 	}
-	
+
 	function updateSkipTextStuff()
 	{
 		if(skipTimeText == null || skipTimeTracker == null) return;

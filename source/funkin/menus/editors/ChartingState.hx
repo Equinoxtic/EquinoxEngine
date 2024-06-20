@@ -198,6 +198,11 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
+			'Change Beat Modulo',
+			"VALUE 1: The value of the new Beat Modulo.\nVALUE 2: Leave blank or take notes."
+		],
+
+		[
 			'Set Property',
 			"Value 1: Variable name\nValue 2: New value"
 		],
@@ -613,7 +618,7 @@ class ChartingState extends MusicBeatState
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', function()
 		{
 			PlayState.SONG = Song.parseJSONshit(FlxG.save.data.autosave);
-			MusicBeatState.resetState();
+			MusicBeatState.reloadState(FlxG.state);
 		});
 
 		var loadEventJson:FlxButton = new FlxButton(loadAutosaveBtn.x, loadAutosaveBtn.y + 30, 'Load Events', function()
@@ -3005,7 +3010,7 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 		}
 
-		MusicBeatState.resetState();
+		MusicBeatState.reloadState(FlxG.state);
 	}
 
 	function autosaveSong():Void

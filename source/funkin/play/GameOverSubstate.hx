@@ -120,7 +120,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					playingDeathSound = true;
 					coolStartDeath(0.2);
-					
+
 					var exclude:Array<Int> = [];
 					//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
 
@@ -172,7 +172,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
-					MusicBeatState.resetState();
+					MusicBeatState.reloadState(FlxG.state);
 				});
 			});
 			PlayState.instance.callOnLuas('onGameOverConfirm', [true]);

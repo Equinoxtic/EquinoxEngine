@@ -30,13 +30,14 @@ class StatisticsText extends FunkinText
 	 */
 	public function new(?X:Float = 0.0, ?Y:Float, ?statisticType:Null<StatisticType> = SCORE):Void
 	{
-		super(X, Y, FlxG.width, "", Constants.STATISTICS_FONT_SIZE, LEFT, true, 3.0);
+		super(X, Y, FlxG.width, "", Constants.STATISTICS_FONT_SIZE, LEFT, true, Constants.STATISTICS_BORDER_SIZE);
 
-		this.borderSize = Constants.STATISTICS_BORDER_SIZE;
+
 		this.scrollFactor.set();
 
-		if (statisticType == null)
+		if (statisticType == null) {
 			statisticType = StatisticType.SCORE;
+		}
 
 		this.statisticType = statisticType;
 

@@ -57,7 +57,7 @@ class FunkinText extends FlxText
 
 		if (border)
 		{
-			setBorderStyle(OUTLINE, 0xFF000000, 0.0, 5);
+			setBorderStyle(OUTLINE, 0xFF000000, 0.0, 0);
 			if (!(borderSize < 0)) {
 				this.borderSize = borderSize;
 			} else {

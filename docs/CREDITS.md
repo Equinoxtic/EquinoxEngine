@@ -1,4 +1,19 @@
-<center>
+## Psych Engine Credits
+
+* Shadow Mario - Main Programmer of Psych Engine
+* RiverOaken - Artist of Psych Engine
+* Yoshubs - Assistant Programmer of Psych Engine
+
+### Special Thanks To...
+* bbpanzu - Ex-Programmer
+* shubs - New Input System
+* SqirraRNG - Crash Handler and Base code for Chart Editor's Waveform
+* KadeDev - Fixed some cool stuff on Chart Editor and other PRs
+* iFlicky - Composer of Psync and Tea Time, also made the Dialogue Sounds
+* PolybiusProxy - .MP4 Video Loader Library (hxCodec)
+* Keoiki - Note Splash Animations
+* Smokey - Sprite Atlas Support
+* Nebula the Zorua - LUA JIT Fork and some Lua reworks
 
 # Equinox Engine - Credits
 
@@ -39,6 +54,11 @@
 
 *Note: Slight alterations have been made to the JSON files, for organization purposes and preventing conflict in the files, no modified work had been done such as altering its images/sprites.*
 
+## Other stuff !!!
+
+### Pixel Note Splashes (@Epoli): https://gamebanana.com/mods/360401
+
+
 ## Fonts used in the engine
 ### Angas [[``angas.ttf``](https://www.dafont.com/angas.font?l[]=10&l[]=1&l[]=6)]
 ### Azonix [[``azonix.otf``](https://www.dafont.com/azonix.font)]
@@ -51,5 +71,3 @@
 ---
 
 **Equinox Engine has adapted code and a revision on a previous engine/project I made called [Geode](https://github.com/Equinoxtic/Geode).**
-
-</center>

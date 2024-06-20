@@ -18,15 +18,15 @@
 # Equinox Engine - Credits
 
 <div style="text-align:center">
-<img src="./art/icons/ICON_WATERMARK.png" width=80 align="center">
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN.png?raw=true" width=80 align="center">
 </div>
 
 ## [@Vertic/Equinoxtic](https://github.com/Equinoxtic) - The main lead developer of Equinox Engine.
 
 <a href=https://github.com/Equinoxtic/EquinoxEngine>
 <div style="text-align:center">
-<img src="./art/icons/ICON_MAIN.png" width=120 align="center">
-<img src="./art/icons/ICON_MAIN_ALT.png" width=120 align="center">
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN.png?raw=true" width=120 align="center">
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN_ALT.png?raw=true.png" width=120 align="center">
 </div>
 </a>
 
@@ -36,7 +36,7 @@
 
 <a href=https://github.com/ThatRozebudDude/FPS-Plus-Public/tree/master>
 <div style="text-align:center">
-<img src="./art/icons/logo_fpsplus.png" width=380 align="center">
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/logo_fpsplus.png?raw=true" width=380 align="center">
 </div>
 </a>
 
@@ -46,7 +46,7 @@
 
 <a href=https://gamebanana.com/tools/9336>
 <div style="text-align:center">
-<img src="./art/icons/bf_reanimated_logo.png" width=380 align="center">
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/bf_reanimated_logo.png?raw=true" width=380 align="center">
 </div>
 </a>
 
@@ -56,7 +56,7 @@
 
 ## Other stuff !!!
 
-### Pixel Note Splashes (@Epoli): https://gamebanana.com/mods/360401
+#### Pixel Note Splashes (@Epoli): https://gamebanana.com/mods/360401
 
 
 ## Fonts used in the engine

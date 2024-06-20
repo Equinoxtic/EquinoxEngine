@@ -127,42 +127,52 @@ class MusicBeatState extends FlxUIState
 		curStep = lastChange.stepTime + Math.floor(shit);
 	}
 
-	public static function switchState(state:Null<FlxState>):Void
+	public static function switchState(state:Null<FlxState> = null):Void
 	{
 		if (state == null) {
-			return;
+			state = FlxG.state;
 		}
 
 		if (state == FlxG.state) {
-			reloadState(FlxG.state);
+			resetState();
 			return;
 		}
 
 		if (FlxTransitionableState.skipNextTransIn) {
 			FlxG.switchState(state);
 		} else {
-			FlxG.state.openSubState(new CustomFadeTransition(0.6, false));
-			if (state == FlxG.state) {
-				CustomFadeTransition.finishCallback = function():Void {
-					FlxG.resetState();
-				}
-			} else {
-				CustomFadeTransition.finishCallback = function():Void {
-					FlxG.switchState(state);
-				}
-			}
+			_startTransition(state);
 		}
 
 		FlxTransitionableState.skipNextTransIn = false;
 	}
 
-	public static function reloadState(state:Null<FlxState>):Void
+	public static function resetState():Void
 	{
-		if (state == null) {
-			return;
+		if (FlxTransitionableState.skipNextTransIn) {
+			FlxG.resetState();
+		} else {
+			_startTransition();
 		}
 
-		MusicBeatState.switchState(state);
+		FlxTransitionableState.skipNextTransIn = false;
+	}
+
+	private static function _startTransition(state:Null<FlxState> = null):Void
+	{
+		if (state == null) {
+			state = FlxG.state;
+		}
+		FlxG.state.openSubState(new CustomFadeTransition(0.6, false));
+		if (state == FlxG.state) {
+			CustomFadeTransition.finishCallback = function():Void {
+				FlxG.resetState();
+			}
+		} else {
+			CustomFadeTransition.finishCallback = function():Void {
+				FlxG.switchState(state);
+			}
+		}
 	}
 
 	public function stepHit():Void

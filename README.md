@@ -30,9 +30,11 @@ Friday Night Funkin': Equinox Engine
 
 * <i>Learn how to build Equinox Engine here: [``EquinoxEngine BUILDING.md``](https://github.com/Equinoxtic/EquinoxEngine/blob/master/docs/BUILDING.md)</i>
 
+## [``Credits``](https://github.com/Equinoxtic/EquinoxEngine/blob/master/docs/CREDITS.md)
+
 <details close>
 
-<summary>Psych Engine Credits</summary>
+<summary>About Psych Engine</summary>
 
 # Friday Night Funkin' - Psych Engine
 

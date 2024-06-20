@@ -1,0 +1,8 @@
+{
+	"editor.tabSize": 4,
+	"editor.indentSize": "tabSize",
+	"editor.minimap.enabled": true,
+	"editor.codeLens": true,
+	"editor.bracketPairColorization.enabled": true,
+	"editor.bracketPairColorization.independentColorPoolPerBracketType": true
+}

@@ -4393,7 +4393,7 @@ class PlayState extends MusicBeatState
 			pixelSuffix = '-pixel';
 		}
 
-		for (i in 0...spriteArray.length-1) {
+		for (i in 0...spriteArray.length - 1) {
 			Paths.image('${pixelPrefix}${spriteArray[i]}${pixelSuffix}');
 		}
 
@@ -4435,11 +4435,9 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note);
 		}
 
-		var scorePopUp:ScorePopUp = new ScorePopUp(this, 0, 0, daRating, combo, showCombo, showTally);
+		var scorePopUp:ScorePopUp = new ScorePopUp(this, 0, 0, daRating, combo, (showCombo && !daRating.comboBreak), showTally);
 		scorePopUp.cameras = [camHUD];
 		insert(members.indexOf(strumLineNotes), scorePopUp);
-
-		scorePopUp.showScorePopUp();
 	}
 
 	public var strumsBlocked:Array<Bool> = [];

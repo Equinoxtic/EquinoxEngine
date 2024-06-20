@@ -41,9 +41,12 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 		this._showsCombo = showCombo;
 
 		scrollFactor.set();
+		visible = (!Preferences.hideHud);
+
+		_showScorePopUp();
 	}
 
-	public function showScorePopUp():Void
+	private function _showScorePopUp():Void
 	{
 		var placement:String = Std.string(_comboValue);
 
@@ -103,6 +106,7 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 			startDelay: Constants.NUMERICAL_SCORE_DELAY / PlayState.instance.playbackRate,
 			onComplete: function(_) {
 				offsetText.destroy();
+				this.destroy();
 			}
 		});
 	}

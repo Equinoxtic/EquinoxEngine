@@ -1080,7 +1080,7 @@ class PlayState extends MusicBeatState
 		health = Constants.HEALTH_START;
 
 		cacheCountdown();
-		cachePopUpScore();
+		cacheScoreProcess();
 
 		for (key => type in precacheList)
 		{
@@ -4380,29 +4380,27 @@ class PlayState extends MusicBeatState
 	public var showComboNum:Bool = true;
 	public var showRating:Bool = true;
 
-	private function cachePopUpScore()
+	private function cacheScoreProcess()
 	{
-		var pixelShitPart1:String = '';
-		var pixelShitPart2:String = '';
-		if (isPixelStage)
-		{
-			pixelShitPart1 = 'pixelUI/';
-			pixelShitPart2 = '-pixel';
+		var spriteArray:Array<String> = [ 'marv', 'sick', 'good', 'bad', 'shit', 'combo' ];
+
+		var pixelPrefix:String = '';
+		var pixelSuffix:String = '';
+		if (isPixelStage) {
+			pixelPrefix = 'pixelUI/';
+			pixelSuffix = '-pixel';
 		}
 
-		Paths.image(pixelShitPart1 + "marv" + pixelShitPart2);
-		Paths.image(pixelShitPart1 + "sick" + pixelShitPart2);
-		Paths.image(pixelShitPart1 + "good" + pixelShitPart2);
-		Paths.image(pixelShitPart1 + "bad" + pixelShitPart2);
-		Paths.image(pixelShitPart1 + "shit" + pixelShitPart2);
-		Paths.image(pixelShitPart1 + "combo" + pixelShitPart2);
+		for (i in 0...spriteArray.length-1) {
+			Paths.image('${pixelPrefix}${spriteArray[i]}${pixelSuffix}');
+		}
 
 		for (i in 0...10) {
-			Paths.image(pixelShitPart1 + 'num' + i + pixelShitPart2);
+			Paths.image('${pixelPrefix}num${i}${pixelSuffix}');
 		}
 	}
 
-	private function popUpScore(note:Note = null):Void
+	private function processScore(note:Note = null):Void
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + Preferences.ratingOffset);
 
@@ -4416,17 +4414,17 @@ class PlayState extends MusicBeatState
 
 		var score:Int = 700;
 
-		var rating:FlxSprite = new FlxSprite();
 		var daRating:Rating = Conductor.judgeNote(note, noteDiff / playbackRate);
 
 		totalNotesHit += daRating.ratingMod;
 		note.ratingMod = daRating.ratingMod;
-		if(!note.ratingDisabled) daRating.increase();
 		note.rating = daRating.name;
 		score = daRating.score;
 
 		if (!note.ratingDisabled)
 		{
+			daRating.increase();
+
 			if (!note.isSustainNote) {
 				songScore += score * Std.int(scoreMultiplier);
 			}
@@ -4965,7 +4963,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			popUpScore(note);
+			processScore(note);
 		}
 	}
 

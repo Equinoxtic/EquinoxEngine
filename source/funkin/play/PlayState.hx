@@ -3929,10 +3929,11 @@ class PlayState extends MusicBeatState
 					ease = Std.string(value2);
 				}
 
-				if (strength >= 0.0 && duration >= 0.0 && delay >= 0.0 && ease != null)
-				{
-					var flashEffect:FlashEffect = new FlashEffect(strength, duration, delay, ease);
-					add(flashEffect);
+				if (Preferences.flashing) {
+					if (strength >= 0.0 && duration >= 0.0 && delay >= 0.0 && ease != null) {
+						var flashEffect:FlashEffect = new FlashEffect(strength, duration, delay, ease);
+						add(flashEffect);
+					}
 				}
 
 			case 'Change Character':

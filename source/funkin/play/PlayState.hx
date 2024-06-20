@@ -383,6 +383,7 @@ class PlayState extends MusicBeatState
 	var songExtraTxt:String = "";
 
 	public var canPause:Bool = false;
+	public var finishedCountdown:Bool = false;
 	private var scoreMultiplier:Float = 1.0;
 	private var missMultiplier:Float = 1.0;
 	private var displayedHealth:Float = Constants.HEALTH_START;
@@ -403,6 +404,8 @@ class PlayState extends MusicBeatState
 	public var erectMode:Bool = (PlayState.storyDifficulty > 2);
 
 	private var holdingSustainNote:Bool = false;
+
+	private var songPopUp:SongCreditsPopUp;
 
 	private var cinematicBorder:CinematicBorder;
 
@@ -891,12 +894,23 @@ class PlayState extends MusicBeatState
 		hudGroupInfo.add(gameplayInfo);
 
 		/**
-		 * Watermark.
+		 * Pop-up for song's credits.
+		 */
+		songPopUp = new SongCreditsPopUp(this,
+			FunkinUtil.getSongDisplayName(),
+			PlayState.SONG_DATA.artist,
+			PlayState.SONG_DATA.charter
+		);
+		hudGroupInfo.add(songPopUp);
+
+		/**
+		 * Engine Watermark.
 		 */
 		engineWatermark = new Watermark(this, 0, FlxG.height * 0.97, Constants.WATERMARK_SIZE, 12);
 		engineWatermark.screenCenter(X);
 		engineWatermark.scrollFactor.set();
 		hudGroupExcluded.add(engineWatermark);
+
 		engineWatermark.playWatermarkAnimation();
 
 		#if (debug)
@@ -2936,6 +2950,13 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		/**
+		 * Play the Song Credits Pop-up animation.
+		 */
+		if (finishedCountdown) {
+			songPopUp.playAnimation();
+		}
+
+		/**
 		 * Note tail wiggle cameras.
 		 */
 		if (PlayState.SONG_METADATA.hasNoteWiggle)
@@ -4208,6 +4229,7 @@ class PlayState extends MusicBeatState
 		}
 
 		canPause = false;
+		finishedCountdown = false;
 		endingSong = true;
 		camZooming = false;
 		inCutscene = false;

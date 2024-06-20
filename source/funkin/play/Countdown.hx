@@ -50,6 +50,7 @@ class Countdown extends flixel.group.FlxSpriteGroup
 				playSound('introGo', soundSuffix);
 			case 4:
 				PlayState.instance.canPause = true;
+				PlayState.instance.finishedCountdown = true;
 		}
 	}
 

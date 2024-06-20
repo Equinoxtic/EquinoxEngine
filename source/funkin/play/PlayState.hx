@@ -1,5 +1,6 @@
 package funkin.play;
 
+import funkin.play.components.statistics.ScorePopUp;
 import funkin.graphics.effects.FlashEffect;
 import funkin.play.song.Chart.ParseType;
 import funkin.play.song.SongSettings.SongSettingsJSON;
@@ -310,6 +311,7 @@ class PlayState extends MusicBeatState
 	var scoreTxtTween:FlxTween;
 
 	public var statsHUD:StatisticsHUD;
+	public var scorePopUp:ScorePopUp;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -4377,7 +4379,7 @@ class PlayState extends MusicBeatState
 	public var totalNotesHit:Float = 0.0;
 
 	public var showCombo:Bool = false;
-	public var showComboNum:Bool = true;
+	public var showTally:Bool = true;
 	public var showRating:Bool = true;
 
 	private function cacheScoreProcess()
@@ -4406,12 +4408,6 @@ class PlayState extends MusicBeatState
 
 		FunkinSound.setVolume(Constants.VOCALS_VOLUME, 'player');
 
-		var placement:String = Std.string(combo);
-
-		var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
-		coolText.screenCenter();
-		coolText.x = FlxG.width * 0.35;
-
 		var score:Int = 700;
 
 		var daRating:Rating = Conductor.judgeNote(note, noteDiff / playbackRate);
@@ -4439,63 +4435,11 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note);
 		}
 
-		var pixelShitPart1:String = "";
-		var pixelShitPart2:String = '';
+		var scorePopUp:ScorePopUp = new ScorePopUp(this, 0, 0, daRating, combo, showCombo, showTally);
+		scorePopUp.cameras = [camHUD];
+		insert(members.indexOf(strumLineNotes), scorePopUp);
 
-		if (PlayState.isPixelStage)
-		{
-			pixelShitPart1 = 'pixelUI/';
-			pixelShitPart2 = '-pixel';
-		}
-
-		var ratingSprite:RatingSprite = new RatingSprite(daRating);
-		ratingSprite.x = coolText.x - 40;
-		ratingSprite.y -= 20;
-
-		insert(members.indexOf(strumLineNotes), ratingSprite);
-
-		var seperatedScore:Array<Int> = [];
-
-		if (combo >= 1000) seperatedScore.push(Math.floor(combo / 1000) % 10);
-		if (combo >= 100) seperatedScore.push(Math.floor(combo / 100) % 10);
-		if (combo >= 10) seperatedScore.push(Math.floor(combo / 10) % 10);
-		if (combo > 0) seperatedScore.push(combo % 10);
-
-		var daLoop:Int = 0;
-		var xThing:Float = 0;
-
-		for (i in seperatedScore)
-		{
-			var tallyCounter:TallyCounter = new TallyCounter(i);
-			tallyCounter.x = coolText.x + (42 * daLoop) - 75;
-			tallyCounter.y = ratingSprite.y;
-			tallyCounter.x += -5;
-			tallyCounter.y += 100;
-
-			if (showComboNum)
-				insert(members.indexOf(strumLineNotes), tallyCounter);
-
-			daLoop++;
-
-			if (tallyCounter.x > xThing) xThing = tallyCounter.x;
-		}
-
-		var comboSprite:ComboSprite = new ComboSprite();
-		comboSprite.x = xThing + 85;
-		comboSprite.y = ratingSprite.y;
-		comboSprite.y += 85;
-
-		if (showCombo && !daRating.comboBreak)
-			insert(members.indexOf(strumLineNotes), comboSprite);
-
-		coolText.text = Std.string(seperatedScore);
-
-		GlobalTweenClass.tween(coolText, { y: 1, x : 1 }, Constants.NUMERICAL_SCORE_DURATION / playbackRate, {
-			startDelay: Constants.NUMERICAL_SCORE_DELAY / playbackRate,
-			onComplete: function(_) {
-				coolText.destroy();
-			}
-		});
+		scorePopUp.showScorePopUp();
 	}
 
 	public var strumsBlocked:Array<Bool> = [];

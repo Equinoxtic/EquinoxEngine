@@ -15,40 +15,39 @@
 * Smokey - Sprite Atlas Support
 * Nebula the Zorua - LUA JIT Fork and some Lua reworks
 
-# Equinox Engine - Credits
+<p align=center>
+<h1> Equinox Engine - Credits </h1>
 
-<div style="text-align:center">
+<p align=center>
 <img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN.png?raw=true" width=80 align="center">
-</div>
 
-## [@Vertic/Equinoxtic](https://github.com/Equinoxtic) - The main lead developer of Equinox Engine.
+<h2> <a href='https://github.com/Equinoxtic'>@Vertic / @Equinoxtic</a> - The main lead developer of Equinox Engine.</h2>
 
-<a href=https://github.com/Equinoxtic/EquinoxEngine>
-<div style="text-align:center">
-<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN.png?raw=true" width=120 align="center">
-<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN_ALT.png?raw=true.png" width=120 align="center">
-</div>
-</a>
+<p align=center>
+	<a href=https://github.com/Equinoxtic/EquinoxEngine>
+		<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/ICON_MAIN_ALT.png?raw=true.png" width=120>
+	</a>
+</p>
 
 *Solarium Engine is a fork of Psych Engine that provides QoL Gameplay Features, read more about [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngine/blob/main/README.md).*
 
 ## [@ThatRozeBudDude](https://github.com/ThatRozebudDude) // [Twitter / X](https://twitter.com/helpme_thebigt) - For the FNF: FPS+ Icons.
 
+<p align="center">
 <a href=https://github.com/ThatRozebudDude/FPS-Plus-Public/tree/master>
-<div style="text-align:center">
-<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/logo_fpsplus.png?raw=true" width=380 align="center">
-</div>
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/logo_fpsplus.png?raw=true" width=380>
 </a>
+</p>
 
 *Friday Night Funkin' FPS Plus is an engine mod of Friday Night Funkin' that aims to improve gameplay and add quality of life features.*
 
 ## [@ZeroArtist](https://gamebanana.com/members/1887138) // [Twitter / X](https://x.com/zero_artist02) - For Reanimated / Zero Artist's BF.
 
+<p align="center">
 <a href=https://gamebanana.com/tools/9336>
-<div style="text-align:center">
-<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/bf_reanimated_logo.png?raw=true" width=380 align="center">
-</div>
+<img src="https://github.com/Equinoxtic/equinoxengine.art/blob/master/icons/bf_reanimated_logo.png?raw=true" width=380>
 </a>
+</p>
 
 ***JSON Schematic Source: https://gamebanana.com/tools/11957***
 

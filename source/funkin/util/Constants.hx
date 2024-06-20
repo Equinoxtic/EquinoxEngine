@@ -142,7 +142,7 @@ class Constants
 	/**
 	 * The FONT size of each texts in the Statistics HUD.
 	 */
-	public static final STATISTICS_FONT_SIZE:Int = 24;
+	public static final STATISTICS_FONT_SIZE:Int = 20;
 
 	/**
 	 * The text's BORDER size in the Statistics HUD.

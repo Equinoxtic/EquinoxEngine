@@ -37,9 +37,9 @@ class StatisticsHUD extends FlxTypedSpriteGroup<FlxSprite>
 		#end
 
 		scoreText = new StatisticsText(X, Y, SCORE);
-		missesText = new StatisticsText(scoreText.x, scoreText.y + 25, MISSES);
-		accuracyText = new StatisticsText(missesText.x, missesText.y + 25, ACCURACY);
-		ratingText = new StatisticsText(accuracyText.x, accuracyText.y + 25, RATING);
+		missesText = new StatisticsText(scoreText.x, scoreText.y + 21.5, MISSES);
+		accuracyText = new StatisticsText(missesText.x, missesText.y + 21.5, ACCURACY);
+		ratingText = new StatisticsText(accuracyText.x, accuracyText.y + 21.5, RATING);
 
 		add(scoreText);
 		add(missesText);

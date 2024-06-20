@@ -32,7 +32,6 @@ class StatisticsText extends FunkinText
 	{
 		super(X, Y, FlxG.width, "", Constants.STATISTICS_FONT_SIZE, LEFT, true, Constants.STATISTICS_BORDER_SIZE);
 
-
 		this.scrollFactor.set();
 
 		if (statisticType == null) {

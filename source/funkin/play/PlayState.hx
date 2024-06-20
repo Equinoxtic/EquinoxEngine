@@ -857,7 +857,7 @@ class PlayState extends MusicBeatState
 		hudGroupExcluded = new FlxTypedGroup<FlxSprite>();
 		add(hudGroupExcluded);
 
-		statsHUD = new StatisticsHUD(this, 0, FlxG.height * 0.83, Constants.STATISTICS_HUD_SIZE);
+		statsHUD = new StatisticsHUD(this, 0, FlxG.height * 0.85, Constants.STATISTICS_HUD_SIZE);
 		statsHUD.x += 25;
 		statsHUD.scrollFactor.set();
 		hudGroupInfo.add(statsHUD);

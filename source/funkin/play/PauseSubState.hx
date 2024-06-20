@@ -1,5 +1,6 @@
 package funkin.play;
 
+import funkin.play.song.Chart.ParseType;
 import flixel.group.FlxGroup.FlxTypedGroupIterator;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -211,7 +212,7 @@ class PauseSubState extends MusicBeatSubstate
 				if (menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) {
 					var name:String = PlayState.SONG.song;
 					var poop = Highscore.formatSong(name, curSelected);
-					PlayState.SONG = Song.loadFromJson(poop, name);
+					PlayState.SONG = Chart.loadChartData(name, difficultyChoices[curSelected].toLowerCase(), ParseType.SONG);
 					PlayState.storyDifficulty = curSelected;
 					MusicBeatState.resetState();
 					FlxG.sound.music.volume = 0;

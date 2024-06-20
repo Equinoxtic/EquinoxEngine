@@ -5339,9 +5339,9 @@ class PlayState extends MusicBeatState
 		playerIcons.forEach(function(icon:HealthIcon) {
 			icon.bopToBeat(
 				curBeat,
-				Math.round((Constants.ICON_BOP_BEATMOD / 2) + (PlayState.SONG_METADATA.beatMod / 2)),
+				PlayState.SONG_METADATA.beatMod,
 				Constants.ICON_BOP_INTENSITY,
-				Constants.ICON_BOP_INTENSITY_BEAT
+				Constants.ICON_BOP_INTENSITY_ON_BEAT
 			);
 		});
 

@@ -101,21 +101,6 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X = 42;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
-	/*
-	public static var ratingStuff:Array<Dynamic> = [
-		['You Suck!', 0.2], //From 0% to 19%
-		['Shit', 0.4], //From 20% to 39%
-		['Bad', 0.5], //From 40% to 49%
-		['Bruh', 0.6], //From 50% to 59%
-		['Meh', 0.69], //From 60% to 68%
-		['Nice', 0.7], //69%
-		['Good', 0.8], //From 70% to 79%
-		['Great', 0.9], //From 80% to 89%
-		['Sick!', 1], //From 90% to 99%
-		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
-	];
-	*/
-
 	//event variables
 	private var isCameraOnForcedPos:Bool = false;
 
@@ -5536,7 +5521,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	// public var ratingName:String = '?';
 	public var ratingPercent:Float = 1.0;
 	public var ratingFC:String = 'N/A';
 	public var ranking:String = 'N/A';
@@ -5549,41 +5533,19 @@ class PlayState extends MusicBeatState
 		var ret:Dynamic = callOnLuas('onRecalculateRating', [], false);
 		if(ret != FunkinLua.Function_Stop)
 		{
-			if(totalPlayed < 1) { //Prevent divide by 0
-				// ratingName = '?';
+			if (totalPlayed < 1) { //Prevent divide by 0
+				ratingPercent = 1.0;
 			} else {
-				// Rating Percent
 				ratingPercent = Math.min(1, Math.max(0, totalNotesHit / totalPlayed));
-				//trace((totalNotesHit / totalPlayed) + ', Total: ' + totalPlayed + ', notes hit: ' + totalNotesHit);
-
-				// Rating Name
-				if(ratingPercent >= 1)
-				{
-					// ratingName = ratingStuff[ratingStuff.length-1][0];
-				}
-				else
-				{
-					/*
-					for (i in 0...ratingStuff.length-1)
-					{
-						if(ratingPercent < ratingStuff[i][1])
-						{
-							ratingName = ratingStuff[i][0];
-							break;
-						}
-					}
-					*/
-				}
 			}
 
 			ratingFC = Ranking.evaluateRatingFC(songMisses, shits, bads, goods, sicks, marvs);
 			ranking = Ranking.evaluateLetterRanking(Ranking.calculateAccuracy(ratingPercent));
 		}
 
-		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
+		updateScore(badHit); // I made this function useless LMFAO -Equinoxtic
 
 		setOnLuas('rating', ratingPercent);
-		// setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		setOnLuas('ranking', ranking);
 	}

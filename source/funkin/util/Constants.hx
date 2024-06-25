@@ -56,7 +56,7 @@ class Constants
 	static function get_VERSION_MAIN():String
 	{
 		#if !debug
-		var version:String = Http.requestStringFrom('https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/gitVersion.txt');
+		var version:String = Http.requestStringFrom('https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/.GIT_VERSION');
 		return '${MAIN_APPLICATION_TITLE} - v${version}';
 		#else
 		return '${MAIN_APPLICATION_TITLE.trim()} - DEV : ${GIT_BRANCH} @ ${GIT_HASH}';

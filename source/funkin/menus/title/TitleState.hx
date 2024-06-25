@@ -141,7 +141,7 @@ class TitleState extends MusicBeatState
 		#if (CHECK_FOR_UPDATES && !debug)
 		if(Preferences.checkForUpdates && !closedState) {
 			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/gitVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/Equinoxtic/EquinoxEngine/master/.GIT_VERSION.txt");
 
 			http.onData = function (data:String)
 			{
@@ -171,7 +171,7 @@ class TitleState extends MusicBeatState
 		#if TITLE_SCREEN_EASTER_EGG
 		if (FlxG.save.data.psychDevsEasterEgg == null) FlxG.save.data.psychDevsEasterEgg = ''; //Crash prevention
 		switch(FlxG.save.data.psychDevsEasterEgg.toUpperCase())
-		{
+		{s
 			case 'SHADOW':
 				titleJSON.gfx += 210;
 				titleJSON.gfy += 40;

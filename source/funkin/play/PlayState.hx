@@ -3211,9 +3211,11 @@ class PlayState extends MusicBeatState
 			lerpAmplitude = FlxMath.lerp(lerpAmplitude, 0.0005, elapsed * noteWiggleAmplitudeDecay);
 		}
 
-		FlxG.watch.addQuick("secShit", curSection);
-		FlxG.watch.addQuick("beatShit", curBeat);
-		FlxG.watch.addQuick("stepShit", curStep);
+		#if (debug)
+		FlxG.watch.addQuick("Current Section", curSection);
+		FlxG.watch.addQuick("Current Beat", curBeat);
+		FlxG.watch.addQuick("Current Step", curStep);
+		#end
 
 		if (!Preferences.noReset && controls.RESET && canReset && !inCutscene && startedCountdown && !endingSong) {
 			health = Constants.HEALTH_MIN;

@@ -37,12 +37,12 @@ class DiscordClient
 
 		DiscordRpc.shutdown();
 	}
-	
+
 	public static function shutdown()
 	{
 		DiscordRpc.shutdown();
 	}
-	
+
 	static function onReady()
 	{
 		DiscordRpc.presence({
@@ -50,10 +50,10 @@ class DiscordClient
 			state: null,
 			#if (!debug)
 			largeImageKey: 'equinoxrpc',
-			largeImageText: '${Constants.MAIN_APPLICATION_TITLE}'
+			largeImageText: '${Variables.APPLICATION_TITLE}'
 			#else
 			largeImageKey: 'equinoxrpc_debug',
-			largeImageText: '${Constants.MAIN_APPLICATION_TITLE}: Developer Build'
+			largeImageText: '${Variables.APPLICATION_TITLE}: Developer Build'
 			#end
 		});
 	}
@@ -92,15 +92,15 @@ class DiscordClient
 			state: state,
 			#if (!debug)
 			largeImageKey: 'equinoxrpc',
-			largeImageText: Constants.VERSION_MAIN,
+			largeImageText: Variables.APPLICATION_VERSION,
 			#else
 			largeImageKey: 'equinoxrpc_debug',
-			largeImageText: '${Constants.MAIN_APPLICATION_TITLE} Branch: [${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}]',
+			largeImageText: '${Variables.APPLICATION_TITLE} Branch: [${Variables.GIT_BRANCH} @ ${Variables.GIT_HASH}]',
 			#end
 			smallImageKey : smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp : Std.int(startTimestamp / 1000),
-            endTimestamp : Std.int(endTimestamp / 1000)
+			endTimestamp : Std.int(endTimestamp / 1000)
 		});
 
 		//trace('Discord RPC Updated. Arguments: $details, $state, $smallImageKey, $hasStartTimestamp, $endTimestamp');

@@ -57,9 +57,9 @@ class DebugInfoState extends MusicBeatState
 
 		super.create();
 
-		debugText.text = 'You are now testing a DEBUG build of ${Constants.MAIN_APPLICATION_TITLE}!
+		debugText.text = 'You are now testing a DEBUG build of ${Variables.APPLICATION_TITLE}!
 		Everything may be unstable and buggy, here be dragons, player!
-		Current Branch: ${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH}\n
+		Current Branch: ${Variables.GIT_BRANCH} @ ${Variables.GIT_HASH}\n
 		Press ESC to Exit the Application | Press Enter to Continue\n\nEnjoy! :)
 		';
 

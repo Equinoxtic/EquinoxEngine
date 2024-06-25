@@ -17,7 +17,7 @@ class DebugText extends flixel.group.FlxSpriteGroup
 
 		this.instance = instance;
 
-		var debugText:flixel.text.FlxText = new flixel.text.FlxText(0, 0, FlxG.width, 'You are testing a DEBUG build of ${Constants.MAIN_APPLICATION_TITLE}', fontSize);
+		var debugText:flixel.text.FlxText = new flixel.text.FlxText(0, 0, FlxG.width, 'You are testing a DEBUG build of ${Variables.APPLICATION_TITLE}', fontSize);
 		debugText.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		debugText.borderSize = 1.3;
 		debugText.alpha = alphaOverride;
@@ -26,7 +26,7 @@ class DebugText extends flixel.group.FlxSpriteGroup
 		debugText.y += yAdd;
 		add(debugText);
 
-		var debugBranch:flixel.text.FlxText = new FlxText(0, 0, FlxG.width, '(Branch: ${Constants.GIT_BRANCH} @ ${Constants.GIT_HASH})', fontSize - 1);
+		var debugBranch:flixel.text.FlxText = new FlxText(0, 0, FlxG.width, '(${Variables.getGroupedGitBranch()})', fontSize - 1);
 		debugBranch.setFormat(Paths.font('phantommuff.ttf'), fontSize - 2, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		debugBranch.borderSize = 1.3;
 		debugBranch.alpha = alphaOverride;

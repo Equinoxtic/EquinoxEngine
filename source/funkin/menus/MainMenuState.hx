@@ -142,10 +142,10 @@ class MainMenuState extends MusicBeatState
 		menuTexts = new FlxTypedGroup<FlxText>();
 		add(menuTexts);
 
-		var engineVersion:FlxText = new FlxText(12, FlxG.height - 44, 0, '${Constants.VERSION_MAIN} | ${Constants.VERSION_PSYCH}', 12);
+		var engineVersion:FlxText = new FlxText(12, FlxG.height - 44, 0, '${Variables.getGroupedVersionString()}', 12);
 		menuTexts.add(engineVersion);
 
-		var fnfVersion:FlxText = new FlxText(12, FlxG.height - 24, 0, '${Constants.VERSION_FUNKIN}', 12);
+		var fnfVersion:FlxText = new FlxText(12, FlxG.height - 24, 0, '${Variables.getFunkinVersionString()}', 12);
 		menuTexts.add(fnfVersion);
 
 		menuTexts.forEach(function(txt:FlxText) {

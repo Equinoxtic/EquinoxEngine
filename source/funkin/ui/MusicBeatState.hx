@@ -182,19 +182,9 @@ class MusicBeatState extends FlxUIState
 		}
 	}
 
-	public function beatHit():Void
-	{
-		#if debug
-		FlxG.watch.addQuick('Beat: ' + curBeat);
-		#end
-	}
+	public function beatHit():Void {}
 
-	public function sectionHit():Void
-	{
-		#if debug
-		FlxG.watch.addQuick('Section: ' + curSection + ', Beat: ' + curBeat + ', Step: ' + curStep);
-		#end
-	}
+	public function sectionHit():Void {}
 
 	function getBeatsOnSection()
 	{

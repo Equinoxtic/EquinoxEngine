@@ -413,6 +413,9 @@ class PlayState extends MusicBeatState
 	var doCameraZoomEvent:Bool = false;
 	var borderCameraTween:FlxTween;
 	var grayscaleTween:FlxTween;
+	var cameraAngleTween:FlxTween;
+
+	public var beatModulo:Int = 4;
 
 	var onPlayerHoldCover:Array<HoldCover> = [];
 
@@ -600,6 +603,8 @@ class PlayState extends MusicBeatState
 		 * Song Settings / Metadata.
 		 */
 		SongLoader.loadSongSettings(PlayState.SONG.song);
+
+		beatModulo = PlayState.SONG_METADATA.beatMod;
 
 		#if LUA_ALLOWED
 		luaDebugGroup = new FlxTypedGroup<DebugLuaText>();
@@ -3830,9 +3835,12 @@ class PlayState extends MusicBeatState
 						borderCameraTween.cancel();
 					}
 
-					borderCameraTween = GlobalTweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration / playbackRate, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
-						borderCameraTween = null;
-					}});
+					borderCameraTween = GlobalTweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration / playbackRate, {
+						ease: FlxEaseUtil.getFlxEaseByString(ease),
+						onComplete: function(_) {
+							borderCameraTween = null;
+						}
+					});
 
 					borderCameraTween.start();
 				}
@@ -4040,6 +4048,61 @@ class PlayState extends MusicBeatState
 					});
 					songSpeedTween.start();
 				}
+
+			case 'Change Beat Modulo':
+				var beatMod:Int = 4;
+				if (!Math.isNaN(Std.parseInt(value1)) && Std.parseInt(value1) > 0) {
+					beatMod = Std.parseInt(value1);
+				}
+				beatModulo = beatMod;
+
+			case 'Tween Camera Angle':
+				var angle:Float = 0.0;
+				var duration:Float = 1.0;
+				var delay:Float = 0.0;
+				var ease:String = "sineInOut";
+
+				if (value1 != null) {
+					var split:Array<String> = value1.split(',');
+
+					if (split[0] != null)
+						angle = Std.parseFloat(split[0].trim());
+					if (split[1] != null)
+						duration = Std.parseFloat(split[1].trim());
+					if (split[2] != null)
+						delay = Std.parseFloat(split[2].trim());
+				}
+
+				if (value2 != null) {
+					ease = Std.string(value2.trim());
+				}
+
+				if (!Math.isNaN(angle) && !Math.isNaN(duration) && !Math.isNaN(delay)) {
+					if (angle < 0.0)
+						angle = 0.0;
+					if (duration < 0.0)
+						duration = 0.0;
+					if (delay < 0.0)
+						delay = 0.0;
+				}
+
+				if (ease == null && ease == "") {
+					ease = "sineInOut";
+				}
+
+				if (cameraAngleTween != null) {
+					cameraAngleTween.cancel();
+				}
+
+				cameraAngleTween =  GlobalTweenClass.tween(FlxG.camera, {angle: angle}, duration, {
+					startDelay: delay,
+					ease: FlxEaseUtil.getFlxEaseByString(ease),
+					onComplete: function(_:FlxTween):Void {
+						cameraAngleTween = null;
+					}
+				});
+
+				cameraAngleTween.start();
 
 			case 'Set Property':
 				var killMe:Array<String> = value1.split('.');
@@ -5278,7 +5341,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Camera zooms to the beat.
 		 */
-		cameraZoomToTheBeat(PlayState.SONG_METADATA.beatMod);
+		cameraZoomToTheBeat(beatModulo);
 
 		/**
 		 * Icon-Bop function.
@@ -5286,7 +5349,7 @@ class PlayState extends MusicBeatState
 		playerIcons.forEach(function(icon:HealthIcon) {
 			icon.bopToBeat(
 				curBeat,
-				PlayState.SONG_METADATA.beatMod,
+				beatModulo,
 				Constants.ICON_BOP_INTENSITY,
 				Constants.ICON_BOP_INTENSITY_ON_BEAT
 			);

@@ -128,6 +128,11 @@ class ChartingState extends MusicBeatState
 		],
 
 		[
+			'Tween Camera Angle',
+			"Tween the camera's angle.\n\nVALUE 1: The angle, the duration, and\nthe delay of the tween.\n[DEFAULT: 0.0, 1.0, 0.0]\n\nVALUE 2: The ease of the tween.\n[DEFAULT: cubeOut]"
+		],
+
+		[
 			'Camera Flash',
 			"VALUE 1: The strength, duration, and delay\nof the flash.\n[DEFAULT: 1.0, 0.8, 0.0]\n\nVALUE 2: The ease of the flash.\n[DEFAULT: linear]"
 		],

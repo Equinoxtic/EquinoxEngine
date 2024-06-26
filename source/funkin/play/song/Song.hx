@@ -98,7 +98,7 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:String, ?isEventFile:Null<Bool> = false, ?isMappedAnimJson:Null<Bool> = false):SwagSong
 	{
 		var rawJson = null;
-		
+
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 
 		var songPath:String = 'charts/${formattedFolder}/difficulties/${jsonInput}';
@@ -158,7 +158,7 @@ class Song
 			FlxG.log.add('Skipping mapped character anims check.');
 		}
 		#end
-		
+
 		#if MODS_ALLOWED
 		var moddyFile:String = Paths.modsJson(songPath);
 		if(FileSystem.exists(moddyFile)) {

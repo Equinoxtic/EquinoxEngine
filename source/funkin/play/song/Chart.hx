@@ -113,17 +113,8 @@ class Chart
 		if (OpenFLAssets.exists(Paths.json(filePath)))
 		#end
 		{
-			#if (debug)
-			FlxG.log.add('Loaded ${filePath}!');
-			#end
 			return filePath;
 		}
-		#if (debug)
-		else
-		{
-			FlxG.log.warn('Failed to load ${filePath}!');
-		}
-		#end
 
 		return "";
 	}

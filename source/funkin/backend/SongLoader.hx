@@ -1,5 +1,6 @@
 package funkin.backend;
 
+import funkin.play.song.Chart.ParseType;
 import funkin.play.notes.Note.EventNote;
 import openfl.utils.Assets as OpenFlAssets;
 
@@ -79,7 +80,7 @@ class SongLoader
 			if (OpenFlAssets.exists(Paths.json(songDataPath)))
 			#end
 			{
-				PlayState.SONG_DATA = SongData.loadSongData(song);
+				PlayState.SONG_DATA = Chart.loadChartData(song, 'songdata', ParseType.DATA);
 			}
 			else
 			{

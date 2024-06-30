@@ -24,38 +24,10 @@ class SongData
 	public var stringExtra:String;
 
 	/**
-	 * Load a song's information/data file.
-	 * @param song The song to load.
+	 * Parses the json of the song's "songdata.json" file.
+	 * @param j The JSON file to parse.
 	 * @return SongDataJson
 	 */
-	public static function loadSongData(song:String):SongDataJson
-	{
-		if (song == null || song == '')
-			return null;
-
-		var j = null;
-
-		final f:String = Paths.formatToSongPath(song);
-
-		var p:String = 'charts/${f}/songdata/songdata${FunkinSound.erectModeSuffix(false)}';
-		
-		#if MODS_ALLOWED
-		var m:String = Paths.modsJson(p);
-		if (FileSystem.exists(m))
-			j = File.getContent(m).trim();
-		#end
-
-		if (j == null)
-			#if sys j = File.getContent(Paths.json(p).trim()); #else j = Assets.getText(Paths.json(p).trim()); #end
-
-		while (!j.endsWith('}'))
-			j = j.substr(0, j.length - 1);
-
-		var sj:Dynamic = parseData(j);
-
-		return sj;
-	}
-
 	public static function parseData(j:String):SongDataJson
 	{
 		var s:SongDataJson = cast Json.parse(j).song_data;

@@ -30,42 +30,11 @@ class SongSettings
 	public var hasNoteWiggle:Bool = false;
 	public var beatMod:Int = 4;
 
-	public static function loadSongSettings(song:String):SongSettingsJSON
-	{
-		if (song == null || song == "")
-			return null;
-
-		var JSON = null;
-
-		final songPath:String = Paths.formatToSongPath(song);
-
-		var filePath:String = 'charts/${songPath}/metadata${FunkinSound.erectModeSuffix()}';
-
-		#if MODS_ALLOWED
-		var modFile:String = Paths.modsJson(filePath);
-		if (FileSystem.exists(modFile)) {
-			JSON = File.getContent(modFile).trim();
-		}
-		#end
-
-		if (JSON == null)
-		{
-			#if (sys)
-			JSON = File.getContent(Paths.json(filePath).trim());
-			#else
-			JSON = Assets.getText(Paths.json(filePath).trim());
-			#end
-		}
-
-		while (!JSON.endsWith("}")) {
-			JSON = JSON.substr(0, JSON.length - 1);
-		}
-
-		var ParsedJSON = parseData(JSON);
-
-		return ParsedJSON;
-	}
-
+	/**
+	 * Parses the json of the song's "metadata.json" file.
+	 * @param json The JSON file to parse.
+	 * @return SongSettingsJSON
+	 */
 	public static function parseData(json:Null<String>):SongSettingsJSON
 	{
 		var data:SongSettingsJSON = cast Json.parse(json).metadata;

@@ -41,10 +41,23 @@ class FunkinSound
 	{
 		if (songToLoad != null)
 		{
-			if (needsVoices) {
-				voicesPlayer = new FlxSound().loadEmbedded(Paths.playerVoices(songToLoad, 0), false);
-				voicesOpponent = new FlxSound().loadEmbedded(Paths.playerVoices(songToLoad, 1), false);
-			} else {
+			if (needsVoices)
+			{
+				var playerVox:Dynamic = Paths.playerVoices(songToLoad, 0);
+				var opponentVox:Dynamic = Paths.playerVoices(songToLoad, 1);
+
+				voicesPlayer = new FlxSound();
+				if (FunkinUtil.soundExists(playerVox)) {
+					voicesPlayer = new FlxSound().loadEmbedded(playerVox, false);
+				}
+
+				voicesOpponent = new FlxSound();
+				if (FunkinUtil.soundExists(opponentVox)) {
+					voicesOpponent = new FlxSound().loadEmbedded(opponentVox, false);
+				}
+			}
+			else
+			{
 				voicesPlayer = new FlxSound();
 				voicesOpponent = new FlxSound();
 			}
@@ -445,7 +458,7 @@ class FunkinSoundChartEditor
 			loadedString += '\n\t    * SONG: ${song.toUpperCase()} - ${FunkinUtil.difficultyString().toUpperCase()}';
 
 			vocalsPlayer = new FlxSound();
-			if (checkSoundExists(filePlayer))
+			if (FunkinUtil.soundExists(filePlayer))
 			{
 				vocalsPlayer = new FlxSound().loadEmbedded(filePlayer);
 				loadedString += '\n\t    * BF VOCALS LOADED!';
@@ -453,7 +466,7 @@ class FunkinSoundChartEditor
 			FlxG.sound.list.add(vocalsPlayer);
 
 			vocalsOpponent = new FlxSound();
-			if (checkSoundExists(fileOpponent))
+			if (FunkinUtil.soundExists(fileOpponent))
 			{
 				vocalsOpponent = new FlxSound().loadEmbedded(fileOpponent);
 				loadedString += '\n\t    * DAD VOCALS LOADED!';
@@ -1079,13 +1092,5 @@ class FunkinSoundChartEditor
 				{ease: tweenEase}
 			);
 		}
-	}
-
-	private static function checkSoundExists(file:Null<Dynamic>):Bool
-	{
-		if (file != null) {
-			return (Std.isOfType(file, Sound) || OpenFlAssets.exists(file));
-		}
-		return false;
 	}
 }

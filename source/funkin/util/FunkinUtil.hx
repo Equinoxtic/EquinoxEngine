@@ -1,7 +1,8 @@
 package funkin.util;
 
+import openfl.media.Sound;
 import flixel.FlxG;
-import openfl.utils.Assets;
+import openfl.utils.Assets as OpenFLAssets;
 import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
@@ -83,6 +84,7 @@ class FunkinUtil
 
 		return daList;
 	}
+
 	public static function listFromString(string:String):Array<String>
 	{
 		var daList:Array<String> = [];
@@ -95,6 +97,7 @@ class FunkinUtil
 
 		return daList;
 	}
+
 	public static function dominantColor(sprite:flixel.FlxSprite):Int{
 		var countByColor:Map<Int, Int> = [];
 		for(col in 0...sprite.frameWidth){
@@ -131,7 +134,15 @@ class FunkinUtil
 		return dumbArray;
 	}
 
-	//uhhhh does this even work at all? i'm starting to doubt
+	public static function soundExists(file:Null<Dynamic>):Bool {
+		if (file != null) {
+			return (Std.isOfType(file, Sound) || OpenFLAssets.exists(file));
+		}
+		return false;
+	}
+
+	// uhhhh does this even work at all? i'm starting to doubt
+	// its not a void function you dumb idiot
 	public static function precacheSound(sound:String, ?library:String = null):Void {
 		Paths.sound(sound, library);
 	}

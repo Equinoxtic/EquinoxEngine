@@ -512,13 +512,7 @@ class PlayState extends MusicBeatState
 		grayscale = new Grayscale();
 		grayscale.strength = 0.0;
 
-		if (Preferences.shaders)
-		{
-			for (camera in shaderCameraGroup)
-			{
-				camera.setFilters([new ShaderFilter(grayscale.shader)]);
-			}
-		}
+		ShaderUtil.setShadersToCameraGroup(shaderCameraGroup, [new ShaderFilter(grayscale.shader)]);
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 		grpHoldCovers = new FlxTypedGroup<HoldCover>();
@@ -1061,6 +1055,16 @@ class PlayState extends MusicBeatState
 			startCountdown();
 		}
 		RecalculateRating();
+
+		/**
+		 * Shader filters set / create for specific stages.
+		 */
+		switch (curStage) {
+			case 'philly':
+				ShaderUtil.setShadersToCameraGroup(shaderCameraGroup, [new ShaderFilter(grayscale.shader), new ShaderFilter(aberrationEffect.shader)]);
+			case 'school' | 'schoolEvil':
+				ShaderUtil.setShadersToCameraGroup(shaderCameraGroup, [new ShaderFilter(grayscale.shader), new ShaderFilter(vcrEffect.shader)]);
+		}
 
 		if (Preferences.hitsoundVolume > 0) {
 			precacheList.set('hitsound', 'sound');
@@ -2986,17 +2990,12 @@ class PlayState extends MusicBeatState
 		}
 
 		/**
-		 * Shaders checks and other stuff.
+		 * Shader updates / update calls.
 		 */
 		 if (Preferences.shaders)
 		{
 			switch (curStage) {
-				case 'philly':
-					camHUD.setFilters([new ShaderFilter(aberrationEffect.shader)]);
-					camGame.setFilters([new ShaderFilter(aberrationEffect.shader)]);
 				case 'school' | 'schoolEvil':
-					camHUD.setFilters([new ShaderFilter(vcrEffect.shader)]);
-					camGame.setFilters([new ShaderFilter(vcrEffect.shader)]);
 					vcrEffect.update(elapsed);
 			}
 

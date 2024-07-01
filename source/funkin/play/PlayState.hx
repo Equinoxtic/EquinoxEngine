@@ -233,6 +233,7 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var borderCam:FlxCamera;
+	public var camRating:FlxCamera;
 	public var camExternalInfo:FlxCamera;
 	public var camOther:FlxCamera;
 	public var camStrum:FlxCamera;
@@ -469,6 +470,7 @@ class PlayState extends MusicBeatState
 
 		camGame = new FlxCamera();
 		borderCam = new FlxCamera();
+		camRating = new FlxCamera();
 		camHUD = new FlxCamera();
 		camStrum = new FlxCamera();
 		camSus = new FlxCamera();
@@ -477,6 +479,7 @@ class PlayState extends MusicBeatState
 		camOther = new FlxCamera();
 
 		borderCam.bgColor.alpha = 0;
+		camRating.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;
 		camStrum.bgColor.alpha = 0;
 		camSus.bgColor.alpha = 0;
@@ -486,6 +489,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(borderCam, false);
+		FlxG.cameras.add(camRating, false);
 		FlxG.cameras.add(camStrum, false);
 		FlxG.cameras.add(camSus, false);
 		FlxG.cameras.add(camNotes, false);
@@ -495,11 +499,14 @@ class PlayState extends MusicBeatState
 
 		shaderCameraGroup.push(camGame);
 		shaderCameraGroup.push(camHUD);
+		shaderCameraGroup.push(camRating);
 		shaderCameraGroup.push(camSus);
 		shaderCameraGroup.push(camStrum);
 		shaderCameraGroup.push(camNotes);
 
 		camHUD.zoom = Constants.CAMERA_HUD_ZOOM;
+		camRating.zoom = 0.8;
+		camRating.setPosition(575, 250);
 
 		aberrationEffect = new ChromaticAberration(0.0);
 
@@ -4525,8 +4532,15 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note);
 		}
 
-		var scorePopUp:ScorePopUp = new ScorePopUp(this, 0, 0, daRating, combo, (showCombo && !daRating.comboBreak), showTally);
-		scorePopUp.cameras = [camHUD];
+		var scorePopUp:ScorePopUp =
+			new ScorePopUp(
+				this,
+				daRating,
+				combo,
+				(showCombo && !daRating.comboBreak),
+				showTally
+			);
+
 		insert(members.indexOf(strumLineNotes), scorePopUp);
 	}
 

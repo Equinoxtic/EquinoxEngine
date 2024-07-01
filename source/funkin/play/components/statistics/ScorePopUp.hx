@@ -1,5 +1,7 @@
 package funkin.play.components.statistics;
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.play.scoring.Rating;
 import funkin.tweens.GlobalTweenClass;
 import funkin.play.components.rating.ComboSprite;
@@ -19,9 +21,9 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 	private var _showsTallyCounter:Bool;
 	private var _showsCombo:Bool;
 
-	public function new(instance:FlxBasic, ?X:Float = 0.0, ?Y:Float = 0.0, ?rating:Null<Rating>, ?combo:Null<Int>, ?showCombo:Bool = false, ?showTallyCounter:Bool = true):Void
+	public function new(instance:FlxBasic, ?rating:Null<Rating>, ?combo:Null<Int>, ?showCombo:Bool = false, ?showTallyCounter:Bool = true):Void
 	{
-		super(X, Y);
+		super(0, 0);
 
 		if (instance == null) {
 			instance = this;
@@ -41,6 +43,7 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 		this._showsCombo = showCombo;
 
 		scrollFactor.set();
+		cameras = [PlayState.instance.camRating];
 		visible = (!Preferences.hideHud);
 
 		_showScorePopUp();
@@ -55,7 +58,7 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 		offsetText.x = FlxG.width * 0.35;
 
 		var ratingSprite:RatingSprite = new RatingSprite(_currentRating);
-		ratingSprite.x = offsetText.x - 40;
+		ratingSprite.x = offsetText.x - 50;
 		ratingSprite.y -= 20;
 		add(ratingSprite);
 
@@ -106,7 +109,6 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 			startDelay: Constants.NUMERICAL_SCORE_DELAY / PlayState.instance.playbackRate,
 			onComplete: function(_) {
 				offsetText.destroy();
-				this.destroy();
 			}
 		});
 	}

@@ -5,6 +5,12 @@ import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import funkin.input.Controls;
 
+enum PreferenceActionType
+{
+	SAVE;
+	LOAD;
+}
+
 class Preferences
 {
 	public static var downScroll:Bool = false;
@@ -105,51 +111,93 @@ class Preferences
 		//trace(defaultKeys);
 	}
 
-	public static function saveSettings() {
-		FlxG.save.data.downScroll = downScroll;
-		FlxG.save.data.middleScroll = middleScroll;
+	private static function _preferenceAction(_actionType:Null<PreferenceActionType>):Void
+	{
+		if (_actionType == null) {
+			return;
+		}
+
+		final preferencesArray:Array<Dynamic> = [
+			/**
+			 * Graphics, shaders, and performance Settings.
+			 */
+			[FlxG.save.data.globalAntialiasing, 			globalAntialiasing],
+			[FlxG.save.data.showFPS, 						showFPS],
+			[FlxG.save.data.lowQuality, 					lowQuality],
+			[FlxG.save.data.shaders, 						shaders],
+			[FlxG.save.data.framerate, 						framerate],
+
+			/**
+			 * Gameplay Settings.
+			 */
+			[FlxG.save.data.downScroll, 					downScroll],
+			[FlxG.save.data.middleScroll, 					middleScroll],
+			[FlxG.save.data.noteMissSounds, 				noteMissSounds],
+			[FlxG.save.data.opponentStrumsMiddleScroll, 	opponentStrumsMiddleScroll],
+			[FlxG.save.data.arrowHSV, 						arrowHSV],
+			[FlxG.save.data.noteOffset, 					noteOffset],
+			[FlxG.save.data.noteSplashes, 					noteSplashes],
+			[FlxG.save.data.ghostTapping, 					ghostTapping],
+			[FlxG.save.data.comboOffset, 					comboOffset],
+			[FlxG.save.data.noReset, 						noReset],
+
+			/**
+			 * Visuals, UI, and effects.
+			 */
+			[FlxG.save.data.flashing, 						flashing],
+			[FlxG.save.data.camZooms, 						camZooms],
+			[FlxG.save.data.hideHud, 						hideHud],
+			[FlxG.save.data.timeBarType, 					timeBarType],
+			[FlxG.save.data.healthBarAlpha, 				healthBarAlpha],
+			[FlxG.save.data.showJudgementCounter, 			showJudgementCounter],
+			[FlxG.save.data.detailedJudgementInfo, 			detailedJudgementInfo],
+			[FlxG.save.data.showGameplayInfo, 				showGameplayInfo],
+			[FlxG.save.data.noWatermark, 					noWatermark],
+			[FlxG.save.data.directionalCameraMovement, 		directionalCameraMovement],
+			[FlxG.save.data.fontFace, 						fontFace],
+
+			/**
+			 * Ratings and offsets.
+			 */
+			[FlxG.save.data.ratingOffset, 					ratingOffset],
+			[FlxG.save.data.marvWindow, 					marvWindow],
+			[FlxG.save.data.sickWindow, 					sickWindow],
+			[FlxG.save.data.goodWindow, 					goodWindow],
+			[FlxG.save.data.badWindow, 						badWindow],
+			[FlxG.save.data.safeFrames, 					safeFrames],
+			[FlxG.save.data.controllerMode, 				controllerMode],
+			[FlxG.save.data.hitsoundVolume, 				hitsoundVolume],
+			[FlxG.save.data.pauseMusic, 					pauseMusic],
+			[FlxG.save.data.checkForUpdates, 				checkForUpdates]
+		];
+
+		if (_actionType.equals(PreferenceActionType.SAVE)) {
+			trace('Saving Prefences...');
+			for (i in 0...preferencesArray.length) {
+				preferencesArray[i][0] = preferencesArray[i][1];
+			}
+		} else if (_actionType.equals(PreferenceActionType.LOAD)) {
+			trace('Loading Preferences...');
+			for (i in 0...preferencesArray.length) {
+				if (preferencesArray[i][0] != null) {
+					preferencesArray[i][1] = preferencesArray[i][0];
+				}
+			}
+		}
+
+		// No Reflect shit, I just like and love to make my own implementations :sunglasses:
+	}
+
+	public static function saveSettings():Void
+	{
 		// FlxG.save.data.opponentStrums = opponentStrums;
-		FlxG.save.data.opponentStrumsMiddleScroll = opponentStrumsMiddleScroll;
-		FlxG.save.data.noteMissSounds = noteMissSounds;
-		FlxG.save.data.showFPS = showFPS;
-		FlxG.save.data.flashing = flashing;
-		FlxG.save.data.globalAntialiasing = globalAntialiasing;
-		FlxG.save.data.noteSplashes = noteSplashes;
-		FlxG.save.data.lowQuality = lowQuality;
-		FlxG.save.data.shaders = shaders;
-		FlxG.save.data.framerate = framerate;
 		//FlxG.save.data.cursing = cursing;
 		//FlxG.save.data.violence = violence;
-		FlxG.save.data.camZooms = camZooms;
-		FlxG.save.data.noteOffset = noteOffset;
-		FlxG.save.data.hideHud = hideHud;
-		FlxG.save.data.arrowHSV = arrowHSV;
-		FlxG.save.data.ghostTapping = ghostTapping;
-		FlxG.save.data.timeBarType = timeBarType;
-		FlxG.save.data.noReset = noReset;
-		FlxG.save.data.healthBarAlpha = healthBarAlpha;
-		FlxG.save.data.comboOffset = comboOffset;
 		FlxG.save.data.achievementsMap = Achievements.achievementsMap;
 		FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
-
-		FlxG.save.data.ratingOffset = ratingOffset;
-		FlxG.save.data.marvWindow = marvWindow;
-		FlxG.save.data.sickWindow = sickWindow;
-		FlxG.save.data.goodWindow = goodWindow;
-		FlxG.save.data.badWindow = badWindow;
-		FlxG.save.data.safeFrames = safeFrames;
 		FlxG.save.data.gameplaySettings = gameplaySettings;
-		FlxG.save.data.controllerMode = controllerMode;
-		FlxG.save.data.hitsoundVolume = hitsoundVolume;
-		FlxG.save.data.pauseMusic = pauseMusic;
-		FlxG.save.data.checkForUpdates = checkForUpdates;
 
-		FlxG.save.data.showJudgementCounter = showJudgementCounter;
-		FlxG.save.data.detailedJudgementInfo = detailedJudgementInfo;
-		FlxG.save.data.showGameplayInfo = showGameplayInfo;
-		FlxG.save.data.noWatermark = noWatermark;
-		FlxG.save.data.directionalCameraMovement = directionalCameraMovement;
-		FlxG.save.data.fontFace = fontFace;
+		_preferenceAction(PreferenceActionType.SAVE);
 
 		FlxG.save.flush();
 
@@ -157,162 +205,24 @@ class Preferences
 		save.bind('controls_v2', 'ninjamuffin99'); //Placing this in a separate save so that it can be manually deleted without removing your Score and stuff
 		save.data.customControls = keyBinds;
 		save.flush();
-		FlxG.log.add("Settings saved!");
+
+		trace("Player Preferences saved!");
 	}
 
-	public static function loadPrefs() {
-		if(FlxG.save.data.downScroll != null) {
-			downScroll = FlxG.save.data.downScroll;
-		}
-		if(FlxG.save.data.middleScroll != null) {
-			middleScroll = FlxG.save.data.middleScroll;
-		}
-		/*if(FlxG.save.data.opponentStrums != null) {
-			opponentStrums = FlxG.save.data.opponentStrums;
-		}*/
-		if (FlxG.save.data.opponentStrumsMiddleScroll != null) {
-			opponentStrumsMiddleScroll = FlxG.save.data.opponentStrumsMiddleScroll;
-		}
-		if (FlxG.save.data.noteMissSounds != null) {
-			noteMissSounds = FlxG.save.data.noteMissSounds;
-		}
-		if(FlxG.save.data.showFPS != null) {
-			showFPS = FlxG.save.data.showFPS;
-			if(Main.fpsVar != null) {
-				Main.fpsVar.visible = showFPS;
-			}
-		}
-		if(FlxG.save.data.flashing != null) {
-			flashing = FlxG.save.data.flashing;
-		}
-		if(FlxG.save.data.globalAntialiasing != null) {
-			globalAntialiasing = FlxG.save.data.globalAntialiasing;
-		}
-		if(FlxG.save.data.noteSplashes != null) {
-			noteSplashes = FlxG.save.data.noteSplashes;
-		}
-		if(FlxG.save.data.lowQuality != null) {
-			lowQuality = FlxG.save.data.lowQuality;
-		}
-		if(FlxG.save.data.shaders != null) {
-			shaders = FlxG.save.data.shaders;
-		}
-		if(FlxG.save.data.framerate != null) {
-			framerate = FlxG.save.data.framerate;
-			if(framerate > FlxG.drawFramerate) {
-				FlxG.updateFramerate = framerate;
-				FlxG.drawFramerate = framerate;
-			} else {
-				FlxG.drawFramerate = framerate;
-				FlxG.updateFramerate = framerate;
-			}
-		}
-		/*if(FlxG.save.data.cursing != null) {
-			cursing = FlxG.save.data.cursing;
-		}
-		if(FlxG.save.data.violence != null) {
-			violence = FlxG.save.data.violence;
-		}*/
-		if(FlxG.save.data.camZooms != null) {
-			camZooms = FlxG.save.data.camZooms;
-		}
-		if(FlxG.save.data.hideHud != null) {
-			hideHud = FlxG.save.data.hideHud;
-		}
-		if(FlxG.save.data.noteOffset != null) {
-			noteOffset = FlxG.save.data.noteOffset;
-		}
-		if(FlxG.save.data.arrowHSV != null) {
-			arrowHSV = FlxG.save.data.arrowHSV;
-		}
-		if(FlxG.save.data.ghostTapping != null) {
-			ghostTapping = FlxG.save.data.ghostTapping;
-		}
-		if(FlxG.save.data.timeBarType != null) {
-			timeBarType = FlxG.save.data.timeBarType;
-		}
-		if(FlxG.save.data.noReset != null) {
-			noReset = FlxG.save.data.noReset;
-		}
-		if(FlxG.save.data.healthBarAlpha != null) {
-			healthBarAlpha = FlxG.save.data.healthBarAlpha;
-		}
-		if(FlxG.save.data.comboOffset != null) {
-			comboOffset = FlxG.save.data.comboOffset;
-		}
+	public static function loadPrefs():Void
+	{
+		_preferenceAction(PreferenceActionType.LOAD);
 
-		if(FlxG.save.data.ratingOffset != null) {
-			ratingOffset = FlxG.save.data.ratingOffset;
-		}
-		if(FlxG.save.data.marvWindow != null) {
-			marvWindow = FlxG.save.data.marvWindow;
-		}
-		if(FlxG.save.data.sickWindow != null) {
-			sickWindow = FlxG.save.data.sickWindow;
-		}
-		if(FlxG.save.data.goodWindow != null) {
-			goodWindow = FlxG.save.data.goodWindow;
-		}
-		if(FlxG.save.data.badWindow != null) {
-			badWindow = FlxG.save.data.badWindow;
-		}
-		if(FlxG.save.data.safeFrames != null) {
-			safeFrames = FlxG.save.data.safeFrames;
-		}
-		if(FlxG.save.data.controllerMode != null) {
-			controllerMode = FlxG.save.data.controllerMode;
-		}
-		if(FlxG.save.data.hitsoundVolume != null) {
-			hitsoundVolume = FlxG.save.data.hitsoundVolume;
-		}
-		if(FlxG.save.data.pauseMusic != null) {
-			pauseMusic = FlxG.save.data.pauseMusic;
-		}
-		if(FlxG.save.data.gameplaySettings != null)
+		_toggleFPSCounter(showFPS);
+		_setFramerate(framerate);
+
+		if (FlxG.save.data.gameplaySettings != null)
 		{
 			var savedMap:Map<String, Dynamic> = FlxG.save.data.gameplaySettings;
 			for (name => value in savedMap)
 			{
 				gameplaySettings.set(name, value);
 			}
-		}
-
-		// flixel automatically saves your volume!
-		if(FlxG.save.data.volume != null)
-		{
-			FlxG.sound.volume = FlxG.save.data.volume;
-		}
-		if (FlxG.save.data.mute != null)
-		{
-			FlxG.sound.muted = FlxG.save.data.mute;
-		}
-		if (FlxG.save.data.checkForUpdates != null)
-		{
-			checkForUpdates = FlxG.save.data.checkForUpdates;
-		}
-
-		if (FlxG.save.data.showJudgementCounter != null) {
-			showJudgementCounter = FlxG.save.data.showJudgementCounter;
-		}
-
-		if (FlxG.save.data.detailedJudgementInfo != null) {
-			detailedJudgementInfo = FlxG.save.data.detailedJudgementInfo;
-		}
-
-		if (FlxG.save.data.showGameplayInfo != null) {
-			showGameplayInfo = FlxG.save.data.showGameplayInfo;
-		}
-
-		if (FlxG.save.data.noWatermark != null) {
-			noWatermark = FlxG.save.data.noWatermark;
-		}
-
-		if (FlxG.save.data.directionalCameraMovement != null) {
-			directionalCameraMovement = FlxG.save.data.directionalCameraMovement;
-		}
-
-		if (FlxG.save.data.fontFace != null) {
-			fontFace = FlxG.save.data.fontFace;
 		}
 
 		var save:FlxSave = new FlxSave();
@@ -324,6 +234,33 @@ class Preferences
 			}
 			reloadControls();
 		}
+
+		trace("Player Preferences Loaded!");
+	}
+
+	private static function _setFramerate(framerate:Int):Void
+	{
+		if (framerate <= 0) {
+			framerate = 60;
+		}
+
+		if (framerate > FlxG.drawFramerate) {
+			FlxG.updateFramerate = framerate;
+			FlxG.drawFramerate = framerate;
+		} else {
+			FlxG.drawFramerate = framerate;
+			FlxG.updateFramerate = framerate;
+		}
+
+		trace("Set framerate: " + framerate);
+	}
+
+	private static function _toggleFPSCounter(showFPS:Bool):Void
+	{
+		if (Main.fpsVar != null) {
+			Main.fpsVar.visible = showFPS;
+		}
+		trace("Show FPS Counter: " + showFPS);
 	}
 
 	inline public static function getGameplaySetting(name:String, defaultValue:Dynamic):Dynamic {

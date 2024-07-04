@@ -57,13 +57,18 @@ class Achievements {
 
 	public static function loadAchievements():Void {
 		if(FlxG.save.data != null) {
-			if(FlxG.save.data.achievementsMap != null) {
+			if (FlxG.save.data.achievementsMap != null) {
 				achievementsMap = FlxG.save.data.achievementsMap;
 			}
 			if(henchmenDeath == 0 && FlxG.save.data.henchmenDeath != null) {
 				henchmenDeath = FlxG.save.data.henchmenDeath;
 			}
 		}
+	}
+
+	public static function saveAchievements():Void {
+		FlxG.save.data.achievementsMap = Achievements.achievementsMap;
+		FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
 	}
 }
 

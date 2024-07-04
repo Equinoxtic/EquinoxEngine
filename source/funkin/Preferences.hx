@@ -193,11 +193,11 @@ class Preferences
 		// FlxG.save.data.opponentStrums = opponentStrums;
 		//FlxG.save.data.cursing = cursing;
 		//FlxG.save.data.violence = violence;
-		FlxG.save.data.achievementsMap = Achievements.achievementsMap;
-		FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
 		FlxG.save.data.gameplaySettings = gameplaySettings;
 
 		_preferenceAction(PreferenceActionType.SAVE);
+
+		Achievements.saveAchievements();
 
 		FlxG.save.flush();
 

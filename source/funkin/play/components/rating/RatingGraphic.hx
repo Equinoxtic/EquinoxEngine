@@ -1,11 +1,11 @@
 package funkin.play.components.rating;
 
 import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.tweens.GlobalTweenClass;
 import funkin.play.scoring.Rating;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
+import funkin.util.EaseUtil;
 
 class RatingGraphic extends FlxSprite
 {
@@ -67,7 +67,7 @@ class RatingGraphic extends FlxSprite
 	{
 		GlobalTweenClass.tween(this, { alpha: 0 }, duration / rate, {
 			startDelay: delay / rate,
-			ease: FlxEaseUtil.getFlxEaseByString("cubeOut"),
+			ease: EaseUtil.getFlxEaseByString("cubeOut"),
 			onComplete: function(_:FlxTween) {
 				destroy();
 			}

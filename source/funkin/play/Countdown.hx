@@ -2,10 +2,10 @@ package funkin.play;
 
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.tweens.GlobalTweenClass;
 import flixel.FlxSprite;
 import flixel.FlxBasic;
+import funkin.util.EaseUtil;
 
 class Countdown extends flixel.group.FlxSpriteGroup
 {
@@ -125,14 +125,14 @@ class Countdown extends flixel.group.FlxSpriteGroup
 			sprite.scale.set((wSpriteSize * PlayState.daPixelZoom) + scaleAdd, (hSpriteSize * PlayState.daPixelZoom) + scaleAdd);
 		}
 
-		GlobalTweenClass.tween(sprite, {alpha: 0.0}, Conductor.crochet / 1000, {startDelay: 0.085 / PlayState.instance.playbackRate, ease: FlxEaseUtil.getFlxEaseByString('cubeOut')});
+		GlobalTweenClass.tween(sprite, {alpha: 0.0}, Conductor.crochet / 1000, {startDelay: 0.085 / PlayState.instance.playbackRate, ease: EaseUtil.getFlxEaseByString('cubeOut')});
 
 		GlobalTweenClass.tween(sprite, {
 				"scale.x": defultScale, "scale.y": defultScale
 			},
 			Conductor.crochet / 1000, {
 				startDelay: 0.035 / PlayState.instance.playbackRate,
-				ease: FlxEaseUtil.getFlxEaseByString('cubeOut'),
+				ease: EaseUtil.getFlxEaseByString('cubeOut'),
 				onComplete: function(_:FlxTween):Void {
 					remove(sprite);
 					sprite.destroy();

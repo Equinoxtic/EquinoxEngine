@@ -7,10 +7,9 @@ import flixel.addons.transition.FlxTransitionableState as Transition;
 import flixel.FlxSprite as Sprite;
 import flixel.text.FlxText as Text;
 import flixel.tweens.FlxTween as Tween;
-import flixel.tweens.FlxEase.FlxEaseUtil as EaseUtil;
 import flixel.util.FlxTimer as Timer;
 import flixel.system.FlxSound as Sound;
-
+import funkin.util.EaseUtil;
 import funkin.util.Constants;
 
 #if sys

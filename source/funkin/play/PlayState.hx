@@ -4,7 +4,7 @@ import funkin.play.components.statistics.ScorePopUp;
 import funkin.graphics.effects.FlashEffect;
 import funkin.play.song.Chart.ParseType;
 import funkin.play.song.SongSettings.SongSettingsJSON;
-import flixel.tweens.FlxEase.FlxEaseUtil;
+import funkin.util.EaseUtil;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import funkin.api.discord.Discord.DiscordClient;
@@ -3848,7 +3848,7 @@ class PlayState extends MusicBeatState
 					}
 
 					borderCameraTween = GlobalTweenClass.tween(borderCam, {zoom: 1.0 - (1.0 + (amount * -0.25)) + 1.0}, duration / playbackRate, {
-						ease: FlxEaseUtil.getFlxEaseByString(ease),
+						ease: EaseUtil.getFlxEaseByString(ease),
 						onComplete: function(_) {
 							borderCameraTween = null;
 						}
@@ -3892,7 +3892,7 @@ class PlayState extends MusicBeatState
 						}
 
 						grayscaleTween = GlobalTweenClass.tween(grayscale, {strength: strength}, duration / playbackRate, {
-							ease: FlxEaseUtil.getFlxEaseByString(ease),
+							ease: EaseUtil.getFlxEaseByString(ease),
 							onComplete: function(_:FlxTween) {
 								grayscaleTween = null;
 							}
@@ -4108,7 +4108,7 @@ class PlayState extends MusicBeatState
 
 				cameraAngleTween =  GlobalTweenClass.tween(FlxG.camera, {angle: angle}, duration, {
 					startDelay: delay,
-					ease: FlxEaseUtil.getFlxEaseByString(ease),
+					ease: EaseUtil.getFlxEaseByString(ease),
 					onComplete: function(_:FlxTween):Void {
 						cameraAngleTween = null;
 					}

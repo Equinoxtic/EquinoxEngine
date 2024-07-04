@@ -1,7 +1,6 @@
 package funkin.graphics.effects;
 
 import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.tweens.GlobalTweenClass;
 import flixel.FlxSprite;
 
@@ -28,7 +27,7 @@ class FlashEffect extends FlxSprite
 		alpha = strength;
 
 		GlobalTweenClass.tween(this, { alpha: 0.0 }, duration, {
-			ease: FlxEaseUtil.getFlxEaseByString(easing),
+			ease: EaseUtil.getFlxEaseByString(easing),
 			startDelay: delay,
 			onComplete: function(_:FlxTween):Void {
 				this.destroy();

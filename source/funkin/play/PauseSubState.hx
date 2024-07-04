@@ -17,10 +17,10 @@ import flixel.FlxCamera;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import openfl.utils.Assets as OpenFlAssets;
-import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.input.Controls.Control;
 import funkin.play.scoring.*;
 import funkin.sound.FunkinSound;
+import funkin.util.EaseUtil;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -349,16 +349,16 @@ class PauseSubState extends MusicBeatSubstate
 	private function tweenPauseMenuAlpha(?toAlpha:Float, ?duration:Float, ?ease:Null<String>, ?closeState:Bool = false):Void
 	{
 		grpMenuShit.forEach(function(spr:FlxSprite) {
-			FlxTween.tween(spr, {alpha: toAlpha}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease)});
+			FlxTween.tween(spr, {alpha: toAlpha}, duration, {ease: EaseUtil.getFlxEaseByString(ease)});
 		});
 
 		if (closeState) {
 			pauseTexts.forEach(function(txt:FlxText) {
-				FlxTween.tween(txt, {alpha: toAlpha}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease)});
+				FlxTween.tween(txt, {alpha: toAlpha}, duration, {ease: EaseUtil.getFlxEaseByString(ease)});
 			});
 		}
 
-		FlxTween.tween(bg, {alpha: ((toAlpha >= 0.6) ? toAlpha - 0.4 : toAlpha)}, duration, {ease: FlxEaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
+		FlxTween.tween(bg, {alpha: ((toAlpha >= 0.6) ? toAlpha - 0.4 : toAlpha)}, duration, {ease: EaseUtil.getFlxEaseByString(ease), onComplete: function(_) {
 			new FlxTimer().start(0.1, function(_) {
 				if (closeState) {
 					closePauseMenu();

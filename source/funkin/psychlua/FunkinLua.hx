@@ -55,6 +55,7 @@ import funkin.input.Controls;
 import funkin.play.notes.StrumNote;
 import funkin.play.scoring.Highscore;
 import funkin.play.components.dialogue.DialogueBoxPsych;
+import funkin.util.EaseUtil;
 
 using StringTools;
 
@@ -3273,7 +3274,7 @@ class FunkinLua {
 	{
 		if (ease.trim() != null && ease.trim() != '')
 		{
-			return flixel.tweens.FlxEase.FlxEaseUtil.getFlxEaseByString(ease);
+			return EaseUtil.getFlxEaseByString(ease);
 		}
 		return FlxEase.linear;
 	}

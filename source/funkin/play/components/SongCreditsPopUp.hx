@@ -2,11 +2,11 @@ package funkin.play.components;
 
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase.FlxEaseUtil;
 import funkin.tweens.GlobalTweenClass;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import funkin.util.EaseUtil;
 
 class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 {
@@ -68,12 +68,12 @@ class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 		}
 
 		GlobalTweenClass.tween(this, { x: 0 }, Constants.CREDITS_HUD_DURATION, {
-			ease: FlxEaseUtil.getFlxEaseByString('cubeOut')
+			ease: EaseUtil.getFlxEaseByString('cubeOut')
 		});
 
 		animationTimer = new FlxTimer().start(Constants.CREDITS_HUD_DELAY, function(_:FlxTimer) {
 			 GlobalTweenClass.tween(this, { x: FlxG.width * -2 }, Constants.CREDITS_HUD_DURATION, {
-				ease:FlxEaseUtil.getFlxEaseByString('circInOut'),
+				ease:EaseUtil.getFlxEaseByString('circInOut'),
 				onComplete: function(_:FlxTween) {
 					this.destroy();
 				}

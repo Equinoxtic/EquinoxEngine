@@ -44,17 +44,17 @@ class Constants
 	/**
 	 * The decay of the icon bop.
 	 */
-	public static final ICON_BOP_BEATDECAY:Float = 6.5;
+	public static final ICON_BOP_BEATDECAY:Float = 6.0;
 
 	/**
 	 * The intensity of the icon bop.
 	 */
-	public static final ICON_BOP_INTENSITY:Float = 1.185;
+	public static final ICON_BOP_INTENSITY:Float = 1.1;
 
 	/**
 	 * The intensity of the icon bop every MOD beats.
 	 */
-	public static final ICON_BOP_INTENSITY_ON_BEAT:Float = ICON_BOP_INTENSITY + 0.25;
+	public static final ICON_BOP_INTENSITY_ON_BEAT:Float = ICON_BOP_INTENSITY * 1.125;
 
 	/**
 	 * ============================= NOTE VALUES =============================

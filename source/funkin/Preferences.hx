@@ -236,9 +236,9 @@ class Preferences
 		return (gameplaySettings.exists(name) ? gameplaySettings.get(name) : defaultValue);
 	}
 
-	inline public static function getPlayerPreference(key:String, value:Dynamic):Dynamic {
+	inline public static function getPlayerPreference(key:String, ?value:Dynamic):Dynamic {
 		if (!playerPreferences.exists(key)) {
-			return null;
+			return value;
 		}
 		return playerPreferences.get(key);
 	}

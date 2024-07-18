@@ -40,7 +40,7 @@ class Preferences
 		'noteSplashes' => true,
 		'noteOffset' => 0,
 		'noResetButton' => false,
-		'controllerMode' => true,
+		'controllerMode' => false,
 
 		/**
 		 * Visuals, UI Settings, and Camera Settings.

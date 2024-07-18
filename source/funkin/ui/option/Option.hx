@@ -88,7 +88,7 @@ class Option
 				if(num > -1) {
 					curOption = num;
 				}
-	
+
 			case 'percent':
 				displayFormat = '%v%';
 				changeValue = 0.01;
@@ -109,11 +109,11 @@ class Option
 
 	public function getValue():Dynamic
 	{
-		return Reflect.getProperty(Preferences, variable);
+		return Reflect.getProperty(Preferences.playerPreferences, variable);
 	}
 	public function setValue(value:Dynamic)
 	{
-		Reflect.setProperty(Preferences, variable, value);
+		Reflect.setProperty(Preferences.playerPreferences, variable, value);
 	}
 
 	public function setChild(child:Alphabet)

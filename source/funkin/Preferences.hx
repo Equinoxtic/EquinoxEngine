@@ -13,32 +13,70 @@ enum PreferenceActionType
 
 class Preferences
 {
-	public static var downScroll:Bool = false;
-	public static var middleScroll:Bool = false;
-	// public static var opponentStrums:Bool = true;
-	public static var opponentStrumsMiddleScroll:Bool = false;
-	public static var noteMissSounds:Bool = true;
-	public static var showFPS:Bool = true;
-	public static var flashing:Bool = true;
-	public static var globalAntialiasing:Bool = true;
-	public static var noteSplashes:Bool = true;
-	public static var lowQuality:Bool = false;
-	public static var shaders:Bool = true;
-	public static var framerate:Int = 60;
-	public static var cursing:Bool = true;
-	public static var violence:Bool = true;
-	public static var camZooms:Bool = true;
-	public static var hideHud:Bool = false;
-	public static var noteOffset:Int = 0;
-	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
-	public static var ghostTapping:Bool = true;
-	public static var timeBarType:String = 'Default';
-	public static var noReset:Bool = false;
-	public static var healthBarAlpha:Float = 1;
-	public static var controllerMode:Bool = false;
-	public static var hitsoundVolume:Float = 0;
-	public static var pauseMusic:String = 'Tea Time';
-	public static var checkForUpdates:Bool = true;
+	public static var arrowHSV:Array<Array<Int>> = [
+		[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]
+	];
+	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
+
+	public static var playerPreferences:Map<String, Dynamic> = [
+		/**
+		 * Graphics, shaders, and performance Settings.
+		*/
+		'antialiasing' => true,
+		'showFramerate' => true,
+		'lowQuality' => true,
+		'enableShaders' => true,
+		'framerateAmount' => 60,
+
+		/**
+		 * Gameplay settings, and Note settings.
+		 */
+		'downScroll' => false,
+		'middleScroll' => false,
+		'opponentNotesOnMiddleScroll' => false,
+		'missSounds' => true,
+		'hitsoundVolume' => 0.0,
+		'ghostTapping' => true,
+		'noteSplashes' => true,
+		'noteOffset' => 0,
+		'noResetButton' => false,
+		'controllerMode' => true,
+
+		/**
+		 * Visuals, UI Settings, and Camera Settings.
+		 */
+		'flashingLights' => true,
+		'cameraZooming' => true,
+		'hidePlayerHUD' => false,
+		'showJudgementCounter' => true,
+		'detailedJudgementCounter' => true,
+		'showGameplayInfo' => true,
+		'hideWatermark' => false,
+		'directionalCameraMovement' => true,
+		'fontFace' => "Default",
+		'timeBarDisplay' => "Default",
+		'healthBarTransparency' => 1.0,
+		'pauseMusic' => "Breakfast",
+		'playPauseMusic' => true,
+
+		/**
+		 * Ratings, windows, and offsets.
+		 */
+		'ratingOffset' => 0,
+		'marvWindow' => 20,
+		'sickWindow' => 30,
+		'goodWindow' => 75,
+		'badWindow' => 95,
+		'safeFrames' => 10,
+
+		/**
+		 * Universal game settings.
+		 */
+		'updateChecking' => true,
+		'violence' => true,
+		'cursing' => true
+	];
+
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative',
@@ -59,25 +97,6 @@ class Preferences
 		'botplay' => false,
 		'opponentplay' => false
 	];
-
-	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
-	public static var ratingOffset:Int = 0;
-	public static var marvWindow:Int = 20;
-	public static var sickWindow:Int = 30;
-	public static var goodWindow:Int = 75;
-	public static var badWindow:Int = 95;
-	public static var safeFrames:Float = 10;
-
-	/**
-	 * Solarium Engine Options
-	 */
-
-	public static var detailedJudgementInfo:Bool = false;
-	public static var showJudgementCounter:Bool = false;
-	public static var showGameplayInfo:Bool = false;
-	public static var noWatermark:Bool = false;
-	public static var directionalCameraMovement:Bool = true;
-	public static var fontFace:String = 'Default';
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -117,70 +136,15 @@ class Preferences
 			return;
 		}
 
-		final preferencesArray:Array<Dynamic> = [
-			/**
-			 * Graphics, shaders, and performance Settings.
-			 */
-			[FlxG.save.data.globalAntialiasing, 			globalAntialiasing],
-			[FlxG.save.data.showFPS, 						showFPS],
-			[FlxG.save.data.lowQuality, 					lowQuality],
-			[FlxG.save.data.shaders, 						shaders],
-			[FlxG.save.data.framerate, 						framerate],
-
-			/**
-			 * Gameplay Settings.
-			 */
-			[FlxG.save.data.downScroll, 					downScroll],
-			[FlxG.save.data.middleScroll, 					middleScroll],
-			[FlxG.save.data.noteMissSounds, 				noteMissSounds],
-			[FlxG.save.data.opponentStrumsMiddleScroll, 	opponentStrumsMiddleScroll],
-			[FlxG.save.data.arrowHSV, 						arrowHSV],
-			[FlxG.save.data.noteOffset, 					noteOffset],
-			[FlxG.save.data.noteSplashes, 					noteSplashes],
-			[FlxG.save.data.ghostTapping, 					ghostTapping],
-			[FlxG.save.data.comboOffset, 					comboOffset],
-			[FlxG.save.data.noReset, 						noReset],
-
-			/**
-			 * Visuals, UI, and effects.
-			 */
-			[FlxG.save.data.flashing, 						flashing],
-			[FlxG.save.data.camZooms, 						camZooms],
-			[FlxG.save.data.hideHud, 						hideHud],
-			[FlxG.save.data.timeBarType, 					timeBarType],
-			[FlxG.save.data.healthBarAlpha, 				healthBarAlpha],
-			[FlxG.save.data.showJudgementCounter, 			showJudgementCounter],
-			[FlxG.save.data.detailedJudgementInfo, 			detailedJudgementInfo],
-			[FlxG.save.data.showGameplayInfo, 				showGameplayInfo],
-			[FlxG.save.data.noWatermark, 					noWatermark],
-			[FlxG.save.data.directionalCameraMovement, 		directionalCameraMovement],
-			[FlxG.save.data.fontFace, 						fontFace],
-
-			/**
-			 * Ratings and offsets.
-			 */
-			[FlxG.save.data.ratingOffset, 					ratingOffset],
-			[FlxG.save.data.marvWindow, 					marvWindow],
-			[FlxG.save.data.sickWindow, 					sickWindow],
-			[FlxG.save.data.goodWindow, 					goodWindow],
-			[FlxG.save.data.badWindow, 						badWindow],
-			[FlxG.save.data.safeFrames, 					safeFrames],
-			[FlxG.save.data.controllerMode, 				controllerMode],
-			[FlxG.save.data.hitsoundVolume, 				hitsoundVolume],
-			[FlxG.save.data.pauseMusic, 					pauseMusic],
-			[FlxG.save.data.checkForUpdates, 				checkForUpdates]
-		];
-
 		if (_actionType.equals(PreferenceActionType.SAVE)) {
 			trace('Saving Prefences...');
-			for (i in 0...preferencesArray.length) {
-				preferencesArray[i][0] = preferencesArray[i][1];
-			}
+			FlxG.save.data.playerPreferences = playerPreferences;
 		} else if (_actionType.equals(PreferenceActionType.LOAD)) {
 			trace('Loading Preferences...');
-			for (i in 0...preferencesArray.length) {
-				if (preferencesArray[i][0] != null) {
-					preferencesArray[i][1] = preferencesArray[i][0];
+			if (FlxG.save.data.playerPreferences != null) {
+				var loadedPreferences:Map<String, Dynamic> = FlxG.save.data.playerPreferences;
+				for (preferenceKey => preferenceValue in loadedPreferences) {
+					playerPreferences.set(preferenceKey, preferenceValue);
 				}
 			}
 		}
@@ -190,9 +154,8 @@ class Preferences
 
 	public static function saveSettings():Void
 	{
-		// FlxG.save.data.opponentStrums = opponentStrums;
-		//FlxG.save.data.cursing = cursing;
-		//FlxG.save.data.violence = violence;
+		FlxG.save.data.arrowHSV = arrowHSV;
+
 		FlxG.save.data.gameplaySettings = gameplaySettings;
 
 		_preferenceAction(PreferenceActionType.SAVE);
@@ -202,7 +165,7 @@ class Preferences
 		FlxG.save.flush();
 
 		var save:FlxSave = new FlxSave();
-		save.bind('controls_v2', 'ninjamuffin99'); //Placing this in a separate save so that it can be manually deleted without removing your Score and stuff
+		save.bind('controls_v2', 'ninjamuffin99'); // Placing this in a separate save so that it can be manually deleted without removing your Score and stuff
 		save.data.customControls = keyBinds;
 		save.flush();
 
@@ -211,16 +174,22 @@ class Preferences
 
 	public static function loadPrefs():Void
 	{
+		if (FlxG.save.data.arrowHSV != null) {
+			arrowHSV = FlxG.save.data.arrowHSV;
+		}
+
+		if (FlxG.save.data.comboOffset != null) {
+			comboOffset = FlxG.save.data.comboOffset;
+		}
+
 		_preferenceAction(PreferenceActionType.LOAD);
 
-		_toggleFPSCounter(showFPS);
-		_setFramerate(framerate);
+		_toggleFPSCounter(playerPreferences.get('showFramerate'));
+		_setFramerate(playerPreferences.get('framerate'));
 
-		if (FlxG.save.data.gameplaySettings != null)
-		{
+		if (FlxG.save.data.gameplaySettings != null) {
 			var savedMap:Map<String, Dynamic> = FlxG.save.data.gameplaySettings;
-			for (name => value in savedMap)
-			{
+			for (name => value in savedMap) {
 				gameplaySettings.set(name, value);
 			}
 		}
@@ -238,7 +207,7 @@ class Preferences
 		trace("Player Preferences Loaded!");
 	}
 
-	private static function _setFramerate(framerate:Int):Void
+	private static function _setFramerate(?framerate:Int = 60):Void
 	{
 		if (framerate <= 0) {
 			framerate = 60;
@@ -255,7 +224,7 @@ class Preferences
 		trace("Set framerate: " + framerate);
 	}
 
-	private static function _toggleFPSCounter(showFPS:Bool):Void
+	private static function _toggleFPSCounter(?showFPS:Bool = true):Void
 	{
 		if (Main.fpsVar != null) {
 			Main.fpsVar.visible = showFPS;
@@ -264,7 +233,14 @@ class Preferences
 	}
 
 	inline public static function getGameplaySetting(name:String, defaultValue:Dynamic):Dynamic {
-		return /*PlayState.isStoryMode ? defaultValue : */ (gameplaySettings.exists(name) ? gameplaySettings.get(name) : defaultValue);
+		return (gameplaySettings.exists(name) ? gameplaySettings.get(name) : defaultValue);
+	}
+
+	inline public static function getPlayerPreference(key:String, value:Dynamic):Dynamic {
+		if (!playerPreferences.exists(key)) {
+			return null;
+		}
+		return playerPreferences.get(key);
 	}
 
 	public static function reloadControls() {

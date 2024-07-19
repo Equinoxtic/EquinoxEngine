@@ -74,14 +74,17 @@ class FPS extends TextField
 		currentTime += deltaTime;
 		times.push(currentTime);
 
-		while (times[0] < currentTime - 1000)
-		{
+		while (times[0] < currentTime - 1000) {
 			times.shift();
 		}
 
+		var _framerate:Int = Preferences.getPlayerPreference('framerate', 60);
+
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
-		if (currentFPS > Preferences.framerate) currentFPS = Preferences.framerate;
+		if (currentFPS > _framerate) {
+			currentFPS = _framerate;
+		}
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
@@ -89,7 +92,7 @@ class FPS extends TextField
 
 			var gameMemory:Float = 0;
 			var memoryPeak:Float = 0;
-			
+
 			#if openfl
 			gameMemory = Math.round(System.totalMemory / 1024 / 1024 * 100) / 100;
 			if (gameMemory > memoryPeak) memoryPeak = gameMemory;
@@ -97,9 +100,9 @@ class FPS extends TextField
 			#end
 
 			textColor = 0xFFFFFFFF;
-			if (gameMemory > 2000 || currentFPS <= Preferences.framerate / 2) {
+			if (gameMemory > 2000 || currentFPS <= _framerate / 2) {
 				textColor = 0xE67E3E;
-			} else if (gameMemory > 3000 || currentFPS <= Preferences.framerate / 4) {
+			} else if (gameMemory > 3000 || currentFPS <= _framerate / 4) {
 				textColor = 0xBF3434;
 			}
 

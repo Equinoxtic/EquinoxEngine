@@ -89,16 +89,6 @@ class Main extends Sprite
 		 */
 		Preferences.loadDefaultKeys();
 
-		/**
-		 * Load all player preferences/settings.
-		 */
-		Preferences.loadPrefs();
-
-		/**
-		 * Initialize global variables for player preferences/settings.
-		 */
-		GlobalSettings.initializeSettings();
-
 		// Thanks to @Quackerona for sending a patch to this one
 		var game:FlxGame = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
 
@@ -109,6 +99,16 @@ class Main extends Sprite
 		game._customSoundTray = funkin.ui.display.FunkinSoundTray;
 
 		addChild(game);
+
+		/**
+		 * Load all player preferences/settings.
+		 */
+		Preferences.loadPrefs();
+
+		/**
+		 * Initialize global variables for player preferences/settings.
+		 */
+		GlobalSettings.initializeSettings();
 
 		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);

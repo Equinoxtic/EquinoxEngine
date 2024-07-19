@@ -1,13 +1,10 @@
 package funkin.ui.debug;
 
-import flixel.FlxCamera;
-import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
-import funkin.util.Constants;
 import funkin.tweens.GlobalTweenClass;
 
 using StringTools;

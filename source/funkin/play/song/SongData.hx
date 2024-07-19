@@ -2,13 +2,6 @@ package funkin.play.song;
 
 import haxe.Json;
 
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-#end
-
-import funkin.sound.FunkinSound;
-
 using StringTools;
 
 typedef SongDataJson = {

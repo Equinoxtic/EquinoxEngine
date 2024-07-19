@@ -2,9 +2,7 @@ package funkin.play.components.rating;
 
 import flixel.tweens.FlxTween;
 import funkin.tweens.GlobalTweenClass;
-import funkin.play.scoring.Rating;
 import flixel.FlxSprite;
-import flixel.FlxCamera;
 import funkin.util.EaseUtil;
 
 class RatingGraphic extends FlxSprite

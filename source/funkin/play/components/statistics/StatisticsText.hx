@@ -1,9 +1,6 @@
 package funkin.play.components.statistics;
 
 import funkin.play.scoring.Highscore;
-import funkin.tweens.GlobalTweenClass;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
 
 using StringTools;
 
@@ -79,8 +76,6 @@ class StatisticsText extends FunkinText
 				}
 		}
 	}
-
-	private var missTween:FlxTween;
 
 	override function update(elapsed:Float):Void
 	{

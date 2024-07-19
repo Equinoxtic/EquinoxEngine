@@ -1,6 +1,5 @@
 package funkin.psychlua;
 
-import openfl.display.BitmapData;
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.LuaL;

@@ -1,12 +1,10 @@
 package funkin.ui;
 
-import flixel.addons.transition.FlxTransitionSprite;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import flixel.FlxCamera;
-import funkin.play.song.Conductor.BPMChangeEvent;
 import funkin.input.Controls;
 
 class MusicBeatState extends FlxUIState

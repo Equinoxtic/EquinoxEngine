@@ -1,9 +1,5 @@
 package funkin.menus;
 
-import flixel.addons.display.FlxBackdrop;
-import funkin.util.Constants;
-import haxe.Http;
-import openfl.filters.ShaderFilter;
 #if desktop
 import funkin.api.discord.Discord.DiscordClient;
 #end
@@ -13,14 +9,12 @@ import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.math.FlxMath;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import lime.app.Application;
 import funkin.play.player.Achievements;
 import flixel.input.keyboard.FlxKey;
 

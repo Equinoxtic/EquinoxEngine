@@ -1,12 +1,6 @@
 package funkin.play.song;
 
-import funkin.sound.FunkinSound;
 import haxe.Json;
-
-#if (sys)
-import sys.io.File;
-import sys.FileSystem;
-#end
 
 using StringTools;
 

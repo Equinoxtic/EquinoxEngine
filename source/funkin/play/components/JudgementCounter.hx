@@ -1,15 +1,10 @@
 package funkin.play.components;
 
-import flixel.FlxCamera;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
 import flixel.FlxBasic;
-import flixel.FlxSprite;
-import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import funkin.ui.display.FunkinText;
-import funkin.util.Constants;
 
 using StringTools;
 

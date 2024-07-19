@@ -2,7 +2,6 @@ package funkin.psychlua;
 
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
-import openfl.filters.ShaderFilter;
 #end
 
 #if sys

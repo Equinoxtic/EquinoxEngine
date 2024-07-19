@@ -2,13 +2,10 @@ package funkin.play;
 
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.FlxSubState;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import funkin.play.character.Boyfriend;
 
 class GameOverSubstate extends MusicBeatSubstate

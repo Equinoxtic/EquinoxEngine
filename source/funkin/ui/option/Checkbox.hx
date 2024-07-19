@@ -1,7 +1,6 @@
 package funkin.ui.option;
 
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 
 class Checkbox extends FlxSprite
 {

@@ -1,7 +1,6 @@
 package funkin.util;
 
 import openfl.filters.BitmapFilter;
-import openfl.filters.ShaderFilter;
 import flixel.FlxCamera;
 
 class ShaderUtil

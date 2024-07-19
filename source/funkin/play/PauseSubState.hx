@@ -1,23 +1,18 @@
 package funkin.play;
 
 import funkin.play.song.Chart.ParseType;
-import flixel.group.FlxGroup.FlxTypedGroupIterator;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.input.keyboard.FlxKey;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import flixel.FlxCamera;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import openfl.utils.Assets as OpenFlAssets;
-import funkin.input.Controls.Control;
 import funkin.play.scoring.*;
 import funkin.sound.FunkinSound;
 import funkin.util.EaseUtil;

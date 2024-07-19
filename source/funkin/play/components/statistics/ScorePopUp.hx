@@ -1,6 +1,5 @@
 package funkin.play.components.statistics;
 
-import flixel.tweens.FlxTween;
 import funkin.play.scoring.Rating;
 import funkin.tweens.GlobalTweenClass;
 import funkin.play.components.rating.ComboSprite;
@@ -10,7 +9,6 @@ import flixel.FlxBasic;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import funkin.util.EaseUtil;
 
 class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 {

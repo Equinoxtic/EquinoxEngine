@@ -1,7 +1,6 @@
 package;
 
 import funkin.util.GlobalSettings;
-import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -21,7 +20,6 @@ import haxe.io.Path;
 import funkin.api.discord.Discord.DiscordClient;
 import sys.FileSystem;
 import sys.io.File;
-import sys.io.Process;
 #end
 
 import funkin.Preferences;

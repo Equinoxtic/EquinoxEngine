@@ -1,9 +1,7 @@
 package funkin.play.components;
 
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
-import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 

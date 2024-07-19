@@ -1,11 +1,8 @@
 package funkin.play.components;
 
 import funkin.ui.display.FunkinText;
-import funkin.util.Constants;
-import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxBasic;
-import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 
 class GameplayInfo extends FlxSpriteGroup

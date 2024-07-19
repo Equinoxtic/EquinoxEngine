@@ -2,19 +2,14 @@ package funkin.play.character;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.effects.FlxTrail;
-import flixel.animation.FlxBaseAnimation;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
 #if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
 #end
-import openfl.utils.AssetType;
 import openfl.utils.Assets;
 import haxe.Json;
-import haxe.format.JsonParser;
 
 import funkin.animateatlas.AtlasFrameMaker;
 import funkin.play.song.Section.SwagSection;

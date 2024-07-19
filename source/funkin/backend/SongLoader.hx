@@ -2,7 +2,6 @@ package funkin.backend;
 
 import funkin.play.song.Chart.ParseType;
 import funkin.play.notes.Note.EventNote;
-import openfl.utils.Assets as OpenFlAssets;
 
 #if sys
 import sys.FileSystem;

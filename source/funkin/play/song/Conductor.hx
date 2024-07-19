@@ -3,12 +3,6 @@ package funkin.play.song;
 import funkin.play.song.Song;
 import funkin.play.scoring.Rating;
 import funkin.play.notes.Note;
-import funkin.Preferences;
-
-/**
- * ...
- * @author
- */
 
 typedef BPMChangeEvent =
 {

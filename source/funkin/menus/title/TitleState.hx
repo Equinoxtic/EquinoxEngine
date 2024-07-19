@@ -448,7 +448,7 @@ class TitleState extends MusicBeatState
 
 				if(titleText != null) titleText.animation.play('press');
 
-				FlxG.camera.flash(GlobalSettings.FLASHING_LIGHTS ? FlxColor.WHITE : 0x4CFFFFFF, 1);
+				FlxG.camera.flash(GlobalSettings.FLASHING_LIGHTS ? FlxColor.WHITE : 0x4CFFFFFF, 1.0, null, true);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 				transitioning = true;
@@ -665,7 +665,7 @@ class TitleState extends MusicBeatState
 					default:
 						remove(ngSpr);
 						remove(credGroup);
-						FlxG.camera.flash(FlxColor.WHITE, 2);
+						FlxG.camera.flash(FlxColor.WHITE, 2, null, true);
 						skippedIntro = true;
 						playJingle = false;
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
@@ -680,7 +680,7 @@ class TitleState extends MusicBeatState
 					{
 						remove(ngSpr);
 						remove(credGroup);
-						FlxG.camera.flash(FlxColor.WHITE, 0.6);
+						FlxG.camera.flash(FlxColor.WHITE, 0.6, null, true);
 						transitioning = false;
 					});
 				}
@@ -688,7 +688,7 @@ class TitleState extends MusicBeatState
 				{
 					remove(ngSpr);
 					remove(credGroup);
-					FlxG.camera.flash(FlxColor.WHITE, 3);
+					FlxG.camera.flash(FlxColor.WHITE, 3, null, true);
 					sound.onComplete = function() {
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
@@ -704,7 +704,7 @@ class TitleState extends MusicBeatState
 				funkySpriteGroup.forEach(function(spr:FlxSprite) {
 					spr.visible = true;
 				});
-				FlxG.camera.flash(FlxColor.WHITE, 4);
+				FlxG.camera.flash(FlxColor.WHITE, 4, null, true);
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) {
 					easteregg = '';

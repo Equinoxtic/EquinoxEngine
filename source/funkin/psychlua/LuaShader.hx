@@ -1,6 +1,6 @@
 package funkin.psychlua;
 
-#if !flash 
+#if !flash
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
 #end
@@ -16,7 +16,7 @@ class LuaShader
 	public static var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
 	public static function createRuntimeShader(name:String):FlxRuntimeShader
 	{
-		if(!Preferences.shaders) return new FlxRuntimeShader();
+		if(!GlobalSettings.SHADERS) return new FlxRuntimeShader();
 
 		#if (!flash && MODS_ALLOWED && sys)
 		if (!runtimeShaders.exists(name) && !initLuaShader(name)) {
@@ -34,7 +34,7 @@ class LuaShader
 
 	public static function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
-		if (!Preferences.shaders) return false;
+		if (!GlobalSettings.SHADERS) return false;
 
 		if (runtimeShaders.exists(name)) {
 			FlxG.log.warn('Shader $name was already initialized!');
@@ -48,7 +48,7 @@ class LuaShader
 
 		for(mod in Paths.getGlobalMods())
 			foldersToCheck.insert(0, Paths.mods(mod + '/shaders/'));
-		
+
 		for (folder in foldersToCheck)
 		{
 			if(FileSystem.exists(folder))

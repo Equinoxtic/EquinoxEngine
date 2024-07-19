@@ -196,30 +196,24 @@ class FunkinLua {
 		set('dadName', PlayState.SONG.player2);
 		set('gfName', PlayState.SONG.gfVersion);
 
-		// Some settings, no jokes
-		set('downscroll', Preferences.downScroll);
-		set('middlescroll', Preferences.middleScroll);
-		set('framerate', Preferences.framerate);
-		set('ghostTapping', Preferences.ghostTapping);
-		set('hideHud', Preferences.hideHud);
-		set('timeBarType', Preferences.timeBarType);
-		// set('scoreZoom', Preferences.scoreZoom);
-		set('cameraZoomOnBeat', Preferences.camZooms);
-		set('flashingLights', Preferences.flashing);
-		set('noteOffset', Preferences.noteOffset);
-		set('healthBarAlpha', Preferences.healthBarAlpha);
-		set('noResetButton', Preferences.noReset);
-		set('lowQuality', Preferences.lowQuality);
-		set('shadersEnabled', Preferences.shaders);
-
-		/**
-		 * Engine Preferences.
-		 */
-		set('showJudgementCounter', Preferences.showJudgementCounter);
-		set('detailedJudgementInfo', Preferences.detailedJudgementInfo);
-		set('showGameplayInfo', Preferences.showGameplayInfo);
-		set('noWatermark', Preferences.noWatermark);
-		set('directionalCameraMovement', Preferences.directionalCameraMovement);
+		set('downscroll', GlobalSettings.DOWNSCROLL);
+		set('middlescroll', GlobalSettings.MIDDLESCROLL);
+		set('framerate', GlobalSettings.FRAMERATE);
+		set('ghostTapping', GlobalSettings.GHOST_TAPPING);
+		set('hideHud', GlobalSettings.HIDE_HUD);
+		set('timeBarType', GlobalSettings.TIME_BAR_DISPLAY);
+		set('cameraZoomOnBeat', GlobalSettings.CAMERA_ZOOMING);
+		set('flashingLights', GlobalSettings.FLASHING_LIGHTS);
+		set('noteOffset', GlobalSettings.NOTE_OFFSET);
+		set('healthBarAlpha', GlobalSettings.HEALTH_BAR_TRANSPARENCY);
+		set('noResetButton', GlobalSettings.NO_RESET);
+		set('lowQuality', GlobalSettings.LOW_QUALITY);
+		set('shadersEnabled', GlobalSettings.SHADERS);
+		set('showJudgementCounter', GlobalSettings.JUDGEMENT_COUNTER);
+		set('detailedJudgementInfo', GlobalSettings.DETAILED_JUDGEMENT_COUNTER);
+		set('showGameplayInfo', GlobalSettings.GAMEPLAY_INFO);
+		set('noWatermark', GlobalSettings.HIDE_WATERMARK);
+		set('directionalCameraMovement', GlobalSettings.DIRECTIONAL_CAMERA_MOVEMENT);
 
 		set('scriptName', scriptName);
 		set('currentModDirectory', Paths.currentModDirectory);
@@ -265,7 +259,7 @@ class FunkinLua {
 
 		// shader shit
 		Lua_helper.add_callback(lua, "initLuaShader", function(name:String, glslVersion:Int = 120) {
-			if(!Preferences.shaders) return false;
+			if(!GlobalSettings.SHADERS) return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
 			return initLuaShader(name, glslVersion);
@@ -276,7 +270,7 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setSpriteShader", function(obj:String, shader:String) {
-			if(!Preferences.shaders) return false;
+			if(!GlobalSettings.SHADERS) return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
 			if(!LuaShader.runtimeShaders.exists(shader) && !initLuaShader(shader))
@@ -1752,7 +1746,7 @@ class FunkinLua {
 			{
 				leSprite.loadGraphic(Paths.image(image));
 			}
-			leSprite.antialiasing = Preferences.globalAntialiasing;
+			leSprite.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
@@ -1762,7 +1756,7 @@ class FunkinLua {
 			var leSprite:ModchartSprite = new ModchartSprite(x, y);
 
 			loadFrames(leSprite, image, spriteType);
-			leSprite.antialiasing = Preferences.globalAntialiasing;
+			leSprite.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 		});
 
@@ -3084,7 +3078,7 @@ class FunkinLua {
 
 	function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
-		if (!Preferences.shaders) return false;
+		if (!GlobalSettings.SHADERS) return false;
 
 		#if (!flash && sys)
 		if(LuaShader.runtimeShaders.exists(name)) {

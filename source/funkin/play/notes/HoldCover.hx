@@ -26,7 +26,7 @@ class HoldCover extends FlxSprite
 
 		setup(X, Y, note);
 
-		antialiasing = Preferences.globalAntialiasing;
+		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		visible = (!PlayState.isPixelStage);
 	}
 

@@ -85,22 +85,15 @@ class OptionsState extends MusicBeatState
 
 		changeSelection();
 
-		/**
-		 * Saves the player's preferences.
-		 */
-		Preferences.saveSettings();
-
-		/**
-		 * Reloads and reinitializes the values for GlobalSettings.hx
-		 */
-		GlobalSettings.initializeSettings();
+		_saveSettings();
 
 		super.create();
 	}
 
-	override function closeSubState() {
+	override function closeSubState()
+	{
 		super.closeSubState();
-		Preferences.saveSettings();
+		_saveSettings();
 	}
 
 	override function update(elapsed:Float) {
@@ -146,5 +139,18 @@ class OptionsState extends MusicBeatState
 			}
 		}
 		FlxG.sound.play(Paths.sound('scrollMenu'));
+	}
+
+	private function _saveSettings():Void
+	{
+		/**
+		 * Saves the player's preferences.
+		 */
+		Preferences.saveSettings();
+
+		/**
+		 * Reloads and reinitializes the values for GlobalSettings.hx
+		 */
+		GlobalSettings.initializeSettings();
 	}
 }

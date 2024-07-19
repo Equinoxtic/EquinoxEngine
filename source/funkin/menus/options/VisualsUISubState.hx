@@ -128,7 +128,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 
 		#if !mobile
-		var option:Option = new Option('FPS Counter',
+		var option:Option = new Option('Show Framerate',
 			'If unchecked, hides FPS Counter.',
 			'showFramerate',
 			'bool',
@@ -155,38 +155,37 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		#end
 
-		/* var option:Option = new Option('Combo Stacking',
-			"If unchecked, Ratings and Combo won't stack, saving on System Memory and making them easier to read",
-			'comboStacking',
-			'bool',
-			true);
-		addOption(option); */
-
 		super();
 	}
 
 	var changedMusic:Bool = false;
 	function onChangePauseMusic()
 	{
-		if(GlobalSettings.PAUSE_MUSIC == 'None')
+		var _pauseMusic:String = Preferences.getPlayerPreference('pauseMusic', "Breakfast");
+		if (_pauseMusic == 'None') {
 			FlxG.sound.music.volume = 0;
-		else
-			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(GlobalSettings.PAUSE_MUSIC)));
-
+		} else {
+			FlxG.sound.playMusic(Paths.music(
+				Paths.formatToSongPath(_pauseMusic))
+			);
+		}
 		changedMusic = true;
 	}
 
 	override function destroy()
 	{
-		if(changedMusic) FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		if (changedMusic) {
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		}
 		super.destroy();
 	}
 
 	#if !mobile
 	function onChangeFPSCounter()
 	{
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = GlobalSettings.SHOW_FRAMERATE;
+		if (Main.fpsVar != null) {
+			Main.fpsVar.visible = Preferences.getPlayerPreference('showFramerate', true);
+		}
 	}
 	#end
 }

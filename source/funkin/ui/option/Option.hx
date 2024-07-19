@@ -109,11 +109,17 @@ class Option
 
 	public function getValue():Dynamic
 	{
+		if (!Preferences.playerPreferences.exists(variable)) {
+			return null;
+		}
 		return Preferences.playerPreferences.get(variable);
 	}
 
 	public function setValue(value:Dynamic):Void
 	{
+		if (!Preferences.playerPreferences.exists(variable)) {
+			return;
+		}
 		Preferences.playerPreferences.set(variable, value);
 	}
 

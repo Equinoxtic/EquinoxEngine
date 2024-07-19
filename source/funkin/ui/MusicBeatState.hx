@@ -122,7 +122,7 @@ class MusicBeatState extends FlxUIState
 	{
 		var lastChange = Conductor.getBPMFromSeconds(Conductor.songPosition);
 
-		var shit = ((Conductor.songPosition - Preferences.noteOffset) - lastChange.songTime) / lastChange.stepCrochet;
+		var shit = ((Conductor.songPosition - GlobalSettings.NOTE_OFFSET) - lastChange.songTime) / lastChange.stepCrochet;
 		curDecStep = lastChange.stepTime + shit;
 		curStep = lastChange.stepTime + Math.floor(shit);
 	}

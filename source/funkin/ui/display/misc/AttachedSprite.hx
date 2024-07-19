@@ -30,7 +30,7 @@ class AttachedSprite extends FlxSprite
 			loadGraphic(Paths.image(file));
 		}
 
-		antialiasing = Preferences.globalAntialiasing;
+		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 
 		scrollFactor.set();
 	}
@@ -46,7 +46,7 @@ class AttachedSprite extends FlxSprite
 				angle = sprTracker.angle + angleAdd;
 			if (copyAlpha)
 				alpha = sprTracker.alpha * alphaMult;
-			if (copyVisible) 
+			if (copyVisible)
 				visible = sprTracker.visible;
 		}
 	}

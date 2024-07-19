@@ -8,7 +8,7 @@ class ShaderUtil
 {
 	public static function setShadersToCameraGroup(cameraList:Null<Array<FlxCamera>>, shaderList:Null<Array<BitmapFilter>>):Void
 	{
-		if (Preferences.shaders)
+		if (GlobalSettings.SHADERS)
 		{
 			if (cameraList == null || shaderList == null) {
 				return;

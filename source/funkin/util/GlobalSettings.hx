@@ -31,6 +31,7 @@ class GlobalSettings
 	public static var PLAY_PAUSE_MUSIC:Bool;
 	public static var NO_RESET:Bool;
 	public static var CONTROLLER_MODE:Bool;
+	public static var FONT_FACE:String;
 	public static var VIOLENCE:Bool;
 	public static var CURSING:Bool;
 	public static var SHADERS:Bool;
@@ -74,6 +75,7 @@ class GlobalSettings
 		PLAY_PAUSE_MUSIC = Preferences.getPlayerPreference('playPauseMusic', true);
 		NO_RESET = Preferences.getPlayerPreference('noResetButton', false);
 		CONTROLLER_MODE = Preferences.getPlayerPreference('controllerMode', false);
+		FONT_FACE = Preferences.getPlayerPreference('fontFace', "Default");
 		VIOLENCE = Preferences.getPlayerPreference('violence', true);
 		CURSING = Preferences.getPlayerPreference('cursing', true);
 		SHADERS = Preferences.getPlayerPreference('enableShaders', true);

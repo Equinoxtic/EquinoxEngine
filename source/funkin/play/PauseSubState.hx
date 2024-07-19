@@ -71,7 +71,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		difficultyChoices.push('BACK');
 
-		playPauseMusic(Preferences.pauseMusic);
+		playPauseMusic(GlobalSettings.PAUSE_MUSIC);
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
@@ -103,7 +103,7 @@ class PauseSubState extends MusicBeatSubstate
 		pauseTexts.forEach(function(txt:FlxText) {
 			txt.updateHitbox();
 			txt.borderSize = 3.5;
-			txt.antialiasing = Preferences.globalAntialiasing;
+			txt.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			txt.alpha = 0;
 			txt.x = FlxG.width - (txt.width + 20);
 		});
@@ -130,12 +130,13 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		pauseMusic = new FlxSound();
 
-		if (musicString != null && OpenFlAssets.exists(Paths.formatToSongPath(Preferences.pauseMusic)) && pauseMusic != null)
+		if (musicString != null && OpenFlAssets.exists(Paths.formatToSongPath(GlobalSettings.PAUSE_MUSIC)) && pauseMusic != null)
 		{
-			if (songName != null)
+			if (songName != null) {
 				pauseMusic.loadEmbedded(Paths.music(songName), true, true);
-			else if (songName != 'None')
+			} else if (songName != 'None') {
 				pauseMusic.loadEmbedded(Paths.music(Paths.formatToSongPath(musicString)), true, true);
+			}
 
 			pauseMusic.volume = 0;
 
@@ -205,7 +206,7 @@ class PauseSubState extends MusicBeatSubstate
 				}
 		}
 
-		if (accepted && (cantUnpause <= 0 || !Preferences.controllerMode))
+		if (accepted && (cantUnpause <= 0 || !GlobalSettings.CONTROLLER_MODE))
 		{
 			if (menuItems == difficultyChoices)
 			{

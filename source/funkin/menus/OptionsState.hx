@@ -84,7 +84,16 @@ class OptionsState extends MusicBeatState
 		add(selectorRight);
 
 		changeSelection();
+
+		/**
+		 * Saves the player's preferences.
+		 */
 		Preferences.saveSettings();
+
+		/**
+		 * Reloads and reinitializes the values for GlobalSettings.hx
+		 */
+		GlobalSettings.initializeSettings();
 
 		super.create();
 	}

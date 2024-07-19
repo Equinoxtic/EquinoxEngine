@@ -1,4 +1,4 @@
-package excluded;
+/* package excluded;
 
 import flixel.util.FlxStringUtil;
 
@@ -77,4 +77,4 @@ class ChartParser
 		}
 		return dopeArray;
 	}
-}
+} */

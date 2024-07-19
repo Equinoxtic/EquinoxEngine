@@ -1,4 +1,4 @@
-package excluded;
+/* package excluded;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -71,4 +71,4 @@ class LatencyState extends FlxState
 
 		super.update(elapsed);
 	}
-}
+} */

@@ -81,6 +81,8 @@ class GlobalSettings
 		CURSING = Preferences.getPlayerPreference('cursing', true);
 		SHADERS = Preferences.getPlayerPreference('enableShaders', true);
 
-		trace("Initialized Settings Class!");
+		#if (debug)
+		FlxG.log.add('Initialized Global Settings!');
+		#end
 	}
 }

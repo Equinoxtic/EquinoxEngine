@@ -48,9 +48,9 @@ class Preferences
 		'flashingLights' => true,
 		'cameraZooming' => true,
 		'hidePlayerHUD' => false,
-		'showJudgementCounter' => true,
-		'detailedJudgementCounter' => true,
-		'showGameplayInfo' => true,
+		'showJudgementCounter' => false,
+		'detailedJudgementCounter' => false,
+		'showGameplayInfo' => false,
 		'hideWatermark' => false,
 		'directionalCameraMovement' => true,
 		'fontFace' => "Default",
@@ -155,6 +155,7 @@ class Preferences
 	public static function saveSettings():Void
 	{
 		FlxG.save.data.arrowHSV = arrowHSV;
+		FlxG.save.data.comboOffset = comboOffset;
 
 		FlxG.save.data.gameplaySettings = gameplaySettings;
 

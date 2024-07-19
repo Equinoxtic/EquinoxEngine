@@ -1,5 +1,6 @@
 package flixel.addons.ui;
 
+import funkin.util.GlobalSettings;
 import flixel.addons.ui.FlxUI.NamedBool;
 import flixel.addons.ui.interfaces.ICursorPointable;
 import flixel.addons.ui.interfaces.IFlxUIButton;
@@ -86,7 +87,7 @@ class FlxUICheckBox extends FlxUIGroup implements ILabeled implements IFlxUIClic
 			box = cast Box;
 		} else {
 			box = new FlxSprite();
-			box.antialiasing = Preferences.globalAntialiasing;
+			box.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			box.setGraphicSize(Std.int(box.width * 1.05), Std.int(box.height * 1.05));
 			box.loadGraphic(Box, true);
 		}
@@ -117,7 +118,7 @@ class FlxUICheckBox extends FlxUIGroup implements ILabeled implements IFlxUIClic
 			mark = cast Check;
 		} else {
 			mark = new FlxSprite();
-			mark.antialiasing = Preferences.globalAntialiasing;
+			mark.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			mark.loadGraphic(Check);
 		}
 

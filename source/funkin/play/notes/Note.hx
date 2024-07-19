@@ -178,11 +178,11 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 		this.inEditor = inEditor;
 
-		x += (Preferences.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
+		x += (GlobalSettings.MIDDLESCROLL ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
-		if(!inEditor) this.strumTime += Preferences.noteOffset;
+		if(!inEditor) this.strumTime += GlobalSettings.NOTE_OFFSET;
 
 		this.noteData = noteData;
 
@@ -212,7 +212,7 @@ class Note extends FlxSprite
 
 			hitsoundDisabled = true;
 
-			if(Preferences.downScroll) flipY = true;
+			if(GlobalSettings.DOWNSCROLL) flipY = true;
 
 			offsetX += width / 2;
 			copyAngle = false;
@@ -313,7 +313,7 @@ class Note extends FlxSprite
 		} else {
 			frames = Paths.getSparrowAtlas(blahblah);
 			loadNoteAnims();
-			antialiasing = Preferences.globalAntialiasing;
+			antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		}
 		if(isSustainNote) {
 			scale.y = lastScaleY;

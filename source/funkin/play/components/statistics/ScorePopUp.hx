@@ -44,7 +44,7 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 
 		scrollFactor.set();
 		cameras = [PlayState.instance.camRating];
-		visible = (!Preferences.hideHud);
+		visible = (!GlobalSettings.HIDE_HUD);
 
 		_showScorePopUp();
 	}

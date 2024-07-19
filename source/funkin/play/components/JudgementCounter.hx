@@ -16,7 +16,7 @@ using StringTools;
 class JudgementCounter extends FlxSpriteGroup
 {
 	private var instance:FlxBasic;
-	
+
 	private var judgementText:FunkinText;
 
 	/**
@@ -44,9 +44,9 @@ class JudgementCounter extends FlxSpriteGroup
 		add(judgementText);
 
 		judgementText.updateHitbox();
-		
+
 		#if (!debug)
-		visible = ((Preferences.showJudgementCounter) ? !Preferences.hideHud : false);
+		visible = ((GlobalSettings.JUDGEMENT_COUNTER) ? !GlobalSettings.HIDE_HUD : false);
 		#end
 	}
 
@@ -55,7 +55,7 @@ class JudgementCounter extends FlxSpriteGroup
 	 */
 	public function updateJudgementCounter():Void
 	{
-		if (Preferences.detailedJudgementInfo)
+		if (GlobalSettings.DETAILED_JUDGEMENT_COUNTER)
 		{
 			judgementText.scale.set(0.97, 0.97);
 			judgementText.text = 'TOTAL HITS: ${PlayState.instance.songHits}\n'

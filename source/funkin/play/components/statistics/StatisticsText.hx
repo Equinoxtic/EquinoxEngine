@@ -59,8 +59,9 @@ class StatisticsText extends FunkinText
 				var value:Int = PlayState.instance.songMisses;
 				if (!Math.isNaN(value) && value >= 0)
 				{
-					if (value >= Constants.GLOBAL_NUMBER_CAP)
+					if (value >= Constants.GLOBAL_NUMBER_CAP) {
 						value = Constants.GLOBAL_NUMBER_CAP;
+					}
 					this.text = 'Misses: ${value}';
 				}
 

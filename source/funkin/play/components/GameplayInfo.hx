@@ -31,11 +31,11 @@ class GameplayInfo extends FlxSpriteGroup
 		super();
 
 		if (songName == null || difficultyString == null || songCredit == null || songText == null) return;
-		
+
 		if (instance == null) {
 			instance = this;
 		}
-		
+
 		this.instance = instance;
 
 		gameplayText = new FunkinText(x, y, FlxG.width, "", fontSize, RIGHT, true);
@@ -48,7 +48,7 @@ class GameplayInfo extends FlxSpriteGroup
 		createGameplayText(songName, difficultyString, songCredit, songText);
 
 		#if (!debug)
-		visible = ((Preferences.showGameplayInfo) ? !Preferences.hideHud : false);
+		visible = ((GlobalSettings.GAMEPLAY_INFO) ? !GlobalSettings.HIDE_HUD : false);
 		#end
 	}
 

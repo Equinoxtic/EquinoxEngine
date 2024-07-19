@@ -892,7 +892,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * GameplayInfo.
 		 */
-		gameplayInfo = new GameplayInfo(this, -15, FlxG.height * 0.9, Constants.GAMEPLAY_INFO_SIZE, 17,
+		gameplayInfo = new GameplayInfo(this, -15, FlxG.height * 0.875, Constants.GAMEPLAY_INFO_SIZE, 17,
 			FunkinUtil.getSongDisplayName(),
 			FunkinUtil.difficultyString().toUpperCase().trim(),
 			PlayState.SONG_DATA.artist,

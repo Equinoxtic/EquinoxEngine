@@ -45,37 +45,21 @@ class GameplayInfo extends FlxSpriteGroup
 
 		gameplayText.updateHitbox();
 
-		createGameplayText(songName, difficultyString, songCredit, songText);
+		_createGameplayText([songName, difficultyString, songCredit, songText]);
 
 		#if (!debug)
 		visible = ((GlobalSettings.GAMEPLAY_INFO) ? !GlobalSettings.HIDE_HUD : false);
 		#end
 	}
 
-	private function createGameplayText(songName:Null<String>, difficultyString:Null<String>, songCredit:Null<String>, songText:Null<String>):Void
+	private function _createGameplayText(textArray:Null<Array<String>>):Void
 	{
-		var nullCheckArray:Array<String> = [];
-		var text:String = '';
-
-		/**
-		 * Make place holder text first just in case if anything returns null.
-		 */
-		gameplayText.text = 'Song\nDifficulty\nArtist\nText';
-
-		nullCheckArray.push(songName);
-		nullCheckArray.push(difficultyString);
-		nullCheckArray.push(songCredit);
-		nullCheckArray.push(songText);
-
-		for (s in 0...nullCheckArray.length) {
-			if (nullCheckArray[s] != null && nullCheckArray[s] != '') {
-				text += '${nullCheckArray[s]}\n';
+		if (textArray != null && textArray.length > 0) {
+			for (i in 0...textArray.length) {
+				gameplayText.text += '${Std.string(textArray[i])}\n';
 			}
+		} else {
+			return;
 		}
-
-		/**
-		 * Finally, update the placeholder text to the current text.
-		 */
-		gameplayText.text = text;
 	}
 }

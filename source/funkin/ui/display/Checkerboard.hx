@@ -30,7 +30,7 @@ class Checkerboard extends FlxBackdrop
 
 	/**
 	 * Create a new Checker Background, uses and extends [``FlxBackdrop``](https://api.haxeflixel.com/flixel/addons/display/FlxBackdrop.html).
-	 * 
+	 *
 	 * @param axes The axes on which to repeat. The default, XY will tile the entire camera.
 	 * @param spacing Amount of spacing between tiles on the X and Y axis.
 	 * @param tileSize The size of each tile checkerboard. Larger sizes may cause performance and loading issues!
@@ -45,17 +45,17 @@ class Checkerboard extends FlxBackdrop
 
 		color = checkerColor;
 		alpha = checkerAlpha;
-		
+
 		if (tileSize == null)
 			tileSize = NORMAL;
 		this.tileSize = tileSize;
-		
+
 		scrollFactor.set(scrollX, scrollY);
 	}
 
 	/**
 	 * Gets the size prefix from a Checkerboard's size type.
-	 * @param tileSize 
+	 * @param tileSize
 	 * @return String
 	 */
 	private function getTileSize(tileSizeType:CheckerboardSizeType = NORMAL):String
@@ -76,15 +76,15 @@ class Checkerboard extends FlxBackdrop
 
 	/**
 	 * Updates and increments the position of the Checkerboard.
-	 * 
+	 *
 	 * (Use this under the ``update()`` function of a state.)
-	 * 
+	 *
 	 * @param ix The amount of increments in the x axis.
 	 * @param iy The amount of increments in the y axis.
 	 */
 	public function updatePosition(ix:Float = 0.47, iy:Float = 0.16):Void
 	{
-		x -= ix / (Preferences.framerate / 60);
-		y -= iy / (Preferences.framerate / 60);
+		x -= ix / (GlobalSettings.FRAMERATE / 60);
+		y -= iy / (GlobalSettings.FRAMERATE / 60);
 	}
 }

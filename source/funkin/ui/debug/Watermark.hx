@@ -30,13 +30,13 @@ class Watermark extends FlxSpriteGroup
 
 		watermarkText = new FlxText(x, y, FlxG.width, '${Variables.getGroupedVersionString()}', fontSize);
 		watermarkText.setFormat(Paths.font('phantommuff.ttf'), fontSize, 0xFFFFFFFF, CENTER, FlxTextBorderStyle.OUTLINE, 0xFF000000);
-		watermarkText.antialiasing = Preferences.globalAntialiasing;
+		watermarkText.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		watermarkText.borderSize = 1.3;
 		watermarkText.alpha = 0.5;
 		add(watermarkText);
 
 		#if (!debug)
-		visible = ((!Preferences.noWatermark) ? !Preferences.hideHud : false);
+		visible = ((!GlobalSettings.HIDE_WATERMARK) ? !GlobalSettings.HIDE_HUD : false);
 		#end
 	}
 

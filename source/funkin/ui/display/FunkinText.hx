@@ -34,7 +34,7 @@ class FunkinText extends FlxText
 		var fontString:String = 'phantommuff';
 		var fontExt:String = 'ttf';
 
-		switch(Preferences.fontFace)
+		switch(GlobalSettings.FONT_FACE)
 		{
 			case 'Default': // Default Equinox Engine font.
 				fontString = 'phantommuff';
@@ -65,7 +65,7 @@ class FunkinText extends FlxText
 			}
 		}
 
-		antialiasing = (Preferences.globalAntialiasing && !PlayState.isPixelStage);
+		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING && !PlayState.isPixelStage);
 	}
 
 	private function _updateFont():Void

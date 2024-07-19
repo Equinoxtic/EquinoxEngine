@@ -54,7 +54,7 @@ class FunkinBG extends FlxSprite
 		updateHitbox();
 		screenCenter();
 		color = bgColor;
-		antialiasing = Preferences.globalAntialiasing;
+		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 
 		this.isFreeplayBG = isFreeplayBG;
 
@@ -103,7 +103,7 @@ class FunkinBG extends FlxSprite
 
 		if (!isFreeplayBG)
 		{
-			if (flickers && Preferences.flashing)
+			if (flickers && GlobalSettings.FLASHING_LIGHTS)
 			{
 				if (controls.ACCEPT) {
 					FlxFlicker.flicker(this, 1.1, 0.15, false);

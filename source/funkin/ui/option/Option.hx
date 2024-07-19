@@ -109,14 +109,15 @@ class Option
 
 	public function getValue():Dynamic
 	{
-		return Reflect.getProperty(Preferences.playerPreferences, variable);
-	}
-	public function setValue(value:Dynamic)
-	{
-		Reflect.setProperty(Preferences.playerPreferences, variable, value);
+		return Preferences.playerPreferences.get(variable);
 	}
 
-	public function setChild(child:Alphabet)
+	public function setValue(value:Dynamic):Void
+	{
+		Preferences.playerPreferences.set(variable, value);
+	}
+
+	public function setChild(child:Alphabet):Void
 	{
 		this.child = child;
 	}

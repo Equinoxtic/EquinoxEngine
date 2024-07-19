@@ -127,14 +127,14 @@ class MainMenuState extends MusicBeatState
 			var scr:Float = (optionShit.length - 4) * 0.35;
 			if(optionShit.length < 6) scr = 0;
 			menuItem.scrollFactor.set(0, scr);
-			menuItem.antialiasing = Preferences.globalAntialiasing;
+			menuItem.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			menuItem.updateHitbox();
 		}
 
 		var bars:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menu/menuBars'));
 		bars.scrollFactor.set();
 		bars.screenCenter();
-		bars.antialiasing = Preferences.globalAntialiasing;
+		bars.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		add(bars);
 
 		FlxG.camera.follow(camFollowPos, null, 1);
@@ -149,7 +149,7 @@ class MainMenuState extends MusicBeatState
 		menuTexts.add(fnfVersion);
 
 		menuTexts.forEach(function(txt:FlxText) {
-			txt.antialiasing = Preferences.globalAntialiasing;
+			txt.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			txt.scrollFactor.set();
 			txt.setFormat(Paths.font('phantommuff.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		});

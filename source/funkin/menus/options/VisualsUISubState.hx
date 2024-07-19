@@ -168,10 +168,10 @@ class VisualsUISubState extends BaseOptionsMenu
 	var changedMusic:Bool = false;
 	function onChangePauseMusic()
 	{
-		if(Preferences.pauseMusic == 'None')
+		if(GlobalSettings.PAUSE_MUSIC == 'None')
 			FlxG.sound.music.volume = 0;
 		else
-			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(Preferences.pauseMusic)));
+			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(GlobalSettings.PAUSE_MUSIC)));
 
 		changedMusic = true;
 	}
@@ -186,7 +186,7 @@ class VisualsUISubState extends BaseOptionsMenu
 	function onChangeFPSCounter()
 	{
 		if(Main.fpsVar != null)
-			Main.fpsVar.visible = Preferences.showFPS;
+			Main.fpsVar.visible = GlobalSettings.SHOW_FRAMERATE;
 	}
 	#end
 }

@@ -64,7 +64,7 @@ class OptionsState extends MusicBeatState
 		bg.updateHitbox();
 
 		bg.screenCenter();
-		bg.antialiasing = Preferences.globalAntialiasing;
+		bg.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		add(bg);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -113,7 +113,7 @@ class OptionsState extends MusicBeatState
 			openSelectedSubstate(options[curSelected]);
 		}
 	}
-	
+
 	function changeSelection(change:Int = 0) {
 		curSelected += change;
 		if (curSelected < 0)

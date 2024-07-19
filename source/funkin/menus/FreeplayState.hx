@@ -110,7 +110,7 @@ class FreeplayState extends MusicBeatState
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-			songText.antialiasing = Preferences.globalAntialiasing;
+			songText.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			songText.isMenuItem = true;
 			songText.targetY = i - curSelected;
 			grpSongs.add(songText);
@@ -124,7 +124,7 @@ class FreeplayState extends MusicBeatState
 
 			Paths.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.antialiasing = Preferences.globalAntialiasing;
+			icon.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			icon.sprTracker = songText;
 
 			iconArray.push(icon);
@@ -133,7 +133,7 @@ class FreeplayState extends MusicBeatState
 		WeekData.setDirectoryFromWeek();
 
 		var bars:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menu/menuBars'));
-		bars.antialiasing = Preferences.globalAntialiasing;
+		bars.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		bars.scrollFactor.set();
 		bars.screenCenter();
 		add(bars);
@@ -142,7 +142,7 @@ class FreeplayState extends MusicBeatState
 		add(grpDifficulties);
 
 		scoreText = new FlxText(FlxG.width * 0.8, 18, 0, "", 32);
-		scoreText.antialiasing = Preferences.globalAntialiasing;
+		scoreText.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		scoreText.borderSize = 3.5;
 
@@ -191,7 +191,7 @@ class FreeplayState extends MusicBeatState
 
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
-		text.antialiasing = Preferences.globalAntialiasing;
+		text.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		text.scrollFactor.set();
 		add(text);
 

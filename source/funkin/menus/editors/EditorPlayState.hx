@@ -35,7 +35,7 @@ class EditorPlayState extends MusicBeatState
 	public var unspawnNotes:Array<Note> = [];
 
 	var generatedMusic:Bool = false;
-	
+
 	var vocals:FlxSound;
 	var vocalsBf:FlxSound;
 	var vocalsDad:FlxSound;
@@ -53,10 +53,10 @@ class EditorPlayState extends MusicBeatState
 	}
 
 	var stepTxt:FlxText;
-	
+
 	var timerToStart:Float = 0;
 	private var noteTypeMap:Map<String, Bool> = new Map<String, Bool>();
-	
+
 	private var keysArray:Array<Dynamic>;
 
 	public static var instance:EditorPlayState;
@@ -76,12 +76,12 @@ class EditorPlayState extends MusicBeatState
 			Preferences.copyKey(Preferences.keyBinds.get('note_up')),
 			Preferences.copyKey(Preferences.keyBinds.get('note_right'))
 		];
-		
+
 		strumLine = new FlxSprite(PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
-		if (Preferences.downScroll)
+		if (GlobalSettings.DOWNSCROLL)
 			strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
-		
+
 		comboGroup = new FlxTypedGroup<FlxSprite>();
 		add(comboGroup);
 
@@ -111,7 +111,7 @@ class EditorPlayState extends MusicBeatState
 			}
 		}
 		#end
-		
+
 		noteTypeMap.clear();
 		noteTypeMap = null;
 
@@ -127,7 +127,7 @@ class EditorPlayState extends MusicBeatState
 		tipText.scrollFactor.set();
 		add(tipText);
 
-		if(!Preferences.controllerMode)
+		if(!GlobalSettings.CONTROLLER_MODE)
 		{
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
@@ -135,7 +135,7 @@ class EditorPlayState extends MusicBeatState
 
 		super.create();
 	}
-	
+
 	var startingSong:Bool = true;
 	private function generateSong(dataPath:String):Void
 	{
@@ -147,10 +147,10 @@ class EditorPlayState extends MusicBeatState
 
 		var songData = PlayState.SONG;
 		Conductor.changeBPM(songData.bpm);
-		
+
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
-		
+
 		var noteData:Array<SwagSection>;
 
 		noteData = songData.notes;
@@ -212,7 +212,7 @@ class EditorPlayState extends MusicBeatState
 
 						if (swagNote.mustPress)
 							swagNote.x += FlxG.width / 2;
-						
+
 						if (!noteTypeMap.exists(swagNote.noteType)) {
 							noteTypeMap.set(swagNote.noteType, true);
 						}
@@ -284,7 +284,7 @@ class EditorPlayState extends MusicBeatState
 				unspawnNotes.splice(index, 1);
 			}
 		}
-		
+
 		if (generatedMusic)
 		{
 			var fakeCrochet:Float = (60 / PlayState.SONG.bpm) * 1000;
@@ -319,10 +319,10 @@ class EditorPlayState extends MusicBeatState
 				if (daNote.copyX) {
 					daNote.x = strumX;
 				}
-				
+
 				if (daNote.copyY)
 				{
-					if (Preferences.downScroll)
+					if (GlobalSettings.DOWNSCROLL)
 					{
 						daNote.y = (strumY + 0.45 * (Conductor.songPosition - daNote.strumTime) * PlayState.SONG.speed);
 						if (daNote.isSustainNote)
@@ -377,10 +377,10 @@ class EditorPlayState extends MusicBeatState
 					FunkinSound.setVoicesVolume(1);
 
 					var time:Float = 0.15;
-					
+
 					if (daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end'))
 						time += 0.15;
-					
+
 					StrumPlayAnim(true, Std.int(Math.abs(daNote.noteData)) % 4, time);
 					daNote.hitByOpponent = true;
 
@@ -425,17 +425,17 @@ class EditorPlayState extends MusicBeatState
 		keyShit();
 
 		stepTxt.text = 'Step: ${curStep} • Beat: ${curBeat} • Section: ${curSection}';
-		
+
 		super.update(elapsed);
 	}
-	
+
 	override public function onFocus():Void
 	{
 		FunkinSound.playVoices();
 
 		super.onFocus();
 	}
-	
+
 	override public function onFocusLost():Void
 	{
 		FunkinSound.pauseVoices();
@@ -449,7 +449,7 @@ class EditorPlayState extends MusicBeatState
 
 		if (generatedMusic)
 		{
-			notes.sort(FlxSort.byY, Preferences.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
+			notes.sort(FlxSort.byY, GlobalSettings.DOWNSCROLL ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 		}
 	}
 
@@ -477,14 +477,14 @@ class EditorPlayState extends MusicBeatState
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 
-		if (key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || Preferences.controllerMode))
+		if (key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || GlobalSettings.CONTROLLER_MODE))
 		{
 			if (generatedMusic)
 			{
 				var lastTime:Float = Conductor.songPosition;
 				Conductor.songPosition = FlxG.sound.music.time;
 
-				var canMiss:Bool = !Preferences.ghostTapping;
+				var canMiss:Bool = !GlobalSettings.GHOST_TAPPING;
 
 				var pressNotes:Array<Note> = [];
 				var notesStopped:Bool = false;
@@ -523,7 +523,7 @@ class EditorPlayState extends MusicBeatState
 
 					}
 				}
-				else if (canMiss && Preferences.ghostTapping)
+				else if (canMiss && GlobalSettings.GHOST_TAPPING)
 				{
 					noteMiss();
 				}
@@ -592,8 +592,8 @@ class EditorPlayState extends MusicBeatState
 		var left = controls.NOTE_LEFT;
 
 		var controlHoldArray:Array<Bool> = [left, down, up, right];
-		
-		if (Preferences.controllerMode)
+
+		if (GlobalSettings.CONTROLLER_MODE)
 		{
 			var controlArray:Array<Bool> = [controls.NOTE_LEFT_P, controls.NOTE_DOWN_P, controls.NOTE_UP_P, controls.NOTE_RIGHT_P];
 			if (controlArray.contains(true))
@@ -611,14 +611,14 @@ class EditorPlayState extends MusicBeatState
 		{
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.isSustainNote && controlHoldArray[daNote.noteData] && daNote.canBeHit 
+				if (daNote.isSustainNote && controlHoldArray[daNote.noteData] && daNote.canBeHit
 				&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit) {
 					goodNoteHit(daNote);
 				}
 			});
 		}
 
-		if (Preferences.controllerMode)
+		if (GlobalSettings.CONTROLLER_MODE)
 		{
 			var controlArray:Array<Bool> = [controls.NOTE_LEFT_R, controls.NOTE_DOWN_R, controls.NOTE_UP_R, controls.NOTE_RIGHT_R];
 			if(controlArray.contains(true))
@@ -717,12 +717,12 @@ class EditorPlayState extends MusicBeatState
 			spr.resetAnim = time;
 		}
 	}
-	
+
 	override function destroy()
 	{
 		FunkinSound.stopSong();
 
-		if(!Preferences.controllerMode)
+		if(!GlobalSettings.CONTROLLER_MODE)
 		{
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);

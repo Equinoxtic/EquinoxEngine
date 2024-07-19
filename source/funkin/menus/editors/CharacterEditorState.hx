@@ -509,7 +509,7 @@ class CharacterEditorState extends MusicBeatState
 		noAntialiasingCheckBox.checked = char.noAntialiasing;
 		noAntialiasingCheckBox.callback = function() {
 			char.antialiasing = false;
-			if(!noAntialiasingCheckBox.checked && Preferences.globalAntialiasing) {
+			if(!noAntialiasingCheckBox.checked && GlobalSettings.SPRITE_ANTIALIASING) {
 				char.antialiasing = true;
 			}
 			char.noAntialiasing = noAntialiasingCheckBox.checked;

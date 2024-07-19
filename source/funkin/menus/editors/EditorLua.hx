@@ -68,8 +68,8 @@ class EditorLua {
 			set('defaultOpponentStrumY' + i, 0);
 		}
 
-		set('downscroll', Preferences.downScroll);
-		set('middlescroll', Preferences.middleScroll);
+		set('downscroll', GlobalSettings.DOWNSCROLL);
+		set('middlescroll', GlobalSettings.MIDDLESCROLL);
 
 		//stuff 4 noobz like you B)
 		Lua_helper.add_callback(lua, "getProperty", function(variable:String) {
@@ -170,7 +170,7 @@ class EditorLua {
 		call('onCreate', []);
 		#end
 	}
-	
+
 	public function call(event:String, args:Array<Dynamic>):Dynamic {
 		#if LUA_ALLOWED
 		if(lua == null) {

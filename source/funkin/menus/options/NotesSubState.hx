@@ -44,13 +44,13 @@ class NotesSubState extends MusicBeatSubstate
 	var posX = 230;
 	public function new() {
 		super();
-		
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
-		bg.antialiasing = Preferences.globalAntialiasing;
+		bg.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		add(bg);
-		
+
 		blackBG = new FlxSprite(posX - 25).makeGraphic(870, 200, FlxColor.BLACK);
 		blackBG.alpha = 0.4;
 		add(blackBG);
@@ -72,7 +72,7 @@ class NotesSubState extends MusicBeatSubstate
 			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
 			note.animation.addByPrefix('idle', animations[i]);
 			note.animation.play('idle');
-			note.antialiasing = Preferences.globalAntialiasing;
+			note.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			grpNotes.add(note);
 
 			var newShader:ColorSwap = new ColorSwap();

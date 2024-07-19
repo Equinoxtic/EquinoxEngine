@@ -49,20 +49,17 @@ class Rating
 	 */
 	public var comboBreak:Bool = false;
 
-	public function new(name:String)
+	public function new(name:String):Void
 	{
 		this.name = name;
 		this.image = name;
 		this.counter = name + 's';
-		this.hitWindow = Reflect.field(Preferences, name + 'Window');
-		if (hitWindow == null) {
-			hitWindow = 0;
-		}
+		this.hitWindow = Preferences.getPlayerPreference('${name}Window', 0);
 	}
 
-	public function increase(blah:Int = 1)
+	public function increase(increment:Int = 1):Void
 	{
-		Reflect.setField(PlayState.instance, counter, Reflect.field(PlayState.instance, counter) + blah);
+		Reflect.setField(PlayState.instance, counter, Reflect.field(PlayState.instance, counter) + increment);
 	}
 }
 

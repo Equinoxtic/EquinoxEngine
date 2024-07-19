@@ -161,7 +161,7 @@ class VisualsUISubState extends BaseOptionsMenu
 	var changedMusic:Bool = false;
 	function onChangePauseMusic()
 	{
-		var _pauseMusic:String = Preferences.getPlayerPreference('pauseMusic', "Breakfast");
+		var _pauseMusic:String = GlobalSettings.PAUSE_MUSIC;
 		if (_pauseMusic == 'None') {
 			FlxG.sound.music.volume = 0;
 		} else {
@@ -184,7 +184,7 @@ class VisualsUISubState extends BaseOptionsMenu
 	function onChangeFPSCounter()
 	{
 		if (Main.fpsVar != null) {
-			Main.fpsVar.visible = Preferences.getPlayerPreference('showFramerate', true);
+			Main.fpsVar.visible = GlobalSettings.SHOW_FRAMERATE;
 		}
 	}
 	#end

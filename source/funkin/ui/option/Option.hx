@@ -109,6 +109,7 @@ class Option
 
 	public function getValue():Dynamic
 	{
+		// This check is necessary so that it can return nothing if the variable does not exist.
 		if (!Preferences.playerPreferences.exists(variable)) {
 			return null;
 		}
@@ -117,10 +118,13 @@ class Option
 
 	public function setValue(value:Dynamic):Void
 	{
+		// This check is necessary so that it can't create a new variable in the playerPreferences map.
 		if (!Preferences.playerPreferences.exists(variable)) {
 			return;
 		}
 		Preferences.playerPreferences.set(variable, value);
+		// Reload/reinitialize settings.
+		GlobalSettings.initializeSettings();
 	}
 
 	public function setChild(child:Alphabet):Void

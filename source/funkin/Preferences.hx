@@ -24,7 +24,7 @@ class Preferences
 		*/
 		'antialiasing' => true,
 		'showFramerate' => true,
-		'lowQuality' => true,
+		'lowQuality' => false,
 		'enableShaders' => true,
 		'framerateAmount' => 60,
 

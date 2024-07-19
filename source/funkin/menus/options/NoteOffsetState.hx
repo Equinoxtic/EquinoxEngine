@@ -110,8 +110,8 @@ class NoteOffsetState extends MusicBeatState
 		rating.cameras = [camHUD];
 		rating.setGraphicSize(Std.int(rating.width * 0.7));
 		rating.updateHitbox();
-		rating.antialiasing = Preferences.globalAntialiasing;
-		
+		rating.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
+
 		add(rating);
 
 		comboNums = new FlxSpriteGroup();
@@ -131,7 +131,7 @@ class NoteOffsetState extends MusicBeatState
 			numScore.cameras = [camHUD];
 			numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 			numScore.updateHitbox();
-			numScore.antialiasing = Preferences.globalAntialiasing;
+			numScore.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			comboNums.add(numScore);
 			daLoop++;
 		}
@@ -144,7 +144,7 @@ class NoteOffsetState extends MusicBeatState
 		repositionCombo();
 
 		// Note delay stuff
-		
+
 		beatText = new Alphabet(0, 0, 'Beat Hit!', true);
 		beatText.scaleX = 0.6;
 		beatText.scaleY = 0.6;
@@ -153,7 +153,7 @@ class NoteOffsetState extends MusicBeatState
 		beatText.acceleration.y = 250;
 		beatText.visible = false;
 		add(beatText);
-		
+
 		timeTxt = new FlxText(0, 600, FlxG.width, "", 32);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
@@ -161,9 +161,9 @@ class NoteOffsetState extends MusicBeatState
 		timeTxt.visible = false;
 		timeTxt.cameras = [camHUD];
 
-		barPercent = Preferences.noteOffset;
+		barPercent = GlobalSettings.NOTE_OFFSET;
 		updateNoteDelay();
-		
+
 		timeBarBG = new FlxSprite(0, timeTxt.y + 8).loadGraphic(Paths.image('timeBar'));
 		timeBarBG.setGraphicSize(Std.int(timeBarBG.width * 1.2));
 		timeBarBG.updateHitbox();
@@ -223,7 +223,7 @@ class NoteOffsetState extends MusicBeatState
 				FlxG.keys.justPressed.RIGHT,
 				FlxG.keys.justPressed.UP,
 				FlxG.keys.justPressed.DOWN,
-			
+
 				FlxG.keys.justPressed.A,
 				FlxG.keys.justPressed.D,
 				FlxG.keys.justPressed.W,
@@ -312,12 +312,12 @@ class NoteOffsetState extends MusicBeatState
 		{
 			if(controls.UI_LEFT_P)
 			{
-				barPercent = Math.max(delayMin, Math.min(Preferences.noteOffset - 1, delayMax));
+				barPercent = Math.max(delayMin, Math.min(GlobalSettings.NOTE_OFFSET - 1, delayMax));
 				updateNoteDelay();
 			}
 			else if(controls.UI_RIGHT_P)
 			{
-				barPercent = Math.max(delayMin, Math.min(Preferences.noteOffset + 1, delayMax));
+				barPercent = Math.max(delayMin, Math.min(GlobalSettings.NOTE_OFFSET + 1, delayMax));
 				updateNoteDelay();
 			}
 
@@ -382,7 +382,7 @@ class NoteOffsetState extends MusicBeatState
 			boyfriend.dance();
 			gf.dance();
 		}
-		
+
 		if(curBeat % 4 == 2)
 		{
 			FlxG.camera.zoom = 1.15;
@@ -454,7 +454,7 @@ class NoteOffsetState extends MusicBeatState
 
 	function updateNoteDelay()
 	{
-		Preferences.noteOffset = Math.round(barPercent);
+		GlobalSettings.NOTE_OFFSET = Math.round(barPercent);
 		timeTxt.text = 'Current offset: ' + Math.floor(barPercent) + ' ms';
 	}
 
@@ -463,7 +463,7 @@ class NoteOffsetState extends MusicBeatState
 		rating.visible = onComboMenu;
 		comboNums.visible = onComboMenu;
 		dumbTexts.visible = onComboMenu;
-		
+
 		timeBarBG.visible = !onComboMenu;
 		timeBar.visible = !onComboMenu;
 		timeTxt.visible = !onComboMenu;

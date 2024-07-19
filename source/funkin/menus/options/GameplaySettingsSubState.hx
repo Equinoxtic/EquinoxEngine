@@ -58,7 +58,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Middlescroll Opponent Notes',
 			'Shows the opponent strums when on middlescroll.',
-			'opponentStrumsMiddleScroll',
+			'opponentNotesMiddleScroll',
 			'bool',
 			false);
 		addOption(option);
@@ -72,14 +72,14 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
-			'noReset',
+			'noResetButton',
 			'bool',
 			false);
 		addOption(option);
-		
+
 		var option:Option = new Option('Note Miss Sounds',
 			"Whether or not to play \"miss\" sound effect when the player misses a note.",
-			'noteMissSounds',
+			'missSounds',
 			'bool',
 			true);
 		option.onChange = onMissSoundEnabled;
@@ -174,6 +174,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 	function onChangeHitsoundVolume():Void
 	{
-		FlxG.sound.play(Paths.sound('hitsound'), Preferences.hitsoundVolume);
+		FlxG.sound.play(Paths.sound('hitsound'), Preferences.getPlayerPreference('hitsoundVolume', 0.0));
 	}
 }

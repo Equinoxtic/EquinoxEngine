@@ -31,6 +31,9 @@ using StringTools;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {
+	private var _framerate:Int = Preferences.getPlayerPreference('framerate', 60);
+	private var _antialiasing:Bool = Preferences.getPlayerPreference('antialiasing', true);
+
 	public function new()
 	{
 		title = 'Graphics';
@@ -46,7 +49,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Anti-Aliasing',
 			'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.',
-			'globalAntialiasing',
+			'antialiasing',
 			'bool',
 			true);
 		option.showBoyfriend = true;
@@ -55,7 +58,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Shaders', //Name
 			'If unchecked, disables shaders.\nIt\'s used for some visual effects, and also CPU intensive for weaker PCs.', //Description
-			'shaders', //Save data variable name
+			'enableShaders', //Save data variable name
 			'bool', //Variable type
 			true); //Default value
 		addOption(option);
@@ -67,7 +70,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			'int',
 			60);
 		addOption(option);
-		option.minValue = 5; // fuck it, lets bring this back (powerpoint slideshow framerate LMFAO)
+		option.minValue = 1; // fuck it, lets bring this back (powerpoint slideshow framerate LMFAO)
 		option.maxValue = 360;
 		option.displayFormat = '%v FPS';
 		option.onChange = onChangeFramerate;
@@ -83,22 +86,22 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			var sprite:Dynamic = sprite; //Make it check for FlxSprite instead of FlxBasic
 			var sprite:FlxSprite = sprite; //Don't judge me ok
 			if(sprite != null && (sprite is FlxSprite) && !(sprite is FlxText)) {
-				sprite.antialiasing = Preferences.globalAntialiasing;
+				sprite.antialiasing = _antialiasing;
 			}
 		}
 	}
 
 	function onChangeFramerate()
 	{
-		if(Preferences.framerate > FlxG.drawFramerate)
+		if(_framerate > FlxG.drawFramerate)
 		{
-			FlxG.updateFramerate = Preferences.framerate;
-			FlxG.drawFramerate = Preferences.framerate;
+			FlxG.updateFramerate = _framerate;
+			FlxG.drawFramerate = _framerate;
 		}
 		else
 		{
-			FlxG.drawFramerate = Preferences.framerate;
-			FlxG.updateFramerate = Preferences.framerate;
+			FlxG.drawFramerate = _framerate;
+			FlxG.updateFramerate = _framerate;
 		}
 	}
 }

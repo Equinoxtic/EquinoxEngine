@@ -65,7 +65,7 @@ class VisualsUISubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Disable Watermark',
 		'If checked, the watermark will not be visible',
-		'noWatermark',
+		'hideWatermark',
 		'bool',
 		false);
 		addOption(option);
@@ -73,14 +73,14 @@ class VisualsUISubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',
-			'hideHud',
+			'hidePlayerHUD',
 			'bool',
 			false);
 		addOption(option);
 
 		var option:Option = new Option('Time Bar:',
 			"What should the Time Bar display?",
-			'timeBarType',
+			'timeBarDisplay',
 			'string',
 			'Default',
 			['Default', 'Time Elapsed / Song Length', 'Song Name', 'Default Percentage', 'Percentage Only', 'Disabled']);
@@ -96,14 +96,14 @@ class VisualsUISubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Flashing Lights',
 			"Uncheck this if you're sensitive to flashing lights!",
-			'flashing',
+			'flashingLights',
 			'bool',
 			true);
 		addOption(option);
 
 		var option:Option = new Option('Camera Zooms',
 			"If unchecked, the camera won't zoom in on a beat hit.",
-			'camZooms',
+			'cameraZooming',
 			'bool',
 			true);
 		addOption(option);
@@ -115,16 +115,9 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		/* var option:Option = new Option('Score Text Zoom on Hit',
-			"If unchecked, disables the Score text zooming\neverytime you hit a note.",
-			'scoreZoom',
-			'bool',
-			true);
-		addOption(option); */
-
 		var option:Option = new Option('Health Bar Transparency',
 			'How much transparent should the health bar and icons be.',
-			'healthBarAlpha',
+			'healthBarTransparency',
 			'percent',
 			1);
 		option.scrollSpeed = 1.6;
@@ -137,7 +130,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		#if !mobile
 		var option:Option = new Option('FPS Counter',
 			'If unchecked, hides FPS Counter.',
-			'showFPS',
+			'showFramerate',
 			'bool',
 			true);
 		addOption(option);

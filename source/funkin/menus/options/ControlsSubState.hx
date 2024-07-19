@@ -75,7 +75,7 @@ class ControlsSubState extends MusicBeatSubstate {
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
-		bg.antialiasing = Preferences.globalAntialiasing;
+		bg.antialiasing = Preferences.getPlayerPreference('antialiasing');
 		add(bg);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -195,7 +195,7 @@ class ControlsSubState extends MusicBeatSubstate {
 		}
 		return num;
 	}
-	
+
 	function changeSelection(change:Int = 0) {
 		do {
 			curSelected += change;

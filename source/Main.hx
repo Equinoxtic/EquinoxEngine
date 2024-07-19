@@ -1,5 +1,6 @@
 package;
 
+import funkin.util.GlobalSettings;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -82,9 +83,22 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
-	
+
+		/**
+		 * Load keybindings/key schematics for controls.
+		 */
 		Preferences.loadDefaultKeys();
-		
+
+		/**
+		 * Load all player preferences/settings.
+		 */
+		Preferences.loadPrefs();
+
+		/**
+		 * Initialize global variables for player preferences/settings.
+		 */
+		GlobalSettings.initializeSettings();
+
 		// Thanks to @Quackerona for sending a patch to this one
 		var game:FlxGame = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
 
@@ -102,14 +116,14 @@ class Main extends Sprite
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {
-			fpsVar.visible = Preferences.showFPS;
+			fpsVar.visible = GlobalSettings.SHOW_FRAMERATE;
 		}
 		#end
 
 		#if html5
 		FlxG.autoPause = false;
 		#end
-		
+
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end

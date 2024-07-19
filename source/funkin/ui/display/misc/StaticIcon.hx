@@ -36,6 +36,6 @@ class StaticIcon extends FlxSprite
 
 		scrollFactor.set();
 
-		antialiasing = Preferences.globalAntialiasing;
+		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 	}
 }

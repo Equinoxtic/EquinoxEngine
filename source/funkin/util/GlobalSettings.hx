@@ -58,6 +58,7 @@ class GlobalSettings
 		DETAILED_JUDGEMENT_COUNTER = Preferences.getPlayerPreference('detailedJudgementCounter', false);
 		GAMEPLAY_INFO = Preferences.getPlayerPreference('showGameplayInfo', false);
 		HIDE_WATERMARK = Preferences.getPlayerPreference('hideWatermark', false);
+		NOTE_SPLASHES = Preferences.getPlayerPreference('noteSplashes', true);
 		NOTE_OFFSET = Preferences.getPlayerPreference('noteOffset', 0);
 		RATING_OFFSET = Preferences.getPlayerPreference('ratingOffset', 0);
 		COMBO_OFFSET = Preferences.getPlayerPreference('comboOffset', 0);

@@ -7,7 +7,7 @@ import flixel.FlxSprite;
 import funkin.input.Controls;
 import flixel.tweens.FlxTween;
 
-class FunkinBG extends FlxSprite
+class FunkinBG extends FunkinSprite
 {
 	/**
 	 * Does the background do the flickering animation?
@@ -36,7 +36,7 @@ class FunkinBG extends FlxSprite
 	}
 
 	/**
-	 * Create a background graphic that extends with FlxSprite.
+	 * Create a background graphic that extends with ``FunkinSprite``.
 	 * @param X The X position of the background.
 	 * @param Y The Y position of the background.
 	 * @param menuGraphic The graphic/asset of the background. [``Recommended size for assets is 1280x720``]
@@ -47,14 +47,14 @@ class FunkinBG extends FlxSprite
 	 */
 	public function new(X:Float, Y:Float, menuGraphic:FlxGraphicAsset, ?scrollX:Float, ?scrollY:Float, ?bgColor:FlxColor = 0xFFFFFFFF, ?isFreeplayBG:Bool = false):Void
 	{
-		super(X, Y, menuGraphic);
+		super(X, Y, false);
 
+		loadGraphic(menuGraphic);
 		scrollFactor.set(scrollX, scrollY);
 		setGraphicSize(Std.int(width * 1.175));
 		updateHitbox();
 		screenCenter();
 		color = bgColor;
-		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 
 		this.isFreeplayBG = isFreeplayBG;
 

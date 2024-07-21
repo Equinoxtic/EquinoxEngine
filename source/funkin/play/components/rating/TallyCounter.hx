@@ -13,7 +13,6 @@ class TallyCounter extends RatingGraphic
 
 		scaleSprite(initialSize, PlayState.isPixelStage);
 		screenCenter();
-		scrollFactor.set();
 
 		acceleration.y = FlxG.random.int(200, 300) * Math.pow(rate, 2);
 		velocity.x = FlxG.random.float(-5, 5) * rate;

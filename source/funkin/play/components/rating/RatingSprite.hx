@@ -6,14 +6,14 @@ class RatingSprite extends RatingGraphic
 {
 	public function new(rating:Rating):Void
 	{
-		if (rating == null)
+		if (rating == null) {
 			rating.image = "sick";
+		}
 
 		super(rating.image, PlayState.isPixelStage);
 
 		scaleSprite(Constants.RATING_SPRITE_SIZE, PlayState.isPixelStage);
 		screenCenter();
-		scrollFactor.set();
 
 		acceleration.y = 550 * Math.pow(rate, 2);
 		velocity.x -= FlxG.random.int(0, 10) * rate;

@@ -13,7 +13,6 @@ class ComboSprite extends RatingGraphic
 
 		scaleSprite(initialSize, PlayState.isPixelStage);
 		screenCenter();
-		scrollFactor.set();
 
 		acceleration.y = FlxG.random.int(200, 300) * Math.pow(rate, 2);
 		velocity.y -= FlxG.random.int(140, 160) * rate;

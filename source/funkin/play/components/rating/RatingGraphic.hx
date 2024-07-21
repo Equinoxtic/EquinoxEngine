@@ -2,10 +2,9 @@ package funkin.play.components.rating;
 
 import flixel.tweens.FlxTween;
 import funkin.tweens.GlobalTweenClass;
-import flixel.FlxSprite;
 import funkin.util.EaseUtil;
 
-class RatingGraphic extends FlxSprite
+class RatingGraphic extends FunkinSprite
 {
 	/**
 	 * The rate for the velocity, acceleration, and tweens for the rating sprite/graphic.
@@ -17,13 +16,12 @@ class RatingGraphic extends FlxSprite
 	 */
 	public function new(key:String, ?isPixelStage:Bool = false):Void
 	{
-		super(0, 0);
+		super(0, 0, false);
 
 		loadRatingSprite(key, isPixelStage);
 
 		cameras = [ PlayState.instance.camHUD ];
 
-		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING && !isPixelStage);
 		visible = !GlobalSettings.HIDE_HUD;
 	}
 
@@ -35,10 +33,11 @@ class RatingGraphic extends FlxSprite
 	private function loadRatingSprite(ratingImage:Null<String>, ?isPixel = false):Void
 	{
 		if (ratingImage == null || ratingImage == '') return;
-		var k:String = ratingImage;
-		if (isPixel)
-			k = FunkinUtil.pixelSuffix(ratingImage);
-		loadGraphic(Paths.image(k));
+		var spriteKey:String = ratingImage;
+		if (isPixel) {
+			spriteKey = FunkinUtil.pixelSuffix(ratingImage);
+		}
+		loadGraphic(Paths.image(spriteKey));
 	}
 	/**
 	 * Sets the scale/graphic size of the rating graphic.

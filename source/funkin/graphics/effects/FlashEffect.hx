@@ -2,18 +2,16 @@ package funkin.graphics.effects;
 
 import flixel.tweens.FlxTween;
 import funkin.tweens.GlobalTweenClass;
-import flixel.FlxSprite;
 
-class FlashEffect extends FlxSprite
+class FlashEffect extends FunkinSprite
 {
 	private var _flashed:Bool = false;
 
 	public function new(strength:Float, duration:Float, delay:Float, ?ease:Null<String> = 'linear'):Void
 	{
-		super();
+		super(0, 0, false);
 		makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), 0xFFFFFFFF);
 		screenCenter();
-		scrollFactor.set();
 		alpha = strength;
 		_playFlash(strength, duration, delay, ease);
 	}

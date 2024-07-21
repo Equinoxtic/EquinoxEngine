@@ -1,7 +1,6 @@
 package funkin.ui.display.misc;
 
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 
 class AttachedText extends Alphabet
 {
@@ -13,16 +12,18 @@ class AttachedText extends Alphabet
 	public function new(text:String = "", ?offsetX:Float = 0, ?offsetY:Float = 0, ?bold = false, ?scale:Float = 1):Void
 	{
 		super(0, 0, text, bold);
-		
+
 		if (scale != null && scale > 0)
 			this.scaleX = scale ; this.scaleY = scale;
-		
+
 		this.isMenuItem = false;
 
-		if (offsetX != null && !Math.isNaN(offsetX))
+		if (offsetX != null && !Math.isNaN(offsetX)) {
 			this.offsetX = offsetX;
-		if (offsetY != null && !Math.isNaN(offsetY))
+		}
+		if (offsetY != null && !Math.isNaN(offsetY)) {
 			this.offsetY = offsetY;
+		}
 	}
 
 	override function update(elapsed:Float):Void
@@ -30,10 +31,12 @@ class AttachedText extends Alphabet
 		if (sprTracker != null)
 		{
 			setPosition(sprTracker.x + offsetX, sprTracker.y + offsetY);
-			if (copyVisible)
+			if (copyVisible) {
 				visible = sprTracker.visible;
-			if (copyAlpha)
+			}
+			if (copyAlpha) {
 				alpha = sprTracker.alpha;
+			}
 		}
 		super.update(elapsed);
 	}

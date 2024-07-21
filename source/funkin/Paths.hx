@@ -232,7 +232,7 @@ class Paths
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
-	
+
 	inline static public function inst(song:String):Any
 	{
 		var songKey:String = '${formatToSongPath(song)}/Inst${FunkinSound.erectModeSuffix()}';
@@ -256,7 +256,7 @@ class Paths
 		{
 			trace('Failed to get voices file.');
 		}
-		
+
 		return '';
 	}
 

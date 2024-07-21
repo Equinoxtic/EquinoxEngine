@@ -5,7 +5,7 @@ import flixel.math.FlxMath;
 
 using StringTools;
 
-class HealthIcon extends FlxSprite
+class HealthIcon extends FunkinSprite
 {
 	public var sprTracker:FlxSprite;
 	private var isOldIcon:Bool = false;
@@ -14,25 +14,28 @@ class HealthIcon extends FlxSprite
 
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
-		super();
+		super(0, 0, false);
 		isOldIcon = (char == 'bf-old');
 		this.isPlayer = isPlayer;
 		changeIcon(char);
-		scrollFactor.set();
 	}
 
-	override function update(elapsed:Float)
+	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
-		if (sprTracker != null)
+		if (sprTracker != null) {
 			setPosition(sprTracker.x + sprTracker.width + 12, sprTracker.y - 30);
+		}
 	}
 
 	public function swapOldIcon():Void
 	{
-		if(isOldIcon = !isOldIcon) changeIcon('bf-old');
-		else changeIcon('bf');
+		if (isOldIcon = !isOldIcon) {
+			changeIcon('bf-old');
+		} else {
+			changeIcon('bf');
+		}
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0];
@@ -42,8 +45,8 @@ class HealthIcon extends FlxSprite
 		if (this.char != char)
 		{
 			var name:String = 'icons/' + char;
-			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char;
-			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face';
+			if (!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char;
+			if (!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face';
 			var file:Dynamic = Paths.image(name);
 
 			loadGraphic(file); //Load stupidly first for getting the file size
@@ -56,9 +59,10 @@ class HealthIcon extends FlxSprite
 			animation.play(char);
 			this.char = char;
 
-			antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			if (char.endsWith('-pixel')) {
 				antialiasing = false;
+			} else {
+				antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			}
 		}
 	}

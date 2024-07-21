@@ -1,13 +1,11 @@
 package funkin.ui.display.misc;
 
-import flixel.FlxSprite;
-
-class StaticIcon extends FlxSprite
+class StaticIcon extends FunkinSprite
 {
 	private var character:String = 'bf';
 	public function new(character:String, ?isPlayer:Bool = false):Void
 	{
-		super();
+		super(0, 0, false);
 
 		if (character == null) {
 			character = 'bf';
@@ -33,9 +31,5 @@ class StaticIcon extends FlxSprite
 		animation.add(character, [0], 0, false, isPlayer);
 		animation.play(character);
 		this.character = character;
-
-		scrollFactor.set();
-
-		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 	}
 }

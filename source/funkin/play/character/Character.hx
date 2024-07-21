@@ -1,7 +1,6 @@
 package funkin.play.character;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
 #if MODS_ALLOWED
@@ -43,7 +42,7 @@ typedef AnimArray = {
 	var offsets:Array<Int>;
 }
 
-class Character extends FlxSprite
+class Character extends FunkinSprite
 {
 	public var displayName:String;
 
@@ -82,7 +81,7 @@ class Character extends FlxSprite
 	public static var DEFAULT_CHARACTER:String = 'bf'; //In case a character is missing, it will use BF on its place
 	public function new(x:Float, y:Float, ?character:String = 'bf', ?isPlayer:Bool = false)
 	{
-		super(x, y);
+		super(x, y, false);
 
 		#if (haxe >= "4.0.0")
 		animOffsets = new Map();
@@ -123,9 +122,6 @@ class Character extends FlxSprite
 
 				var json:CharacterFile = cast Json.parse(rawJson);
 				var spriteType = "sparrow";
-				//sparrow
-				//packer
-				//texture
 				#if MODS_ALLOWED
 				var modTxtToFind:String = Paths.modsTxt(json.image);
 				var txtToFind:String = Paths.getPath('images/' + json.image + '.txt', TEXT);
@@ -183,13 +179,14 @@ class Character extends FlxSprite
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;
 				flipX = !!json.flip_x;
-				if(json.no_antialiasing) {
+				if (json.no_antialiasing) {
 					antialiasing = false;
 					noAntialiasing = true;
 				}
 
-				if(json.healthbar_colors != null && json.healthbar_colors.length > 2)
+				if(json.healthbar_colors != null && json.healthbar_colors.length > 2) {
 					healthColorArray = json.healthbar_colors;
+				}
 
 				antialiasing = !noAntialiasing;
 				if(!GlobalSettings.SPRITE_ANTIALIASING) antialiasing = false;
@@ -215,16 +212,16 @@ class Character extends FlxSprite
 				} else {
 					quickAnimAdd('idle', 'BF idle dance');
 				}
-				//trace('Loaded file to character ' + curCharacter);
 		}
 		originalFlipX = flipX;
 
-		if(animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) hasMissAnimations = true;
+		if (animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) {
+			hasMissAnimations = true;
+		}
 		recalculateDanceIdle();
 		dance();
 
-		if (isPlayer)
-		{
+		if (isPlayer) {
 			flipX = !flipX;
 		}
 
@@ -237,24 +234,21 @@ class Character extends FlxSprite
 		}
 	}
 
-	override function update(elapsed:Float)
+	override function update(elapsed:Float):Void
 	{
-		if(!debugMode && animation.curAnim != null)
+		if (!debugMode && animation.curAnim != null)
 		{
-			if(heyTimer > 0)
+			if (heyTimer > 0)
 			{
 				heyTimer -= elapsed * PlayState.instance.playbackRate;
-				if(heyTimer <= 0)
-				{
-					if(specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
-					{
+				if (heyTimer <= 0) {
+					if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer') {
 						specialAnim = false;
 						dance();
 					}
 					heyTimer = 0;
 				}
-			} else if(specialAnim && animation.curAnim.finished)
-			{
+			} else if(specialAnim && animation.curAnim.finished) {
 				specialAnim = false;
 				dance();
 			}
@@ -262,16 +256,22 @@ class Character extends FlxSprite
 			switch(curCharacter)
 			{
 				case 'pico-speaker':
-					if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+					if (animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
 					{
 						var noteData:Int = 1;
-						if(animationNotes[0][1] > 2) noteData = 3;
+
+						if (animationNotes[0][1] > 2) {
+							noteData = 3;
+						}
 
 						noteData += FlxG.random.int(0, 1);
 						playAnim('shoot' + noteData, true);
 						animationNotes.shift();
 					}
-					if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
+
+					if (animation.curAnim.finished) {
+						playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
+					}
 			}
 
 			if (!isPlayer)
@@ -288,7 +288,7 @@ class Character extends FlxSprite
 				}
 			}
 
-			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{
 				playAnim(animation.curAnim.name + '-loop');
 			}

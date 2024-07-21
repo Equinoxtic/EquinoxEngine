@@ -1,4 +1,5 @@
 ### FNF-Specific
+
 # File used for the NG API. Should not be shared with others.
 APIStuff.hx
 art/build_x32-officialrelease.bat
@@ -8,19 +9,29 @@ art/test_x64-debug-officialrelease.bat
 # Don't know why they didn't ignore this one
 [Cc]rash/
 
-### VS Code
-export/*
-.vscode/*
+### Post-build / "export" directories.
+[Ee]xport/*
+[Ee]xport/release/*
+[Ee]xport/release/windows/*
+[Ee]xport/release/linux/*
+[Ee]xport/release/macos/*
+[Ee]xport/release/html5/*
+[Ee]xport/debug/windows/*
+[Ee]xport/debug/linux/*
+[Ee]xport/debug/macos/*
+[Ee]xport/debug/html5/*
+
+### Excluded source code / Unused source code.
+[Ss]ource/excluded/*
+
+### Visual Studio Code and other IDE specific things.
 *.code-workspace
+.idea/*
+.vs/*
+
 # Local history which shouldn't be shared.
 .history
 .ionide
-# ! means a file should be added regardless of it it gets ignored prior.
-# Including to allow others to use already set-up configuration tweaked for the project.
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
 # Others...
 .BUILD_TIME

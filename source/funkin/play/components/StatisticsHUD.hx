@@ -32,10 +32,6 @@ class StatisticsHUD extends FlxTypedSpriteGroup<FlxSprite>
 
 		this.instance = instance;
 
-		#if (debug)
-		FlxG.log.add('Created Statistics HUD.');
-		#end
-
 		scoreText = new StatisticsText(X, Y, SCORE);
 		missesText = new StatisticsText(scoreText.x, scoreText.y + 21.5, MISSES);
 		accuracyText = new StatisticsText(missesText.x, missesText.y + 21.5, ACCURACY);

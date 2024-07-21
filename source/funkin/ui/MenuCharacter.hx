@@ -16,7 +16,7 @@ typedef MenuCharacterFile = {
 	var flipX:Bool;
 }
 
-class MenuCharacter extends FlxSprite
+class MenuCharacter extends FunkinSprite
 {
 	public var character:String;
 	public var hasConfirmAnimation:Bool = false;
@@ -24,17 +24,21 @@ class MenuCharacter extends FlxSprite
 
 	public function new(x:Float, character:String = 'bf')
 	{
-		super(x);
+		super(x, 0, false);
 
 		changeCharacter(character);
 	}
 
 	public function changeCharacter(?character:String = 'bf') {
-		if(character == null) character = '';
-		if(character == this.character) return;
+		if (character == null) {
+			character = '';
+		}
+
+		if (character == this.character) {
+			return;
+		}
 
 		this.character = character;
-		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		visible = true;
 
 		var dontPlayAnim:Bool = false;

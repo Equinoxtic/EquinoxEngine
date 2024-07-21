@@ -2,14 +2,16 @@ package funkin.ui.option;
 
 import flixel.FlxSprite;
 
-class Checkbox extends FlxSprite
+class Checkbox extends FunkinSprite
 {
 	public var sprTracker:FlxSprite;
 	public var daValue(default, set):Bool;
 	public var copyAlpha:Bool = true;
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
-	public function new(x:Float = 0, y:Float = 0, ?checked = false) {
+
+	public function new(x:Float = 0, y:Float = 0, ?checked = false):Void
+	{
 		super(x, y);
 
 		frames = Paths.getSparrowAtlas('checkboxanim');
@@ -18,7 +20,6 @@ class Checkbox extends FlxSprite
 		animation.addByPrefix("checking", "checkbox anim0", 24, false);
 		animation.addByPrefix("checked", "checkbox finish", 24, false);
 
-		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		setGraphicSize(Std.int(0.9 * width));
 		updateHitbox();
 
@@ -27,10 +28,11 @@ class Checkbox extends FlxSprite
 		daValue = checked;
 	}
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float):Void
+	{
 		if (sprTracker != null) {
 			setPosition(sprTracker.x - 130 + offsetX, sprTracker.y + 30 + offsetY);
-			if(copyAlpha) {
+			if (copyAlpha) {
 				alpha = sprTracker.alpha;
 			}
 		}
@@ -39,18 +41,18 @@ class Checkbox extends FlxSprite
 
 	private function set_daValue(check:Bool):Bool {
 		if(check) {
-			if(animation.curAnim.name != 'checked' && animation.curAnim.name != 'checking') {
+			if (animation.curAnim.name != 'checked' && animation.curAnim.name != 'checking') {
 				animation.play('checking', true);
 				offset.set(34, 25);
 			}
-		} else if(animation.curAnim.name != 'unchecked' && animation.curAnim.name != 'unchecking') {
+		} else if (animation.curAnim.name != 'unchecked' && animation.curAnim.name != 'unchecking') {
 			animation.play("unchecking", true);
 			offset.set(25, 28);
 		}
 		return check;
 	}
 
-	private function animationFinished(name:String)
+	private function animationFinished(name:String):Void
 	{
 		switch(name)
 		{

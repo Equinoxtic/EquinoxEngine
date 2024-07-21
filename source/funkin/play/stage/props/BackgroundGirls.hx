@@ -1,16 +1,14 @@
 package funkin.play.stage.props;
 
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 
-class BackgroundGirls extends FlxSprite
+class BackgroundGirls extends FunkinSprite
 {
 	var isPissed:Bool = true;
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float):Void
 	{
-		super(x, y);
+		super(x, y, true);
 
-		// BG fangirls dissuaded
 		frames = Paths.getSparrowAtlas('weeb/bgFreaks');
 
 		swapDanceType();

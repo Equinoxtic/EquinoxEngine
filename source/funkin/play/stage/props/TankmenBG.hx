@@ -2,9 +2,8 @@ package funkin.play.stage.props;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 
-class TankmenBG extends FlxSprite
+class TankmenBG extends FunkinSprite
 {
 	public static var animationNotes:Array<Dynamic> = [];
 	private var tankSpeed:Float;
@@ -12,7 +11,7 @@ class TankmenBG extends FlxSprite
 	private var goingRight:Bool;
 	public var strumTime:Float;
 
-	public function new(x:Float, y:Float, facingRight:Bool)
+	public function new(x:Float, y:Float, facingRight:Bool):Void
 	{
 		tankSpeed = 0.7;
 		goingRight = false;
@@ -61,7 +60,7 @@ class TankmenBG extends FlxSprite
 			kill();
 		}
 
-		if(Conductor.songPosition > strumTime)
+		if (Conductor.songPosition > strumTime)
 		{
 			animation.play('shot');
 			if(goingRight)

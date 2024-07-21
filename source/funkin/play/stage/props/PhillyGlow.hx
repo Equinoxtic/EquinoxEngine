@@ -4,14 +4,16 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 
-class PhillyGlowParticle extends FlxSprite
+class PhillyGlowParticle extends FunkinSprite
 {
 	var lifeTime:Float = 0;
 	var decay:Float = 0;
 	var originalScale:Float = 1;
-	public function new(x:Float, y:Float, color:FlxColor)
+
+	public function new(x:Float, y:Float, color:FlxColor):Void
 	{
-		super(x, y);
+		super(x, y, true);
+
 		this.color = color;
 
 		loadGraphic(Paths.image('philly/particle'));
@@ -32,7 +34,7 @@ class PhillyGlowParticle extends FlxSprite
 		acceleration.set(FlxG.random.float(-10, 10), 25);
 	}
 
-	override function update(elapsed:Float)
+	override function update(elapsed:Float):Void
 	{
 		lifeTime -= elapsed;
 		if(lifeTime < 0)
@@ -44,18 +46,20 @@ class PhillyGlowParticle extends FlxSprite
 				scale.set(originalScale * alpha, originalScale * alpha);
 			}
 		}
+
 		super.update(elapsed);
 	}
 }
 
-class PhillyGlowGradient extends FlxSprite
+class PhillyGlowGradient extends FunkinSprite
 {
 	public var originalY:Float;
 	public var originalHeight:Int = 400;
 	public var intendedAlpha:Float = 1;
-	public function new(x:Float, y:Float)
+
+	public function new(x:Float, y:Float):Void
 	{
-		super(x, y);
+		super(x, y, true);
 		originalY = y;
 
 		loadGraphic(Paths.image('philly/gradient'));
@@ -84,7 +88,7 @@ class PhillyGlowGradient extends FlxSprite
 		super.update(elapsed);
 	}
 
-	public function bop()
+	public function bop():Void
 	{
 		setGraphicSize(2000, originalHeight);
 		updateHitbox();

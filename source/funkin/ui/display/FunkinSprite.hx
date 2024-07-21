@@ -15,6 +15,8 @@ class FunkinSprite extends FlxSprite
 	{
 		super(X, Y);
 
+		visible = true;
+		active = true;
 		if (levelOfDetail) {
 			if (GlobalSettings.LOW_QUALITY) {
 				visible = false;
@@ -32,11 +34,37 @@ class FunkinSprite extends FlxSprite
 
 	public function loadSprite(path:String):Void
 	{
-		if (!Assets.exists(Paths.imagePath(path))) {
-			trace('Failed to load sprite/asset: $path');
+		if (!FunkinSprite.spriteExists(path)) {
 			return;
 		}
 
 		loadGraphic(Paths.image(path));
+	}
+
+	public function loadAnimatedSprite(path:String, animationKeys:Array<Array<String>>, ?framerate:Int = 24):Void
+	{
+		if (!FunkinSprite.spriteExists(path)) {
+			return;
+		}
+
+		frames = Paths.getSparrowAtlas(path);
+
+		if (animationKeys != null && animationKeys.length > 0) {
+			if (framerate <= 0 && Math.isNaN(framerate)) {
+				framerate = 24;
+			}
+			for (i in 0...animationKeys.length) {
+				animation.addByPrefix(animationKeys[i][0], animationKeys[i][1], framerate);
+			}
+		}
+	}
+
+	public static function spriteExists(path:String):Bool
+	{
+		var _spriteExisting:Bool = (Assets.exists(Paths.imagePath(path)) && path != null);
+		if (!_spriteExisting) {
+			trace('Failed to load sprite/asset: $path');
+		}
+		return _spriteExisting;
 	}
 }

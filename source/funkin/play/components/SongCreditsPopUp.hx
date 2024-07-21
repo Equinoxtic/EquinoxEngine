@@ -12,12 +12,13 @@ class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 {
 	private var _instance:FlxBasic;
 
-	private var _bg:FlxSprite;
 	private var _songNameTxt:FunkinText;
 	private var _creditsTxt:FunkinText;
 
 	private var _playedAnimation:Bool = false;
 	public var animationTimer:FlxTimer;
+
+	private var _bg:FunkinSprite;
 
 	public function new(instance:Null<FlxBasic>, songName:String, songArtist:String, songCharter:String):Void
 	{
@@ -29,11 +30,11 @@ class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 
 		this._instance = instance;
 
-		_bg = new FlxSprite().loadGraphic(Paths.image('ui/play/SongCreditsBG'));
+		_bg = new FunkinSprite(0, 0, true);
+		_bg.loadSprite('ui/play/SongCreditsBG');
 		_bg.scale.set(0.925, 0.925);
 		_bg.screenCenter(Y);
 		_bg.alpha = 0.65;
-		_bg.antialiasing = true;
 		add(_bg);
 
 		_songNameTxt = new FunkinText(0, _bg.y * 1.4, FlxG.width, songName.toUpperCase(), 38, CENTER, true, 3.5);

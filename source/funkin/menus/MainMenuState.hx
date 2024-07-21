@@ -24,7 +24,7 @@ class MainMenuState extends MusicBeatState
 {
 	public static var curSelected:Int = 0;
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
+	var menuItems:FlxTypedGroup<FunkinSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
 
@@ -100,7 +100,7 @@ class MainMenuState extends MusicBeatState
 		mainChecker = new Checkerboard(XY, 1, HUGE, 0.3);
 		add(mainChecker);
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
+		menuItems = new FlxTypedGroup<FunkinSprite>();
 		add(menuItems);
 
 		var scale:Float = 1;
@@ -108,27 +108,27 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 100 + (Math.max(optionShit.length, 4) - 4) * 250;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 180) + offset);
-			menuItem.scale.x = scale;
-			menuItem.scale.y = scale;
-			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-			menuItem.animation.play('idle');
+			var menuItem:FunkinSprite = new FunkinSprite(0, (i * 180) + offset);
+			menuItem.scale.set(scale, scale);
+			// menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
+			// menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+			// menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			menuItem.loadAnimatedSprite('mainmenu/menu_${optionShit[i]}', [
+				[ 'idle',     '${optionShit[i]} basic' ],
+				[ 'selected', '${optionShit[i]} white' ]
+			], 24, 'idle');
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			var scr:Float = (optionShit.length - 4) * 0.35;
 			if(optionShit.length < 6) scr = 0;
 			menuItem.scrollFactor.set(0, scr);
-			menuItem.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			menuItem.updateHitbox();
 		}
 
-		var bars:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menu/menuBars'));
-		bars.scrollFactor.set();
+		var bars:FunkinSprite = new FunkinSprite(0, 0);
+		bars.loadSprite('ui/menu/menuBars');
 		bars.screenCenter();
-		bars.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		add(bars);
 
 		FlxG.camera.follow(camFollowPos, null, 1);

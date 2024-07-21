@@ -14,7 +14,17 @@ class FunkinSprite extends FlxSprite
 	{
 		super(X, Y);
 
-		visible = (levelOfDetail && GlobalSettings.LOW_QUALITY);
+		if (levelOfDetail) {
+			if (GlobalSettings.LOW_QUALITY) {
+				visible = false;
+				active = false;
+			}
+		} else {
+			visible = true;
+			active = true;
+		}
+
+		scrollFactor.set();
 
 		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING);
 	}

@@ -1,6 +1,7 @@
 package funkin.ui.display;
 
 import flixel.FlxSprite;
+import openfl.utils.Assets as Assets;
 
 class FunkinSprite extends FlxSprite
 {
@@ -27,5 +28,15 @@ class FunkinSprite extends FlxSprite
 		scrollFactor.set();
 
 		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING);
+	}
+
+	public function loadSprite(path:String):Void
+	{
+		if (!Assets.exists(Paths.imagePath(path))) {
+			trace('Failed to load sprite/asset: $path');
+			return;
+		}
+
+		loadGraphic(Paths.image(path));
 	}
 }

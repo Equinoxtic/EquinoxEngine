@@ -11,7 +11,7 @@ using StringTools;
  */
 class EaseUtil
 {
-	private static final stringEaseMap:Map<String, Float->Float> = [
+	private static final easeMap:Map<String, Float->Float> = [
 		'linear' 				=> FlxEase.linear,
 		'elasticIn' 			=> FlxEase.elasticIn,
 		'elasticOut' 			=> FlxEase.elasticOut,
@@ -53,16 +53,15 @@ class EaseUtil
 
 	public static function getFlxEaseByString(?ease:Null<String> = 'linear'):Null<Float->Float>
 	{
-		if (ease == null || ease.charAt(0) == '') {
+		if (ease == null || ease.trim() == '') {
 			return FlxEase.linear;
 		}
 
 		var currentEase:Float->Float = FlxEase.linear;
 
-		for (easeKey in stringEaseMap.keys()) {
-			if (ease.trim() == easeKey && currentEase != null) {
-				currentEase = stringEaseMap[easeKey];
-				break;
+		if (ease != null) {
+			if (easeMap.exists(ease)) {
+				currentEase = easeMap.get(ease);
 			}
 		}
 

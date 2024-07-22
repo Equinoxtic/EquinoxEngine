@@ -1,4 +1,4 @@
-package funkin;
+package funkin.backend;
 
 import h2d.Tweenie.TType;
 
@@ -13,8 +13,8 @@ enum TVVar{
 class TweenV {
 	static var GUID = 0;
 	var uid 		= 0;
-	
-	var man 		: SndTV;	 
+
+	var man 		: SndTV;
 	var parent		: Snd;
 	var n			: Float;
 	var ln			: Float;
@@ -23,11 +23,11 @@ class TweenV {
 	var to			: Float;
 	var type		: TType;
 	var plays		: Int; // -1 = infini, 1 et plus = nombre d'exécutions (1 par défaut)
-	var varType		: TVVar; 
+	var varType		: TVVar;
 	var onUpdate	: Null<TweenV->Void>;
 	var onEnd		: Null<TweenV->Void>;
 	var isDebug		= false;
-	
+
 	public inline function new (
 		parent:Snd	 ,
 	    n:Float		 ,
@@ -39,7 +39,7 @@ class TweenV {
 	    type:h2d.Tweenie.TType ,
 	    plays		 ,
 	    onUpdate	 ,
-	    onEnd		 
+	    onEnd
 	) {
 		this.parent			= parent		;
 		this.n			    = n			 	;
@@ -53,7 +53,7 @@ class TweenV {
 		this.onUpdate	    = onUpdate	 	;
 		this.onEnd		    = onEnd		 	;
 	}
-	
+
 	public inline function reset(
 		parent:Snd	 ,
 	    n:Float		 ,
@@ -65,7 +65,7 @@ class TweenV {
 	    type:TType	 ,
 	    plays:Int	 ,
 	    onUpdate	 ,
-	    onEnd		 
+	    onEnd
 	) {
 		this.parent			= parent		;
 		this.n			    = n			 	;
@@ -81,7 +81,7 @@ class TweenV {
 		isDebug		= false;
 		uid = GUID++;
 	}
-	
+
 	public function clear(){
 		n 			= 0.0;
 		ln			= 0.0;
@@ -95,9 +95,9 @@ class TweenV {
 		isDebug		= false;
 		uid = GUID++;
 	}
-	
-	
-	public 
+
+
+	public
 	inline
 	function apply( val ) {
 		switch(varType){
@@ -110,16 +110,16 @@ class TweenV {
 			}
 			case TVVPan: 	parent.pan = val;
 		}
-		
+
 	}
-	
+
 	public inline function kill( withCbk = true ) {
-		if ( withCbk )	
+		if ( withCbk )
 			man.terminateTween( this );
-		else 
+		else
 			man.forceTerminateTween( this) ;
 	}
-	
+
 }
 
 /**
@@ -136,26 +136,26 @@ class SndTV {
 		tlist = new hxd.Stack<TweenV>();
 		tlist.reserve(8);
 	}
-	
+
 	function onError(e) {
 		trace(e);
 	}
-	
+
 	public function count() {
 		return tlist.length;
 	}
-	
+
 	public inline function create(parent:Snd, vartype:TVVar, to:Float, ?tp:h2d.Tweenie.TType, ?duration_ms:Float) : TweenV{
 		return create_(parent, vartype, to, tp, duration_ms);
 	}
-	
+
 	public function exists(p:Snd) {
 		for (t in tlist)
 			if (t.parent == p )
 				return true;
 		return false;
 	}
-	
+
 	public var pool : hxd.Stack<TweenV> = new hxd.Stack();
 
 	function create_(p:Snd, vartype:TVVar,to:Float, ?tp:h2d.Tweenie.TType, ?duration_ms:Float) : TweenV{
@@ -165,7 +165,7 @@ class SndTV {
 		#if debug
 		if ( p == null ) trace("tween2 creation failed to:"+to+" tp:"+tp);
 		#end
-			
+
 		if ( tp==null ) tp = TEase;
 
 		{
@@ -175,7 +175,7 @@ class SndTV {
 					forceTerminateTween(t);
 				}
 		}
-		
+
 		var from = switch( vartype ){
 			case TVVVolume 	: p.volume;
 			case TVVPan 	: p.pan;
@@ -210,8 +210,8 @@ class SndTV {
 				1,
 				null,
 				null
-			); 
-			
+			);
+
 		}
 
 		if( t.from==t.to )
@@ -223,24 +223,24 @@ class SndTV {
 		return t;
 	}
 
-	public static inline 
+	public static inline
 	function fastPow2(n:Float):Float {
 		return n*n;
 	}
-	
-	public static inline 
+
+	public static inline
 	function fastPow3(n:Float):Float {
 		return n*n*n;
 	}
 
-	public static inline 
+	public static inline
 	function bezier(t:Float, p0:Float, p1:Float,p2:Float, p3:Float) {
 		return
 			fastPow3(1-t)*p0 +
 			3*( t*fastPow2(1-t)*p1 + fastPow2(t)*(1-t)*p2 ) +
 			fastPow3(t)*p3;
 	}
-	
+
 	// suppression du tween sans aucun appel aux callbacks onUpdate, onUpdateT et onEnd (!)
 	public function killWithoutCallbacks(parent:Snd) {
 		for (t in tlist.backWardIterator())
@@ -250,14 +250,14 @@ class SndTV {
 			}
 		return false;
 	}
-	
+
 	public function terminate(parent:Snd) {
 		for (t in tlist.backWardIterator())
 			if (t.parent==parent){
 				forceTerminateTween(t);
 			}
 	}
-	
+
 	public function forceTerminateTween(t:TweenV) {
 		var tOk = tlist.remove(t);
 		if( tOk ){
@@ -265,16 +265,16 @@ class SndTV {
 			pool.push(t);
 		}
 	}
-	
+
 	public function terminateTween(t:TweenV, ?fl_allowLoop=false) {
 		var v = t.from + (t.to - t.from) * h2d.Tweenie.interp(t.type, 1);
 		t.apply(v);
 		onUpdate(t, 1);
-		
+
 		var ouid = t.uid;
-		
+
 		onEnd(t);
-		
+
 		if( ouid == t.uid ){
 			if( fl_allowLoop && (t.plays==-1 || t.plays>1) ) {
 				if( t.plays!=-1 )
@@ -286,25 +286,25 @@ class SndTV {
 			}
 		}
 	}
-	
+
 	public function terminateAll() {
 		for(t in tlist)
 			t.ln = 1;
 		update();
 	}
-	
+
 	inline
 	function onUpdate(t:TweenV, n:Float) {
 		if ( t.onUpdate!=null )
 			t.onUpdate(t);
 	}
-	
+
 	inline
 	function onEnd(t:TweenV) {
 		if ( t.onEnd!=null )
 			t.onEnd(t);
 	}
-	
+
 	public function update(?tmod = 1.0) {
 		if ( tlist.length > 0 ) {
 			for (t in tlist.backWardIterator() ) {
@@ -313,15 +313,15 @@ class SndTV {
 					t.ln+=if(Std.random(100)<33) t.speed * tmod else 0;
 				else
 					t.ln += t.speed * tmod;
-					
+
 				t.n = h2d.Tweenie.interp(t.type, t.ln);
-				
+
 				if ( t.ln<1 ) {
 					// en cours...
 					var val = t.from + t.n*dist;
-					
+
 					t.apply(val);
-					
+
 					onUpdate(t, t.ln);
 				}
 				else // fini !

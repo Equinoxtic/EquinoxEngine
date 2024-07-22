@@ -23,7 +23,7 @@ class Variables
 	/**
 	 * The current version of the client.
 	 */
-	public static final CLIENT_VERSION:String = "0.4.0";
+	public static final CLIENT_VERSION:String = "0.6.0 (Alpha)";
 
 	/**
 	 * The version of the application.

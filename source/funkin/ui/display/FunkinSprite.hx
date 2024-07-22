@@ -29,7 +29,7 @@ class FunkinSprite extends FlxSprite
 	 * ```
 	 * // Example code of using the FunkinSprite class with the loadSprite() method.
 	 * var bg:FunkinSprite = new FunkinSprite();
-	 * bg.loadGraphic('menuBG');
+	 * bg.loadSprite('menuBG');
 	 * add(bg);
 	 * ```
 	 *
@@ -97,11 +97,11 @@ class FunkinSprite extends FlxSprite
 	 */
 	public static function spriteExists(path:String):Bool
 	{
-		var _spriteExisting:Bool = (Assets.exists(Paths.imagePath(path)) && path != null);
-		if (!_spriteExisting) {
+		var existing:Bool = (Assets.exists(Paths.imagePath(path)) && path != null);
+		if (!existing) {
 			trace('Failed to load sprite/asset: $path');
 		}
-		return _spriteExisting;
+		return existing;
 	}
 
 	private function _updateLOD(levelOfDetailEnabled:Bool):Void

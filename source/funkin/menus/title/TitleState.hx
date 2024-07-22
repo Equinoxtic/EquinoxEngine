@@ -115,8 +115,6 @@ class TitleState extends MusicBeatState
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
-		// Preferences.loadPrefs();
-
 		/*
 		#if (CHECK_FOR_UPDATES && !debug)
 		if(Preferences.checkForUpdates && !closedState) {

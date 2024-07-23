@@ -68,7 +68,7 @@ class FunkinSprite extends FlxSprite
 	 * @param framerate The framerate of each animation.
 	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
 	 */
-	public function loadAnimatedSprite(path:String, animationsKeys:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	public function loadAnimatedSprite(path:String, animations:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
 	{
 		if (!FunkinSprite.spriteExists(path)) {
 			return;
@@ -76,9 +76,9 @@ class FunkinSprite extends FlxSprite
 
 		frames = Paths.getSparrowAtlas(path);
 
-		if (animationsKeys != null && animationsKeys.length > 0) {
-			for (i in 0...animationsKeys.length) {
-				_constructAnimationPrefixes(animationsKeys[i][0], animationsKeys[i][1], framerate, looped);
+		if (animations != null && animations.length > 0) {
+			for (i in 0...animations.length) {
+				_constructAnimationPrefixes(animations[i][0], animations[i][1], framerate, looped);
 			}
 		}
 

@@ -1,7 +1,17 @@
 package funkin.ui.display;
 
+import funkin.animateatlas.AtlasFrameMaker;
 import flixel.FlxSprite;
 import openfl.utils.Assets as Assets;
+
+using StringTools;
+
+enum SpriteType
+{
+	SPARROW;
+	PACKER;
+	TEXTURE;
+}
 
 class FunkinSprite extends FlxSprite
 {
@@ -104,6 +114,19 @@ class FunkinSprite extends FlxSprite
 
 		if (defaultAnimation != null) {
 			animation.play(defaultAnimation);
+		}
+	}
+
+	public function setAtlasSpriteType(key:String, ?spriteType:Null<SpriteType> = SpriteType.SPARROW):Void
+	{
+		switch (spriteType)
+		{
+			case SPARROW:
+				frames = Paths.getSparrowAtlas(key);
+			case PACKER:
+				frames = Paths.getPackerAtlas(key);
+			case TEXTURE:
+				frames = AtlasFrameMaker.construct(key);
 		}
 	}
 

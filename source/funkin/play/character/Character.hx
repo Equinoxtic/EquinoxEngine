@@ -1,5 +1,6 @@
 package funkin.play.character;
 
+import funkin.ui.display.FunkinSprite.SpriteType;
 import flixel.FlxG;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
@@ -111,7 +112,7 @@ class Character extends FunkinSprite
 				if (!Assets.exists(path))
 				#end
 				{
-					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
+					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json');
 				}
 
 				#if MODS_ALLOWED
@@ -121,48 +122,31 @@ class Character extends FunkinSprite
 				#end
 
 				var json:CharacterFile = cast Json.parse(rawJson);
-				var spriteType = "sparrow";
+				var spriteType:SpriteType = SpriteType.SPARROW;
 				#if MODS_ALLOWED
 				var modTxtToFind:String = Paths.modsTxt(json.image);
 				var txtToFind:String = Paths.getPath('images/' + json.image + '.txt', TEXT);
-
-				//var modTextureToFind:String = Paths.modFolders("images/"+json.image);
-				//var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
-
 				if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
 				#end
 				{
-					spriteType = "packer";
+					spriteType = SpriteType.PACKER;
 				}
 
 				#if MODS_ALLOWED
 				var modAnimToFind:String = Paths.modFolders('images/' + json.image + '/Animation.json');
 				var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-
-				//var modTextureToFind:String = Paths.modFolders("images/"+json.image);
-				//var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
-
 				if (FileSystem.exists(modAnimToFind) || FileSystem.exists(animToFind) || Assets.exists(animToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '/Animation.json', TEXT)))
 				#end
 				{
-					spriteType = "texture";
+					spriteType = SpriteType.TEXTURE;
 				}
 
-				switch (spriteType){
+				setAtlasSpriteType(json.image, spriteType);
 
-					case "packer":
-						frames = Paths.getPackerAtlas(json.image);
-
-					case "sparrow":
-						frames = Paths.getSparrowAtlas(json.image);
-
-					case "texture":
-						frames = AtlasFrameMaker.construct(json.image);
-				}
 				imageFile = json.image;
 
 				if(json.scale != 1) {
@@ -199,6 +183,7 @@ class Character extends FunkinSprite
 						var animFps:Int = anim.fps;
 						var animLoop:Bool = !!anim.loop; //Bruh
 						var animIndices:Array<Int> = anim.indices;
+
 						if(animIndices != null && animIndices.length > 0) {
 							animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
 						} else {

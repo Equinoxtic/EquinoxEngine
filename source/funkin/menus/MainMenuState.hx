@@ -110,13 +110,14 @@ class MainMenuState extends MusicBeatState
 			var offset:Float = 100 + (Math.max(optionShit.length, 4) - 4) * 250;
 			var menuItem:FunkinSprite = new FunkinSprite(0, (i * 180) + offset);
 			menuItem.scale.set(scale, scale);
-			// menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			// menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			// menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.loadAnimatedSprite('mainmenu/menu_${optionShit[i]}', [
-				[ 'idle',     '${optionShit[i]} basic' ],
-				[ 'selected', '${optionShit[i]} white' ]
-			], 24, 'idle');
+					[ 'idle',     '${optionShit[i]} basic' ],
+					[ 'selected', '${optionShit[i]} white' ]
+				],
+				24,
+				false,
+				'idle'
+			);
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);

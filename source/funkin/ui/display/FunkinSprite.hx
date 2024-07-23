@@ -132,6 +132,12 @@ class FunkinSprite extends FlxSprite
 	private function _constructAnimationPrefixes(name:String, prefix:String, ?framerate:Int = 24, ?looped:Bool = false):Void
 	{
 		if (name != null && prefix != null) {
+			animation.addByPrefix(name, prefix, _setFramerate(framerate), looped);
+		}
+	}
+
+	{
+		if (name == null && prefix == null) {
 			return;
 		}
 

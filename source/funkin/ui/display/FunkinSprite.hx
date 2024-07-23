@@ -101,14 +101,61 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	/**
+	 * ### Loads an animated sprites given the path, the animations, and the animation's indices.
+	 *
+	 * ```
+	 * var sprite:FunkinSprite = new FunkinSprite();
+	 * sprite.loadAnimtedSpriteByIndicies('SPRITESHEET', [
+	 *          [ 'name_1', 'prefix_1', [ 0, 1, 2, 3, 4, 5, ... ] ],
+	 *          [ 'name_2', 'prefix_2', [ 0, 1, 2, 3, 4, 5, ... ] ],
+	 *          [ 'name_3', 'prefix_3', [ 0, 1, 2, 3, 4, 5, ... ] ],
+	 *      ],
+	 *      30,
+	 *      true,
+	 *      'name_1'
+	 * );
+	 * add(sprite);
+	 * ```
+	 *
+	 * @param path The path of the asset/image.
+	 * @param animations The 2-dimensional array of the name, prefix, and indices of the animation.
+	 * @param framerate The framerate of all present animations.
+	 * @param looped Whether the sprite's animation should be looped.
+	 * @param defaultAnimation The default animation of the animated sprite.
+	 */
+	public function loadAnimatedSpriteByIndices(path:String, animations:Array<Dynamic>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	{
+		if (!FunkinSprite.spriteExists(path)) {
+			return;
+		}
+
+		frames = Paths.getSparrowAtlas(path);
+
+		if (animations != null && animations.length > 0) {
+			for (i in 0...animations.length) {
+				if (animations[2] != null && animations[2].length > 0) {
+					_constructAnimationIndices(animations[i][0], animations[i][1], animations[i][2], framerate, looped);
+				} else {
+					_constructAnimationPrefixes(animations[i][0], animations[i][1], framerate, looped);
+				}
 			}
-			for (i in 0...animationKeys.length) {
-				animation.addByPrefix(
-					animationKeys[i][0], // Animation name(s)
-					animationKeys[i][1], // Animation prefix(es)
-					framerate,
-					looped
-				);
+		}
+
+		if (defaultAnimation != null) {
+			animation.play(defaultAnimation);
+		}
+	}
+
+	public function addIndicesToAnimatedSprite(animations:Array<Dynamic>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	{
+		if (animations != null && animations.length > 0) {
+			for (i in 0...animations.length) {
+				if (animations[2] != null && animations[2].length > 0) {
+					_constructAnimationIndices(animations[i][0], animations[i][1], animations[i][2], framerate, looped);
+				} else {
+					_constructAnimationPrefixes(animations[i][0], animations[i][1], framerate, looped);
+				}
 			}
 		}
 
@@ -159,12 +206,13 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	private function _constructAnimationIndices(name:String, prefix:String, indices:Array<Int>, ?framerate:Int = 24, ?looped:Bool = false):Void
 	{
-		if (name == null && prefix == null) {
-			return;
+		if (name != null && prefix != null) {
+			if (indices != null && indices.length > 0) {
+				animation.addByIndices(name, prefix, indices, "", _setFramerate(framerate), looped);
+			}
 		}
-
-		animation.addByPrefix(name, prefix, _setFramerate(framerate), looped);
 	}
 
 	private function _setFramerate(framerate:Int):Int

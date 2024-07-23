@@ -68,13 +68,24 @@ class FunkinSprite extends FlxSprite
 	 * @param framerate The framerate of each animation.
 	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
 	 */
-	public function loadAnimatedSprite(path:String, animationKeys:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	public function loadAnimatedSprite(path:String, animationsKeys:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
 	{
 		if (!FunkinSprite.spriteExists(path)) {
 			return;
 		}
 
 		frames = Paths.getSparrowAtlas(path);
+
+		if (animationsKeys != null && animationsKeys.length > 0) {
+			for (i in 0...animationsKeys.length) {
+				_constructAnimationPrefixes(animationsKeys[i][0], animationsKeys[i][1], framerate, looped);
+			}
+		}
+
+		if (defaultAnimation != null) {
+			animation.play(defaultAnimation);
+		}
+	}
 
 		if (animationKeys != null && animationKeys.length > 0) {
 			if (framerate <= 0 && Math.isNaN(framerate)) {
@@ -115,5 +126,23 @@ class FunkinSprite extends FlxSprite
 		if (levelOfDetailEnabled) {
 			visible = (!GlobalSettings.LOW_QUALITY);
 		}
+	}
+
+	private function _constructAnimationPrefixes(name:String, prefix:String, ?framerate:Int = 24, ?looped:Bool = false):Void
+	{
+		if (name != null && prefix != null) {
+			return;
+		}
+
+		animation.addByPrefix(name, prefix, _setFramerate(framerate), looped);
+	}
+
+	private function _setFramerate(framerate:Int):Int
+	{
+		var m_framerate:Int = 24;
+		if (framerate > 0 && !Math.isNaN(framerate)) {
+			m_framerate = framerate;
+		}
+		return m_framerate;
 	}
 }

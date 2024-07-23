@@ -1,7 +1,14 @@
 package funkin.util;
 
+import flixel.input.keyboard.FlxKey;
+
 class GlobalSettings
 {
+	public static var FOCUS_LOST_FRAMERATE:Int;
+	public static var MUTE_KEYS:Array<FlxKey>;
+	public static var VOLUME_UP_KEYS:Array<FlxKey>;
+	public static var VOLUME_DOWN_KEYS:Array<FlxKey>;
+
 	public static var FRAMERATE:Int;
 	public static var SHOW_FRAMERATE:Bool;
 	public static var SPRITE_ANTIALIASING:Bool;
@@ -47,6 +54,8 @@ class GlobalSettings
 	 */
 	public static function initializeSettings():Void
 	{
+		FOCUS_LOST_FRAMERATE = 30;
+
 		FRAMERATE = Preferences.getPlayerPreference('framerate', 60);
 		SHOW_FRAMERATE = Preferences.getPlayerPreference('showFramerate', true);
 		SPRITE_ANTIALIASING = Preferences.getPlayerPreference('antialiasing', true);
@@ -84,5 +93,12 @@ class GlobalSettings
 		#if (debug)
 		FlxG.log.add('Initialized Global Settings!');
 		#end
+	}
+
+	public static function loadVolumeControls():Void
+	{
+		MUTE_KEYS = [FlxKey.ZERO];
+		VOLUME_UP_KEYS = [FlxKey.ZERO];
+		VOLUME_DOWN_KEYS = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
 	}
 }

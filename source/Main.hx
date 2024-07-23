@@ -108,6 +108,19 @@ class Main extends Sprite
 		 */
 		GlobalSettings.initializeSettings();
 
+		/**
+		 * Load controls for controlling the game's volume.
+		 */
+		GlobalSettings.loadVolumeControls();
+
+		// The default framerate when unfocusing from the game's window.
+		FlxG.game.focusLostFramerate = GlobalSettings.FOCUS_LOST_FRAMERATE;
+
+		// Saves the controls for the volume.
+		Preferences.saveVolumeControls();
+
+		FlxG.keys.preventDefaultKeys = [TAB];
+
 		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);

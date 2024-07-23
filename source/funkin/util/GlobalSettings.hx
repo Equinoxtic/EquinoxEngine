@@ -98,7 +98,7 @@ class GlobalSettings
 	public static function loadVolumeControls():Void
 	{
 		MUTE_KEYS = [FlxKey.ZERO];
-		VOLUME_UP_KEYS = [FlxKey.ZERO];
+		VOLUME_UP_KEYS = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
 		VOLUME_DOWN_KEYS = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
 	}
 }

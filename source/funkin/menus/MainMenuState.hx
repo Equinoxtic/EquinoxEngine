@@ -115,7 +115,7 @@ class MainMenuState extends MusicBeatState
 					[ 'selected', '${optionShit[i]} white' ]
 				],
 				24,
-				false,
+				true,
 				'idle'
 			);
 			menuItem.ID = i;

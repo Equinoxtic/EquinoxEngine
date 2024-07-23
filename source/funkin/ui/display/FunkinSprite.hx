@@ -58,14 +58,18 @@ class FunkinSprite extends FlxSprite
 	 *     menuItem.loadAnimatedSprite('mainmenu/menu_${optionShit[i]}', [
 	 *         [ 'idle',     '${optionShit[i]} basic' ],
 	 *         [ 'selected', '${optionShit[i]} white' ]
-	 *     ], 24, 'idle');
+	 *     ],
+	 *     24,
+	 *     false,
+	 *     'idle');
 	 *     // ...
 	 * }
 	 * ```
 	 *
 	 * @param path The path of the asset/image.
-	 * @param animationKeys A 2-dimensional array of animations.
-	 * @param framerate The framerate of each animation.
+	 * @param animationKeys A 2-dimensional array of the name and prefix of the animation.
+	 * @param framerate The framerate of all present animations.
+	 * @param looped Whether the sprite's animation should be looped.
 	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
 	 */
 	public function loadAnimatedSprite(path:String, animations:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
@@ -87,9 +91,6 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
-		if (animationKeys != null && animationKeys.length > 0) {
-			if (framerate <= 0 && Math.isNaN(framerate)) {
-				framerate = 24;
 			}
 			for (i in 0...animationKeys.length) {
 				animation.addByPrefix(

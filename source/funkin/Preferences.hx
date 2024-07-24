@@ -206,13 +206,6 @@ class Preferences
 		}
 
 		trace("Player Preferences Loaded!");
-
-		if (FlxG.save.data.playerPreferences != null) {
-			var loadedPreferences:Map<String, Dynamic> = FlxG.save.data.playerPreferences;
-			for (key => value in loadedPreferences) {
-				trace('Preference $key: $value');
-			}
-		}
 	}
 
 	private static function _setFramerate(?framerate:Int = 60):Void

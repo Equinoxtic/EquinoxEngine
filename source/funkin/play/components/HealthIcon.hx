@@ -88,10 +88,10 @@ class HealthIcon extends FunkinSprite
 	{
 		if (playerIcon) {
 			// Offsets for BF / Player.
-			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.value, 0, 2, 100, 0) * 0.01)) + (150 * scale.x - 150) / 2 - offset;
+			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * scale.x - 150) / 2 - offset;
 		} else {
 			// Offsets for Dad / Opponent.
-			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.value, 0, 2, 100, 0) * 0.01)) - (150 * scale.x) / 2 - offset * 2;
+			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * scale.x) / 2 - offset * 2;
 		}
 	}
 

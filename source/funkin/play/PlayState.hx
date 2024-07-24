@@ -195,8 +195,7 @@ class PlayState extends MusicBeatState
 	public var health:Float = 1;
 	public var combo:Int = 0;
 
-	private var healthBarBG:AttachedSprite;
-	public var healthBar:FlxBar;
+	public var healthBar:HealthBar;
 	var songPercent:Float = 0;
 
 	private var timeBarBG:AttachedSprite;
@@ -779,30 +778,16 @@ class PlayState extends MusicBeatState
 		/**
 		 * HealthBar Code.
 		 */
-		healthBarBG = new AttachedSprite('solariumUI/healthBar');
-		healthBarBG.y = FlxG.height * 0.85;
-		healthBarBG.screenCenter(X);
-		healthBarBG.setGraphicSize(Std.int(healthBarBG.width * 1), Std.int(healthBarBG.height * 1.2));
-		healthBarBG.visible = !GlobalSettings.HIDE_HUD;
-		healthBarBG.xAdd = -4;
-		healthBarBG.yAdd = -26;
+		var healthBarY:Float = FlxG.height * 0.85;
 		if (GlobalSettings.DOWNSCROLL) {
-			healthBarBG.y = 0.11 * FlxG.height;
+			healthBarY = FlxG.height * 0.11;
 		}
 
-		healthBar = new FlxBar(0, 0, FlxBarFillDirection.RIGHT_TO_LEFT, Std.int(healthBarBG.width * 1), Std.int(healthBarBG.height * 1), this,
-		'displayedHealth', Constants.HEALTH_MIN, Constants.HEALTH_MAX);
-		healthBar.x = healthBarBG.x * 1;
-		healthBar.y = healthBarBG.y - 1;
-		healthBar.setGraphicSize(Std.int(healthBarBG.width * 0.95), Std.int(healthBarBG.height * 0.35));
-		healthBar.numDivisions = 1000;
-		healthBar.visible = !GlobalSettings.HIDE_HUD;
-		healthBar.alpha = GlobalSettings.HEALTH_BAR_TRANSPARENCY;
-
+		healthBar = new HealthBar(this, 0, healthBarY);
+		healthBar.screenCenter(X);
 		hudGroup.add(healthBar);
-		hudGroup.add(healthBarBG);
 
-		reloadHealthBarColors();
+		healthBar.reloadColors();
 
 		/**
 		 * TimeBar code.
@@ -1532,38 +1517,6 @@ class PlayState extends MusicBeatState
 		}
 		luaDebugGroup.insert(0, new DebugLuaText(text, luaDebugGroup, color));
 		#end
-	}
-
-	public function getHealthArrayIndexOf(?character:String = 'bf'):FlxColor {
-		if (character != null) {
-			switch(character)
-			{
-				/**
-				 * Using Flx.fromRGBFloat to determine more precisee values of color, dividing each index of healthColorArray by 255 to achieve the same colors whilst avoiding conflicting results
-				 */
-				case 'bf' | 'boyfriend' | 'player':
-					return FlxColor.fromRGBFloat(
-						boyfriend.healthColorArray[0] / 255,
-						boyfriend.healthColorArray[1] / 255,
-						boyfriend.healthColorArray[2] / 255,
-						boyfriend.healthColorArray[3] / 255
-					);
-
-				case 'dad' | 'opponent' | 'enemy':
-					return FlxColor.fromRGBFloat(
-						dad.healthColorArray[0] / 255,
-						dad.healthColorArray[1] / 255,
-						dad.healthColorArray[2] / 255,
-						dad.healthColorArray[3] / 255
-					);
-			}
-		}
-		return FlxColor.fromRGBFloat(1.0, 1.0, 1.0, 1.0);
-	}
-
-	public function reloadHealthBarColors() {
-		healthBar.createFilledBar(getHealthArrayIndexOf('dad'), getHealthArrayIndexOf('bf'));
-		healthBar.updateBar();
 	}
 
 	public function addCharacterToList(newCharacter:String, type:Int):Void
@@ -3030,11 +2983,14 @@ class PlayState extends MusicBeatState
 		if (combo >= 99999) combo = 99999;
 		if (combo > comboPeak) comboPeak = combo;
 
-		/**
-		 * Smooth as hell linear interpolation on these numbers. 😎
-		 */
+		// Smooth linear interpolation on the health.
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .15);
+
+		// Smooth linear interpolation on the time.
 		lerpTime = FlxMath.lerp(lerpTime, songPercent, .15);
+
+		// Update the healthBar's value with 'displayedHealth'
+		healthBar.updateHealth(displayedHealth);
 
 		/**
 		 * Update Judgement Counter ratings.
@@ -4033,7 +3989,7 @@ class PlayState extends MusicBeatState
 							setOnLuas('gfName', gf.curCharacter);
 						}
 				}
-				reloadHealthBarColors();
+				healthBar.reloadColors();
 
 			case 'BG Freaks Expression':
 				if(bgGirls != null) bgGirls.swapDanceType();

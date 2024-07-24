@@ -2980,8 +2980,14 @@ class PlayState extends MusicBeatState
 		/**
 		 * Combo caps and combo peak.
 		 */
-		if (combo >= 99999) combo = 99999;
-		if (combo > comboPeak) comboPeak = combo;
+
+		if (combo >= Constants.GLOBAL_NUMBER_CAP) {
+			combo = Constants.GLOBAL_NUMBER_CAP;
+		}
+
+		if (combo > comboPeak) {
+			comboPeak = combo;
+		}
 
 		// Smooth linear interpolation on the health.
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .15);

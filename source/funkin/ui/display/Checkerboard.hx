@@ -1,5 +1,6 @@
 package funkin.ui.display;
 
+import flixel.addons.editors.ogmo.FlxOgmo3Loader.ProjectTilesetData;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.addons.display.FlxBackdrop;
 import flixel.util.FlxColor;
@@ -29,6 +30,12 @@ class Checkerboard extends FlxBackdrop
 	public var tileSize:CheckerboardSizeType = NORMAL;
 
 	/**
+	 * The speed/increment of the movement of each tile updating in real-time.
+	 */
+	private var _ix:Float = 0.0;
+	private var _iy:Float = 0.0;
+
+	/**
 	 * Create a new Checker Background, uses and extends [``FlxBackdrop``](https://api.haxeflixel.com/flixel/addons/display/FlxBackdrop.html).
 	 *
 	 * @param axes The axes on which to repeat. The default, XY will tile the entire camera.
@@ -41,16 +48,37 @@ class Checkerboard extends FlxBackdrop
 	 */
 	public function new(?axes:FlxAxes = XY, ?spacing:Int = 0, ?tileSize:CheckerboardSizeType = NORMAL, ?checkerAlpha:Float = 0.5, ?checkerColor:FlxColor = 0xFF000000, ?scrollX:Float = 0.0, ?scrollY:Float = 0.07):Void
 	{
-		super(Paths.image(Std.string('${defaultCheckersPath}${getTileSize(tileSize)}')), axes, spacing, spacing);
+		super(Paths.image(Std.string('${defaultCheckersPath}${_getTileSize(tileSize)}')), axes, spacing, spacing);
 
 		color = checkerColor;
 		alpha = checkerAlpha;
 
-		if (tileSize == null)
+		if (tileSize == null) {
 			tileSize = NORMAL;
+		}
+
 		this.tileSize = tileSize;
 
 		scrollFactor.set(scrollX, scrollY);
+	}
+
+	/**
+	 * Sets the speed of the checkboard's movement in space when it updates.
+	 * @param x The amount of increments in the x axis.
+	 * @param y The amount of increments in the y axis.
+	 */
+	public function setTileSpeed(?X:Float = 0.25, ?Y:Float = 0.1):Void
+	{
+		_ix = X; _iy = Y;
+	}
+
+
+	override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+
+		x -= _ix / (GlobalSettings.FRAMERATE / 60);
+		y -= _iy / (GlobalSettings.FRAMERATE / 60);
 	}
 
 	/**
@@ -58,7 +86,7 @@ class Checkerboard extends FlxBackdrop
 	 * @param tileSize
 	 * @return String
 	 */
-	private function getTileSize(tileSizeType:CheckerboardSizeType = NORMAL):String
+	private function _getTileSize(tileSizeType:CheckerboardSizeType = NORMAL):String
 	{
 		var r:String = '32';
 
@@ -72,19 +100,5 @@ class Checkerboard extends FlxBackdrop
 		}
 
 		return '_${Std.string(r)}';
-	}
-
-	/**
-	 * Updates and increments the position of the Checkerboard.
-	 *
-	 * (Use this under the ``update()`` function of a state.)
-	 *
-	 * @param ix The amount of increments in the x axis.
-	 * @param iy The amount of increments in the y axis.
-	 */
-	public function updatePosition(ix:Float = 0.47, iy:Float = 0.16):Void
-	{
-		x -= ix / (GlobalSettings.FRAMERATE / 60);
-		y -= iy / (GlobalSettings.FRAMERATE / 60);
 	}
 }

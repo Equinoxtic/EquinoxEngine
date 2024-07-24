@@ -102,6 +102,7 @@ class FreeplayState extends MusicBeatState
 		add(bg);
 
 		checkerBg = new Checkerboard(XY, 1, EXTRA_HUGE, .27, 0xFF000000, 0.0, 0.09);
+		checkerBg.setTileSpeed(0.0, 0.21);
 		add(checkerBg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
@@ -240,8 +241,6 @@ class FreeplayState extends MusicBeatState
 	var playingSongInst:Bool = false;
 	override function update(elapsed:Float)
 	{
-		checkerBg.updatePosition(0.0, 0.21);
-
 		if (FlxG.sound.music.volume < 0.7)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;

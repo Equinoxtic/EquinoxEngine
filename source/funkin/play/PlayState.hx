@@ -3081,40 +3081,40 @@ class PlayState extends MusicBeatState
 		{
 			if (!paused)
 			{
-				songTime += FlxG.game.ticks - previousFrameTime;
+				songTime += TimeUtil.getTicks(previousFrameTime);
+
 				previousFrameTime = FlxG.game.ticks;
 
-				// Interpolation type beat
 				if (Conductor.lastSongPos != Conductor.songPosition)
 				{
-					songTime = (songTime + Conductor.songPosition) / 2;
+					songTime = TimeUtil.adjustSongTime(songTime);
 					Conductor.lastSongPos = Conductor.songPosition;
-					// Conductor.songPosition += FlxG.elapsed * 1000;
-					// trace('MISSED FRAME');
 				}
 
-				if(updateTime) {
-					var curTime:Float = Conductor.songPosition - GlobalSettings.NOTE_OFFSET;
-					if(curTime < 0) curTime = 0;
+				if (updateTime)
+				{
+					var curTime:Float = TimeUtil.adjustConductorTime();
+
+					if (curTime < 0) {
+						curTime = 0;
+					}
+
 					songPercent = (curTime / songLength);
 
-					// var songCalc:Float = (songLength - curTime);
-					var songCalc:Float = curTime;
+					@:privateAccess // Calculate the current time of the song.
+					var currentTimeOfSong:Int = TimeUtil._calculateTime(curTime);
 
-					var songLengthButReal:Int = Math.floor(songLength / 1000);
-					var secondsTotal:Int = Math.floor(songCalc / 1000);
-
-					if (secondsTotal < 0) secondsTotal = 0;
-					if (songLengthButReal < 0) songLengthButReal = 0;
+					@:privateAccess // Calculate the (total) length of the song.
+					var totalLengthOfSong:Int = TimeUtil._calculateTime(songLength);
 
 					// Putting each "timeFormat" in an array because I can.
 					var timeFormats:Array<String> = [
 						// SONG - DIFFICULTY
 						'${SONG.song} - ${FunkinUtil.difficultyString().toUpperCase()}',
 						// CURRENT TIME / TOTAL TIME
-						'${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(songLengthButReal, false)}',
+						'${TimeUtil.getSongTime(curTime)} / ${TimeUtil.getSongTime(songLength)}',
 						// PERCENTAGE%
-						'${Math.round(Highscore.floorDecimal((secondsTotal / songLengthButReal) * 100, 2))}%'
+						'${Math.round(Highscore.floorDecimal((currentTimeOfSong / totalLengthOfSong) * 100, 2))}%'
 					];
 
 					var formattedTimeTxt:String = '';

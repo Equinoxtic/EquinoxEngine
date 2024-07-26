@@ -105,8 +105,6 @@ class Chart
 				filePath = '${filePathString}${FunkinSound.erectModeSuffix(true)}';
 		}
 
-		trace(Paths.json(filePath));
-
 		#if (MODS_ALLOWED)
 		if (FileSystem.exists(Paths.json(filePath)) || FileSystem.exists(Paths.modsJson(filePath)))
 		#else

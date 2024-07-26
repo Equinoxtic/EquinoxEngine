@@ -26,9 +26,4 @@ class CinematicBorder extends flixel.group.FlxSpriteGroup
 		borderSpriteBottom.color = FlxColor.fromRGB(0, 0, 0);
 		add(borderSpriteBottom);
 	}
-
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

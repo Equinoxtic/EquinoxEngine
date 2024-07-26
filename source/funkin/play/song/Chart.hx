@@ -30,7 +30,7 @@ class Chart
 	{
 		var JSON = null;
 
-		var stringPath:String = getDataPathOfSong(song, input, "difficulties/");
+		var stringPath:String = getDataPathOfSong(song, input, "difficulties");
 
 		switch (parseType)
 		{
@@ -91,10 +91,9 @@ class Chart
 	public static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = ""):String
 	{
 		final songPath:String = Paths.formatToSongPath(song);
+		final filePathString:String = 'charts/${songPath}/${_formatLibraryString(library)}${key}';
 
-		var filePathString = 'charts/${songPath}/${((library != '' && library != null) ? '$library/' : '')}${key}';
-
-		var filePath = filePathString;
+		var filePath:String = filePathString;
 		switch(library)
 		{
 			case 'events' | 'songdata' | 'character-maps':
@@ -146,5 +145,13 @@ class Chart
 				}
 			}
 		}
+	}
+
+	private static function _formatLibraryString(library:String):String
+	{
+		if (library != null && library.charAt(0) != '') {
+			return '$library/';
+		}
+		return '';
 	}
 }

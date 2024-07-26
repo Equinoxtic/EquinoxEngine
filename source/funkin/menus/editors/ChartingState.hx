@@ -390,8 +390,6 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG_METADATA = _metadata;
 		}
 
-		// Paths.clearMemory();
-
 		FlxG.mouse.visible = true;
 
 		#if desktop
@@ -439,13 +437,9 @@ class ChartingState extends MusicBeatState
 
 		if(curSec >= _song.notes.length) curSec = _song.notes.length - 1;
 
-		//FlxG.save.bind('funkin', 'ninjamuffin99');
-
 		tempBpm = _song.bpm;
 
 		addSection();
-
-		// sections = _song.notes;
 
 		currentSongName = Paths.formatToSongPath(_song.song);
 		loadSong();
@@ -540,7 +534,6 @@ class ChartingState extends MusicBeatState
 		addChartingUI();
 		updateHeads();
 		updateWaveform();
-		//UI_box.selected_tab = 4;
 
 		add(curRenderedSustains);
 		add(curRenderedNotes);
@@ -1577,21 +1570,23 @@ class ChartingState extends MusicBeatState
 		tab_group_info.name = "Info";
 
 		var songCredit = PlayState.SONG_DATA.artist;
-		if (songCredit == null) songCredit = '';
+		var songCharter = PlayState.SONG_DATA.charter;
+		var songExtraText = PlayState.SONG_DATA.stringExtra;
+		if (songCredit == null)
+			songCredit = '';
+		if (songCharter == null)
+			songCharter = '';
+		if (songExtraText == null)
+			songExtraText = '';
+
 		creditsInputText = new FlxUIInputText(10, 50, 200, songCredit, 8);
 		blockPressWhileTypingOn.push(creditsInputText);
-
-		var songCharter = PlayState.SONG_DATA.charter;
-		if (songCharter == null) songCharter = '';
 		charterInputText = new FlxUIInputText(creditsInputText.x, creditsInputText.y + 37, 200, songCharter, 8);
 		blockPressWhileTypingOn.push(charterInputText);
-
-		var songExtraText = PlayState.SONG_DATA.stringExtra;
-		if (songExtraText == null) songExtraText = '';
 		extraStringInputText = new FlxUIInputText(charterInputText.x, charterInputText.y + 37, 200, songExtraText, 8);
 		blockPressWhileTypingOn.push(extraStringInputText);
 
-		var saveButton:FlxButton = new FlxButton(charterInputText.x + 5, charterInputText.y + 65, "Save", function()
+		var saveButton:FlxButton = new FlxButton(charterInputText.x + 5, charterInputText.y + 65, "Save Information", function()
 		{
 			saveChartData(DATA);
 		});
@@ -1620,13 +1615,16 @@ class ChartingState extends MusicBeatState
 		var tab_group_settings = new FlxUI(null, UI_songData);
 		tab_group_settings.name = "Settings";
 
+		var songAlbum:String = PlayState.SONG_METADATA.songAlbum;
 		var songDisplayName:String = PlayState.SONG_METADATA.songDisplayName;
-		if (songDisplayName == null) songDisplayName = "";
+		if (songDisplayName == null)
+			songDisplayName = "";
+		if (songAlbum == null)
+			songAlbum = "";
+
 		songDisplayNameInput = new FlxUIInputText(10, 50, 200, songDisplayName, 8);
 		blockPressWhileTypingOn.push(songDisplayNameInput);
 
-		var songAlbum:String = PlayState.SONG_METADATA.songAlbum;
-		if (songAlbum == null) songAlbum = "";
 		albumTextInput = new FlxUIInputText(10, songDisplayNameInput.y + 50, 100, songAlbum, 8);
 		blockPressWhileTypingOn.push(albumTextInput);
 
@@ -1647,7 +1645,7 @@ class ChartingState extends MusicBeatState
 		beatModInput.name = 'beat_mod';
 		blockPressWhileTypingOnStepper.push(beatModInput);
 
-		var saveButton:FlxButton = new FlxButton(beatModInput.x, beatModInput.y + 35, "Save", function ()
+		var saveButton:FlxButton = new FlxButton(beatModInput.x, beatModInput.y + 35, "Save Metadata", function ()
 		{
 			saveChartData(METADATA);
 		});

@@ -246,12 +246,12 @@ class Constants
 	/**
 	 * The maximum value for the score multiplier.
 	 */
-	public static final SCORE_MULTIPLIER_MAX:Float = 8.0;
+	public static final SCORE_MULTIPLIER_MAX:Float = 500.0;
 
 	/**
 	 * The maximum value for the miss multiplier.
 	 */
-	public static final MISS_MULTIPLIER_MAX:Float = 7.5;
+	public static final MISS_MULTIPLIER_MAX:Float = SCORE_MULTIPLIER_MAX / 15.0;
 
 	/**
 	 * The global cap for all integers.

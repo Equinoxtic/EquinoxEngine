@@ -7,15 +7,9 @@ import flixel.FlxBasic;
 
 class DebugText extends flixel.group.FlxSpriteGroup
 {
-	private var instance:FlxBasic;
-
-	public function new(instance:FlxBasic, ?xAdd:Float = 1.0, ?yAdd:Float = 1.0, ?alphaOverride:Float = 0.35, ?fontSize:Int = 14):Void
+	public function new(?xAdd:Float = 1.0, ?yAdd:Float = 1.0, ?alphaOverride:Float = 0.35, ?fontSize:Int = 14):Void
 	{
 		super();
-
-		if (instance == null) instance = this;
-
-		this.instance = instance;
 
 		var debugText:flixel.text.FlxText = new flixel.text.FlxText(0, 0, FlxG.width, 'You are testing a DEBUG build of ${Variables.APPLICATION_TITLE}', fontSize);
 		debugText.setFormat(Paths.font('phantommuff.ttf'), fontSize, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);

@@ -7,8 +7,6 @@ import flixel.group.FlxSpriteGroup;
 
 class GameplayInfo extends FlxSpriteGroup
 {
-	private var instance:FlxBasic;
-
 	private static var gameplayText:FunkinText;
 
 	/**
@@ -23,17 +21,13 @@ class GameplayInfo extends FlxSpriteGroup
 	 * @param songCredit The string of the artist/credit of the song. ( By default it should be ``PlayState.SONG_DATA.artist`` )
 	 * @param songText The extra/optional string in the text field. ( By default it should be ``PlayState.SONG_DATA.stringExtra`` )
 	 */
-	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:Null<String> = "", ?difficultyString:Null<String> = "", ?songCredit:Null<String> = "", ?songText:Null<String> = ""):Void
+	public function new(?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 24, ?songName:Null<String> = "", ?difficultyString:Null<String> = "", ?songCredit:Null<String> = "", ?songText:Null<String> = ""):Void
 	{
 		super();
 
-		if (songName == null || difficultyString == null || songCredit == null || songText == null) return;
-
-		if (instance == null) {
-			instance = this;
+		if (songName == null || difficultyString == null || songCredit == null || songText == null) {
+			return;
 		}
-
-		this.instance = instance;
 
 		gameplayText = new FunkinText(x, y, FlxG.width, "", fontSize, RIGHT, true);
 		gameplayText.scrollFactor.set();

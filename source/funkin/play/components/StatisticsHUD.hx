@@ -7,8 +7,6 @@ import funkin.play.components.statistics.StatisticsText;
 
 class StatisticsHUD extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var instance:FlxBasic;
-
 	private var scoreText:StatisticsText;
 	private var missesText:StatisticsText;
 	private var accuracyText:StatisticsText;
@@ -21,16 +19,9 @@ class StatisticsHUD extends FlxTypedSpriteGroup<FlxSprite>
 	 * @param Y The Y position of the Statistics HUD.
 	 * @param scale The scale of the Statistics HUD. [Default: ``1.0``]
 	 */
-	public function new(instance:FlxBasic, X:Float, Y:Float, ?scale:Float = 1.0):Void
+	public function new(X:Float, Y:Float, ?scale:Float = 1.0):Void
 	{
 		super();
-
-		if (instance == null)
-		{
-			instance = this;
-		}
-
-		this.instance = instance;
 
 		scoreText = new StatisticsText(X, Y, SCORE);
 		missesText = new StatisticsText(scoreText.x, scoreText.y + 21.5, MISSES);

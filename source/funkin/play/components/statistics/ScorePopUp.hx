@@ -12,22 +12,14 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 
 class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var instance:FlxBasic;
-
 	private var _comboValue:Int;
 	private var _currentRating:Rating;
 	private var _showsTallyCounter:Bool;
 	private var _showsCombo:Bool;
 
-	public function new(instance:FlxBasic, ?rating:Null<Rating>, ?combo:Null<Int>, ?showCombo:Bool = false, ?showTallyCounter:Bool = true):Void
+	public function new(?rating:Null<Rating>, ?combo:Null<Int>, ?showCombo:Bool = false, ?showTallyCounter:Bool = true):Void
 	{
 		super(0, 0);
-
-		if (instance == null) {
-			instance = this;
-		}
-
-		this.instance = instance;
 
 		if (combo >= 0) {
 			this._comboValue = combo;

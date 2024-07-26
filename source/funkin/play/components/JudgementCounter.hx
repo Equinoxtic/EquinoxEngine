@@ -10,8 +10,6 @@ using StringTools;
 
 class JudgementCounter extends FlxSpriteGroup
 {
-	private var instance:FlxBasic;
-
 	private var judgementText:FunkinText;
 
 	/**
@@ -23,15 +21,9 @@ class JudgementCounter extends FlxSpriteGroup
 	 * @param fontSize The font size of the text in the Judgement Counter. [Default: ``21``]
 	 * @param alignment The text alignment of the text in the Judgement Counter. [Default: ``LEFT``]
 	 */
-	public function new(?instance:FlxBasic, ?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT):Void
+	public function new(?x:Float = 0, ?y:Float = 0, ?initialSize:Float = 1.0, ?fontSize:Int = 21, ?alignment:FlxTextAlign = LEFT):Void
 	{
 		super();
-
-		if (instance == null) {
-			instance = this;
-		}
-
-		this.instance = instance;
 
 		judgementText = new FunkinText(x, y, FlxG.width, "", fontSize, LEFT, true);
 		judgementText.scrollFactor.set();

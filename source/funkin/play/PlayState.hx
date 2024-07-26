@@ -783,7 +783,7 @@ class PlayState extends MusicBeatState
 			healthBarY = FlxG.height * 0.11;
 		}
 
-		healthBar = new HealthBar(this, 0, healthBarY);
+		healthBar = new HealthBar(0, healthBarY);
 		healthBar.screenCenter(X);
 		hudGroup.add(healthBar);
 
@@ -853,7 +853,7 @@ class PlayState extends MusicBeatState
 		hudGroupExcluded = new FlxTypedGroup<FlxSprite>();
 		add(hudGroupExcluded);
 
-		statsHUD = new StatisticsHUD(this, 0, FlxG.height * 0.85, Constants.STATISTICS_HUD_SIZE);
+		statsHUD = new StatisticsHUD(0, FlxG.height * 0.85, Constants.STATISTICS_HUD_SIZE);
 		statsHUD.x += 25;
 		statsHUD.scrollFactor.set();
 		hudGroupInfo.add(statsHUD);
@@ -870,14 +870,14 @@ class PlayState extends MusicBeatState
 		/**
 		 * JudgementCounter.
 		 */
-		judgementCounter = new JudgementCounter(this, 15, -25, Constants.JUDGEMENT_COUNTER_SIZE, 18, LEFT);
+		judgementCounter = new JudgementCounter(15, -25, Constants.JUDGEMENT_COUNTER_SIZE, 18, LEFT);
 		judgementCounter.screenCenter(Y);
 		hudGroupInfo.add(judgementCounter);
 
 		/**
 		 * GameplayInfo.
 		 */
-		gameplayInfo = new GameplayInfo(this, -15, FlxG.height * 0.875, Constants.GAMEPLAY_INFO_SIZE, 17,
+		gameplayInfo = new GameplayInfo(-15, FlxG.height * 0.875, Constants.GAMEPLAY_INFO_SIZE, 17,
 			FunkinUtil.getSongDisplayName(),
 			FunkinUtil.difficultyString().toUpperCase().trim(),
 			PlayState.SONG_DATA.artist,
@@ -889,7 +889,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Pop-up for song's credits.
 		 */
-		songPopUp = new SongCreditsPopUp(this,
+		songPopUp = new SongCreditsPopUp(
 			FunkinUtil.getSongDisplayName(),
 			PlayState.SONG_DATA.artist,
 			PlayState.SONG_DATA.charter
@@ -899,7 +899,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Engine Watermark.
 		 */
-		engineWatermark = new Watermark(this, 0, FlxG.height * 0.97, Constants.WATERMARK_SIZE, 12);
+		engineWatermark = new Watermark(0, FlxG.height * 0.97, Constants.WATERMARK_SIZE, 12);
 		engineWatermark.screenCenter(X);
 		engineWatermark.scrollFactor.set();
 		hudGroupExcluded.add(engineWatermark);
@@ -907,7 +907,7 @@ class PlayState extends MusicBeatState
 		engineWatermark.playWatermarkAnimation();
 
 		#if (debug)
-		debugText = new DebugText(this, 1.0, 1.0, 0.3, 16);
+		debugText = new DebugText(1.0, 1.0, 0.3, 16);
 		debugText.scrollFactor.set();
 		hudGroupExcluded.add(debugText);
 		#end
@@ -940,7 +940,7 @@ class PlayState extends MusicBeatState
 			spr.cameras = [camExternalInfo];
 		});
 
-		cinematicBorder = new CinematicBorder(this, 1.0);
+		cinematicBorder = new CinematicBorder(1.0);
 		cinematicBorder.scrollFactor.set();
 		cinematicBorder.cameras = [borderCam];
 		add(cinematicBorder);
@@ -2159,7 +2159,7 @@ class PlayState extends MusicBeatState
 					santa.dance(true);
 				}
 
-				var countdown:Countdown = new Countdown(this, 0, 0, (GlobalSettings.SPRITE_ANTIALIASING && !PlayState.isPixelStage), introAlts);
+				var countdown:Countdown = new Countdown(0, 0, (GlobalSettings.SPRITE_ANTIALIASING && !PlayState.isPixelStage), introAlts);
 				countdown.soundSuffix = introSoundsSuffix;
 				countdown.cameras = [camHUD];
 				insert(members.indexOf(notes), countdown);
@@ -4498,7 +4498,6 @@ class PlayState extends MusicBeatState
 
 		var scorePopUp:ScorePopUp =
 			new ScorePopUp(
-				this,
 				daRating,
 				combo,
 				(showCombo && !daRating.comboBreak),

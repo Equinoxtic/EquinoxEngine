@@ -10,8 +10,6 @@ import flixel.ui.FlxBar;
 
 class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var instance:FlxBasic;
-
 	private var healthBar:FlxBar;
 	private var healthBarBG:AttachedSprite;
 
@@ -19,15 +17,9 @@ class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 
 	public var percent:Float = 1.0;
 
-	public function new(instance:FlxBasic, X:Float, Y:Float):Void
+	public function new(X:Float, Y:Float):Void
 	{
 		super(X, Y);
-
-		if (instance == null) {
-			instance = this;
-		}
-
-		this.instance = instance;
 
 		healthBarBG = new AttachedSprite('solariumUI/healthBar');
 		healthBarBG.setGraphicSize(Std.int(healthBarBG.width * 1), Std.int(healthBarBG.height * 1.2));

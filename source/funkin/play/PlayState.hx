@@ -2398,35 +2398,17 @@ class PlayState extends MusicBeatState
 			daBeats += 1;
 		}
 
-		for (event in songData.events)
-		{
-			for (i in 0...event[1].length)
-			{
-				var newEventNote:Array<Dynamic> = [
-					event[0],
-					event[1][i][0],
-					event[1][i][1],
-					event[1][i][2]
-				];
-
-				var subEvent:EventNote = {
-					strumTime: newEventNote[0] + GlobalSettings.NOTE_OFFSET,
-					event: newEventNote[1],
-					value1: newEventNote[2],
-					value2: newEventNote[3]
-				};
-
-				subEvent.strumTime -= eventNoteEarlyTrigger(subEvent);
-				eventNotes.push(subEvent);
-				eventPushed(subEvent);
-			}
-		}
+		@:privateAccess
+		SongLoader._loadEventData(songData.events);
 
 		unspawnNotes.sort(sortByShit);
+
 		if(eventNotes.length > 1) { //No need to sort if there's a single one or none at all
 			eventNotes.sort(sortByTime);
 		}
+
 		checkEventNote();
+
 		generatedMusic = true;
 	}
 

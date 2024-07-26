@@ -149,32 +149,15 @@ class SongLoader
 				eventsData = Song.loadFromJson('events', song, true).events;
 			}
 
-			for (event in eventsData)
-			{
-				for (i in 0...event[1].length)
-				{
-					var newEventNote:Array<Dynamic> = [
-						event[0],
-						event[1][i][0],
-						event[1][i][1],
-						event[1][i][2]
-					];
-
-					var subEvent:EventNote = {
-						strumTime: newEventNote[0] + GlobalSettings.NOTE_OFFSET,
-						event: newEventNote[1],
-						value1: newEventNote[2],
-						value2: newEventNote[3]
-					};
-
-					subEvent.strumTime -= PlayState.instance.eventNoteEarlyTrigger(subEvent);
-					PlayState.instance.eventNotes.push(subEvent);
-					PlayState.instance.eventPushed(subEvent);
-				}
-			}
+			_loadEventData(eventsData);
 		}
 	}
 
+	/**
+	 * Loads the girlfriend variant.
+	 * @param stage The current in-game stage.
+	 * @param song The current in-game song.
+	 */
 	public static function loadGirlfriendVariant(?stage:Null<String>, ?song:Null<String>):Void
 	{
 		var gf:String = PlayState.SONG.gfVersion;
@@ -250,5 +233,32 @@ class SongLoader
 		PlayState.instance.girlfriendCameraOffset = stageData.camera_girlfriend;
 		if(PlayState.instance.girlfriendCameraOffset == null)
 			PlayState.instance.girlfriendCameraOffset = [0, 0];
+	}
+
+	private static function _loadEventData(data:Array<Dynamic>):Void
+	{
+		for (event in data)
+		{
+			for (i in 0...event[1].length)
+			{
+				var newEventNote:Array<Dynamic> = [
+					event[0],
+					event[1][i][0],
+					event[1][i][1],
+					event[1][i][2]
+				];
+
+				var subEvent:EventNote = {
+					strumTime: newEventNote[0] + GlobalSettings.NOTE_OFFSET,
+					event: newEventNote[1],
+					value1: newEventNote[2],
+					value2: newEventNote[3]
+				};
+
+				subEvent.strumTime -= PlayState.instance.eventNoteEarlyTrigger(subEvent);
+				PlayState.instance.eventNotes.push(subEvent);
+				PlayState.instance.eventPushed(subEvent);
+			}
+		}
 	}
 }

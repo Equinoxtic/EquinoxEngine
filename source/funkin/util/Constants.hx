@@ -61,6 +61,11 @@ class Constants
 	 */
 
 	/**
+	 * The alpha/transparency of the Note itself.
+	 */
+	public static final NOTE_ALPHA:Float = 1.0;
+
+	/**
 	 * The alpha/transparency of the Note Tail.
 	 */
 	public static final NOTE_TAIL_ALPHA:Float = 0.6;

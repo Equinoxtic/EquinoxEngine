@@ -2076,22 +2076,21 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		var ret:Dynamic = callOnLuas('onStartCountdown', [], false);
 		if(ret != FunkinLua.Function_Stop) {
-			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
+			if (skipCountdown || startOnTime > 0) {
+				skipArrowStartTween = true;
+			}
 
-			if (GlobalSettings.MIDDLESCROLL)
-			{
-				if (GlobalSettings.MIDDLESCROLL_OPPONENT_NOTES) {
-					generateStaticArrows('dad', 0.35);
-				} else {
-					generateStaticArrows('dad', 0.0000001);
+			if (GlobalSettings.MIDDLESCROLL) {
+				var opponentNoteAlpha:Float = 0.35;
+				if (!GlobalSettings.MIDDLESCROLL_OPPONENT_NOTES) {
+					opponentNoteAlpha = 0.0;
 				}
-				generateStaticArrows('bf', 1.0);
+				generateStaticArrows('dad', opponentNoteAlpha);
+			} else {
+				generateStaticArrows('dad', Constants.NOTE_ALPHA);
 			}
-			else
-			{
-				generateStaticArrows('dad', 1.0);
-				generateStaticArrows('bf', 1.0);
-			}
+
+			generateStaticArrows('bf', Constants.NOTE_ALPHA);
 
 			// NoteMovement.getDefaultStrumPos(this);
 

@@ -35,3 +35,5 @@ art/test_x64-debug-officialrelease.bat
 
 # Others...
 .BUILD_TIME
+[Dd]ump/
+[Dd]ump/*.txt

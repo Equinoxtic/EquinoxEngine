@@ -160,11 +160,7 @@ class FunkinSprite extends FlxSprite
 	{
 		if (animations != null && animations.length > 0) {
 			for (i in 0...animations.length) {
-				if (animations[2] != null && animations[2].length > 0) {
-					_constructAnimationIndices(animations[i][0], animations[i][1], animations[i][2], framerate, looped);
-				} else {
-					_constructAnimationPrefixes(animations[i][0], animations[i][1], framerate, looped);
-				}
+				_constructAnimationIndices(animations[i][0], animations[i][1], animations[i][2], framerate, looped);
 			}
 		}
 
@@ -225,6 +221,8 @@ class FunkinSprite extends FlxSprite
 		if (name != null && prefix != null) {
 			if (indices != null && indices.length > 0) {
 				animation.addByIndices(name, prefix, indices, "", _setFramerate(framerate), looped);
+			} else {
+				_constructAnimationPrefixes(name, prefix, framerate, looped);
 			}
 		}
 	}

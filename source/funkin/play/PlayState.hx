@@ -93,6 +93,7 @@ import sys.io.File;
 
 #if VIDEOS_ALLOWED
 import vlc.MP4Handler;
+import funkin.graphics.FunkinVideo;
 #end
 
 using StringTools;
@@ -567,8 +568,9 @@ class PlayState extends MusicBeatState
 		add(gfGroup); //Needed for blammed lights
 
 		// Shitty layering but whatev it works LOL
-		if (curStage == 'limo')
+		if (curStage == 'limo') {
 			add(limo);
+		}
 
 		add(dadGroup);
 		add(boyfriendGroup);
@@ -609,6 +611,9 @@ class PlayState extends MusicBeatState
 		 */
 		LuaLoader.loadStageScripts(curStage);
 
+		/**
+		 * Loads the girlfriend variant / "version".
+		 */
 		SongLoader.loadGirlfriendVariant(curStage, PlayState.SONG.song);
 
 		if (!stageData.hide_girlfriend)
@@ -1570,43 +1575,22 @@ class PlayState extends MusicBeatState
 		char.y += char.positionArray[1];
 	}
 
-	public function startVideo(name:String)
+	public function startVideo(name:String):Void
 	{
 		#if VIDEOS_ALLOWED
 		inCutscene = true;
-
-		var filepath:String = Paths.video(name);
-		#if sys
-		if(!FileSystem.exists(filepath))
-		#else
-		if(!OpenFlAssets.exists(filepath))
-		#end
-		{
-			FlxG.log.warn('Couldnt find video file: ' + name);
-			startAndEnd();
-			return;
-		}
-
-		var video:MP4Handler = new MP4Handler();
-		video.playVideo(filepath);
-		video.finishCallback = function()
-		{
-			startAndEnd();
-			return;
-		}
-		#else
-		FlxG.log.warn('Platform not supported!');
-		startAndEnd();
-		return;
+		var video:FunkinVideo = new FunkinVideo();
+		video.start(name, startAndEnd);
 		#end
 	}
 
 	function startAndEnd()
 	{
-		if(endingSong)
+		if (endingSong) {
 			endSong();
-		else
+		} else {
 			startCountdown();
+		}
 	}
 
 	var dialogueCount:Int = 0;

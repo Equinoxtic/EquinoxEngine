@@ -47,6 +47,10 @@ class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		value = amount;
 		percent = (amount / Constants.HEALTH_MAX) * 100;
+		if (amount > Constants.HEALTH_MAX)
+			amount = Constants.HEALTH_MAX;
+		if (amount < Constants.HEALTH_MIN)
+			amount = Constants.HEALTH_MIN;
 	}
 
 	private function _setHealthBarColor(left:FlxColor, right:FlxColor):Void

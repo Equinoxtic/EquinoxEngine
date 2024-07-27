@@ -78,7 +78,7 @@ class FPS extends TextField
 			times.shift();
 		}
 
-		var _framerate:Int = Preferences.getPlayerPreference('framerate', 60);
+		var _framerate:Int = Preferences.getPlayerPreference('framerateAmount', 60);
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);

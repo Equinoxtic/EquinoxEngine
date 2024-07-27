@@ -72,11 +72,14 @@ class Checkerboard extends FlxBackdrop
 		_ix = X; _iy = Y;
 	}
 
+	private final FRAMERATE_MOD:Int = 60;
 
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		x -= _ix; y -= _iy;
+
+		x -= _ix / (GlobalSettings.FRAMERATE / FRAMERATE_MOD);
+		y -= _iy / (GlobalSettings.FRAMERATE / FRAMERATE_MOD);
 	}
 
 	/**

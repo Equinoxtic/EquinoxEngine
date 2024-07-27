@@ -56,7 +56,7 @@ class GlobalSettings
 	{
 		FOCUS_LOST_FRAMERATE = 30;
 
-		FRAMERATE = Preferences.getPlayerPreference('framerate', 60);
+		FRAMERATE = Preferences.getPlayerPreference('framerateAmount', 60);
 		SHOW_FRAMERATE = Preferences.getPlayerPreference('showFramerate', true);
 		SPRITE_ANTIALIASING = Preferences.getPlayerPreference('antialiasing', true);
 		LOW_QUALITY = Preferences.getPlayerPreference('lowQuality', false);

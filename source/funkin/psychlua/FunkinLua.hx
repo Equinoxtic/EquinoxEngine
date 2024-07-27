@@ -197,7 +197,7 @@ class FunkinLua {
 
 		set('downscroll', GlobalSettings.DOWNSCROLL);
 		set('middlescroll', GlobalSettings.MIDDLESCROLL);
-		set('framerate', GlobalSettings.FRAMERATE);
+		set('framerateAmount', GlobalSettings.FRAMERATE);
 		set('ghostTapping', GlobalSettings.GHOST_TAPPING);
 		set('hideHud', GlobalSettings.HIDE_HUD);
 		set('timeBarType', GlobalSettings.TIME_BAR_DISPLAY);

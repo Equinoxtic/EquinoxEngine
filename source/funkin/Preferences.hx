@@ -186,7 +186,7 @@ class Preferences
 		_preferenceAction(PreferenceActionType.LOAD);
 
 		_toggleFPSCounter(playerPreferences.get('showFramerate'));
-		_setFramerate(playerPreferences.get('framerate'));
+		_setFramerate(playerPreferences.get('framerateAmount'));
 
 		if (FlxG.save.data.gameplaySettings != null) {
 			var savedMap:Map<String, Dynamic> = FlxG.save.data.gameplaySettings;

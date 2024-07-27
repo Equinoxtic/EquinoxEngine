@@ -372,12 +372,9 @@ class PlayState extends MusicBeatState
 
 	public var canPause:Bool = false;
 	public var finishedCountdown:Bool = false;
-	private var scoreMultiplier:Float = 1.0;
-	private var missMultiplier:Float = 1.0;
-	private var displayedHealth:Float = Constants.HEALTH_START;
-	private var lerpTime:Float = 0;
-	private var comboPeak:Int = 0;
-	private var lerpScore:Int = 0;
+	public var displayedHealth:Float = Constants.HEALTH_START;
+	public var lerpTime:Float = 0;
+	public var comboPeak:Int = 0;
 
 	private var hudGroup:FlxTypedGroup<FlxSprite>;
 	private var hudGroupInfo:FlxTypedGroup<FlxSprite>;
@@ -2932,14 +2929,10 @@ class PlayState extends MusicBeatState
 		/**
 		 * Combo caps and combo peak.
 		 */
-
-		if (combo >= Constants.GLOBAL_NUMBER_CAP) {
+		if (combo >= Constants.GLOBAL_NUMBER_CAP)
 			combo = Constants.GLOBAL_NUMBER_CAP;
-		}
-
-		if (combo > comboPeak) {
+		if (combo > comboPeak)
 			comboPeak = combo;
-		}
 
 		// Smooth linear interpolation on the health.
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .15);
@@ -2965,20 +2958,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Multipliers for score and misses.
 		 */
-		if (scoreMultiplier >= Constants.SCORE_MULTIPLIER_MAX) {
-			scoreMultiplier = Constants.SCORE_MULTIPLIER_MAX;
-		} else {
-			scoreMultiplier = ((combo * 0.1) * (ratingPercent)) + 1.0;
-		}
-
-		if (missMultiplier >= Constants.MISS_MULTIPLIER_MAX) {
-			missMultiplier = Constants.MISS_MULTIPLIER_MAX;
-		} else {
-			missMultiplier = ((songMisses * .09) + (comboPeak * .09)) + 1.0;
-		}
-
-		FlxG.watch.addQuick("Score Multiplier", scoreMultiplier);
-		FlxG.watch.addQuick("Miss Multiplier", missMultiplier);
+		Scoring.updateMultipliers();
 
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
@@ -3003,8 +2983,10 @@ class PlayState extends MusicBeatState
 			openChartEditor();
 		}
 
-		if (health > Constants.HEALTH_MAX) health = Constants.HEALTH_MAX;
-		if (health < Constants.HEALTH_MIN) health = Constants.HEALTH_MIN;
+		if (health > Constants.HEALTH_MAX)
+			health = Constants.HEALTH_MAX;
+		if (health < Constants.HEALTH_MIN)
+			health = Constants.HEALTH_MIN;
 
 		iconP1.scaleIcon(FlxMath.lerp(1, iconP1.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
 		iconP1.offsetIcon(Constants.ICON_OFFSET, true);
@@ -3178,7 +3160,8 @@ class PlayState extends MusicBeatState
 						 * Bonus score and health when holding notes.
 						 */
 						health += Constants.HEALTH_HOLD_BONUS * elapsed * healthGain;
-						songScore += Std.int(Constants.SCORE_HOLD_BONUS * elapsed * ((scoreMultiplier / 4) + 1));
+						@:privateAccess
+						Scoring._increaseScore(Std.int(Constants.SCORE_HOLD_BONUS * elapsed));
 					}
 				});
 			}
@@ -4226,6 +4209,9 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		updateTime = false;
 
+		@:privateAccess
+		Scoring._resetMultipliers();
+
 		deathCounter = 0;
 		restartCounter = 0;
 
@@ -4435,7 +4421,7 @@ class PlayState extends MusicBeatState
 			daRating.increase();
 
 			if (!note.isSustainNote) {
-				songScore += score * Std.int(scoreMultiplier);
+				Scoring.setScore(score, false);
 			}
 
 			songHits++;
@@ -4665,8 +4651,9 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.3, 0.5), false);
 		}
 
-		scoreMultiplier = 1.0;
-		missMultiplier = 1.0;
+		@:privateAccess
+		Scoring._resetMultipliers();
+
 		combo = 0;
 		health -= Constants.HEALTH_MISS_PENALTY * healthLoss;
 
@@ -4680,7 +4667,8 @@ class PlayState extends MusicBeatState
 
 		FunkinSound.setVolume(0, 'player');
 
-		if(!practiceMode) songScore -= 300 * Std.int(missMultiplier);
+		if (!practiceMode)
+			Scoring.setScore(300, true);
 
 		totalPlayed++;
 		RecalculateRating(true);
@@ -4722,10 +4710,13 @@ class PlayState extends MusicBeatState
 			}
 			combo = 0;
 
-			if(!practiceMode) songScore -= 300 * Std.int(missMultiplier);
-			if(!endingSong) {
+			if (!practiceMode)
+				Scoring.setScore(300, true);
+
+			if (!endingSong) {
 				songMisses++;
 			}
+
 			totalPlayed++;
 			RecalculateRating(true);
 

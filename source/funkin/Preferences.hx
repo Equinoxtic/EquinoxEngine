@@ -205,6 +205,8 @@ class Preferences
 			reloadControls();
 		}
 
+		_loadVolumeState();
+
 		trace("Player Preferences Loaded!");
 	}
 
@@ -272,6 +274,19 @@ class Preferences
 		FlxG.sound.muteKeys = [];
 		FlxG.sound.volumeUpKeys = [];
 		FlxG.sound.volumeDownKeys = [];
+	}
+
+	private static function _saveVolumeState():Void
+	{
+		FlxG.save.data.mute = FlxG.sound.muted;
+		FlxG.save.data.volume = FlxG.sound.volume;
+		FlxG.save.flush();
+	}
+
+	private static function _loadVolumeState():Void
+	{
+		FlxG.sound.muted = FlxG.save.data.mute;
+		FlxG.sound.volume = FlxG.save.data.volume;
 	}
 
 	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey>

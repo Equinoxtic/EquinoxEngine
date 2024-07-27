@@ -28,7 +28,7 @@ class SongLoader
 		{
 			final songDataPath:String = Chart.getDataPathOfSong(song, 'songdata', 'songdata');
 
-			if (FileUtil.modFileExists(songDataPath))
+			if (FileUtil.jsonExists(songDataPath))
 			{
 				PlayState.SONG_DATA = Chart.loadChartData(song, 'songdata', ParseType.DATA);
 			}
@@ -54,7 +54,7 @@ class SongLoader
 		{
 			final songSettingsPath:String = Chart.getDataPathOfSong(song, 'metadata', null);
 
-			if (FileUtil.modFileExists(songSettingsPath))
+			if (FileUtil.jsonExists(songSettingsPath))
 			{
 				PlayState.SONG_METADATA = Chart.loadChartData(PlayState.SONG.song, 'metadata', ParseType.METADATA);
 			}
@@ -81,7 +81,7 @@ class SongLoader
 
 		final eventsPath:String = Chart.getDataPathOfSong(song, 'events', 'events');
 
-		if (FileUtil.modFileExists(eventsPath))
+		if (FileUtil.jsonExists(eventsPath))
 		{
 			// Standardised way of loading events. (Using Chart.loadChartData(...))
 			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', ParseType.EVENTS).events;

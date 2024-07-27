@@ -27,12 +27,24 @@ class FileUtil
 		#end
 	}
 
-	public static function modFileExists(path:String):Bool
+	public static function jsonExists(path:String):Bool
 	{
 		#if (MODS_ALLOWED)
-		return (FileSystem.exists(Paths.modsJson(path)) || FileSystem.exists(Paths.json(path)));
+		return (_modsJsonExists(path) || _fsJsonExists(path));
 		#else
 		return (OpenFlAssets.exists(Paths.json(path)));
 		#end
 	}
+
+	#if (MODS_ALLOWED && sys)
+	private static function _modsJsonExists(path:String):Bool
+	{
+		return (FileSystem.exists(Paths.modsJson(path)));
+	}
+
+	private static function _fsJsonExists(path:String):Bool
+	{
+		return (FileSystem.exists(Paths.json(path)));
+	}
+	#end
 }

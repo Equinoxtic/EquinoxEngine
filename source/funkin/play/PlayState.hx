@@ -3178,7 +3178,7 @@ class PlayState extends MusicBeatState
 						 * Bonus score and health when holding notes.
 						 */
 						health += Constants.HEALTH_HOLD_BONUS * elapsed * healthGain;
-						songScore += Std.int(Constants.SCORE_HOLD_BONUS * elapsed);
+						songScore += Std.int(Constants.SCORE_HOLD_BONUS * elapsed * ((scoreMultiplier / 4) + 1));
 					}
 				});
 			}

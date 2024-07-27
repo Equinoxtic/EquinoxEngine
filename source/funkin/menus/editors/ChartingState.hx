@@ -625,13 +625,7 @@ class ChartingState extends MusicBeatState
 
 			var eventsPath:String = '${songName}/events/events${FunkinSound.erectModeSuffix(false)}';
 
-			var file:String = Paths.json(eventsPath);
-			#if sys
-			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(eventsPath)) || #end FileSystem.exists(file))
-			#else
-			if (OpenFlAssets.exists(file))
-			#end
-			{
+			if (FileUtil.jsonExists(eventsPath)) {
 				clearEvents();
 				var events:SwagSong = Song.loadFromJson('events', songName, true, null);
 				_song.events = events.events;

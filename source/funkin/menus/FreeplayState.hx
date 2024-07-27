@@ -397,28 +397,12 @@ class FreeplayState extends MusicBeatState
 	{
 		var songPath:String = Std.string('charts/${selectedSong}/difficulties/${jsonDiff}');
 
-		#if MODS_ALLOWED
-		if (!sys.FileSystem.exists(Paths.modsJson(songPath)) && !sys.FileSystem.exists(Paths.json(songPath)))
-		#else
-		if (!OpenFlAssets.exists(Paths.json(songPath)))
-		#end
-		{
-			#if (debug)
-			FlxG.log.add('Couldnt find file: ${songPath} of ${selectedSong}');
-			#else
-			trace('Couldnt find file: ${songPath} of ${selectedSong}');
-			#end
-
+		@:privateAccess
+		if (!FileUtil._modsJsonExists(songPath) && !FileUtil._fsJsonExists(songPath)) {
 			jsonDiff = 'hard';
 			selectedSong = 'dad-battle';
 			curDifficulty = 2;
 		}
-
-		#if (debug)
-		FlxG.log.add('Chose Song: ${selectedSong.replace('-', ' ').toUpperCase()} - ${jsonDiff.toUpperCase()}');
-		#else
-		trace('Chose Song: ${selectedSong.replace('-', ' ').toUpperCase()} - ${jsonDiff.toUpperCase()}');
-		#end
 
 		PlayState.storyDifficulty = curDifficulty;
 		PlayState.SONG = Chart.loadChartData(selectedSong, jsonDiff, SONG);

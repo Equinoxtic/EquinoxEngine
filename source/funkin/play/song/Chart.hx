@@ -53,13 +53,8 @@ class Chart
 		}
 		#end
 
-		if (JSON == null)
-		{
-			#if (sys)
-			JSON = File.getContent(Paths.json(stringPath).trim());
-			#else
-			JSON = Assets.getText(Paths.json(stringPath).trim());
-			#end
+		if (JSON == null) {
+			JSON = FileUtil.getContentOfFile(Paths.json(stringPath)).trim();
 		}
 
 		while (!JSON.endsWith("}")) {
@@ -94,8 +89,8 @@ class Chart
 		final filePathString:String = 'charts/${songPath}/${_formatLibraryString(library)}${key}';
 
 		var filePath:String = filePathString;
-		switch(library)
-		{
+
+		switch(library) {
 			case 'events' | 'songdata' | 'character-maps':
 				filePath = '${filePathString}${FunkinSound.erectModeSuffix(false)}';
 			case 'difficulties':
@@ -104,12 +99,7 @@ class Chart
 				filePath = '${filePathString}${FunkinSound.erectModeSuffix(true)}';
 		}
 
-		#if (MODS_ALLOWED)
-		if (FileSystem.exists(Paths.json(filePath)) || FileSystem.exists(Paths.modsJson(filePath)))
-		#else
-		if (OpenFLAssets.exists(Paths.json(filePath)))
-		#end
-		{
+		if (FileUtil.jsonExists(filePath)) {
 			return filePath;
 		}
 

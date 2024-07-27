@@ -17,51 +17,6 @@ using StringTools;
  */
 class SongLoader
 {
-	static function getDummySongData():Dynamic
-	{
-		var dummyJson = {
-			artist: 'Artist',
-			charter: 'Charter',
-			stringExtra: 'String message'
-		};
-
-		return dummyJson;
-	}
-
-	static function getDummySongSettings():Dynamic
-	{
-		var dummyJson = {
-			songDisplayName: 'Test',
-			songAlbum: 'volume1',
-			difficulties: ["easy", "normal", "hard"],
-			variations: ["default", "erect"],
-			hasCountdown: true,
-			hasNoteWiggle: false,
-			beatMod: 4
-		};
-
-		return dummyJson;
-	}
-
-	static function getDummyStageData():Dynamic
-	{
-		var stageData = {
-			directory: "",
-			defaultZoom: 0.9,
-			isPixelStage: false,
-			boyfriend: [770, 100],
-			girlfriend: [400, 130],
-			opponent: [100, 100],
-			hide_girlfriend: false,
-			camera_boyfriend: [0, 0],
-			camera_opponent: [0, 0],
-			camera_girlfriend: [0, 0],
-			camera_speed: 1
-		};
-
-		return stageData;
-	}
-
 	/**
 	 * Loads the song's data file.
 	 * * [i.e. ``~/(SONG)/songdata/songdata-default.json``]
@@ -73,22 +28,18 @@ class SongLoader
 		{
 			final songDataPath:String = Chart.getDataPathOfSong(song, 'songdata', 'songdata');
 
-			#if MODS_ALLOWED
-			if (sys.FileSystem.exists(Paths.modsJson(songDataPath)) || sys.FileSystem.exists(Paths.json(songDataPath)))
-			#else
-			if (OpenFlAssets.exists(Paths.json(songDataPath)))
-			#end
+			if (FileUtil.modFileExists(songDataPath))
 			{
 				PlayState.SONG_DATA = Chart.loadChartData(song, 'songdata', ParseType.DATA);
 			}
 			else
 			{
-				PlayState.SONG_DATA = getDummySongData();
+				PlayState.SONG_DATA = _getDummySongData();
 			}
 		}
 		else
 		{
-			PlayState.SONG_DATA = getDummySongData();
+			PlayState.SONG_DATA = _getDummySongData();
 		}
 	}
 
@@ -103,24 +54,18 @@ class SongLoader
 		{
 			final songSettingsPath:String = Chart.getDataPathOfSong(song, 'metadata', null);
 
-			trace(songSettingsPath);
-
-			#if (MODS_ALLOWED)
-			if (sys.FileSystem.exists(Paths.modsJson(songSettingsPath)) || sys.FileSystem.exists(Paths.json(songSettingsPath)))
-			#else
-			if (OpenFlAssets.exists(Paths.json(songSettingsPath)))
-			#end
+			if (FileUtil.modFileExists(songSettingsPath))
 			{
-				PlayState.SONG_METADATA = Chart.loadChartData(PlayState.SONG.song, 'metadata', METADATA);
+				PlayState.SONG_METADATA = Chart.loadChartData(PlayState.SONG.song, 'metadata', ParseType.METADATA);
 			}
 			else
 			{
-				PlayState.SONG_METADATA = getDummySongSettings();
+				PlayState.SONG_METADATA = _getDummySongSettings();
 			}
 		}
 		else
 		{
-			PlayState.SONG_METADATA = getDummySongSettings();
+			PlayState.SONG_METADATA = _getDummySongSettings();
 		}
 	}
 
@@ -130,19 +75,16 @@ class SongLoader
 	 */
 	public static function loadSongEvents(?song:Null<String>):Void
 	{
-		if (song == null || song == '')
+		if (song == null || song == '') {
 			return;
+		}
 
 		final eventsPath:String = Chart.getDataPathOfSong(song, 'events', 'events');
 
-		#if (MODS_ALLOWED)
-		if (FileSystem.exists(Paths.json(eventsPath)) || FileSystem.exists(Paths.modsJson(eventsPath)))
-		#else
-		if (OpenFlAssets.exists(Paths.json(eventsPath)))
-		#end
+		if (FileUtil.modFileExists(eventsPath))
 		{
 			// Standardised way of loading events. (Using Chart.loadChartData(...))
-			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', EVENTS).events;
+			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', ParseType.EVENTS).events;
 
 			// Legacy / old way of loading events.
 			if (eventsData == null || eventsData.length <= 0) {
@@ -205,9 +147,8 @@ class SongLoader
 	public static function loadStageData(?stageData:Null<StageFile>):Void
 	{
 		// If "stageData" is null, then load a dummy JSON to prevent crashes.
-		if (stageData == null)
-		{
-			stageData = getDummyStageData();
+		if (stageData == null) {
+			stageData = _getDummyStageData();
 		}
 
 		PlayState.instance.defaultCamZoom = stageData.defaultZoom;
@@ -219,20 +160,24 @@ class SongLoader
 		PlayState.instance.DAD_X = stageData.opponent[0];
 		PlayState.instance.DAD_Y = stageData.opponent[1];
 
-		if (stageData.camera_speed != null)
+		if (stageData.camera_speed != null) {
 			PlayState.instance.cameraSpeed = stageData.camera_speed;
+		}
 
 		PlayState.instance.boyfriendCameraOffset = stageData.camera_boyfriend;
-		if (PlayState.instance.boyfriendCameraOffset == null)
+		if (PlayState.instance.boyfriendCameraOffset == null) {
 			PlayState.instance.boyfriendCameraOffset = [0, 0];
+		}
 
 		PlayState.instance.opponentCameraOffset = stageData.camera_opponent;
-		if(PlayState.instance.opponentCameraOffset == null)
+		if(PlayState.instance.opponentCameraOffset == null) {
 			PlayState.instance.opponentCameraOffset = [0, 0];
+		}
 
 		PlayState.instance.girlfriendCameraOffset = stageData.camera_girlfriend;
-		if(PlayState.instance.girlfriendCameraOffset == null)
+		if(PlayState.instance.girlfriendCameraOffset == null) {
 			PlayState.instance.girlfriendCameraOffset = [0, 0];
+		}
 	}
 
 	private static function _loadEventData(data:Array<Dynamic>):Void
@@ -260,5 +205,50 @@ class SongLoader
 				PlayState.instance.eventPushed(subEvent);
 			}
 		}
+	}
+
+	private static function _getDummySongData():Dynamic
+	{
+		var dummyJson = {
+			artist: 'Artist',
+			charter: 'Charter',
+			stringExtra: 'String message'
+		};
+
+		return dummyJson;
+	}
+
+	private static function _getDummySongSettings():Dynamic
+	{
+		var dummyJson = {
+			songDisplayName: 'Test',
+			songAlbum: 'volume1',
+			difficulties: ["easy", "normal", "hard"],
+			variations: ["default", "erect"],
+			hasCountdown: true,
+			hasNoteWiggle: false,
+			beatMod: 4
+		};
+
+		return dummyJson;
+	}
+
+	private static function _getDummyStageData():Dynamic
+	{
+		var stageData = {
+			directory: "",
+			defaultZoom: 0.9,
+			isPixelStage: false,
+			boyfriend: [770, 100],
+			girlfriend: [400, 130],
+			opponent: [100, 100],
+			hide_girlfriend: false,
+			camera_boyfriend: [0, 0],
+			camera_opponent: [0, 0],
+			camera_girlfriend: [0, 0],
+			camera_speed: 1
+		};
+
+		return stageData;
 	}
 }

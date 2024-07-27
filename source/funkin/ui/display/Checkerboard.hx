@@ -76,9 +76,7 @@ class Checkerboard extends FlxBackdrop
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
-		x -= _ix / (GlobalSettings.FRAMERATE / 60);
-		y -= _iy / (GlobalSettings.FRAMERATE / 60);
+		x -= _ix; y -= _iy;
 	}
 
 	/**
@@ -88,17 +86,22 @@ class Checkerboard extends FlxBackdrop
 	 */
 	private function _getTileSize(tileSizeType:CheckerboardSizeType = NORMAL):String
 	{
-		var r:String = '32';
+		var keySize:String = '32';
 
 		switch (tileSizeType)
 		{
-			case SMALL: r = '16';
-			case NORMAL: r = '32';
-			case LARGE: r = '64';
-			case HUGE: r = '128';
-			case EXTRA_HUGE: r = '256';
+			case SMALL:
+				keySize = '16';
+			case NORMAL:
+				keySize = '32';
+			case LARGE:
+				keySize = '64';
+			case HUGE:
+				keySize = '128';
+			case EXTRA_HUGE:
+				keySize = '256';
 		}
 
-		return '_${Std.string(r)}';
+		return '_${Std.string(keySize)}';
 	}
 }

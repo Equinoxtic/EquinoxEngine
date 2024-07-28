@@ -42,7 +42,8 @@ class StatisticsText extends FunkinText
 
 	private function displayStatistic(statisticType:Null<StatisticType>):Void
 	{
-		if (statisticType == null) return;
+		if (statisticType == null)
+			return;
 
 		switch (statisticType)
 		{

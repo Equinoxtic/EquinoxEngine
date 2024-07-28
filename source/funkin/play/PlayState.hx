@@ -402,6 +402,8 @@ class PlayState extends MusicBeatState
 
 	public var beatModulo:Int = 4;
 
+	public var achievementHandler:AchievementsHandler;
+
 	var onPlayerHoldCover:Array<HoldCover> = [];
 
 	override public function create()
@@ -579,6 +581,8 @@ class PlayState extends MusicBeatState
 			case 'tank':
 				add(foregroundSprites);
 		}
+
+		achievementHandler = new AchievementsHandler();
 
 		/**
 		 * Song Data / Information / Credits JSONs.
@@ -2858,9 +2862,12 @@ class PlayState extends MusicBeatState
 			moveCameraToDirection(cameraOffsetAmount, focusedCharacter);
 		}
 
-		if(!inCutscene) {
+		if (!inCutscene)
+		{
 			var lerpVal:Float = FunkinUtil.boundTo(Math.abs(elapsed * 2.4) * cameraSpeed * playbackRate, 0, 1);
+
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x + animOffsetX, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y + animOffsetY, lerpVal));
+
 			if (!startingSong && !endingSong && boyfriend.animation.curAnim != null && boyfriend.animation.curAnim.name.startsWith('idle')) {
 				boyfriendIdleTime += elapsed;
 				if (boyfriendIdleTime >= 0.15) {
@@ -4217,15 +4224,13 @@ class PlayState extends MusicBeatState
 		seenCutscene = false;
 
 		#if ACHIEVEMENTS_ALLOWED
-		if(achievementObj != null) {
+		@:privateAccess
+		if(achievementHandler.ACHIEVEMENT_OBJECT != null) {
 			return;
 		} else {
-			var achieve:String = checkForAchievement(['week1_nomiss', 'week2_nomiss', 'week3_nomiss', 'week4_nomiss',
-				'week5_nomiss', 'week6_nomiss', 'week7_nomiss', 'ur_bad',
-				'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
-
-			if(achieve != null) {
-				startAchievement(achieve);
+			var achieve:String = AchievementsHandler.checkAchievement(AchievementsHandler.DEFAULT_ACHIEVEMENTS);
+			if (achieve != null) {
+				achievementHandler.awardAchievement(achieve);
 				return;
 			}
 		}
@@ -4341,23 +4346,6 @@ class PlayState extends MusicBeatState
 			transitioning = true;
 		}
 	}
-
-	#if ACHIEVEMENTS_ALLOWED
-	var achievementObj:AchievementObject = null;
-	function startAchievement(achieve:String) {
-		achievementObj = new AchievementObject(achieve, camOther);
-		achievementObj.onFinish = achievementEnd;
-		add(achievementObj);
-		trace('Giving achievement ' + achieve);
-	}
-	function achievementEnd():Void
-	{
-		achievementObj = null;
-		if(endingSong && !inCutscene) {
-			endSong();
-		}
-	}
-	#end
 
 	public function KillNotes() {
 		while(notes.length > 0) {
@@ -4599,9 +4587,9 @@ class PlayState extends MusicBeatState
 
 			if (parsedHoldArray.contains(true) && !endingSong) {
 				#if ACHIEVEMENTS_ALLOWED
-				var achieve:String = checkForAchievement(['oversinging']);
+				var achieve:String = AchievementsHandler.checkAchievement(['oversinging']);
 				if (achieve != null) {
-					startAchievement(achieve);
+					achievementHandler.awardAchievement(achieve);
 				}
 				#end
 			}
@@ -4899,7 +4887,8 @@ class PlayState extends MusicBeatState
 
 		ratingHealthGain = daRating.healthGain;
 
-		if (!note.isSustainNote) {
+		if (!note.isSustainNote)
+		{
 			if (!daRating.comboBreak) {
 				combo++;
 				health += (ratingHealthGain * healthGain);
@@ -5147,9 +5136,9 @@ class PlayState extends MusicBeatState
 				#if ACHIEVEMENTS_ALLOWED
 				Achievements.henchmenDeath++;
 				FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
-				var achieve:String = checkForAchievement(['roadkill_enthusiast']);
+				var achieve:String = AchievementsHandler.checkAchievement(['roadkill_enthusiast']);
 				if (achieve != null) {
-					startAchievement(achieve);
+					achievementHandler.awardAchievement(achieve);
 				} else {
 					FlxG.save.flush();
 				}
@@ -5497,76 +5486,6 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingFC', ratingFC);
 		setOnLuas('ranking', ranking);
 	}
-
-	#if ACHIEVEMENTS_ALLOWED
-	private function checkForAchievement(achievesToCheck:Array<String> = null):String
-	{
-		if(chartingMode) return null;
-
-		var usedPractice:Bool = (Preferences.getGameplaySetting('practice', false) || Preferences.getGameplaySetting('botplay', false));
-		for (i in 0...achievesToCheck.length) {
-			var achievementName:String = achievesToCheck[i];
-			if(!Achievements.isAchievementUnlocked(achievementName) && !cpuControlled) {
-				var unlock:Bool = false;
-
-				if (achievementName.contains(WeekData.getWeekFileName()) && achievementName.endsWith('nomiss')) // any FC achievements, name should be "weekFileName_nomiss", e.g: "weekd_nomiss";
-				{
-					if(isStoryMode && campaignMisses + songMisses < 1 && FunkinUtil.difficultyString() == 'HARD'
-						&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
-						unlock = true;
-				}
-				switch(achievementName)
-				{
-					case 'ur_bad':
-						if(ratingPercent < 0.2 && !practiceMode) {
-							unlock = true;
-						}
-					case 'ur_good':
-						if(ratingPercent >= 1 && !usedPractice) {
-							unlock = true;
-						}
-					case 'roadkill_enthusiast':
-						if(Achievements.henchmenDeath >= 100) {
-							unlock = true;
-						}
-					case 'oversinging':
-						if(boyfriend.holdTimer >= 10 && !usedPractice) {
-							unlock = true;
-						}
-					case 'hype':
-						if(!boyfriendIdled && !usedPractice) {
-							unlock = true;
-						}
-					case 'two_keys':
-						if(!usedPractice) {
-							var howManyPresses:Int = 0;
-							for (j in 0...keysPressed.length) {
-								if(keysPressed[j]) howManyPresses++;
-							}
-
-							if(howManyPresses <= 2) {
-								unlock = true;
-							}
-						}
-					case 'toastie':
-						if(/*Preferences.framerate <= 60 &&*/ !GlobalSettings.SHADERS && GlobalSettings.LOW_QUALITY && !GlobalSettings.SPRITE_ANTIALIASING) {
-							unlock = true;
-						}
-					case 'debugger':
-						if(Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice) {
-							unlock = true;
-						}
-				}
-
-				if(unlock) {
-					Achievements.unlockAchievement(achievementName);
-					return achievementName;
-				}
-			}
-		}
-		return null;
-	}
-	#end
 
 	var curLight:Int = -1;
 	var curLightEvent:Int = -1;

@@ -4209,8 +4209,7 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		updateTime = false;
 
-		@:privateAccess
-		Scoring._resetMultipliers();
+		Scoring.resetMultipliers();
 
 		deathCounter = 0;
 		restartCounter = 0;
@@ -4651,8 +4650,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.3, 0.5), false);
 		}
 
-		@:privateAccess
-		Scoring._resetMultipliers();
+		Scoring.resetMultipliers();
 
 		combo = 0;
 		health -= Constants.HEALTH_MISS_PENALTY * healthLoss;

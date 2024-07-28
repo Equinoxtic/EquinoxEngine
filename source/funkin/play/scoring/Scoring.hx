@@ -40,7 +40,7 @@ class Scoring
 			MISS_MULTIPLIER = _formulateMissMultiplier(PlayState.instance.songMisses, PlayState.instance.comboPeak);
 	}
 
-	private static function _resetMultipliers():Void
+	public static function resetMultipliers():Void
 	{
 		SCORE_MULTIPLIER = 1.0;
 		MISS_MULTIPLIER = 1.0;

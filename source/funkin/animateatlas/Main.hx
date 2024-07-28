@@ -3,7 +3,7 @@ package funkin.animateatlas;
 import funkin.animateatlas.JSONData.AtlasData;
 import openfl.display.BitmapData;
 import funkin.animateatlas.JSONData.AnimationData;
-import openfl.display.FPSCounter;
+import funkin.ui.overlays.FPSCounter;
 import openfl.Lib;
 import openfl.events.MouseEvent;
 import funkin.animateatlas.HelperEnums.LoopMode;

@@ -1,5 +1,6 @@
-package openfl.display;
+package funkin.ui.overlays;
 
+import openfl.Assets;
 import flixel.FlxG;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -43,10 +44,8 @@ class FPSCounter extends TextField
 
 	var deltaTimeout:Float = 0.0;
 
-	// Event Handlers
 	private override function __enterFrame(deltaTime:Float):Void
 	{
-		// prevents the overlay from updating every frame, why would you need to anyways
 		if (deltaTimeout > 1000) {
 			deltaTimeout = 0.0;
 			return;
@@ -65,15 +64,21 @@ class FPSCounter extends TextField
 		deltaTimeout += deltaTime;
 	}
 
-	public dynamic function updateText():Void { // so people can override it in hscript
+	public function updateText():Void
+	{
 		text = 'FPS: ${currentFPS}'
 		+ '\nMemory: ${flixel.util.FlxStringUtil.formatBytes(memoryMegas)}';
 
 		textColor = 0xFFFFFFFF;
-		if (currentFPS < FlxG.drawFramerate * 0.5)
+
+		if (currentFPS <= FlxG.drawFramerate / 4)
+			textColor = 0xFFFFBB00;
+		else if (currentFPS <= FlxG.drawFramerate / 8)
 			textColor = 0xFFFF0000;
 	}
 
 	inline function get_memoryMegas():Float
+	{
 		return cast(System.totalMemory, UInt);
+	}
 }

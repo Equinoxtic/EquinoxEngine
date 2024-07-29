@@ -2322,9 +2322,7 @@ class PlayState extends MusicBeatState
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (songNotes[1] > 3)
-				{
 					gottaHitNote = !section.mustHitSection;
-				}
 
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
@@ -2337,75 +2335,35 @@ class PlayState extends MusicBeatState
 				swagNote.sustainLength = songNotes[2];
 				swagNote.gfNote = (section.gfSection && (songNotes[1]<4));
 				swagNote.noteType = songNotes[3];
-				if(!Std.isOfType(songNotes[3], String)) swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; //Backward compatibility + compatibility with Week 7 charts
+
+				if (!Std.isOfType(songNotes[3], String))
+					swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; //Backward compatibility + compatibility with Week 7 charts
 
 				swagNote.scrollFactor.set();
 
-
 				unspawnNotes.push(swagNote);
 
-				/**
-				 * SHORTENED HOLD NOTE LENGTH SOLUTION: by using ceil instead of floor, we can get more accurate and proper hold note lengths, this seems to work more effectively
-				 */
-				final susLength:Float = swagNote.sustainLength / (Conductor.stepCrochet / 1.04);
-				final ceilSus:Int = Math.ceil(susLength);
+				NoteHandler.evaluateSustainNote(swagNote, oldNote, section, songNotes, daNoteData, daStrumTime, gottaHitNote);
 
-				if (ceilSus > 0)
-				{
-					for (susNote in 0...ceilSus)
-					{
-						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-
-						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / FlxMath.roundDecimal(songSpeed, 2)), daNoteData, oldNote, true);
-						sustainNote.mustPress = gottaHitNote;
-						sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));
-						sustainNote.noteType = swagNote.noteType;
-						sustainNote.scrollFactor.set();
-						sustainNote.parent = swagNote;
-						unspawnNotes.push(sustainNote);
-						swagNote.tail.push(sustainNote);
-
-						if (sustainNote.mustPress)
-						{
-							sustainNote.x += FlxG.width / 2; // general offset
-						}
-						else if(GlobalSettings.MIDDLESCROLL)
-						{
-							sustainNote.x += 310;
-							if(daNoteData > 1) //Up and Right
-							{
-								sustainNote.x += FlxG.width / 2 + 25;
-							}
-						}
-					}
-				}
-
-				if (swagNote.mustPress)
-				{
+				if (swagNote.mustPress) {
 					swagNote.x += FlxG.width / 2; // general offset
-				}
-				else if(GlobalSettings.MIDDLESCROLL)
-				{
+				} else if(GlobalSettings.MIDDLESCROLL) {
 					swagNote.x += 310;
-					if(daNoteData > 1) //Up and Right
-					{
+					if (daNoteData > 1) { // Up and Right
 						swagNote.x += FlxG.width / 2 + 25;
 					}
 				}
 
-				if(!noteTypeMap.exists(swagNote.noteType)) {
+				if (!noteTypeMap.exists(swagNote.noteType))
 					noteTypeMap.set(swagNote.noteType, true);
-				}
 			}
+
 			daBeats += 1;
 		}
 
-		@:privateAccess
-		SongLoader._loadEventData(songData.events);
-
 		unspawnNotes.sort(sortByShit);
 
-		if(eventNotes.length > 1) { //No need to sort if there's a single one or none at all
+		if(eventNotes.length > 1) { // No need to sort if there's a single one or none at all
 			eventNotes.sort(sortByTime);
 		}
 
@@ -2521,7 +2479,8 @@ class PlayState extends MusicBeatState
 	public var skipArrowStartTween:Bool = false; //for lua
 	private function generateStaticArrows(playerId:Null<String> = '', ?alphaOverride:Null<Float> = 1.0):Void
 	{
-		if (playerId == null || playerId == '') return;
+		if (playerId == null || playerId == '')
+			return;
 
 		for (i in 0...4)
 		{

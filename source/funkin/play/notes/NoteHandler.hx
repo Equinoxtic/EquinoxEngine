@@ -1,5 +1,7 @@
 package funkin.play.notes;
 
+import funkin.play.song.Section.SwagSection;
+import flixel.math.FlxMath;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
@@ -62,6 +64,43 @@ class NoteHandler
 
 			_killNote(note);
 		});
+	}
+
+	public static function evaluateSustainNote(note:Note, oldNote:Note, ?section:SwagSection, ?songNotes:Array<Dynamic>, ?noteData:Int = 0, ?strumTime:Float = 0.0, ?mustPress:Bool = false):Void
+	{
+		if (section == null || songNotes == null)
+			return;
+
+		/**
+			* SHORTENED HOLD NOTE LENGTH SOLUTION: by using ceil instead of floor, we can get more accurate and proper hold note lengths, this seems to work more effectively
+		*/
+		final susLength:Float = note.sustainLength / (Conductor.stepCrochet / 1.04);
+		final ceilSus:Int = Math.ceil(susLength);
+
+		if (ceilSus > 0)
+		{
+		for (susNote in 0...ceilSus)
+		{
+			oldNote = PlayState.instance.unspawnNotes[Std.int(PlayState.instance.unspawnNotes.length - 1)];
+
+			var sustainNote:Note = new Note(strumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / FlxMath.roundDecimal(PlayState.instance.songSpeed, 2)), noteData, oldNote, true);
+			sustainNote.mustPress = mustPress;
+			sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));
+			sustainNote.noteType = note.noteType;
+			sustainNote.scrollFactor.set();
+			sustainNote.parent = note;
+			PlayState.instance.unspawnNotes.push(sustainNote);
+			note.tail.push(sustainNote);
+
+			if (sustainNote.mustPress) {
+				sustainNote.x += FlxG.width / 2; // general offset
+			} else if(GlobalSettings.MIDDLESCROLL) {
+				sustainNote.x += 310;
+				if (noteData > 1) //Up and Right {
+					sustainNote.x += FlxG.width / 2 + 25;
+				}
+			}
+		}
 	}
 
 	private static function _copyAngleOfNote(note:Note, ?strumDirection:Float = 0.0, ?strumAngle:Float = 0.0):Void

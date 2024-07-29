@@ -3259,8 +3259,7 @@ class PlayState extends MusicBeatState
 					}
 
 					var center:Float = strumY + Note.swagWidth / 2;
-					if(strumGroup.members[daNote.noteData].sustainReduce && daNote.isSustainNote && (daNote.mustPress || !daNote.ignoreNote) &&
-						(!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit))))
+					if (strumGroup.members[daNote.noteData].sustainReduce && daNote.isSustainNote && (daNote.mustPress || !daNote.ignoreNote) && (!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit))))
 					{
 						if (strumScroll)
 						{
@@ -3313,7 +3312,7 @@ class PlayState extends MusicBeatState
 		checkEventNote();
 
 		#if debug
-		if(!endingSong && !startingSong) {
+		if (!endingSong && !startingSong) {
 			if (FlxG.keys.justPressed.ONE) {
 				KillNotes();
 				FlxG.sound.music.onComplete();
@@ -3354,6 +3353,10 @@ class PlayState extends MusicBeatState
 
 	function openPauseMenu()
 	{
+		#if desktop
+		DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+		#end
+
 		persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
@@ -3363,31 +3366,30 @@ class PlayState extends MusicBeatState
 		}
 
 		openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-		#if desktop
-		DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-		#end
 	}
 
 	function openChartEditor()
 	{
+		#if desktop
+		DiscordClient.changePresence("Chart Editor", null, null, true);
+		#end
+
 		persistentUpdate = false;
 		paused = true;
 		cancelMusicFadeTween();
 		MusicBeatState.switchState(new ChartingState());
 		chartingMode = true;
-
-		#if desktop
-		DiscordClient.changePresence("Chart Editor", null, null, true);
-		#end
 	}
 
 	public var isDead:Bool = false;
-	function doDeathCheck(?skipHealthCheck:Bool = false) {
+	function doDeathCheck(?skipHealthCheck:Bool = false):Bool
+	{
 		if (((skipHealthCheck && instakillOnMiss) || health <= Constants.HEALTH_MIN) && !practiceMode && !isDead)
 		{
 			var ret:Dynamic = callOnLuas('onGameOver', [], false);
-			if(ret != FunkinLua.Function_Stop) {
+
+			if (ret != FunkinLua.Function_Stop)
+			{
 				boyfriend.stunned = true;
 				deathCounter++;
 
@@ -3401,6 +3403,7 @@ class PlayState extends MusicBeatState
 				for (tween in modchartTimers) {
 					tween.active = true;
 				}
+
 				for (timer in modchartTimers) {
 					timer.active = true;
 				}
@@ -3411,29 +3414,37 @@ class PlayState extends MusicBeatState
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 				#end
+
 				isDead = true;
+
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public function checkEventNote() {
-		while(eventNotes.length > 0) {
+	public function checkEventNote():Void
+	{
+		while (eventNotes.length > 0)
+		{
 			var leStrumTime:Float = eventNotes[0].strumTime;
+
 			if(Conductor.songPosition < leStrumTime) {
 				break;
 			}
 
 			var value1:String = '';
-			if(eventNotes[0].value1 != null)
+			if(eventNotes[0].value1 != null) {
 				value1 = eventNotes[0].value1;
+			}
 
 			var value2:String = '';
-			if(eventNotes[0].value2 != null)
+			if(eventNotes[0].value2 != null) {
 				value2 = eventNotes[0].value2;
+			}
 
 			triggerEventNote(eventNotes[0].event, value1, value2);
+
 			eventNotes.shift();
 		}
 	}
@@ -3444,16 +3455,19 @@ class PlayState extends MusicBeatState
 		return pressed;
 	}
 
-	public function triggerEventNote(eventName:String, value1:String, value2:String) {
-		switch(eventName) {
+	public function triggerEventNote(eventName:String, value1:String, value2:String)
+	{
+		switch(eventName)
+		{
 			case 'Dadbattle Spotlight':
 				var val:Null<Int> = Std.parseInt(value1);
-				if(val == null) val = 0;
+				if (val == null)
+					val = 0;
 
 				switch(Std.parseInt(value1))
 				{
 					case 1, 2, 3: //enable and target dad
-						if(val == 1) //enable
+						if (val == 1) //enable
 						{
 							dadbattleBlack.visible = true;
 							dadbattleLight.visible = true;
@@ -4033,8 +4047,10 @@ class PlayState extends MusicBeatState
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
 
-	function moveCameraSection():Void {
-		if(SONG.notes[curSection] == null) return;
+	function moveCameraSection():Void
+	 {
+		if (SONG.notes[curSection] == null)
+			return;
 
 		if (gf != null && SONG.notes[curSection].gfSection)
 		{
@@ -4046,15 +4062,12 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		if (!SONG.notes[curSection].mustHitSection)
-		{
+		if (!SONG.notes[curSection].mustHitSection) {
 			if (focusedCharacter != dad) {
 				moveCamera(true);
 			}
 			callOnLuas('onMoveCamera', ['dad']);
-		}
-		else
-		{
+		} else {
 			if (focusedCharacter != boyfriend) {
 				moveCamera(false);
 			}
@@ -4063,7 +4076,7 @@ class PlayState extends MusicBeatState
 	}
 
 	var cameraTwn:FlxTween;
-	public function moveCamera(isDad:Bool)
+	public function moveCamera(isDad:Bool):Void
 	{
 		if (isDad)
 		{
@@ -4278,7 +4291,6 @@ class PlayState extends MusicBeatState
 					}
 					MusicBeatState.switchState(new StoryMenuState());
 
-					// if ()
 					if(!Preferences.getGameplaySetting('practice', false) && !Preferences.getGameplaySetting('botplay', false)) {
 						StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
 
@@ -4347,8 +4359,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function KillNotes() {
-		while(notes.length > 0) {
+	public function KillNotes():Void
+	{
+		while (notes.length > 0)
+		{
 			var daNote:Note = notes.members[0];
 			daNote.active = false;
 			daNote.visible = false;
@@ -4357,6 +4371,7 @@ class PlayState extends MusicBeatState
 			notes.remove(daNote, true);
 			daNote.destroy();
 		}
+
 		unspawnNotes = [];
 		eventNotes = [];
 	}
@@ -4374,6 +4389,7 @@ class PlayState extends MusicBeatState
 
 		var pixelPrefix:String = '';
 		var pixelSuffix:String = '';
+
 		if (isPixelStage) {
 			pixelPrefix = 'pixelUI/';
 			pixelSuffix = '-pixel';
@@ -4437,11 +4453,10 @@ class PlayState extends MusicBeatState
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
-		//trace('Pressed: ' + eventKey);
 
 		if (!cpuControlled && startedCountdown && !paused && key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || GlobalSettings.CONTROLLER_MODE))
 		{
-			if(!boyfriend.stunned && generatedMusic && !endingSong)
+			if (!boyfriend.stunned && generatedMusic && !endingSong)
 			{
 				var lastTime:Float = Conductor.songPosition;
 				Conductor.songPosition = FlxG.sound.music.time;
@@ -4483,8 +4498,7 @@ class PlayState extends MusicBeatState
 						}
 
 					}
-				}
-				else{
+				} else {
 					callOnLuas('onGhostTap', [key]);
 					if (canMiss) {
 						noteMissPress(key);
@@ -4592,8 +4606,7 @@ class PlayState extends MusicBeatState
 					achievementHandler.awardAchievement(achieve);
 				}
 				#end
-			}
-			else if (boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+			} else if (boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 			{
 				boyfriend.dance();
 			}
@@ -4617,14 +4630,14 @@ class PlayState extends MusicBeatState
 	private function parseKeys(?suffix:String = ''):Array<Bool>
 	{
 		var ret:Array<Bool> = [];
-		for (i in 0...controlArray.length)
-		{
+		for (i in 0...controlArray.length) {
 			ret[i] = Reflect.getProperty(controls, controlArray[i] + suffix);
 		}
 		return ret;
 	}
 
-	function noteMiss(daNote:Note):Void { //You didn't hit the key and let it go offscreen, also used by Hurt Notes
+	function noteMiss(daNote:Note):Void //You didn't hit the key and let it go offscreen, also used by Hurt Notes
+	{
 		//Dupe note remove
 		notes.forEachAlive(function(note:Note) {
 			if (daNote != note && daNote.mustPress && daNote.noteData == note.noteData && daNote.isSustainNote == note.isSustainNote && Math.abs(daNote.strumTime - note.strumTime) < 1) {
@@ -4643,8 +4656,7 @@ class PlayState extends MusicBeatState
 		combo = 0;
 		health -= Constants.HEALTH_MISS_PENALTY * healthLoss;
 
-		if(instakillOnMiss)
-		{
+		if (instakillOnMiss) {
 			FunkinSound.setVolume(0, 'player');
 			doDeathCheck(true);
 		}
@@ -4657,6 +4669,7 @@ class PlayState extends MusicBeatState
 			Scoring.setScore(300, true);
 
 		totalPlayed++;
+
 		RecalculateRating(true);
 
 		var char:Character = boyfriend;
@@ -4664,12 +4677,16 @@ class PlayState extends MusicBeatState
 			char = gf;
 		}
 
-		if(char != null && !daNote.noMissAnimation && char.hasMissAnimations)
+		if (char != null && !daNote.noMissAnimation && char.hasMissAnimations)
 		{
-			var animToPlay:String = singAnimations[Std.int(Math.abs(daNote.noteData))] + 'miss' + daNote.animSuffix; // Alt animations for all characters.
+			var missAnimation:String = '${singAnimations[Std.int(Math.abs(daNote.noteData))]}miss';
+
+			var animToPlay:String = '${missAnimation}${daNote.animSuffix}'; // Alt animations for all characters.
+
 			if (char.curCharacter == 'bf-zero') {
-				animToPlay = singAnimations[Std.int(Math.abs(daNote.noteData))] + 'miss'; // Make an exception for ZeroArtist's BF since the JSON schema does not include Alt. Miss Animations.
+				animToPlay = missAnimation; // Make an exception for ZeroArtist's BF since the JSON schema does not include Alt. Miss Animations.
 			}
+
 			char.playAnim(animToPlay, true);
 		}
 

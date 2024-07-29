@@ -2307,11 +2307,10 @@ class PlayState extends MusicBeatState
 		// NEW SHIT
 		noteData = songData.notes;
 
-		var playerCounter:Int = 0;
-
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 
-		// SongLoader.loadSongEvents(SONG.song);
+		@:privateAccess
+		SongLoader._loadEventData(songData.events);
 
 		for (section in noteData)
 		{

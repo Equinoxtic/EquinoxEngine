@@ -2020,22 +2020,24 @@ class PlayState extends MusicBeatState
 	public var countdownGo:FlxSprite;
 	public static var startOnTime:Float = 0;
 
-	function cacheCountdown()
+	function cacheCountdown():Void
 	{
 		var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
 		introAssets.set('default', ['ready', 'set', 'go']);
 		introAssets.set('pixel', ['pixelUI/ready-pixel', 'pixelUI/set-pixel', 'pixelUI/date-pixel']);
 
 		var introAlts:Array<String> = introAssets.get('default');
-		if (isPixelStage) introAlts = introAssets.get('pixel');
+		if (isPixelStage)
+			introAlts = introAssets.get('pixel');
 
 		for (asset in introAlts)
 			Paths.image(asset);
 
-		Paths.sound('intro3' + introSoundsSuffix);
-		Paths.sound('intro2' + introSoundsSuffix);
-		Paths.sound('intro1' + introSoundsSuffix);
-		Paths.sound('introGo' + introSoundsSuffix);
+		final introSoundsCacheArray:Array<String> = [ 'intro3', 'intro2', 'intro1', 'introGo' ];
+
+		for (i in 0...introSoundsCacheArray.length) {
+			Paths.sound('${introSoundsCacheArray[i]}${introSoundsSuffix}');
+		}
 	}
 
 	public function startCountdown():Void

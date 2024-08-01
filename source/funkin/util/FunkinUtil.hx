@@ -1,5 +1,6 @@
 package funkin.util;
 
+import flixel.util.FlxTimer;
 import openfl.media.Sound;
 import flixel.FlxG;
 
@@ -128,6 +129,19 @@ class FunkinUtil
 			return (Std.isOfType(file, Sound) || FileUtil.fileExists(file));
 		}
 		return false;
+	}
+
+	public static function toggleListOfTimers(timerArray:Null<Array<FlxTimer>>):Void
+	{
+		if (timerArray != null && timerArray.length > 0)
+		{
+			for (i in 0...timerArray.length) {
+				var timer:FlxTimer = timerArray[i];
+				if (timer != null && !timer.finished) {
+					timer.active = !timer.active;
+				}
+			}
+		}
 	}
 
 	// uhhhh does this even work at all? i'm starting to doubt

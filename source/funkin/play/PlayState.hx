@@ -2573,12 +2573,9 @@ class PlayState extends MusicBeatState
 				FunkinSound.pauseSong();
 			}
 
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = false;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = false;
-			if (songPopUp.animationTimer != null && !songPopUp.animationTimer.finished)
-				songPopUp.animationTimer.active = false;
+			FunkinUtil.toggleListOfTimers([
+				startTimer, finishTimer, songPopUp.animationTimer
+			]);
 
 			if (carTimer != null)
 				carTimer.active = false;
@@ -2612,18 +2609,17 @@ class PlayState extends MusicBeatState
 				FunkinSound.resumeSong();
 			}
 
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = true;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = true;
-			if (songPopUp.animationTimer != null && !songPopUp.animationTimer.finished)
-				songPopUp.animationTimer.active = true;
+			FunkinUtil.toggleListOfTimers([
+				startTimer, finishTimer, songPopUp.animationTimer
+			]);
 
-			if(carTimer != null) carTimer.active = true;
+			if (carTimer != null)
+				carTimer.active = true;
 
 			var chars:Array<Character> = [boyfriend, gf, dad];
+
 			for (char in chars) {
-				if(char != null && char.colorTween != null) {
+				if (char != null && char.colorTween != null) {
 					char.colorTween.active = true;
 				}
 			}

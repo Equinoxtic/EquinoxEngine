@@ -2633,6 +2633,7 @@ class PlayState extends MusicBeatState
 			}
 
 			paused = false;
+
 			callOnLuas('onResume', []);
 
 			#if desktop
@@ -2930,30 +2931,29 @@ class PlayState extends MusicBeatState
 			comboPeak = combo;
 
 		// Smooth linear interpolation on the health.
+		if (health > Constants.HEALTH_MAX)
+			health = Constants.HEALTH_MAX;
+		if (health < Constants.HEALTH_MIN)
+			health = Constants.HEALTH_MIN;
+
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .15);
 
 		// Smooth linear interpolation on the time.
 		lerpTime = FlxMath.lerp(lerpTime, songPercent, .15);
 
-		// Update the healthBar's value with 'displayedHealth'
+		// Update the healthBar's value
 		healthBar.updateHealth(displayedHealth);
 
-		/**
-		 * Update Judgement Counter ratings.
-		 */
+		// Update Judgement Counter ratings.
 		judgementCounter.updateJudgementCounter();
 
-		/**
-		 * Added a cool global tween class. (Basically modified FlxTween, thanks for @Quackerona for teaching me this a while back)
-		 */
+		// Added a cool global tween class. (Basically modified FlxTween, thanks for @Quackerona for teaching me this a while back)
 		GlobalTweenClass.globalManager.update(elapsed);
 
 		if (combo >= 10)
 			showCombo = true;
 
-		/**
-		 * Multipliers for score and misses.
-		 */
+		// Multipliers for score and misses.
 		Scoring.updateMultipliers();
 
 		setOnLuas('curDecStep', curDecStep);
@@ -2972,16 +2972,10 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene)
-		{
+		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene) {
 			FlxG.mouse.visible = true;
 			openChartEditor();
 		}
-
-		if (health > Constants.HEALTH_MAX)
-			health = Constants.HEALTH_MAX;
-		if (health < Constants.HEALTH_MIN)
-			health = Constants.HEALTH_MIN;
 
 		iconP1.scaleIcon(FlxMath.lerp(1, iconP1.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
 		iconP1.offsetIcon(Constants.ICON_OFFSET, true);

@@ -1,5 +1,6 @@
 package funkin.play.components;
 
+import flixel.math.FlxMath;
 import funkin.play.character.Character;
 import funkin.play.character.Boyfriend;
 import flixel.util.FlxColor;
@@ -43,14 +44,19 @@ class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 		_setHealthBarColor(_getHealthArrayIndexOf('dad'), _getHealthArrayIndexOf('bf'));
 	}
 
-	public function updateHealth(amount:Float):Void
+	public function updateHealth(amount:Float = 1.0):Void
 	{
+		// Just in case it tries to increase, we stop the void function.
+		if (value > Constants.HEALTH_MAX) {
+			value = Constants.HEALTH_MAX;
+			return;
+		} else if (value < Constants.HEALTH_MIN) {
+			value = Constants.HEALTH_MIN;
+			return;
+		}
+
 		value = amount;
 		percent = (amount / Constants.HEALTH_MAX) * 100;
-		if (amount > Constants.HEALTH_MAX)
-			amount = Constants.HEALTH_MAX;
-		if (amount < Constants.HEALTH_MIN)
-			amount = Constants.HEALTH_MIN;
 	}
 
 	private function _setHealthBarColor(left:FlxColor, right:FlxColor):Void

@@ -99,6 +99,10 @@ class Chart
 				filePath = '${filePathString}${FunkinSound.erectModeSuffix(true)}';
 		}
 
+		if (!FileUtil.jsonExists(filePath)) {
+			return "";
+		}
+
 		trace(filePath);
 
 		if (FileUtil.jsonExists(filePath)) {

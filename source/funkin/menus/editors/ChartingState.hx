@@ -3057,21 +3057,25 @@ class ChartingState extends MusicBeatState
 				var eventsSong:Dynamic = {
 					events: _song.events
 				};
+
 				json = {
 					"song": eventsSong
 				};
+
 				saveFileString = 'events${FunkinSound.erectModeSuffix(false)}';
 
 			case DATA:
 				json = {
 					"song_data": _song_data
 				};
+
 				saveFileString = 'songdata${FunkinSound.erectModeSuffix(false)}';
 
 			case METADATA:
 				json = {
 					"metadata": _metadata
 				};
+
 				saveFileString = 'metadata${FunkinSound.erectModeSuffix()}';
 		}
 

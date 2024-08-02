@@ -33,9 +33,4 @@ class StatisticsHUD extends FlxTypedSpriteGroup<FlxSprite>
 		add(accuracyText);
 		add(ratingText);
 	}
-
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
-	}
 }

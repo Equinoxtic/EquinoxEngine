@@ -3041,9 +3041,16 @@ class ChartingState extends MusicBeatState
 		switch (type)
 		{
 			case CHART:
+				// Create a temporary variable for the current song.
+				var tempSong:Dynamic = _song;
+
+				// Clear the tempSong's events so that we can free up space in the json.
+				tempSong.events = [];
+
 				json = {
-					"song": _song
+					"song": tempSong
 				};
+
 				saveFileString = '${FunkinUtil.lowerDiffString()}';
 
 			case EVENTS:

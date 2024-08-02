@@ -1,5 +1,6 @@
 package funkin.menus.editors;
 
+import funkin.play.song.Chart.ParseType;
 import funkin.play.song.SongSettings.SongSettingsJSON;
 #if desktop
 import funkin.api.discord.Discord.DiscordClient;
@@ -627,7 +628,7 @@ class ChartingState extends MusicBeatState
 
 			if (FileUtil.jsonExists(eventsPath)) {
 				clearEvents();
-				var events:SwagSong = Song.loadFromJson('events', songName, true, null);
+				var events:SwagSong = Chart.loadChartData(songName, 'events', ParseType.EVENTS);
 				_song.events = events.events;
 				changeSection(curSec);
 			}
@@ -2915,9 +2916,12 @@ class ChartingState extends MusicBeatState
 		var daAlt = false;
 		var daType = currentType;
 
-		if (strum != null) noteStrum = strum;
-		if (data != null) noteData = data;
-		if (type != null) daType = type;
+		if (strum != null)
+			noteStrum = strum;
+		if (data != null)
+			noteData = data;
+		if (type != null)
+			daType = type;
 
 		if(noteData > -1)
 		{
@@ -3117,10 +3121,14 @@ class ChartingState extends MusicBeatState
 
 	function getSectionBeats(?section:Null<Int> = null)
 	{
-		if (section == null) section = curSec;
+		if (section == null)
+			section = curSec;
+
 		var val:Null<Float> = null;
 
-		if(_song.notes[section] != null) val = _song.notes[section].sectionBeats;
+		if (_song.notes[section] != null)
+			val = _song.notes[section].sectionBeats;
+
 		return val != null ? val : 4;
 	}
 }

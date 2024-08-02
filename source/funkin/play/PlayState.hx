@@ -2340,8 +2340,7 @@ class PlayState extends MusicBeatState
 
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 
-		@:privateAccess
-		SongLoader._loadEventData(songData.events);
+		SongLoader.loadSongEvents(PlayState.SONG.song);
 
 		for (section in noteData)
 		{
@@ -3857,7 +3856,8 @@ class PlayState extends MusicBeatState
 				healthBar.reloadColors();
 
 			case 'BG Freaks Expression':
-				if(bgGirls != null) bgGirls.swapDanceType();
+				if (bgGirls != null)
+					bgGirls.swapDanceType();
 
 			case 'Change Scroll Speed':
 				if (songSpeedType == "constant")

@@ -597,7 +597,7 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 		};
 
-		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
+		var saveButton:FlxButton = new FlxButton(110, 8, "Save Song", function()
 		{
 			saveChartData(CHART);
 		});

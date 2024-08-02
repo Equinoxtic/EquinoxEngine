@@ -4154,17 +4154,7 @@ class PlayState extends MusicBeatState
 
 		if (ret != FunkinLua.Function_Stop && !transitioning)
 		{
-			if (SONG.validScore)
-			{
-				if (!cpuControlled && !practiceMode && !chartingMode) {
-					var percent:Float = ratingPercent;
-
-					if (Math.isNaN(percent))
-						percent = 0;
-
-					Highscore.saveScore(SONG.song.toLowerCase(), songScore, storyDifficulty, percent, ratingFC, ranking);
-				}
-			}
+			Scoring.save(PlayState.SONG);
 
 			playbackRate = 1;
 

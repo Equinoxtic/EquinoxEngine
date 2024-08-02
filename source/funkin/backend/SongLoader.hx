@@ -24,21 +24,16 @@ class SongLoader
 	 */
 	public static function loadSongData(?song:Null<String>):Void
 	{
-		if (song != null && song != '')
-		{
+		if (song != null && song != '') {
 			final songDataPath:String = Chart.getDataPathOfSong(song, 'songdata', 'songdata');
 
-			if (FileUtil.jsonExists(songDataPath))
-			{
+			if (FileUtil.jsonExists(songDataPath)) {
 				PlayState.SONG_DATA = Chart.loadChartData(song, 'songdata', ParseType.DATA);
 			}
-			else
-			{
+			else {
 				PlayState.SONG_DATA = _getDummySongData();
 			}
-		}
-		else
-		{
+		} else {
 			PlayState.SONG_DATA = _getDummySongData();
 		}
 	}
@@ -50,21 +45,15 @@ class SongLoader
 	 */
 	public static function loadSongSettings(?song:Null<String>):Void
 	{
-		if (song != null && song != "")
-		{
+		if (song != null && song != "") {
 			final songSettingsPath:String = Chart.getDataPathOfSong(song, 'metadata', null);
 
-			if (FileUtil.jsonExists(songSettingsPath))
-			{
-				PlayState.SONG_METADATA = Chart.loadChartData(PlayState.SONG.song, 'metadata', ParseType.METADATA);
-			}
-			else
-			{
+			if (FileUtil.jsonExists(songSettingsPath)) {
+				PlayState.SONG_METADATA = Chart.loadChartData(song, 'metadata', ParseType.METADATA);
+			} else {
 				PlayState.SONG_METADATA = _getDummySongSettings();
 			}
-		}
-		else
-		{
+		} else {
 			PlayState.SONG_METADATA = _getDummySongSettings();
 		}
 	}
@@ -75,23 +64,17 @@ class SongLoader
 	 */
 	public static function loadSongEvents(?song:Null<String>):Void
 	{
-		if (song == null || song == '') {
-			return;
-		}
+		if (song != null && song != '') {
+			final eventsPath:String = Chart.getDataPathOfSong(song, 'events', 'events');
 
-		final eventsPath:String = Chart.getDataPathOfSong(song, 'events', 'events');
-
-		if (FileUtil.jsonExists(eventsPath))
-		{
-			// Standardised way of loading events. (Using Chart.loadChartData(...))
-			var eventsData:Array<Dynamic> = Chart.loadChartData(song, 'events', ParseType.EVENTS).events;
-
-			// Legacy / old way of loading events.
-			if (eventsData == null || eventsData.length <= 0) {
-				eventsData = Song.loadFromJson('events', song, true).events;
+			if (FileUtil.jsonExists(eventsPath))
+			{
+				var eventsData:Array<Dynamic> = [];
+				eventsData = Chart.loadChartData(song, 'events', ParseType.EVENTS).events;
+				if (eventsData != null && eventsData.length > 0) {
+					_loadEventData(eventsData);
+				}
 			}
-
-			_loadEventData(eventsData);
 		}
 	}
 

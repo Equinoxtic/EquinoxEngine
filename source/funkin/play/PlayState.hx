@@ -376,6 +376,9 @@ class PlayState extends MusicBeatState
 	public var lerpTime:Float = 0;
 	public var comboPeak:Int = 0;
 
+	public var currentTimeOfSong:Int;
+	public var totalLengthOfSong:Int;
+
 	private var hudGroup:FlxTypedGroup<FlxSprite>;
 	private var hudGroupInfo:FlxTypedGroup<FlxSprite>;
 	private var hudGroupExcluded:FlxTypedGroup<FlxSprite>;
@@ -3029,10 +3032,10 @@ class PlayState extends MusicBeatState
 					songPercent = (curTime / songLength);
 
 					@:privateAccess // Calculate the current time of the song.
-					var currentTimeOfSong:Int = TimeUtil._calculateTime(curTime);
+					currentTimeOfSong = TimeUtil._calculateTime(curTime);
 
 					@:privateAccess // Calculate the (total) length of the song.
-					var totalLengthOfSong:Int = TimeUtil._calculateTime(songLength);
+					totalLengthOfSong = TimeUtil._calculateTime(songLength);
 
 					// Putting each "timeFormat" in an array because I can.
 					var timeFormats:Array<String> = [

@@ -49,37 +49,38 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 		add(_timeText);
 
 		this.alpha = 0.0;
+
+		this.visible = (GlobalSettings.TIME_BAR_DISPLAY != 'Disabled' && !GlobalSettings.HIDE_HUD);
 	}
 
-	public function updateTimeBarText(currentTime:Int, totalLength:Int):Void
+	public function updateTimeBarText(displayMode, currentTime:Int, totalLength:Int):Void
 	{
 		@:privateAccess
 		if (PlayState.instance.updateTime)
 		{
-			switch(GlobalSettings.TIME_BAR_DISPLAY)
-			{
-				case 'Default':
-					_timeText.text = '${_getSongInfo(PlayState.SONG)} (${_getSongTime(currentTime, totalLength)})';
+			/**
+			 * Create a map for each TimeBar type with a specific key.
+			 * [ 'Default', 'Time Elapsed / Song Length', 'Song Name', 'Default Percentage', 'Percentage Only' ]
+			 */
+			var formatMap:Map<String, String> = [
+				'Default'                    => '${_getSongInfo(PlayState.SONG)} (${_getSongTime(currentTime, totalLength)})',
+				'Time Elapsed / Song Length' => '- ${_getSongTime(currentTime, totalLength)} -',
+				'Song Name'                  => '[ ${_getSongInfo(PlayState.SONG)} ]',
+				'Default Percentage'         => '${_getSongInfo(PlayState.SONG)} (${_getSongPercentageRounded(currentTime, totalLength)})',
+				'Percentage Only'            => '${_getSongPercentageRounded(currentTime, totalLength)}',
+			];
 
-				case 'Time Elapsed / Song Length':
-					_timeText.text = '- ${_getSongTime(currentTime, totalLength)} -';
+			var defaultKey:String = 'Default';
 
-				case 'Song Name':
-					_timeText.text = '[ ${_getSongInfo(PlayState.SONG)} ]';
-
-				case 'Default Percentage':
-					_timeText.text = '${_getSongInfo(PlayState.SONG)} (${_getSongPercentageRounded(currentTime, totalLength)})';
-
-				case 'Percentage Only':
-					_timeText.text = '${_getSongPercentageRounded(currentTime, totalLength)}';
-					_timeText.x = (this.x * 1.0) + 78.5;
+			if (formatMap.exists(displayMode)) {
+				defaultKey = displayMode;
+				if (defaultKey == 'Percentage Only') {
+					_timeText.x = (_timeBar.x * 1.0) + 78.5;
 					_timeText.alignment = FlxTextAlign.LEFT;
-
-				default:
-					_timeText.text = '${_getSongInfo(PlayState.SONG)} (${_getSongTime(currentTime, totalLength)})';
+				}
 			}
 
-			trace(_timeText.text);
+			_timeText.text = formatMap.get(defaultKey);
 		}
 	}
 
@@ -96,8 +97,6 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 
 	override function update(elapsed:Float):Void
 	{
-		this.visible = (GlobalSettings.TIME_BAR_DISPLAY != 'Disabled' && !GlobalSettings.HIDE_HUD);
-
 		super.update(elapsed);
 	}
 

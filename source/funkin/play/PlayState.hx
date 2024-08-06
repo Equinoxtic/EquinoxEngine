@@ -3003,7 +3003,9 @@ class PlayState extends MusicBeatState
 					songPercent = (curTime / songLength);
 
 					timeBar.updateTimeBarText(
-						Std.int(curTime), Std.int(songLength)
+						GlobalSettings.TIME_BAR_DISPLAY,
+						Std.int(curTime),
+						Std.int(songLength)
 					);
 				}
 			}

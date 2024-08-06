@@ -186,8 +186,7 @@ class PlayState extends MusicBeatState
 	public var healthBar:HealthBar;
 	var songPercent:Float = 0;
 
-	private var timeBarBG:AttachedSprite;
-	public var timeBar:FlxBar;
+	public var timeBar:TimeBar;
 
 	public var marvs:Int = 0;
 	public var sicks:Int = 0;
@@ -295,7 +294,6 @@ class PlayState extends MusicBeatState
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
-	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
 
 	public var statsHUD:StatisticsHUD;
@@ -376,8 +374,8 @@ class PlayState extends MusicBeatState
 	public var lerpTime:Float = 0;
 	public var comboPeak:Int = 0;
 
-	public var currentTimeOfSong:Int;
-	public var totalLengthOfSong:Int;
+	public var currentTimeOfSong:Int = 0;
+	public var totalLengthOfSong:Int = 0;
 
 	private var hudGroup:FlxTypedGroup<FlxSprite>;
 	private var hudGroupInfo:FlxTypedGroup<FlxSprite>;
@@ -787,36 +785,9 @@ class PlayState extends MusicBeatState
 		/**
 		 * TimeBar code.
 		 */
-		timeBarBG = new AttachedSprite('solariumUI/timeBar');
-		timeBarBG.y += 10;
-		timeBarBG.x -= 4;
-		timeBarBG.screenCenter(X);
-		timeBarBG.setGraphicSize(Std.int(timeBarBG.width * 1.15), Std.int(timeBarBG.height * 1.75));
-		timeBarBG.alpha = 0;
-		timeBarBG.visible = showTime;
-
-		timeBar = new FlxBar(0, 0, FlxBarFillDirection.LEFT_TO_RIGHT, Std.int(timeBarBG.width * 1), Std.int(timeBarBG.height * 1), this,
-		'lerpTime', 0, 1);
-		timeBar.setGraphicSize(Std.int(timeBar.width * 1.1), Std.int(timeBar.height * 0.8));
-		timeBar.createGradientBar([0xFF252525, 0xFF353535, 0xFF555555], [0xFFFFFFFF, 0xFFDDDDDD, 0xFFAAAAAA], 1, 180);
-		timeBar.x = timeBarBG.x * 1;
-		timeBar.y = timeBarBG.y - 1;
-		timeBar.numDivisions = 1000;
-		timeBar.alpha = 0;
-		timeBar.visible = showTime;
-
-		timeTxt = new FunkinText(0, 0, FlxG.width, "", 20, CENTER, true);
-		timeTxt.screenCenter(X);
-		timeTxt.y = timeBarBG.y - 1.5;
-		timeTxt.alpha = 0;
-		timeTxt.borderSize = 3.0;
-		timeTxt.visible = showTime;
-		if(GlobalSettings.DOWNSCROLL) timeTxt.y = FlxG.height - 44;
-		updateTime = showTime;
-
+		timeBar = new TimeBar(0, 0);
+		timeBar.screenCenter(X);
 		hudGroup.add(timeBar);
-		hudGroup.add(timeBarBG);
-		hudGroup.add(timeTxt);
 
 		/**
 		 * Player Icons.
@@ -853,14 +824,12 @@ class PlayState extends MusicBeatState
 		statsHUD.scrollFactor.set();
 		hudGroupInfo.add(statsHUD);
 
-		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
+		botplayTxt = new FlxText(0, 75, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font('phantommuff.ttf'), 38, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botplayTxt.screenCenter(X);
 		botplayTxt.borderSize = 1.5;
 		botplayTxt.visible = cpuControlled;
 		hudGroupInfo.add(botplayTxt);
-		if (GlobalSettings.DOWNSCROLL) {
-			botplayTxt.y = timeBarBG.y - 78;
-		}
 
 		/**
 		 * JudgementCounter.
@@ -2286,9 +2255,8 @@ class PlayState extends MusicBeatState
 
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
-		GlobalTweenClass.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-		GlobalTweenClass.tween(timeBarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-		GlobalTweenClass.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+
+		timeBar.showTimeBar();
 
 		switch(curStage)
 		{
@@ -2943,8 +2911,11 @@ class PlayState extends MusicBeatState
 		// Smooth linear interpolation on the time.
 		lerpTime = FlxMath.lerp(lerpTime, songPercent, .15);
 
-		// Update the healthBar's value
+		// Update the healthBar's value.
 		healthBar.updateHealth(displayedHealth);
+
+		// Update the timeBar's value.
+		timeBar.adjustTime(lerpTime);
 
 		// Update Judgement Counter ratings.
 		judgementCounter.updateJudgementCounter();
@@ -3031,70 +3002,9 @@ class PlayState extends MusicBeatState
 
 					songPercent = (curTime / songLength);
 
-					@:privateAccess // Calculate the current time of the song.
-					currentTimeOfSong = TimeUtil._calculateTime(curTime);
-
-					@:privateAccess // Calculate the (total) length of the song.
-					totalLengthOfSong = TimeUtil._calculateTime(songLength);
-
-					// Putting each "timeFormat" in an array because I can.
-					var timeFormats:Array<String> = [
-						// SONG - DIFFICULTY
-						'${SONG.song} - ${FunkinUtil.difficultyString().toUpperCase()}',
-						// CURRENT TIME / TOTAL TIME
-						'${TimeUtil.getSongTime(curTime)} / ${TimeUtil.getSongTime(songLength)}',
-						// PERCENTAGE%
-						'${Math.round(Highscore.floorDecimal((currentTimeOfSong / totalLengthOfSong) * 100, 2))}%'
-					];
-
-					var formattedTimeTxt:String = '';
-
-					/**
-					 * Check for each TimeBar type.
-					 * [ 'Default', 'Time Elapsed / Song Length', 'Song Name', 'Default Percentage', 'Percentage Only' ]
-					 */
-					switch(GlobalSettings.TIME_BAR_DISPLAY)
-					{
-						case 'Default':
-							/**
-							 * SONG - DIFFICULTY (CURRENT TIME / TOTAL TIME)
-							 */
-							formattedTimeTxt = '${timeFormats[0]} (${timeFormats[1]})';
-
-						case 'Time Elapsed / Song Length':
-							/**
-							 * CURRENT TIME / TOTAL TIME
-							 */
-							formattedTimeTxt = '- ${timeFormats[1]} -';
-
-						case 'Song Name':
-							/**
-							 * SONG - DIFFICULTY
-							 */
-							formattedTimeTxt = '[ ${timeFormats[0]} ]';
-
-						case 'Default Percentage':
-							/**
-							 * SONG - DIFFICULTY (PERCENTAGE%)
-							 */
-							formattedTimeTxt = '${timeFormats[0]} (${timeFormats[2]})';
-
-						case 'Percentage Only': // Geometry dash reference?!?!??!?!
-							/**
-							 * PERCENTAGE%
-							 */
-							formattedTimeTxt = '${timeFormats[2]}';
-							timeTxt.x = (timeBar.x * 1) + 77;
-							timeTxt.alignment = FlxTextAlign.LEFT;
-
-						default:
-							/**
-							 * Switch back to default time text format.
-							 */
-							formattedTimeTxt = '${timeFormats[0]} (${timeFormats[1]})';
-					}
-
-					timeTxt.text = formattedTimeTxt;
+					timeBar.updateTimeBarText(
+						Std.int(curTime), Std.int(songLength)
+					);
 				}
 			}
 		}

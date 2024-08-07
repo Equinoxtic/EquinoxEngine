@@ -3022,7 +3022,8 @@ class ChartingState extends MusicBeatState
 		FlxG.save.flush();
 	}
 
-	function clearEvents() {
+	function clearEvents():Void
+	{
 		_song.events = [];
 		updateGrid();
 	}
@@ -3035,7 +3036,7 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		var json = {};
+		var v = {};
 		var saveFileString:String = "";
 
 		switch (type)
@@ -3043,45 +3044,28 @@ class ChartingState extends MusicBeatState
 			case CHART:
 				// Create a temporary variable for the current song.
 				var tempSong:Dynamic = _song;
-
 				// Clear the tempSong's events so that we can free up space in the json.
-				tempSong.events = [];
-
-				json = {
-					"song": tempSong
-				};
-
+				FunkinUtil.clearArray(tempSong.events);
+				v = { "song": tempSong };
 				saveFileString = '${FunkinUtil.lowerDiffString()}';
 
 			case EVENTS:
-				var eventsSong:Dynamic = {
-					events: _song.events
-				};
-
-				json = {
-					"song": eventsSong
-				};
-
+				var eventsSong:Dynamic = { events: _song.events };
+				v = { "song": eventsSong };
 				saveFileString = 'events${FunkinSound.erectModeSuffix(false)}';
 
 			case DATA:
-				json = {
-					"song_data": _song_data
-				};
-
+				v = { "song_data": _song_data };
 				saveFileString = 'songdata${FunkinSound.erectModeSuffix(false)}';
 
 			case METADATA:
-				json = {
-					"metadata": _metadata
-				};
-
+				v = { "metadata": _metadata };
 				saveFileString = 'metadata${FunkinSound.erectModeSuffix()}';
 		}
 
 		trace('Saving... [${saveFileString}.json]');
 
-		var data:String = Json.stringify(json, "\t");
+		var data:String = Json.stringify(v, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{

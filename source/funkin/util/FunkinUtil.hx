@@ -144,6 +144,15 @@ class FunkinUtil
 		}
 	}
 
+	public static function clearArray(array:Array<Dynamic>):Void
+	{
+		if (array != null && array.length > 0) {
+			do {
+				array.pop();
+			} while (array.length > 0);
+		}
+	}
+
 	// uhhhh does this even work at all? i'm starting to doubt
 	// its not a void function you dumb idiot
 	public static function precacheSound(sound:String, ?library:String = null):Void

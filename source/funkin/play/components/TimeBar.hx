@@ -86,7 +86,7 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function showTimeBar():Void
 	{
-		GlobalTweenClass.tween(this, {alpha: 1.0}, 0.65, {
+		GlobalTweenClass.tween(this, { alpha: 1.0 }, 0.75 / PlayState.instance.playbackRate, {
 			ease: EaseUtil.getFlxEaseByString('circOut')
 		});
 	}

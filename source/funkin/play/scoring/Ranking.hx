@@ -79,16 +79,16 @@ class Ranking
 		 * 'F' - <50.00%
 		 */
 		final ranks:Array<Dynamic> = [
-			['P', (accuracy >= 99.98)],
-			['SSS', (accuracy >= 99.00)],
-			['SS', (accuracy >= 98.00)],
-			['S', (accuracy >= 93.00)],
+			['P', (accuracy >= 100.00)],
+			['SSS', (accuracy >= 99.50)],
+			['SS', (accuracy >= 99.00)],
+			['S', (accuracy >= 95.00)],
 			['A', (accuracy >= 90.00)],
 			['B', (accuracy >= 80.00)],
-			['C', (accuracy >= 73.50)],
-			['D', (accuracy >= 65.00)],
-			['E', (accuracy >= 60.00)],
-			['F', (accuracy < 60.00)]
+			['C', (accuracy >= 70.00)],
+			['D', (accuracy >= 60.00)],
+			['E', (accuracy >= 50.00)],
+			['F', (accuracy < 50.00)]
 		];
 
 		var rankingKey:String = '';

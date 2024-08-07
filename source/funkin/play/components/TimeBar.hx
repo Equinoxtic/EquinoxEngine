@@ -53,7 +53,7 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 		this.visible = (GlobalSettings.TIME_BAR_DISPLAY != 'Disabled' && !GlobalSettings.HIDE_HUD);
 	}
 
-	public function updateTimeBarText(displayMode, currentTime:Int, totalLength:Int):Void
+	public function updateTimeBarText(displayMode:String, currentTime:Int, totalLength:Int):Void
 	{
 		@:privateAccess
 		if (PlayState.instance.updateTime)
@@ -86,18 +86,15 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function showTimeBar():Void
 	{
-		GlobalTweenClass.tween(this, {alpha: 1.0}, 0.65, {ease: EaseUtil.getFlxEaseByString('circOut')});
+		GlobalTweenClass.tween(this, {alpha: 1.0}, 0.65, {
+			ease: EaseUtil.getFlxEaseByString('circOut')
+		});
 	}
 
 	public function adjustTime(amount:Float):Void
 	{
 		value = amount;
 		percent = (value * 100);
-	}
-
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
 	}
 
 	private function _getSongInfo(currentSong:SwagSong):String

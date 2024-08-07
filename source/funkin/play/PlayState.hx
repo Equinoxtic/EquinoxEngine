@@ -1055,6 +1055,25 @@ class PlayState extends MusicBeatState
 
 		super.create();
 
+		/**
+		 * Make Note Strum Tail wiggle when the song has 'hasNoteWiggle' on.
+		 */
+		if (PlayState.SONG_METADATA.hasNoteWiggle)
+		{
+			strumLineNotes.forEach(function(strum:StrumNote):Void {
+				strum.cameras = [camStrum];
+			});
+
+			notes.forEach(function(note:Note):Void {
+				if (note.isSustainNote)
+					note.cameras = [camSus];
+				else
+					note.cameras = [camNotes];
+			});
+
+			camSus.setFilters([new ShaderFilter(noteWiggle.shader)]);
+		}
+
 		borderCam.zoom = 1.85;
 		borderCam.visible = false;
 
@@ -2842,26 +2861,6 @@ class PlayState extends MusicBeatState
 		 */
 		if (finishedCountdown)
 			songPopUp.playAnimation();
-
-		/**
-		 * Note tail wiggle cameras.
-		 */
-		if (PlayState.SONG_METADATA.hasNoteWiggle)
-		{
-			strumLineNotes.forEach(function(strum:StrumNote):Void {
-				strum.cameras = [camStrum];
-			});
-
-			notes.forEach(function(note:Note):Void {
-				if (note.isSustainNote) {
-					note.cameras = [camSus];
-				} else {
-					note.cameras = [camNotes];
-				}
-			});
-
-			camSus.setFilters([new ShaderFilter(noteWiggle.shader)]);
-		}
 
 		/**
 		 * Shader updates / update calls.

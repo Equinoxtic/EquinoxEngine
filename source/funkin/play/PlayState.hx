@@ -298,7 +298,6 @@ class PlayState extends MusicBeatState
 	var scoreTxtTween:FlxTween;
 
 	public var statsHUD:StatisticsHUD;
-	public var scorePopUp:ScorePopUp;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -4249,7 +4248,7 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note);
 		}
 
-		var scorePopUp:ScorePopUp =
+		final scorePopUp:ScorePopUp =
 			new ScorePopUp(
 				daRating,
 				combo,
@@ -4323,6 +4322,7 @@ class PlayState extends MusicBeatState
 			}
 
 			var spr:StrumNote = playerStrums.members[key];
+
 			if (strumsBlocked[key] != true && spr != null && spr.animation.curAnim.name != 'confirm') {
 				spr.playAnim('pressed');
 				spr.resetAnim = 0;

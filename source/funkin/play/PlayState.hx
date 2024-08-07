@@ -204,6 +204,7 @@ class PlayState extends MusicBeatState
 	//Gameplay settings
 	public var healthGain:Float = 1;
 	public var healthLoss:Float = 1;
+	public var isDead:Bool = false;
 	public var instakillOnMiss:Bool = false;
 	public var cpuControlled:Bool = false;
 	public var practiceMode:Bool = false;
@@ -2557,13 +2558,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			for (tween in modchartTweens) {
-				tween.active = false;
-			}
-
-			for (timer in modchartTimers) {
-				timer.active = false;
-			}
+			toggleModchartTimersAndTweens(false);
 		}
 
 		super.openSubState(SubState);
@@ -2594,13 +2589,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			for (tween in modchartTweens) {
-				tween.active = true;
-			}
-
-			for (timer in modchartTimers) {
-				timer.active = true;
-			}
+			toggleModchartTimersAndTweens(true);
 
 			paused = false;
 
@@ -2642,6 +2631,14 @@ class PlayState extends MusicBeatState
 		#end
 
 		super.onFocusLost();
+	}
+
+	public function toggleModchartTimersAndTweens(?v:Bool = true):Void
+	{
+		for (tween in modchartTweens)
+			tween.active = v;
+		for (timer in modchartTimers)
+			timer.active = v;
 	}
 
 	public var paused:Bool = false;
@@ -3156,7 +3153,6 @@ class PlayState extends MusicBeatState
 		chartingMode = true;
 	}
 
-	public var isDead:Bool = false;
 	function doDeathCheck(?skipHealthCheck:Bool = false):Bool
 	{
 		if (((skipHealthCheck && instakillOnMiss) || health <= Constants.HEALTH_MIN) && !practiceMode && !isDead)
@@ -3175,13 +3171,7 @@ class PlayState extends MusicBeatState
 				persistentUpdate = false;
 				persistentDraw = false;
 
-				for (tween in modchartTimers) {
-					tween.active = true;
-				}
-
-				for (timer in modchartTimers) {
-					timer.active = true;
-				}
+				toggleModchartTimersAndTweens(true);
 
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
 
@@ -4510,7 +4500,6 @@ class PlayState extends MusicBeatState
 		if (char != null && !daNote.noMissAnimation && char.hasMissAnimations)
 		{
 			var missAnimation:String = '${singAnimations[Std.int(Math.abs(daNote.noteData))]}miss';
-
 			var animToPlay:String = '${missAnimation}${daNote.animSuffix}'; // Alt animations for all characters.
 
 			if (char.curCharacter == 'bf-zero') {

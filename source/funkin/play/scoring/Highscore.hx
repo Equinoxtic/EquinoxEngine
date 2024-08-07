@@ -179,24 +179,18 @@ class Highscore
 	public static function load():Void
 	{
 		if (FlxG.save.data.weekScores != null)
-		{
 			weekScores = FlxG.save.data.weekScores;
-		}
+
 		if (FlxG.save.data.songScores != null)
-		{
 			songScores = FlxG.save.data.songScores;
-		}
+
 		if (FlxG.save.data.songAccuracy != null)
-		{
 			songAccuracy = FlxG.save.data.songAccuracy;
-		}
+
 		if (FlxG.save.data.songRanking != null)
-		{
 			songRanking = FlxG.save.data.songRanking;
-		}
+
 		if (FlxG.save.data.songRatingFC != null)
-		{
 			songRatingFC = FlxG.save.data.songRatingFC;
-		}
 	}
 }

@@ -84,19 +84,13 @@ class Character extends FunkinSprite
 	{
 		super(x, y, false);
 
-		#if (haxe >= "4.0.0")
 		animOffsets = new Map();
-		#else
-		animOffsets = new Map<String, Array<Dynamic>>();
-		#end
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
-		var library:String = null;
+
 		switch (curCharacter)
 		{
-			//case 'your character name in case you want to hardcode them instead':
-
 			default:
 				var characterPath:String = 'characters/' + curCharacter + '.json';
 
@@ -149,7 +143,7 @@ class Character extends FunkinSprite
 
 				imageFile = json.image;
 
-				if(json.scale != 1) {
+				if (json.scale != 1) {
 					jsonScale = json.scale;
 					setGraphicSize(Std.int(width * jsonScale));
 					updateHitbox();
@@ -163,20 +157,23 @@ class Character extends FunkinSprite
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;
 				flipX = !!json.flip_x;
+
 				if (json.no_antialiasing) {
 					antialiasing = false;
 					noAntialiasing = true;
 				}
 
-				if(json.healthbar_colors != null && json.healthbar_colors.length > 2) {
+				if (json.healthbar_colors != null && json.healthbar_colors.length > 2) {
 					healthColorArray = json.healthbar_colors;
 				}
 
 				antialiasing = !noAntialiasing;
-				if(!GlobalSettings.SPRITE_ANTIALIASING) antialiasing = false;
+
+				if (!GlobalSettings.SPRITE_ANTIALIASING)
+					antialiasing = false;
 
 				animationsArray = json.animations;
-				if(animationsArray != null && animationsArray.length > 0) {
+				if (animationsArray != null && animationsArray.length > 0) {
 					for (anim in animationsArray) {
 						var animAnim:String = '' + anim.anim;
 						var animName:String = '' + anim.name;
@@ -194,12 +191,15 @@ class Character extends FunkinSprite
 					quickAnimAdd('idle', 'BF idle dance');
 				}
 		}
+
 		originalFlipX = flipX;
 
 		if (animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) {
 			hasMissAnimations = true;
 		}
+
 		recalculateDanceIdle();
+
 		dance();
 
 		if (isPlayer) {

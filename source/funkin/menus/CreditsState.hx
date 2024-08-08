@@ -40,7 +40,6 @@ class CreditsState extends MusicBeatState
 	override function create()
 	{
 		#if desktop
-		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
@@ -108,7 +107,7 @@ class CreditsState extends MusicBeatState
 			['kawaisprite',			'kawaisprite',		"Composer of Friday Night Funkin'",								'https://twitter.com/kawaisprite',		'378FC7']
 		];
 
-		for(i in pisspoop){
+		for (i in pisspoop) {
 			creditsStuff.push(i);
 		}
 
@@ -122,9 +121,9 @@ class CreditsState extends MusicBeatState
 			optionText.snapToPosition();
 			grpOptions.add(optionText);
 
-			if(isSelectable) {
-				if(creditsStuff[i][5] != null)
-				{
+			if (isSelectable)
+			{
+				if (creditsStuff[i][5] != null) {
 					Paths.currentModDirectory = creditsStuff[i][5];
 				}
 
@@ -132,14 +131,17 @@ class CreditsState extends MusicBeatState
 				icon.xAdd = optionText.width + 10;
 				icon.sprTracker = optionText;
 
-				// using a FlxGroup is too much fuss!
 				iconArray.push(icon);
 				add(icon);
 				Paths.currentModDirectory = '';
 
-				if(curSelected == -1) curSelected = i;
+				if(curSelected == -1)
+					curSelected = i;
 			}
-			else optionText.alignment = CENTERED;
+			else
+			{
+				optionText.alignment = CENTERED;
+			}
 		}
 
 		descBox = new AttachedSprite();
@@ -153,7 +155,6 @@ class CreditsState extends MusicBeatState
 		descText = new FlxText(50, FlxG.height + offsetThing - 25, 1180, "", 32);
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 		descText.scrollFactor.set();
-		//descText.borderSize = 2.4;
 		descBox.sprTracker = descText;
 		add(descText);
 
@@ -167,14 +168,13 @@ class CreditsState extends MusicBeatState
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
-		if (FlxG.sound.music.volume < 0.7)
-		{
+		if (FlxG.sound.music.volume < 0.7) {
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
-		if(!quitting)
+		if (!quitting)
 		{
-			if(creditsStuff.length > 1)
+			if (creditsStuff.length > 1)
 			{
 				var shiftMult:Int = 1;
 				if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
@@ -182,36 +182,34 @@ class CreditsState extends MusicBeatState
 				var upP = controls.UI_UP_P;
 				var downP = controls.UI_DOWN_P;
 
-				if (upP)
-				{
+				if (upP) {
 					changeSelection(-shiftMult);
 					holdTime = 0;
 				}
-				if (downP)
-				{
+
+				if (downP) {
 					changeSelection(shiftMult);
 					holdTime = 0;
 				}
 
-				if(controls.UI_DOWN || controls.UI_UP)
-				{
+				if (controls.UI_DOWN || controls.UI_UP) {
 					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 					holdTime += elapsed;
 					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
 
-					if(holdTime > 0.5 && checkNewHold - checkLastHold > 0)
-					{
+					if (holdTime > 0.5 && checkNewHold - checkLastHold > 0) {
 						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
 					}
 				}
 			}
 
-			if(controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)) {
+			if (controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)) {
 				FunkinUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
+
 			if (controls.BACK)
 			{
-				if(colorTween != null) {
+				if (colorTween != null) {
 					colorTween.cancel();
 				}
 				FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -222,26 +220,24 @@ class CreditsState extends MusicBeatState
 
 		for (item in grpOptions.members)
 		{
-			if(!item.bold)
+			if (!item.bold)
 			{
 				var lerpVal:Float = FunkinUtil.boundTo(elapsed * 12, 0, 1);
-				if(item.targetY == 0)
-				{
+				if (item.targetY == 0) {
 					var lastX:Float = item.x;
 					item.screenCenter(X);
 					item.x = FlxMath.lerp(lastX, item.x - 70, lerpVal);
-				}
-				else
-				{
+				} else {
 					item.x = FlxMath.lerp(item.x, 200 + -40 * Math.abs(item.targetY), lerpVal);
 				}
 			}
 		}
+
 		super.update(elapsed);
 	}
 
 	var moveTween:FlxTween = null;
-	function changeSelection(change:Int = 0)
+	function changeSelection(change:Int = 0):Void
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do {
@@ -253,8 +249,8 @@ class CreditsState extends MusicBeatState
 		} while(unselectableCheck(curSelected));
 
 		var newColor:Int =  getCurrentBGColor();
-		if(newColor != intendedColor) {
-			if(colorTween != null) {
+		if (newColor != intendedColor) {
+			if (colorTween != null) {
 				colorTween.cancel();
 			}
 			intendedColor = newColor;
@@ -272,7 +268,7 @@ class CreditsState extends MusicBeatState
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
-			if(!unselectableCheck(bullShit-1)) {
+			if (!unselectableCheck(bullShit-1)) {
 				item.alpha = 0.6;
 				if (item.targetY == 0) {
 					item.alpha = 1;
@@ -283,8 +279,13 @@ class CreditsState extends MusicBeatState
 		descText.text = creditsStuff[curSelected][2];
 		descText.y = FlxG.height - descText.height + offsetThing - 60;
 
-		if(moveTween != null) moveTween.cancel();
+		if (moveTween != null) {
+			moveTween.cancel();
+		}
+
 		moveTween = FlxTween.tween(descText, {y : descText.y + 75}, 0.25, {ease: FlxEase.sineOut});
+
+		moveTween.start();
 
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();
@@ -292,21 +293,25 @@ class CreditsState extends MusicBeatState
 
 	#if MODS_ALLOWED
 	private var modsAdded:Array<String> = [];
-	function pushModCreditsToList(folder:String)
+	function pushModCreditsToList(folder:String):Void
 	{
-		if(modsAdded.contains(folder)) return;
+		if (modsAdded.contains(folder))
+			return;
 
 		var creditsFile:String = null;
-		if(folder != null && folder.trim().length > 0) creditsFile = Paths.mods(folder + '/data/credits.txt');
-		else creditsFile = Paths.mods('data/credits.txt');
+		if (folder != null && folder.trim().length > 0)
+			creditsFile = Paths.mods(folder + '/data/credits.txt');
+		else
+			creditsFile = Paths.mods('data/credits.txt');
 
 		if (FileSystem.exists(creditsFile))
 		{
 			var firstarray:Array<String> = File.getContent(creditsFile).split('\n');
-			for(i in firstarray)
+			for (i in firstarray)
 			{
 				var arr:Array<String> = i.replace('\\n', '\n').split("::");
-				if(arr.length >= 5) arr.push(folder);
+				if (arr.length >= 5)
+					arr.push(folder);
 				creditsStuff.push(arr);
 			}
 			creditsStuff.push(['']);
@@ -315,9 +320,10 @@ class CreditsState extends MusicBeatState
 	}
 	#end
 
-	function getCurrentBGColor() {
+	function getCurrentBGColor():Int
+	{
 		var bgColor:String = creditsStuff[curSelected][4];
-		if(!bgColor.startsWith('0x')) {
+		if (!bgColor.startsWith('0x')) {
 			bgColor = '0xFF' + bgColor;
 		}
 		return Std.parseInt(bgColor);

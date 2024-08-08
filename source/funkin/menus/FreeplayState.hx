@@ -1,5 +1,6 @@
 package funkin.menus;
 
+import funkin.play.song.Chart.ParseType;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -360,14 +361,15 @@ class FreeplayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		if (playingSongInst) trace('${FlxStringUtil.formatTime(Math.floor(FlxG.sound.music.time / 1000))}');
+		if (playingSongInst)
+			trace('${FlxStringUtil.formatTime(Math.floor(FlxG.sound.music.time / 1000))}');
 	}
 
 	private function playSongInst(?instVolume:Null<Float>):Void
 	{
 		if (instPlaying != curSelected)
 		{
-			var shitVolume = instVolume;
+			var volume = instVolume;
 
 			FlxG.sound.music.volume = 0;
 			FlxG.sound.music.stop();
@@ -375,8 +377,7 @@ class FreeplayState extends MusicBeatState
 			destroyFreeplayVocals();
 
 			Paths.currentModDirectory = songs[curSelected].folder;
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-			PlayState.SONG = Song.loadFromJson(poop, FunkinUtil.difficulties[curDifficulty].toLowerCase());
+			PlayState.SONG = Chart.loadChartData(songs[curSelected].songName.toLowerCase(), FunkinUtil.difficulties[curDifficulty].toLowerCase(), ParseType.SONG);
 
 			instPlaying = curSelected;
 
@@ -384,9 +385,9 @@ class FreeplayState extends MusicBeatState
 
 			if (playingSongInst) {
 				if (!(instVolume > 0))
-					shitVolume = 1.0;
+					volume = 1.0;
 
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), shitVolume, true);
+				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), volume, true);
 			}
 
 			FlxG.sound.music.onComplete = finishSongInst.bind();
@@ -407,8 +408,6 @@ class FreeplayState extends MusicBeatState
 		PlayState.storyDifficulty = curDifficulty;
 		PlayState.SONG = Chart.loadChartData(selectedSong, jsonDiff, SONG);
 		PlayState.isStoryMode = false;
-
-		trace('CURRENT WEEK: ${WeekData.getWeekFileName()}');
 	}
 
 	private function checkChartingInput():Void
@@ -501,8 +500,6 @@ class FreeplayState extends MusicBeatState
 
 		bg.updateColor(songs, curSelected);
 
-		// selector.y = (70 * curSelected) + 30;
-
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		intendedRating = Highscore.getAccuracy(songs[curSelected].songName, curDifficulty);
@@ -533,8 +530,7 @@ class FreeplayState extends MusicBeatState
 
 			item.alpha = 0.6;
 
-			if (item.targetY == 0)
-			{
+			if (item.targetY == 0) {
 				item.alpha = 1;
 			}
 		}
@@ -552,8 +548,7 @@ class FreeplayState extends MusicBeatState
 			var i:Int = diffs.length - 1;
 			while (i > 0)
 			{
-				if(diffs[i] != null)
-				{
+				if (diffs[i] != null) {
 					diffs[i] = diffs[i].trim();
 					if(diffs[i].length < 1) diffs.remove(diffs[i]);
 				}
@@ -576,9 +571,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		var newPos:Int = FunkinUtil.difficulties.indexOf(lastDifficultyName);
-		//trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
-		if(newPos > -1)
-		{
+		if (newPos > -1) {
 			curDifficulty = newPos;
 		}
 	}
@@ -631,8 +624,11 @@ class DifficultySelector extends FlxSprite
 
 	override function update(elapsed:Float):Void
 	{
-		if (flipX && controls.UI_RIGHT_P && !FlxG.keys.pressed.CONTROL) moveShitDown();
-		if (!flipX && controls.UI_LEFT_P && !FlxG.keys.pressed.CONTROL) moveShitDown();
+		if (flipX && controls.UI_RIGHT_P && !FlxG.keys.pressed.CONTROL)
+			moveShitDown();
+
+		if (!flipX && controls.UI_LEFT_P && !FlxG.keys.pressed.CONTROL)
+			moveShitDown();
 
 		super.update(elapsed);
 	}

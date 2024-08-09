@@ -283,13 +283,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			}
 		}
 
-		/* tf is this for?
 		if (boyfriend != null) {
 			if (boyfriend.animation.curAnim.finished) {
 				boyfriend.dance();
 			}
 		}
-		*/
 
 		if (nextAccept > 0) {
 			nextAccept -= 1;
@@ -371,9 +369,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		if (boyfriend != null) {
 			wasVisible = boyfriend.visible;
-			boyfriend.kill();
-			remove(boyfriend);
-			boyfriend.destroy();
 		}
 
 		boyfriend = new Character(840, 170, 'bf', true);

@@ -67,28 +67,27 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 			}
 		}
 
-		var daLoop:Int = 0;
-		var xThing:Float = 0;
+		var iterations:Int = 0;
+		var xIncrement:Float = 0;
 
 		for (i in seperatedScore)
 		{
 			var tallyCounter:TallyCounter = new TallyCounter(i);
-			tallyCounter.x = offsetText.x + (42 * daLoop) - 75;
-			tallyCounter.y = ratingSprite.y;
+			tallyCounter.setPosition(offsetText.x + (42 * iterations) - 75, ratingSprite.y);
 			tallyCounter.x += -5;
 			tallyCounter.y += 100;
 			tallyCounter.visible = _showsTallyCounter;
 			add(tallyCounter);
 
-			daLoop++;
+			iterations++;
 
-			if (tallyCounter.x > xThing)
-				xThing = tallyCounter.x;
+			if (tallyCounter.x > xIncrement) {
+				xIncrement = tallyCounter.x;
+			}
 		}
 
 		var comboSprite:ComboSprite = new ComboSprite();
-		comboSprite.x = xThing + 85;
-		comboSprite.y = ratingSprite.y;
+		comboSprite.setPosition(xIncrement + 85, ratingSprite.y);
 		comboSprite.y += 85;
 		comboSprite.visible = _showsCombo;
 		add(comboSprite);

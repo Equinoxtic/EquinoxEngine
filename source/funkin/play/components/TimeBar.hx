@@ -32,8 +32,7 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 		'value', 0, 1);
 		_timeBar.setGraphicSize(Std.int(_timeBar.width * 1.1), Std.int(_timeBar.height * 0.8));
 		_timeBar.createGradientBar([0xFF252525, 0xFF353535, 0xFF555555], [0xFFFFFFFF, 0xFFDDDDDD, 0xFFAAAAAA], 1, 180);
-		_timeBar.x = _timeBarBG.x * 1;
-		_timeBar.y = _timeBarBG.y - 1;
+		_timeBar.setPosition(_timeBarBG.x * 1, _timeBarBG.y - 1);
 		_timeBar.numDivisions = 1000;
 
 		_timeText = new FunkinText(0, 0, FlxG.width, "", 20, CENTER, true);

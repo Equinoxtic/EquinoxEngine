@@ -13,7 +13,8 @@ class NoteHandler
 	{
 		var crochet:Float = (60 / PlayState.SONG.bpm) * 1000;
 
-		PlayState.instance.notes.forEachAlive(function(note:Note) {
+		PlayState.instance.notes.forEachAlive(function(note:Note)
+		{
 			var strums:FlxTypedGroup<StrumNote> = PlayState.instance.playerStrums;
 			if (!note.mustPress)
 				strums = PlayState.instance.opponentStrums;
@@ -72,7 +73,7 @@ class NoteHandler
 			return;
 
 		/**
-			* SHORTENED HOLD NOTE LENGTH SOLUTION: by using ceil instead of floor, we can get more accurate and proper hold note lengths, this seems to work more effectively
+		 * SHORTENED HOLD NOTE LENGTH SOLUTION: by using ceil instead of floor, we can get more accurate and proper hold note lengths, this seems to work more effectively
 		*/
 		final susLength:Float = note.sustainLength / (Conductor.stepCrochet / 1.04);
 		final ceilSus:Int = Math.ceil(susLength);

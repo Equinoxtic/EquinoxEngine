@@ -4789,7 +4789,7 @@ class PlayState extends MusicBeatState
 			hue = Preferences.arrowHSV[data][0] / 360;
 			sat = Preferences.arrowHSV[data][1] / 100;
 			brt = Preferences.arrowHSV[data][2] / 100;
-			if(note != null) {
+			if (note != null) {
 				skin = note.noteSplashTexture;
 				hue = note.noteSplashHue;
 				sat = note.noteSplashSat;
@@ -4813,8 +4813,7 @@ class PlayState extends MusicBeatState
 
 	function resetFastCar():Void
 	{
-		fastCar.x = -12600;
-		fastCar.y = FlxG.random.int(140, 250);
+		fastCar.setPosition(-12600, FlxG.random.int(140, 250));
 		fastCar.velocity.x = 0;
 		fastCarCanDrive = true;
 	}
@@ -4980,8 +4979,10 @@ class PlayState extends MusicBeatState
 		{
 			tankAngle += elapsed * tankSpeed;
 			tankGround.angle = tankAngle - 90 + 15;
-			tankGround.x = tankX + 1500 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180));
-			tankGround.y = 1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180));
+			tankGround.setPosition(
+				tankX + 1500 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180)),
+				1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180))
+			);
 		}
 	}
 

@@ -45,8 +45,13 @@ class HealthIcon extends FunkinSprite
 		if (this.char != char)
 		{
 			var name:String = 'icons/' + char;
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char;
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face';
+
+			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
+				name = 'icons/icon-' + char;
+
+			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
+				name = 'icons/icon-face';
+
 			var file:Dynamic = Paths.image(name);
 
 			loadGraphic(file); //Load stupidly first for getting the file size

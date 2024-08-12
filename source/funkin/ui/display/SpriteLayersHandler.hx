@@ -11,35 +11,27 @@ enum CharacterLayers
 	DAD;
 }
 
-class SpriteLayersHandler extends FlxTypedGroup<FlxBasic>
+class SpriteLayersHandler
 {
-	private final _enumMappings:Map<CharacterLayers, Dynamic> = [
-		GF  => PlayState.instance.gfGroup,
-		BF  => PlayState.instance.boyfriendGroup,
-		DAD => PlayState.instance.dadGroup
-	];
-
-	/**
-	 * Create a new instance for handling and layering sprites.
-	 */
-	public function new():Void
-	{
-		super(0, 0);
-		trace('Initialized handler for Sprite Layering');
-	}
 
 	/**
 	 * Adds an object behind the given character.
 	 * @param characterLayer The layer of the character/the character itself.
 	 * @param object The object/sprite.
 	 */
-	public function addBehind(characterLayer:Null<CharacterLayers>, object:Null<FlxObject>):Void
+	public static function addBehind(instance:Null<FlxTypedGroup<FlxBasic>>, characterLayer:Null<CharacterLayers>, object:Null<FlxObject>):Void
 	{
-		if (object == null || !object.alive) {
+		final _enumMappings:Map<CharacterLayers, Dynamic> = [
+			GF  => PlayState.instance.gfGroup,
+			BF  => PlayState.instance.boyfriendGroup,
+			DAD => PlayState.instance.dadGroup
+		];
+
+		if (instance == null || object == null || !object.alive) {
 			return;
 		}
 
-		insert(members.indexOf(_enumMappings.get(characterLayer)), object);
+		instance.insert(instance.members.indexOf(_enumMappings.get(characterLayer)), object);
 	}
 
 	/**
@@ -47,11 +39,11 @@ class SpriteLayersHandler extends FlxTypedGroup<FlxBasic>
 	 * @param characterLayer The layer of the character/the character itself.
 	 * @param objectList The list of objects/sprites.
 	 */
-	public function addListOfObjectsBehind(characterLayer:Null<CharacterLayers>, objectList:Null<Array<FlxObject>>):Void
+	public static function addListOfObjectsBehind(instance:Null<FlxTypedGroup<FlxBasic>>, characterLayer:Null<CharacterLayers>, objectList:Null<Array<FlxObject>>):Void
 	{
-		if (objectArray != null && objectArray.length > 0) {
-			for (i in 0 ... objectArray.length) {
-				addBehind(characterLater, objectArray[i]);
+		if (objectList != null && objectList.length > 0) {
+			for (i in 0 ... objectList.length) {
+				addBehind(instance, characterLayer, objectList[i]);
 			}
 		}
 	}

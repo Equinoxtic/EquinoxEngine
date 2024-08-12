@@ -143,8 +143,6 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 
-	private var layerHandler:SpriteLayersHandler;
-
 	public static var SONG:SwagSong = null;
 	public static var SONG_DATA:SongDataJson = null;
 	public static var SONG_METADATA:SongSettingsJSON = null;
@@ -572,8 +570,6 @@ class PlayState extends MusicBeatState
 		add(dadGroup);
 		add(boyfriendGroup);
 
-		layerHandler = new SpriteLayersHandler();
-
 		switch(curStage)
 		{
 			case 'spooky':
@@ -677,11 +673,11 @@ class PlayState extends MusicBeatState
 		{
 			case 'limo':
 				resetFastCar();
-				layerHandler.addBehind(CharacterLayers.GF, fastCar);
+				SpriteLayersHandler.addBehind(this, CharacterLayers.GF, fastCar);
 
 			case 'schoolEvil':
 				var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069); //nice
-				layerHandler.addBehind(CharacterLayers.DAD, evilTrail);
+				SpriteLayersHandler.addBehind(this, CharacterLayers.DAD, evilTrail);
 		}
 
 		var file:String = Paths.json('charts/${songName}/dialogue'); //Checks for json/Psych Engine dialogue
@@ -1754,7 +1750,7 @@ class PlayState extends MusicBeatState
 		var tankman:FlxSprite = new FlxSprite(-20, 320);
 		tankman.frames = Paths.getSparrowAtlas('cutscenes/' + songName);
 		tankman.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
-		layerHandler.addBehind(CharacterLayers.DAD, tankman);
+		SpriteLayersHandler.addBehind(this, CharacterLayers.DAD, tankman);
 
 		var tankman2:FlxSprite = new FlxSprite(16, 312);
 		tankman2.alpha = 0.000001;
@@ -1882,13 +1878,13 @@ class PlayState extends MusicBeatState
 
 				tankman2.frames = Paths.getSparrowAtlas('cutscenes/stress2');
 
-				layerHandler.addBehind(CharacterLayers.DAD, tankman2);
+				SpriteLayersHandler.addBehind(this, CharacterLayers.DAD, tankman2);
 
 				if (!GlobalSettings.LOW_QUALITY) {
 					gfDance.frames = Paths.getSparrowAtlas('characters/gfTankmen');
 					gfDance.animation.addByPrefix('dance', 'GF Dancing at Gunpoint', 24, true);
 					gfDance.animation.play('dance', true);
-					layerHandler.addBehind(CharacterLayers.GF, gfDance);
+					SpriteLayersHandler.addBehind(this, CharacterLayers.GF, gfDance);
 				}
 
 				gfCutscene.frames = Paths.getSparrowAtlas('cutscenes/stressGF');
@@ -1910,7 +1906,7 @@ class PlayState extends MusicBeatState
 				boyfriendCutscene.animation.play('idle', true);
 				boyfriendCutscene.animation.curAnim.finish();
 
-				layerHandler.addListOfObjectsBehind(CharacterLayers.GF,
+				SpriteLayersHandler.addListOfObjectsBehind(this, CharacterLayers.GF,
 					[ gfCutscene, picoCutscene, boyfriendCutscene ]
 				);
 

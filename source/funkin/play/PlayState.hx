@@ -68,6 +68,8 @@ import funkin.play.scoring.Rating.PlayStateRating;
 import funkin.ui.debug.Watermark;
 import funkin.backend.*;
 
+import funkin.ui.display.SpriteLayersHandler.CharacterLayers;
+
 #if (debug)
 import funkin.ui.debug.DebugText;
 #end
@@ -140,6 +142,8 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+
+	private var layerHandler:SpriteLayersHandler;
 
 	public static var SONG:SwagSong = null;
 	public static var SONG_DATA:SongDataJson = null;
@@ -568,6 +572,8 @@ class PlayState extends MusicBeatState
 		add(dadGroup);
 		add(boyfriendGroup);
 
+		layerHandler = new SpriteLayersHandler();
+
 		switch(curStage)
 		{
 			case 'spooky':
@@ -671,11 +677,11 @@ class PlayState extends MusicBeatState
 		{
 			case 'limo':
 				resetFastCar();
-				addBehindGF(fastCar);
+				layerHandler.addBehind(CharacterLayers.GF, fastCar);
 
 			case 'schoolEvil':
 				var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069); //nice
-				addBehindDad(evilTrail);
+				layerHandler.addBehind(CharacterLayers.DAD, evilTrail);
 		}
 
 		var file:String = Paths.json('charts/${songName}/dialogue'); //Checks for json/Psych Engine dialogue
@@ -1748,7 +1754,7 @@ class PlayState extends MusicBeatState
 		var tankman:FlxSprite = new FlxSprite(-20, 320);
 		tankman.frames = Paths.getSparrowAtlas('cutscenes/' + songName);
 		tankman.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
-		addBehindDad(tankman);
+		layerHandler.addBehind(CharacterLayers.DAD, tankman);
 
 		var tankman2:FlxSprite = new FlxSprite(16, 312);
 		tankman2.alpha = 0.000001;
@@ -1875,13 +1881,14 @@ class PlayState extends MusicBeatState
 				precacheList.set('stressCutscene', 'sound');
 
 				tankman2.frames = Paths.getSparrowAtlas('cutscenes/stress2');
-				addBehindDad(tankman2);
+
+				layerHandler.addBehind(CharacterLayers.DAD, tankman2);
 
 				if (!GlobalSettings.LOW_QUALITY) {
 					gfDance.frames = Paths.getSparrowAtlas('characters/gfTankmen');
 					gfDance.animation.addByPrefix('dance', 'GF Dancing at Gunpoint', 24, true);
 					gfDance.animation.play('dance', true);
-					addBehindGF(gfDance);
+					layerHandler.addBehind(CharacterLayers.GF, gfDance);
 				}
 
 				gfCutscene.frames = Paths.getSparrowAtlas('cutscenes/stressGF');
@@ -1889,7 +1896,6 @@ class PlayState extends MusicBeatState
 				gfCutscene.animation.addByPrefix('getRektLmao', 'GF STARTS TO TURN PART 2', 24, false);
 				gfCutscene.animation.play('dieBitch', true);
 				gfCutscene.animation.pause();
-				addBehindGF(gfCutscene);
 
 				if (!GlobalSettings.LOW_QUALITY) {
 					gfCutscene.alpha = 0.00001;
@@ -1897,14 +1903,16 @@ class PlayState extends MusicBeatState
 
 				picoCutscene.frames = AtlasFrameMaker.construct('cutscenes/stressPico');
 				picoCutscene.animation.addByPrefix('anim', 'Pico Badass', 24, false);
-				addBehindGF(picoCutscene);
 				picoCutscene.alpha = 0.00001;
 
 				boyfriendCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 				boyfriendCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				boyfriendCutscene.animation.play('idle', true);
 				boyfriendCutscene.animation.curAnim.finish();
-				addBehindBF(boyfriendCutscene);
+
+				layerHandler.addListOfObjectsBehind(CharacterLayers.GF,
+					[ gfCutscene, picoCutscene, boyfriendCutscene ]
+				);
 
 				var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.sound('stressCutscene'));
 				FlxG.sound.list.add(cutsceneSnd);
@@ -2159,21 +2167,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function addBehindGF(obj:FlxObject):Void
-	{
-		insert(members.indexOf(gfGroup), obj);
-	}
-
-	public function addBehindBF(obj:FlxObject):Void
-	{
-		insert(members.indexOf(boyfriendGroup), obj);
-	}
-
-	public function addBehindDad(obj:FlxObject):Void
-	{
-		insert(members.indexOf(dadGroup), obj);
-	}
-
 	public function clearNotesBefore(time:Float):Void
 	{
 		var i:Int = unspawnNotes.length - 1;
@@ -2215,6 +2208,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	// Keeping this because I just feel bad for not having code here anymore lol
 	public function updateScore(miss:Bool = false)
 	{
 		callOnLuas('onUpdateScore', [miss]);
@@ -5242,7 +5236,8 @@ class PlayState extends MusicBeatState
 		return returnVal;
 	}
 
-	public function setOnLuas(variable:String, arg:Dynamic) {
+	public function setOnLuas(variable:String, arg:Dynamic):Void
+	{
 		#if LUA_ALLOWED
 		for (i in 0...luaArray.length) {
 			luaArray[i].set(variable, arg);
@@ -5250,8 +5245,10 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	function strumPlayAnim(isDad:Bool, id:Int, time:Float) {
+	function strumPlayAnim(isDad:Bool, id:Int, time:Float):Void
+	{
 		var spr:StrumNote = null;
+
 		if (isDad) {
 			spr = strumLineNotes.members[id];
 		} else {

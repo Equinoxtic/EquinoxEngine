@@ -31,6 +31,16 @@ class Variables
 	public static var APPLICATION_VERSION(get, never):String;
 
 	/**
+	 * The maximum window height of the application.
+	 */
+	public static final MAX_WINDOW_HEIGHT:Int = 1920;
+
+	/**
+	 * The maximum window width of the application.
+	 */
+	public static final MAX_WINDOW_WIDTH:Int = 1080;
+
+	/**
 	 * The version of the base engine.
 	 */
 	public static var BASE_ENGINE_VERSION(get, never):String;

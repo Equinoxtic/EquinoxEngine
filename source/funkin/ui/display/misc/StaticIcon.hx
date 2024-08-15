@@ -1,5 +1,7 @@
 package funkin.ui.display.misc;
 
+import funkin.util.animation.CharacterUtil;
+
 class StaticIcon extends FunkinSprite
 {
 	private var character:String = 'bf';
@@ -13,23 +15,16 @@ class StaticIcon extends FunkinSprite
 
 		this.character = character;
 
-		var path:String = 'icons/' + character;
+		var file:Dynamic = Paths.image(
+			CharacterUtil.getPathToIcon(character)
+		);
 
-		if (!Paths.fileExists('images/' + path + '.png', IMAGE)) {
-			path = 'icons/icon-' + character;
-		}
-
-		if (!Paths.fileExists('images/' + path + '.png', IMAGE)) {
-			path = 'icons/icon-face';
-		}
-
-		var file:Dynamic = Paths.image(path);
-
-		loadGraphic(file, true, 150, 150);
+		loadGraphic(file, true, Constants.ICON_WIDTH, Constants.ICON_HEIGHT);
 		updateHitbox();
 
 		animation.add(character, [0], 0, false, isPlayer);
 		animation.play(character);
+
 		this.character = character;
 	}
 }

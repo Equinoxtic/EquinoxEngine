@@ -1,5 +1,6 @@
 package funkin.play.components;
 
+import funkin.util.animation.CharacterUtil;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
 
@@ -44,24 +45,21 @@ class HealthIcon extends FunkinSprite
 	{
 		if (this.char != char)
 		{
-			var name:String = 'icons/' + char;
-
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-				name = 'icons/icon-' + char;
-
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-				name = 'icons/icon-face';
-
-			var file:Dynamic = Paths.image(name);
+			var file:Dynamic = Paths.image(
+				CharacterUtil.getPathToIcon(char)
+			);
 
 			loadGraphic(file); //Load stupidly first for getting the file size
-			loadGraphic(file, true, 150, 150); //Then load it fr
-			iconOffsets[0] = (width - 150) / 2;
-			iconOffsets[1] = (width - 150) / 2;
+			loadGraphic(file, true, Constants.ICON_WIDTH, Constants.ICON_HEIGHT); //Then load it fr
+
+			for (i in 0...iconOffsets.length)
+				iconOffsets[i] = (width - Constants.ICON_WIDTH) / 2;
+
 			updateHitbox();
 
 			animation.add(char, [0, 1, 2], 0, false, isPlayer);
 			animation.play(char);
+
 			this.char = char;
 
 			if (char.endsWith('-pixel')) {

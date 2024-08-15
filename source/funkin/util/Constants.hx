@@ -32,6 +32,16 @@ class Constants
 	public static final ICON_OFFSET:Int = 26;
 
 	/**
+	 * The default width for the icon sprites.
+	 */
+	public static final ICON_WIDTH:Int = 150;
+
+	/**
+	 * The default height for the icon sprites.
+	 */
+	public static final ICON_HEIGHT:Int = 150;
+
+	/**
 	 * The winning percentage based on health percentage.
 	 */
 	public static final WINNING_PERCENT:Int = 80;

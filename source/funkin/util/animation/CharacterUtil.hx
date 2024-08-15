@@ -14,7 +14,7 @@ class CharacterUtil
 			path = 'icons/icon-face';
 		}
 
-		trace('Returned icon for $char: [$path]');
+		trace('Returned icon for $character: [$path]');
 
 		return path;
 	}

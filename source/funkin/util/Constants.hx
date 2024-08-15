@@ -1,9 +1,5 @@
 package funkin.util;
 
-import lime.app.Application;
-import funkin.util.Http;
-import funkin.util.macro.GitCommit as Repository;
-
 using StringTools;
 
 class Constants

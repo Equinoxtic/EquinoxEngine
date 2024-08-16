@@ -1,5 +1,7 @@
 package funkin.ui.display;
 
+import funkin.graphics.TransformData;
+import flixel.FlxObject;
 import funkin.animateatlas.AtlasFrameMaker;
 import flixel.FlxSprite;
 import openfl.utils.Assets as Assets;
@@ -15,6 +17,16 @@ enum SpriteType
 
 class FunkinSprite extends FlxSprite
 {
+	/**
+	 * The relative parent of the sprite. (Functions like 'sprTracker')
+	 */
+	public var parentSprite:FlxObject;
+
+	/**
+	 * The offsets of the main sprite from the parent sprite.
+	 */
+	private var _parentOffsets:Array<Float> = [0, 0];
+
 	/**
 	 * Create a new sprite/graphic. (Extends [``FlxSprite``](https://api.haxeflixel.com/flixel/FlxSprite.html))
 	 * @param X The X position/coordinates of the sprite in space.
@@ -199,6 +211,29 @@ class FunkinSprite extends FlxSprite
 			trace('Failed to load sprite/asset: $path');
 		}
 		return existing;
+	}
+
+	/**
+	 * ### Sets the main sprite's X and Y offset(s) from the parent sprite.
+	 * @param x The x position.
+	 * @param y The y position.
+	 */
+	public function setOffsetFromParentSprite(x:Null<Float>, y:Null<Float>):Void
+	{
+		_parentOffsets[0] = x; _parentOffsets[1] = y;
+	}
+
+	public override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+
+		if (parentSprite != null && parentSprite.alive)
+		{
+			setPosition(
+				new TransformData().incrementalValue(parentSprite.x, _parentOffsets[0]),
+				new TransformData().incrementalValue(parentSprite.y, _parentOffsets[1])
+			);
+		}
 	}
 
 	private function _updateLOD(levelOfDetailEnabled:Bool):Void

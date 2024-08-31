@@ -15,10 +15,16 @@ enum SpriteType
 	TEXTURE;
 }
 
-typedef FunkinSpriteProperties = {
-	@:optional var framerate     :Int;
-	@:optional var looped        :Bool;
-	@:optional var spriteType    :SpriteType;
+typedef FunkinSpriteAnimationProperties = {
+	@:optional var framerate:Int;
+	@:optional var looped:Bool;
+	@:optional var spriteType:SpriteType;
+	@:optional var defaultAnimation:String;
+}
+
+typedef AnimationIndicesProperties = {
+	var prefix:String;
+	var indices:Array<Int>;
 }
 
 class FunkinSprite extends FlxSprite
@@ -54,13 +60,6 @@ class FunkinSprite extends FlxSprite
 	 * ### Loads an image of a sprite given the path.
 	 * You will not need to call/type in ``Paths.image()`` as you will only need to provide the string path of the asset you want to load in.
 	 *
-	 * ```
-	 * // Example code of using the FunkinSprite class with the loadSprite() method.
-	 * var bg:FunkinSprite = new FunkinSprite();
-	 * bg.loadSprite('menuBG');
-	 * add(bg);
-	 * ```
-	 *
 	 * @param path The path of the asset/image.
 	 */
 	public function loadSprite(path:String):Void
@@ -76,31 +75,11 @@ class FunkinSprite extends FlxSprite
 	 * ### Loads an animated sprite given the path and the provided array of animations.
 	 * You will not need to call ``Paths.getSparrowAtlas()`` as it only needs you to provide the string path and the array of animations you want to load in.
 	 *
-	 * ```
-	 * // Example code of using the FunkinSprite class with the loadAnimatedSprite() method.
-	 * for (i in 0...optionShit.length)
-	 * {
-	 *     // ...
-	 *     var menuItem:FunkinSprite = new FunkinSprite(0, (i * 180) + offset);
-	 *     menuItem.scale.set(scale, scale);
-	 *     menuItem.loadAnimatedSprite('mainmenu/menu_${optionShit[i]}', [
-	 *         [ 'idle',     '${optionShit[i]} basic' ],
-	 *         [ 'selected', '${optionShit[i]} white' ]
-	 *     ],
-	 *     24,
-	 *     false,
-	 *     'idle');
-	 *     // ...
-	 * }
-	 * ```
-	 *
 	 * @param path The path of the asset/image.
-	 * @param animations A 2-dimensional array of the name and prefix of the animation.
-	 * @param framerate The framerate of all present animations.
-	 * @param looped Whether the sprite's animation should be looped.
-	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
+	 * @param animations A map of each animation from the sprite's ``.XML``.
+	 * @param properties The properties of the animated sprite.
 	 */
-	public function loadAnimatedSprite(path:String, animations:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	public function loadAnimatedSprite(path:String, animations:Map<String, String>, ?properties:Null<FunkinSpriteAnimationProperties>):Void
 	{
 		if (!FunkinSprite.spriteExists(path)) {
 			return;
@@ -108,7 +87,12 @@ class FunkinSprite extends FlxSprite
 
 		setAtlasSpriteType(path, SpriteType.SPARROW);
 
-		addAnimatedSprite(animations, framerate, looped, defaultAnimation);
+		addAnimatedSprite(
+			animations,                    // Map of animations
+			properties.framerate,          // Framerate from the sprite's properties
+			properties.looped,             // Should loop from the sprite's properties
+			properties.defaultAnimation    // The default animation from the sprite's properties
+		);
 	}
 
 	/**
@@ -118,11 +102,11 @@ class FunkinSprite extends FlxSprite
 	 * @param looped Whether the sprite's animation should be looped.
 	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
 	 */
-	public function addAnimatedSprite(animations:Array<Array<String>>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	public function addAnimatedSprite(animations:Map<String, String>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
 	{
-		if (animations != null && animations.length > 0) {
-			for (i in 0...animations.length) {
-				_constructAnimationPrefixes(animations[i][0], animations[i][1], framerate, looped);
+		if (animations != null) {
+			for (name => anim in animations) {
+				_constructAnimationPrefixes(name, anim, framerate, looped);
 			}
 		}
 
@@ -134,29 +118,13 @@ class FunkinSprite extends FlxSprite
 	/**
 	 * ### Loads an animated sprites given the path, the animations, and the animation's indices.
 	 *
-	 * ```
-	 * // ...
-	 * var sprite:FunkinSprite = new FunkinSprite();
-	 * sprite.loadAnimtedSpriteByIndicies('SPRITESHEET', [
-	 *         [ 'name_1', 'prefix_1', [ 0, 1, 2, 3, 4, 5, ... ] ],
-	 *         [ 'name_2', 'prefix_2', [ 0, 1, 2, 3, 4, 5, ... ] ],
-	 *         [ 'name_3', 'prefix_3', [ 0, 1, 2, 3, 4, 5, ... ] ],
-	 *     ],
-	 *     24,
-	 *     true,
-	 *     'name_1'
-	 * );
-	 * add(sprite);
-	 * // ...
-	 * ```
-	 *
 	 * @param path The path of the asset/image.
 	 * @param animations The 2-dimensional array of the name, prefix, and indices of the animation.
 	 * @param framerate The framerate of all present animations.
 	 * @param looped Whether the sprite's animation should be looped.
 	 * @param defaultAnimation The default animation of the animated sprite.
 	 */
-	public function loadAnimatedSpriteByIndices(path:String, animations:Array<Dynamic>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	public function loadAnimatedSpriteByIndices(path:String, animations:Map<String, AnimationIndicesProperties>, ?properties:Null<FunkinSpriteAnimationProperties>):Void
 	{
 		if (!FunkinSprite.spriteExists(path)) {
 			return;
@@ -164,7 +132,12 @@ class FunkinSprite extends FlxSprite
 
 		setAtlasSpriteType(path, SpriteType.SPARROW);
 
-		addIndicesToAnimatedSprite(animations, framerate, looped, defaultAnimation);
+		addIndicesToAnimatedSprite(
+			animations,
+			properties.framerate,
+			properties.looped,
+			properties.defaultAnimation
+		);
 	}
 
 	/**
@@ -174,11 +147,11 @@ class FunkinSprite extends FlxSprite
 	 * @param looped Whether the sprite's animation should be looped.
 	 * @param defaultAnimation The default animation of the animated sprite.
 	 */
-	public function addIndicesToAnimatedSprite(animations:Array<Dynamic>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	public function addIndicesToAnimatedSprite(animations:Map<String, AnimationIndicesProperties>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
 	{
-		if (animations != null && animations.length > 0) {
-			for (i in 0...animations.length) {
-				_constructAnimationIndices(animations[i][0], animations[i][1], animations[i][2], framerate, looped);
+		if (animations != null) {
+			for (anim => properties in animations) {
+				_constructAnimationIndices(anim, properties.prefix, properties.indices, framerate, looped);
 			}
 		}
 
@@ -242,6 +215,10 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	/**
+	 * Updates the level of detail for the sprite.
+	 * @param levelOfDetailEnabled Whether the level of detail system should be enabled.
+	 */
 	private function _updateLOD(levelOfDetailEnabled:Bool):Void
 	{
 		visible = true;
@@ -250,6 +227,13 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	/**
+	 * Constructs a prefix for the sprite's animation.
+	 * @param name The name of the animation from the sprite.
+	 * @param prefix The prefix of the animation to be used.
+	 * @param framerate The framerate of the animation.
+	 * @param looped Whether the animation should be looped.
+	 */
 	private function _constructAnimationPrefixes(name:String, prefix:String, ?framerate:Int = 24, ?looped:Bool = false):Void
 	{
 		if (name != null && prefix != null) {
@@ -257,6 +241,14 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	/**
+	 * Constructs an animation's indices per prefix.
+	 * @param name The name of the animation from the sprite.
+	 * @param prefix The prefix of the animation to be used.
+	 * @param indices The array of indices of each animation.
+	 * @param framerate The framerate of the indices.
+	 * @param looped Whether the animation should be looped.
+	 */
 	private function _constructAnimationIndices(name:String, prefix:String, indices:Array<Int>, ?framerate:Int = 24, ?looped:Bool = false):Void
 	{
 		if (name != null && prefix != null) {

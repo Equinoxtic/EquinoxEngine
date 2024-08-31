@@ -15,6 +15,12 @@ enum SpriteType
 	TEXTURE;
 }
 
+typedef FunkinSpriteProperties = {
+	@:optional var framerate     :Int;
+	@:optional var looped        :Bool;
+	@:optional var spriteType    :SpriteType;
+}
+
 class FunkinSprite extends FlxSprite
 {
 	/**

@@ -15,6 +15,10 @@ enum SpriteType
 	TEXTURE;
 }
 
+
+/**
+ * The properties of an animated ``FunkinSprite``.
+ */
 typedef FunkinSpriteAnimationProperties = {
 	@:optional var framerate:Int;
 	@:optional var looped:Bool;
@@ -22,6 +26,9 @@ typedef FunkinSpriteAnimationProperties = {
 	@:optional var defaultAnimation:String;
 }
 
+/**
+ * An extra typedef to support properties in animation indices.
+ */
 typedef AnimationIndicesProperties = {
 	var prefix:String;
 	var indices:Array<Int>;
@@ -75,8 +82,10 @@ class FunkinSprite extends FlxSprite
 	 * ### Loads an animated sprite given the path and the provided array of animations.
 	 * You will not need to call ``Paths.getSparrowAtlas()`` as it only needs you to provide the string path and the array of animations you want to load in.
 	 *
+	 * **IMPORTANT NOTE: Use ``sprite.addAnimatedSprite()`` to add animations to already existing/loaded sprites.**
+	 *
 	 * @param path The path of the asset/image.
-	 * @param animations A map of each animation from the sprite's ``.XML``.
+	 * @param animations The map of the name and prefixes of the sprite's animation.
 	 * @param properties The properties of the animated sprite.
 	 */
 	public function loadAnimatedSprite(path:String, animations:Map<String, String>, ?properties:Null<FunkinSpriteAnimationProperties>):Void
@@ -96,30 +105,12 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * ### Adds the animation to already existing sprites.
-	 * @param animations A 2-dimensional array of the name and prefix of the animation.
-	 * @param framerate The framerate of all present animations.
-	 * @param looped Whether the sprite's animation should be looped.
-	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
-	 */
-	public function addAnimatedSprite(animations:Map<String, String>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
-	{
-		if (animations != null) {
-			for (name => anim in animations) {
-				_constructAnimationPrefixes(name, anim, framerate, looped);
-			}
-		}
-
-		if (defaultAnimation != null) {
-			animation.play(defaultAnimation);
-		}
-	}
-
-	/**
 	 * ### Loads an animated sprites given the path, the animations, and the animation's indices.
 	 *
+	 * **IMPORTANT NOTE: Use ``sprite.addIndicesToAnimatedSprite()`` to add animations with indices to already existing/loaded sprites.**
+	 *
 	 * @param path The path of the asset/image.
-	 * @param animations The 2-dimensional array of the name, prefix, and indices of the animation.
+	 * @param animations The map of the name, prefix, and indices of the sprite's animation.
 	 * @param framerate The framerate of all present animations.
 	 * @param looped Whether the sprite's animation should be looped.
 	 * @param defaultAnimation The default animation of the animated sprite.
@@ -141,8 +132,30 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * ### Adds the animation's indices to already existing sprites.
-	 * @param animations The 2-dimensional array of the name, prefix, and indices of the animation.
+	 * ### Adds the animation to already existing/loaded sprites.
+	 *
+	 * @param animations The map of the name and prefixes of the sprite's animation.
+	 * @param framerate The framerate of all present animations.
+	 * @param looped Whether the sprite's animation should be looped.
+	 * @param defaultAnimation The initial/default animation to play when loading the animated sprite.
+	 */
+	public function addAnimatedSprite(animations:Map<String, String>, ?framerate:Int = 24, ?looped:Bool = false, ?defaultAnimation:Null<String>):Void
+	{
+		if (animations != null) {
+			for (name => anim in animations) {
+				_constructAnimationPrefixes(name, anim, framerate, looped);
+			}
+		}
+
+		if (defaultAnimation != null) {
+			animation.play(defaultAnimation);
+		}
+	}
+
+	/**
+	 * ### Adds the animation's indices to already existing/loaded sprites.
+	 *
+	 * @param animations The map of the name, prefix, and indices of the sprite's animation.
 	 * @param framerate The framerate of all present animations.
 	 * @param looped Whether the sprite's animation should be looped.
 	 * @param defaultAnimation The default animation of the animated sprite.

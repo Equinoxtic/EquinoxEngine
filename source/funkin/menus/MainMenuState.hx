@@ -109,23 +109,32 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 100 + (Math.max(optionShit.length, 4) - 4) * 250;
+
 			var menuItem:FunkinSprite = new FunkinSprite(0, (i * 180) + offset);
 			menuItem.scale.set(scale, scale);
+
 			menuItem.loadAnimatedSprite('mainmenu/menu_${optionShit[i]}', [
-					[ 'idle',     '${optionShit[i]} basic' ],
-					[ 'selected', '${optionShit[i]} white' ]
-				],
-				24,
-				true,
-				'idle'
+					'idle'     => '${optionShit[i]} basic',
+					'selected' => '${optionShit[i]} white'
+				], {
+					framerate: 24,
+					looped: true,
+					defaultAnimation: 'idle'
+				}
 			);
+
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
+
 			menuItems.add(menuItem);
+
 			var scr:Float = (optionShit.length - 4) * 0.35;
-			if (optionShit.length < 6)
+			if (optionShit.length < 6) {
 				scr = 0;
+			}
+
 			menuItem.scrollFactor.set(0, scr);
+
 			menuItem.updateHitbox();
 		}
 

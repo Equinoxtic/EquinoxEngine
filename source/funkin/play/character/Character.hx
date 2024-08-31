@@ -181,7 +181,12 @@ class Character extends FunkinSprite
 						var animLoop:Bool = !!anim.loop; //Bruh
 						var animIndices:Array<Int> = anim.indices;
 
-						addIndicesToAnimatedSprite([[animAnim, animName, animIndices]], animFps, animLoop, null);
+						addIndicesToAnimatedSprite(
+							[ animAnim => { prefix: animName, indices: animIndices } ],
+							animFps,
+							animLoop,
+							null
+						);
 
 						if (anim.offsets != null && anim.offsets.length > 1) {
 							addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);

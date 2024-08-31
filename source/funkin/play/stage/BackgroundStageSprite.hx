@@ -14,7 +14,9 @@ class BackgroundStageSprite extends FunkinSprite
 			setAtlasSpriteType(key, SpriteType.SPARROW);
 			for (i in 0...animArray.length) {
 				var anim:String = animArray[i];
-				addAnimatedSprite([[anim, anim]], 24, loop, null);
+				addAnimatedSprite(
+					[ anim => anim ], 24, loop, null
+				);
 				if (idleAnim == null) {
 					idleAnim = anim;
 					animation.play(anim);

@@ -36,11 +36,18 @@ typedef AnimationIndicesProperties = {
 /**
  * The options/properties of a child sprite (in this case the current ``FunkinSprite``) to follow/copy certain values from its parent sprite. (If existing.)
  */
-typedef ChildProperties = {
+typedef ChildOptions = {
 	@:optional var copyPosition:Bool;
 	@:optional var copyAngle:Bool;
 	@:optional var followTransparency:Bool;
 	@:optional var followVisibility:Bool;
+}
+
+typedef ChildProperties = {
+	@:optional var xOffset:Float;
+	@:optional var yOffset:Float;
+	@:optional var angleOffset:Float;
+	@:optional var alphaMultiplier:Float;
 }
 
 class FunkinSprite extends FlxSprite
@@ -208,16 +215,35 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
-	public function setPropertiesForChildSprite(childProperties:Null<ChildProperties>):Void
+	/**
+	 * ### Sets the current sprite's values that offset/increment/add certain values ``(i.e. position, angle, etc.)`` to its parent sprite.
+	 * @param childValues The values of the child/current sprite.
+	 */
+	public function setPropertiesOfChild(childProperties:Null<ChildProperties>):Void
 	{
-		if (childProperties == null) {
+		if (childValues == null) {
 			return;
 		}
 
-		this.COPY_POSITION = childProperties.copyPosition;
-		this.COPY_ANGLE    = childProperties.copyAngle;
-		this.COPY_ALPHA    = childProperties.followTransparency;
-		this.COPY_VISIBLE  = childProperties.followVisibility;
+		_setParentCoordinateOffset(childValues.xOffset, childValues.yOffset);
+		_setParentAngleOffset(childValues.angleOffset);
+		_setParentAlphaMultiplier(childValues.alphaMultiplier);
+	}
+
+	/**
+	 * ### Sets the current sprite's properties that follow/copy its parent sprite.
+	 * @param childProperties The properties of the child/current sprite.
+	 */
+	public function setOptionsForChild(options:Null<ChildOptions>):Void
+	{
+		if (options == null) {
+			return;
+		}
+
+		this.COPY_POSITION = options.copyPosition;
+		this.COPY_ANGLE    = options.copyAngle;
+		this.COPY_ALPHA    = options.followTransparency;
+		this.COPY_VISIBLE  = options.followVisibility;
 	}
 
 	/**
@@ -232,34 +258,6 @@ class FunkinSprite extends FlxSprite
 			trace('Failed to load sprite/asset: $path');
 		}
 		return existing;
-	}
-
-	/**
-	 * ### Sets the child sprite's X and Y offset(s) from the parent sprite.
-	 * @param x The offset of the x position.
-	 * @param y The offset of the y position.
-	 */
-	public function setParentCoordinateOffset(?x:Null<Float> = 0.0, ?y:Null<Float> = 0.0):Void
-	{
-		_parentOffsets[0] = x; _parentOffsets[1] = y;
-	}
-
-	/**
-	 * ### Sets the child sprite's angle offset from the parent sprite.
-	 * @param v The angle offset.
-	 */
-	public function setParentAngleOffset(?v:Float = 0.0):Void
-	{
-		_parentAngleOffset = v;
-	}
-
-	/**
-	 * ### Set the multiplier of the transparency of the child's sprite to be multiplied with the parent sprite's current transparency.
-	 * @param v The value of the alpha multiplier.
-	 */
-	public function setParentAlphaMultiplier(?v:Float = 0.0):Void
-	{
-		_parentAlphaMultiplier = v;
 	}
 
 	public override function update(elapsed:Float):Void
@@ -345,5 +343,39 @@ class FunkinSprite extends FlxSprite
 			m_framerate = framerate;
 		}
 		return m_framerate;
+	}
+
+	/**
+	 * ### Sets the child sprite's X and Y offset(s) from the parent sprite.
+	 * @param x The offset of the x position.
+	 * @param y The offset of the y position.
+	 */
+	private function _setParentCoordinateOffset(?x:Null<Float> = 0.0, ?y:Null<Float> = 0.0):Void
+	{
+		if (x != null && y != null) {
+			_parentOffsets[0] = x; _parentOffsets[1] = y;
+		}
+	}
+
+	/**
+	 * ### Sets the child sprite's angle offset from the parent sprite.
+	 * @param v The angle offset.
+	 */
+	private function _setParentAngleOffset(?v:Null<Float> = 0.0):Void
+	{
+		if (v != null) {
+			_parentAngleOffset = v;
+		}
+	}
+
+	/**
+	 * ### Set the multiplier of the transparency of the child's sprite to be multiplied with the parent sprite's current transparency.
+	 * @param v The value of the alpha multiplier.
+	 */
+	private function _setParentAlphaMultiplier(?v:Null<Float> = 0.0):Void
+	{
+		if (v != null) {
+			_parentAlphaMultiplier = v;
+		}
 	}
 }

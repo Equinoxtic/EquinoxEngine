@@ -15,7 +15,6 @@ enum SpriteType
 	TEXTURE;
 }
 
-
 /**
  * The properties of an animated ``FunkinSprite``.
  */
@@ -34,17 +33,35 @@ typedef AnimationIndicesProperties = {
 	var indices:Array<Int>;
 }
 
+/**
+ * The options/properties of a child sprite (in this case the current ``FunkinSprite``) to follow/copy certain values from its parent sprite. (If existing.)
+ */
+typedef ChildProperties = {
+	@:optional var copyPosition:Bool;
+	@:optional var copyAngle:Bool;
+	@:optional var followTransparency:Bool;
+	@:optional var followVisibility:Bool;
+}
+
 class FunkinSprite extends FlxSprite
 {
 	/**
-	 * The relative parent of the sprite. (Functions like 'sprTracker')
+	 * The parent of the sprite. (Functions like 'sprTracker')
 	 */
 	public var parentSprite:FlxObject;
 
 	/**
 	 * The offsets of the main sprite from the parent sprite.
 	 */
-	private var _parentOffsets:Array<Float> = [0, 0];
+	private var _parentOffsets:Array<Float> = [0, 0]; // Coordinates/Position.
+	private var _parentAngleOffset:Float = 0.0;
+	private var _parentAlphaMultiplier:Float = 1.0;
+
+	// Private properties for child sprite(s).
+	private var COPY_POSITION:Bool = true; // Whether to copy the position of the parent sprite.
+	private var COPY_ALPHA:Bool = true; // Whether to copy the alpha/opacity/transparency of the parent sprite.
+	private var COPY_ANGLE:Bool = false; // Whether to copy the angle/rotation of the parent sprite.
+	private var COPY_VISIBLE:Bool = false; // Whether to copy the state of visibility of the parent sprite.
 
 	/**
 	 * Create a new sprite/graphic. (Extends [``FlxSprite``](https://api.haxeflixel.com/flixel/FlxSprite.html))
@@ -191,6 +208,18 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	public function setPropertiesForChildSprite(childProperties:Null<ChildProperties>):Void
+	{
+		if (childProperties == null) {
+			return;
+		}
+
+		this.COPY_POSITION = childProperties.copyPosition;
+		this.COPY_ANGLE    = childProperties.copyAngle;
+		this.COPY_ALPHA    = childProperties.followTransparency;
+		this.COPY_VISIBLE  = childProperties.followVisibility;
+	}
+
 	/**
 	 * ### To check whether or not a sprite's path to an asset exists.
 	 * @param path The path of the asset.
@@ -206,13 +235,31 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * ### Sets the main sprite's X and Y offset(s) from the parent sprite.
-	 * @param x The x position.
-	 * @param y The y position.
+	 * ### Sets the child sprite's X and Y offset(s) from the parent sprite.
+	 * @param x The offset of the x position.
+	 * @param y The offset of the y position.
 	 */
-	public function setOffsetFromParentSprite(x:Null<Float>, y:Null<Float>):Void
+	public function setParentCoordinateOffset(?x:Null<Float> = 0.0, ?y:Null<Float> = 0.0):Void
 	{
 		_parentOffsets[0] = x; _parentOffsets[1] = y;
+	}
+
+	/**
+	 * ### Sets the child sprite's angle offset from the parent sprite.
+	 * @param v The angle offset.
+	 */
+	public function setParentAngleOffset(?v:Float = 0.0):Void
+	{
+		_parentAngleOffset = v;
+	}
+
+	/**
+	 * ### Set the multiplier of the transparency of the child's sprite to be multiplied with the parent sprite's current transparency.
+	 * @param v The value of the alpha multiplier.
+	 */
+	public function setParentAlphaMultiplier(?v:Float = 0.0):Void
+	{
+		_parentAlphaMultiplier = v;
 	}
 
 	public override function update(elapsed:Float):Void
@@ -221,10 +268,28 @@ class FunkinSprite extends FlxSprite
 
 		if (parentSprite != null && parentSprite.alive)
 		{
-			setPosition(
-				new TransformData().incrementalValue(parentSprite.x, _parentOffsets[0]),
-				new TransformData().incrementalValue(parentSprite.y, _parentOffsets[1])
-			);
+			// Copying the position of the parent sprite.
+			if (this.COPY_POSITION) {
+				setPosition(
+					new TransformData().incrementalValue(parentSprite.x, _parentOffsets[0]),
+					new TransformData().incrementalValue(parentSprite.y, _parentOffsets[1])
+				);
+			}
+
+			// Copying the angle of the parent sprite.
+			if (this.COPY_ANGLE) {
+				angle = new TransformData().incrementalValue(parentSprite.angle, _parentAngleOffset);
+			}
+
+			// Copying the alpha/transparency of the parent sprite.
+			if (this.COPY_ALPHA) {
+				alpha = new TransformData().multiply(parentSprite.alpha, _parentAlphaMultiplier);
+			}
+
+			// Follow the state of visibility of the parent sprite.
+			if (this.COPY_VISIBLE) {
+				visible = parentSprite.visible;
+			}
 		}
 	}
 

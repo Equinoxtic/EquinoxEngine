@@ -221,13 +221,13 @@ class FunkinSprite extends FlxSprite
 	 */
 	public function setPropertiesOfChild(childProperties:Null<ChildProperties>):Void
 	{
-		if (childValues == null) {
+		if (childProperties == null) {
 			return;
 		}
 
-		_setParentCoordinateOffset(childValues.xOffset, childValues.yOffset);
-		_setParentAngleOffset(childValues.angleOffset);
-		_setParentAlphaMultiplier(childValues.alphaMultiplier);
+		_setParentCoordinateOffset(childProperties.xOffset, childProperties.yOffset);
+		_setParentAngleOffset(childProperties.angleOffset);
+		_setParentAlphaMultiplier(childProperties.alphaMultiplier);
 	}
 
 	/**

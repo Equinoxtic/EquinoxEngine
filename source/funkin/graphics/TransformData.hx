@@ -9,7 +9,7 @@ class TransformData
 		return (v + iv);
 	}
 
-	public function multiply(v:Null<Float>, ?mv:Null<Float> = 1.0):Flot
+	public function multiply(v:Null<Float>, ?mv:Null<Float> = 1.0):Float
 	{
 		return (v * mv);
 	}

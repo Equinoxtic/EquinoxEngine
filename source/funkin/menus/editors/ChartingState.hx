@@ -411,16 +411,20 @@ class ChartingState extends MusicBeatState
 		waveformSprite = new FlxSprite(GRID_SIZE, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
 		add(waveformSprite);
 
-		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90).loadGraphic(Paths.image('eventArrow'));
+		// Player/Boyfriend icon
 		leftIcon = new HealthIcon('bf');
-		rightIcon = new HealthIcon('dad');
-		eventIcon.scrollFactor.set(1, 1);
 		leftIcon.scrollFactor.set(1, 1);
-		rightIcon.scrollFactor.set(1, 1);
-
-		eventIcon.setGraphicSize(30, 30);
 		leftIcon.setGraphicSize(0, 45);
+
+		// Opponent/Dad icon
+		rightIcon = new HealthIcon('dad');
+		rightIcon.scrollFactor.set(1, 1);
 		rightIcon.setGraphicSize(0, 45);
+
+		// Event icon
+		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90).loadGraphic(Paths.image('eventArrow'));
+		eventIcon.scrollFactor.set(1, 1);
+		eventIcon.setGraphicSize(30, 30);
 
 		add(eventIcon);
 		add(leftIcon);
@@ -802,7 +806,6 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(noteSkinInputText);
 		tab_group_song.add(noteSplashesInputText);
 		tab_group_song.add(new FlxText(stepperBPM.x, stepperBPM.y - 20, 0, 'Song BPM:'));
-		// tab_group_song.add(new FlxText(stepperBPM.x + 100, stepperBPM.y - 15, 0, 'Song Offset:'));
 		tab_group_song.add(new FlxText(stepperSpeed.x, stepperSpeed.y - 15, 0, 'Song Speed:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));

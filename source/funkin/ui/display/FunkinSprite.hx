@@ -55,7 +55,7 @@ class FunkinSprite extends FlxSprite
 	/**
 	 * The parent of the sprite. (Functions like 'sprTracker')
 	 */
-	public var parentSprite:FlxObject;
+	public var parentSprite:FlxSprite;
 
 	/**
 	 * The offsets of the main sprite from the parent sprite.

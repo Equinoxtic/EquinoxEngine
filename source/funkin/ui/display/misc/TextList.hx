@@ -14,7 +14,7 @@ class TextList extends FlxTypedSpriteGroup<FlxText>
 			text.forceDefaultFont = true;
 			text.defaultFont = "phantommuff.ttf";
 			text.scrollFactor.set();
-			text.y += i * 11;
+			text.y += i * 16;
 			add(text);
 		}
 	}

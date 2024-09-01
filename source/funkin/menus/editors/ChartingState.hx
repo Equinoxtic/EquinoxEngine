@@ -531,6 +531,8 @@ class ChartingState extends MusicBeatState
 			"Space - Stop/Resume song"
 		]);
 
+		TEXT_LIST.scrollFactor.set();
+
 		add(TEXT_LIST);
 
 		addSongUI();

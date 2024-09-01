@@ -11,6 +11,9 @@ class TextList extends FlxTypedSpriteGroup<FlxText>
 
 		for (i in 0...listOfTexts.length) {
 			var text:FunkinText = new FunkinText(0, 0, 0, '${listOfTexts[i]}\n', 14, LEFT, true, 1.35);
+			text.forceDefaultFont = true;
+			text.defaultFont = "phantommuff.ttf";
+			text.scrollFactor.set();
 			text.y += i * 11;
 			add(text);
 		}

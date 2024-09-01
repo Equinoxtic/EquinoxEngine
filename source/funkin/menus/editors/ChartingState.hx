@@ -326,8 +326,6 @@ class ChartingState extends MusicBeatState
 		192    // x192
 	];
 
-	var text:String = "";
-
 	public static var vortex:Bool = false;
 	public var mouseQuant:Bool = false;
 
@@ -516,32 +514,24 @@ class ChartingState extends MusicBeatState
 
 		add(songDataTabMenu);
 
-		text =
-		"W/S or Mouse Wheel - Change Conductor's strum time
-		\nA/D - Go to the previous/next section
-		\nLeft/Right - Change Snap
-		\nUp/Down - Change Conductor's Strum Time with Snapping
-		\nLeft Bracket / Right Bracket - Change Song Playback Rate (SHIFT to go Faster)
-		\nALT + Left Bracket / Right Bracket - Reset Song Playback Rate
-		\nHold Shift to move 4x faster & enable \'Free-Snap\'
-		\nHold Control and click on an arrow to select it
-		\nZ/X - Zoom in/out
-		\n
-		\nEsc - Test your chart inside the Chart Editor
-		\nEnter - Play your chart normally through the game
-		\nQ/E - Decrease/Increase Note Sustain Length
-		\nSpace - Stop/Resume song";
+		var TEXT_LIST:TextList = new TextList(songTabMenu.x, songTabMenu.y + songTabMenu.height + 8, [
+			"W/S or Mouse Wheel - Change Conductor's strum time",
+			"A/D - Go to the previous/next section",
+			"Left/Right - Change Snap",
+			"Up/Down - Change Conductor's Strum Time with Snapping",
+			"Left Bracket / Right Bracket - Change Song Playback Rate (SHIFT to go Faster)",
+			"ALT + Left Bracket / Right Bracket - Reset Song Playback Rate",
+			"Hold Shift to move 4x faster & enable \'Free-Snap\'",
+			"Hold Control and click on an arrow to select it",
+			"Z/X - Zoom in/out",
+			"\n",
+			"Esc - Test your chart inside the Chart Editor",
+			"Enter - Play your chart normally through the game",
+			"Q/E - Decrease/Increase Note Sustain Length",
+			"Space - Stop/Resume song"
+		]);
 
-		var tipTextArray:Array<String> = text.split('\n');
-		for (i in 0...tipTextArray.length) {
-			var tipText:FlxText = new FlxText(songTabMenu.x, songTabMenu.y + songTabMenu.height + 8, 0, tipTextArray[i], 16);
-			tipText.y += i * 11;
-			tipText.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
-			tipText.setFormat(Paths.font("phantommuff.ttf"), 14, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			tipText.borderSize = 1.35;
-			tipText.scrollFactor.set();
-			add(tipText);
-		}
+		add(TEXT_LIST);
 
 		addSongUI();
 		addSectionUI();

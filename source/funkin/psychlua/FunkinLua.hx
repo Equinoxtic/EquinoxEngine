@@ -936,7 +936,8 @@ class FunkinLua {
 
 			FlxG.sound.music.pause();
 			FlxG.sound.music.volume = 0;
-			if(PlayState.instance.vocals != null)
+
+			if (PlayState.instance.vocals != null)
 			{
 				PlayState.instance.vocals.pause();
 				PlayState.instance.vocals.volume = 0;

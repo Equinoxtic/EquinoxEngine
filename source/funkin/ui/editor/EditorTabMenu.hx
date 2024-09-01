@@ -4,7 +4,7 @@ import flixel.addons.ui.interfaces.IFlxUIButton;
 import flixel.addons.ui.FlxUITabMenu;
 
 typedef EditorTabMenuOptions = {
-	var tabs:Array<IFlxUIButton>;
+	var tabs:Array<{name:String, label:String}>; // wtf syntax in haxe???
 	@:optional var width:Float;
 	@:optional var height:Float;
 }

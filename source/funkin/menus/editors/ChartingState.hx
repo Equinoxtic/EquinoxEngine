@@ -1,5 +1,6 @@
 package funkin.menus.editors;
 
+import funkin.ui.editor.EditorTabMenu;
 import funkin.play.song.Chart.ParseType;
 import funkin.play.song.SongSettings.SongSettingsJSON;
 #if desktop
@@ -216,8 +217,9 @@ class ChartingState extends MusicBeatState
 
 	var _file:FileReference;
 
-	var UI_box:FlxUITabMenu;
-	var UI_songData:FlxUITabMenu;
+	// Tab menus for the song tabs.
+	var songTabMenu:EditorTabMenu;
+	var songDataTabMenu:EditorTabMenu;
 
 	public static var goToPlayState:Bool = false;
 	/**
@@ -325,9 +327,11 @@ class ChartingState extends MusicBeatState
 	];
 
 	var text:String = "";
+
 	public static var vortex:Bool = false;
 	public var mouseQuant:Bool = false;
-	override function create()
+
+	override function create():Void
 	{
 		if (PlayState.SONG != null)
 		{
@@ -489,20 +493,28 @@ class ChartingState extends MusicBeatState
 		dummyArrow = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE);
 		add(dummyArrow);
 
-		var tabs = [
-			{name: "Song", label: 'Song'},
-			{name: "Section", label: 'Section'},
-			{name: "Note", label: 'Note'},
-			{name: "Events", label: 'Events'},
-			{name: "Charting", label: 'Charting'},
-		];
+		songTabMenu = new EditorTabMenu(640 + GRID_SIZE / 2, 25, {
+			tabs: [
+				{ name: "Song",     label: 'Song'     },
+				{ name: "Section",  label: 'Section'  },
+				{ name: "Note",     label: 'Note'     },
+				{ name: "Events",   label: 'Events'   },
+				{ name: "Charting", label: 'Charting' }
+			],
+			width: 300, height: 400
+		});
 
-		UI_box = new FlxUITabMenu(null, tabs, true);
+		add(songTabMenu);
 
-		UI_box.resize(300, 400);
-		UI_box.x = 640 + GRID_SIZE / 2;
-		UI_box.y = 25;
-		UI_box.scrollFactor.set();
+		songDataTabMenu = new EditorTabMenu(15, 30, {
+			tabs: [
+				{ name: "Info",     label: 'Info'     },
+				{ name: "Settings", label: 'Settings' }
+			],
+			width: 275, height: 325
+		});
+
+		add(songDataTabMenu);
 
 		text =
 		"W/S or Mouse Wheel - Change Conductor's strum time
@@ -522,7 +534,7 @@ class ChartingState extends MusicBeatState
 
 		var tipTextArray:Array<String> = text.split('\n');
 		for (i in 0...tipTextArray.length) {
-			var tipText:FlxText = new FlxText(UI_box.x, UI_box.y + UI_box.height + 8, 0, tipTextArray[i], 16);
+			var tipText:FlxText = new FlxText(songTabMenu.x, songTabMenu.y + songTabMenu.height + 8, 0, tipTextArray[i], 16);
 			tipText.y += i * 11;
 			tipText.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 			tipText.setFormat(Paths.font("phantommuff.ttf"), 14, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -530,8 +542,6 @@ class ChartingState extends MusicBeatState
 			tipText.scrollFactor.set();
 			add(tipText);
 		}
-
-		add(UI_box);
 
 		addSongUI();
 		addSectionUI();
@@ -557,20 +567,6 @@ class ChartingState extends MusicBeatState
 		add(zoomTxt);
 
 		updateGrid();
-
-		var tabs_songData = [
-			{name: "Info", label: 'Info'},
-			{name: "Settings", label: 'Settings'}
-		];
-
-		UI_songData = new FlxUITabMenu(null, tabs_songData, true);
-
-		UI_songData.resize(275, 325);
-		UI_songData.x = 15;
-		UI_songData.y = 30;
-		UI_songData.scrollFactor.set();
-
-		add(UI_songData);
 
 		addInfoUI();
 		addSongSettingsUI();
@@ -787,7 +783,7 @@ class ChartingState extends MusicBeatState
 			updateGrid();
 		});
 
-		var tab_group_song = new FlxUI(null, UI_box);
+		var tab_group_song = new FlxUI(null, songTabMenu);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
 
@@ -818,7 +814,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(stageDropDown);
 
-		UI_box.addGroup(tab_group_song);
+		songTabMenu.addGroup(tab_group_song);
 
 		FlxG.camera.follow(camPos);
 	}
@@ -835,7 +831,7 @@ class ChartingState extends MusicBeatState
 
 	function addSectionUI():Void
 	{
-		var tab_group_section = new FlxUI(null, UI_box);
+		var tab_group_section = new FlxUI(null, songTabMenu);
 		tab_group_section.name = 'Section';
 
 		check_mustHitSection = new FlxUICheckBox(10, 15, null, null, "Must hit section", 100);
@@ -1090,7 +1086,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(duetButton);
 		tab_group_section.add(mirrorButton);
 
-		UI_box.addGroup(tab_group_section);
+		songTabMenu.addGroup(tab_group_section);
 	}
 
 	var stepperSusLength:FlxUINumericStepper;
@@ -1100,7 +1096,7 @@ class ChartingState extends MusicBeatState
 
 	function addNoteUI():Void
 	{
-		var tab_group_note = new FlxUI(null, UI_box);
+		var tab_group_note = new FlxUI(null, songTabMenu);
 		tab_group_note.name = 'Note';
 
 		stepperSusLength = new FlxUINumericStepper(10, 25, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 64);
@@ -1171,7 +1167,7 @@ class ChartingState extends MusicBeatState
 		tab_group_note.add(strumTimeInputText);
 		tab_group_note.add(noteTypeDropDown);
 
-		UI_box.addGroup(tab_group_note);
+		songTabMenu.addGroup(tab_group_note);
 	}
 
 	var eventDropDown:FlxUIDropDownMenuCustom;
@@ -1179,7 +1175,7 @@ class ChartingState extends MusicBeatState
 	var selectedEventText:FlxText;
 	function addEventsUI():Void
 	{
-		var tab_group_event = new FlxUI(null, UI_box);
+		var tab_group_event = new FlxUI(null, songTabMenu);
 		tab_group_event.name = 'Events';
 
 		#if LUA_ALLOWED
@@ -1324,7 +1320,7 @@ class ChartingState extends MusicBeatState
 		tab_group_event.add(value2InputText);
 		tab_group_event.add(eventDropDown);
 
-		UI_box.addGroup(tab_group_event);
+		songTabMenu.addGroup(tab_group_event);
 	}
 
 	function changeEventSelected(change:Int = 0)
@@ -1365,7 +1361,7 @@ class ChartingState extends MusicBeatState
 	var instVolume:FlxUINumericStepper;
 	var voicesVolume:FlxUINumericStepper;
 	function addChartingUI() {
-		var tab_group_chart = new FlxUI(null, UI_box);
+		var tab_group_chart = new FlxUI(null, songTabMenu);
 		tab_group_chart.name = 'Charting';
 
 		#if desktop
@@ -1556,7 +1552,7 @@ class ChartingState extends MusicBeatState
 		tab_group_chart.add(check_warnings);
 		tab_group_chart.add(playSoundBf);
 		tab_group_chart.add(playSoundDad);
-		UI_box.addGroup(tab_group_chart);
+		songTabMenu.addGroup(tab_group_chart);
 	}
 
 	var creditsInputText:FlxUIInputText;
@@ -1565,7 +1561,7 @@ class ChartingState extends MusicBeatState
 
 	function addInfoUI():Void
 	{
-		var tab_group_info = new FlxUI(null, UI_songData);
+		var tab_group_info = new FlxUI(null, songDataTabMenu);
 		tab_group_info.name = "Info";
 
 		var songCredit = PlayState.SONG_DATA.artist;
@@ -1600,7 +1596,7 @@ class ChartingState extends MusicBeatState
 		tab_group_info.add(extraStringInputText);
 		tab_group_info.add(saveButton);
 
-		UI_songData.addGroup(tab_group_info);
+		songDataTabMenu.addGroup(tab_group_info);
 	}
 
 	var songDisplayNameInput:FlxUIInputText;
@@ -1611,7 +1607,7 @@ class ChartingState extends MusicBeatState
 
 	function addSongSettingsUI():Void
 	{
-		var tab_group_settings = new FlxUI(null, UI_songData);
+		var tab_group_settings = new FlxUI(null, songDataTabMenu);
 		tab_group_settings.name = "Settings";
 
 		var songAlbum:String = PlayState.SONG_METADATA.songAlbum;
@@ -1661,7 +1657,7 @@ class ChartingState extends MusicBeatState
 		tab_group_settings.add(beatModInput);
 		tab_group_settings.add(saveButton);
 
-		UI_songData.addGroup(tab_group_settings);
+		songDataTabMenu.addGroup(tab_group_settings);
 	}
 
 	function loadSong():Void
@@ -1712,7 +1708,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		// general shit
-		var title:FlxText = new FlxText(UI_box.x + 20, UI_box.y + 20, 0);
+		var title:FlxText = new FlxText(songTabMenu.x + 20, songTabMenu.y + 20, 0);
 		bullshitUI.add(title);
 	}
 
@@ -2052,15 +2048,15 @@ class ChartingState extends MusicBeatState
 			{
 				if (FlxG.keys.pressed.SHIFT)
 				{
-					UI_box.selected_tab -= 1;
-					if (UI_box.selected_tab < 0)
-						UI_box.selected_tab = 2;
+					songTabMenu.selected_tab -= 1;
+					if (songTabMenu.selected_tab < 0)
+						songTabMenu.selected_tab = 2;
 				}
 				else
 				{
-					UI_box.selected_tab += 1;
-					if (UI_box.selected_tab >= 3)
-						UI_box.selected_tab = 0;
+					songTabMenu.selected_tab += 1;
+					if (songTabMenu.selected_tab >= 3)
+						songTabMenu.selected_tab = 0;
 				}
 			}
 

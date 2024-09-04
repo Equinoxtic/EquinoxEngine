@@ -563,6 +563,8 @@ class ChartingState extends MusicBeatState
 		addInfoUI();
 		addSongSettingsUI();
 
+		FlxG.camera.follow(camPos);
+
 		super.create();
 
 		playVocals = _song.needsVoices;
@@ -807,8 +809,6 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(stageDropDown);
 
 		songTabMenu.addGroup(tab_group_song);
-
-		FlxG.camera.follow(camPos);
 	}
 
 	var stepperBeats:FlxUINumericStepper;

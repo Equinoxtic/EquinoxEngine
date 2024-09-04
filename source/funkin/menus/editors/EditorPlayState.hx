@@ -77,6 +77,8 @@ class EditorPlayState extends MusicBeatState
 			Preferences.copyKey(Preferences.keyBinds.get('note_right'))
 		];
 
+		FunkinSound.loadVocals(PlayState.SONG.song, PlayState.SONG.needsVoices);
+
 		strumLine = new FlxSprite(PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		if (GlobalSettings.DOWNSCROLL)
 			strumLine.y = FlxG.height - 150;
@@ -92,8 +94,6 @@ class EditorPlayState extends MusicBeatState
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
-
-		FunkinSound.loadVocals(PlayState.SONG.song, PlayState.SONG.needsVoices);
 
 		generateSong(PlayState.SONG.song);
 

@@ -729,6 +729,7 @@ class ChartingState extends MusicBeatState
 		#end
 
 		tempMap.clear();
+
 		var stageFile:Array<String> = FunkinUtil.coolTextFile(Paths.txt('stageList'));
 		var stages:Array<String> = [];
 		for (i in 0...stageFile.length) { //Prevent duplicates
@@ -738,10 +739,11 @@ class ChartingState extends MusicBeatState
 			}
 			tempMap.set(stageToCheck, true);
 		}
+
 		#if MODS_ALLOWED
 		for (i in 0...directories.length) {
 			var directory:String = directories[i];
-			if(FileSystem.exists(directory)) {
+			if (FileSystem.exists(directory)) {
 				for (file in FileSystem.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
 					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
@@ -756,7 +758,8 @@ class ChartingState extends MusicBeatState
 		}
 		#end
 
-		if(stages.length < 1) stages.push('stage');
+		if (stages.length < 1)
+			stages.push('stage');
 
 		stageDropDown = new FlxUIDropDownMenuCustom(player1DropDown.x + 140, player1DropDown.y, FlxUIDropDownMenuCustom.makeStrIdLabelArray(stages, true), function(character:String)
 		{

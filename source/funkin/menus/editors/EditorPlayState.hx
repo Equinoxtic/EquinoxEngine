@@ -190,25 +190,7 @@ class EditorPlayState extends MusicBeatState
 
 						unspawnNotes.push(swagNote);
 
-						final susLength:Float = swagNote.sustainLength / (Conductor.stepCrochet / 1.04);
-						final ceilSus:Int = Math.ceil(susLength);
-
-						if (ceilSus > 0)
-						{
-							for (susNote in 0...ceilSus)
-							{
-								oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-
-								var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / FlxMath.roundDecimal(PlayState.SONG.speed, 2)), daNoteData, oldNote, true);
-								sustainNote.mustPress = gottaHitNote;
-								sustainNote.noteType = swagNote.noteType;
-								sustainNote.scrollFactor.set();
-								unspawnNotes.push(sustainNote);
-
-								if (sustainNote.mustPress)
-									sustainNote.x += FlxG.width / 2;
-							}
-						}
+						NoteHandler.evaluateSustainNote(swagNote, oldNote, section, songNotes, daNoteData, daStrumTime, gottaHitNote);
 
 						if (swagNote.mustPress)
 							swagNote.x += FlxG.width / 2;

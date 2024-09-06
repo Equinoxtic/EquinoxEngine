@@ -503,8 +503,6 @@ class ChartingState extends MusicBeatState
 			width: 300, height: 400
 		});
 
-		add(songTabMenu);
-
 		songDataTabMenu = new EditorTabMenu(15, 30, {
 			tabs: [
 				{ name: "Info",     label: 'Info'     },
@@ -512,8 +510,6 @@ class ChartingState extends MusicBeatState
 			],
 			width: 275, height: 325
 		});
-
-		add(songDataTabMenu);
 
 		var TEXT_LIST:TextList = new TextList(songTabMenu.x, songTabMenu.y + songTabMenu.height + 8, [
 			"W/S or Mouse Wheel - Change Conductor's strum time",
@@ -535,6 +531,8 @@ class ChartingState extends MusicBeatState
 		TEXT_LIST.scrollFactor.set();
 
 		add(TEXT_LIST);
+		add(songTabMenu);
+		add(songDataTabMenu);
 
 		addSongUI();
 		addSectionUI();

@@ -77,6 +77,8 @@ class EditorPlayState extends MusicBeatState
 			Preferences.copyKey(Preferences.keyBinds.get('note_right'))
 		];
 
+		FunkinSound.loadVocals(PlayState.SONG.song, PlayState.SONG.needsVoices);
+
 		strumLine = new FlxSprite(PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		if (GlobalSettings.DOWNSCROLL)
 			strumLine.y = FlxG.height - 150;
@@ -92,8 +94,6 @@ class EditorPlayState extends MusicBeatState
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
-
-		FunkinSound.loadVocals(PlayState.SONG.song, PlayState.SONG.needsVoices);
 
 		generateSong(PlayState.SONG.song);
 
@@ -190,25 +190,7 @@ class EditorPlayState extends MusicBeatState
 
 						unspawnNotes.push(swagNote);
 
-						final susLength:Float = swagNote.sustainLength / (Conductor.stepCrochet / 1.04);
-						final ceilSus:Int = Math.ceil(susLength);
-
-						if (ceilSus > 0)
-						{
-							for (susNote in 0...ceilSus)
-							{
-								oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-
-								var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / FlxMath.roundDecimal(PlayState.SONG.speed, 2)), daNoteData, oldNote, true);
-								sustainNote.mustPress = gottaHitNote;
-								sustainNote.noteType = swagNote.noteType;
-								sustainNote.scrollFactor.set();
-								unspawnNotes.push(sustainNote);
-
-								if (sustainNote.mustPress)
-									sustainNote.x += FlxG.width / 2;
-							}
-						}
+						NoteHandler.evaluateSustainNote(swagNote, oldNote, section, songNotes, daNoteData, daStrumTime, gottaHitNote);
 
 						if (swagNote.mustPress)
 							swagNote.x += FlxG.width / 2;

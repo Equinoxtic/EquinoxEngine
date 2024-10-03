@@ -71,7 +71,7 @@ import sys.io.File;
 
 using StringTools;
 
-enum SaveType
+enum SaveContext
 {
 	CHART;
 	EVENTS;
@@ -399,6 +399,12 @@ class ChartingState extends MusicBeatState
 
 			PlayState.SONG_METADATA = _metadata;
 		}
+
+		ChartEditorBackend.initializeDataMapForSong([
+			{ key: 'song',      value: _song      },
+			{ key: 'song_data', value: _song_data },
+			{ key: 'metadata',  value: _metadata  },
+		]);
 
 		FlxG.mouse.visible = true;
 
@@ -3028,44 +3034,17 @@ class ChartingState extends MusicBeatState
 		updateGridOfRenderedNotes();
 	}
 
-	private function saveChartData(?type:Null<SaveType> = CHART):Void
+	private function saveChartData(?context:Null<SaveContext> = CHART):Void
 	{
-		if (type == SaveType.EVENTS) {
-			if (_song.events != null && _song.events.length > 1) {
-				_song.events.sort(sortByTime);
+		var dataMap_SONG:Dynamic = ChartEditorBackend.getDataFromChart('song');
+
+		if (context.equals(SaveContext.EVENTS)) {
+			if (dataMap_SONG.events != null && dataMap_SONG.events.length > 1) {
+				dataMap_SONG.events.sort(sortByTime);
 			}
 		}
 
-		var v = {};
-		var saveFileString:String = "";
-
-		switch (type)
-		{
-			case CHART:
-				// Create a temporary variable for the current song.
-				var tempSong:Dynamic = _song;
-				// Clear the tempSong's events so that we can free up space in the json.
-				FunkinUtil.clearArray(tempSong.events);
-				v = { "song": tempSong };
-				saveFileString = '${FunkinUtil.lowerDiffString()}';
-
-			case EVENTS:
-				var eventsSong:Dynamic = { events: _song.events };
-				v = { "song": eventsSong };
-				saveFileString = 'events${FunkinSound.erectModeSuffix(false)}';
-
-			case DATA:
-				v = { "song_data": _song_data };
-				saveFileString = 'songdata${FunkinSound.erectModeSuffix(false)}';
-
-			case METADATA:
-				v = { "metadata": _metadata };
-				saveFileString = 'metadata${FunkinSound.erectModeSuffix()}';
-		}
-
-		trace('Saving... [${saveFileString}.json]');
-
-		FileUtil.saveJSON(v, saveFileString);
+		ChartEditorBackend.saveSong(context);
 	}
 
 	function sortByTime(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int

@@ -1,5 +1,7 @@
 package funkin.menus.editors.charteditor;
 
+import funkin.sound.FunkinSound;
+import funkin.menus.editors.ChartingState.SaveContext;
 import funkin.sound.FunkinSound.FunkinSoundChartEditor;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
@@ -15,11 +17,15 @@ import sys.FileSystem;
 import funkin.play.components.HealthIcon;
 import funkin.play.song.Song.SwagSong;
 
+using StringTools;
+
 class ChartEditorBackend
 {
 	// TODO: Finish rest of the methods that are needed.
 
 	public static var zoomAmount:Float = 2.0;
+
+	public static var songDataMap:Map<String, Dynamic> = [];
 
 	public static function updatePlayerIcons(SONG:Null<SwagSong>, leftIcon:Null<HealthIcon>, rightIcon:Null<HealthIcon>, ?currentSection:Int):Void
 	{
@@ -339,6 +345,65 @@ class ChartEditorBackend
 
 		FunkinSoundChartEditor.drawWaveformData(gridSize, waveformSprite);
 		#end
+	}
+
+	public static function initializeDataMapForSong(dataTable:Array<{key:String, value:Dynamic}>):Void
+	{
+		if (dataTable != null) {
+			for (tdata in dataTable) {
+				songDataMap.set(tdata.key, tdata.value);
+			}
+		}
+	}
+
+	public static function getDataFromChart(key:String):Dynamic
+	{
+		if (songDataMap.exists(key)) {
+			return songDataMap.get(key);
+		}
+		return null;
+	}
+
+	public static function saveSong(?saveContext:Null<SaveContext> = SaveContext.CHART):Void
+	{
+
+		switch (saveContext)
+		{
+			case CHART:
+				// Create a temporary variable for the current song.
+				var tempSongChart:Dynamic = songDataMap.get('song');
+				// Clear the tempSongChart's events so that we can free up space in the json.
+				FunkinUtil.clearArray(tempSongChart.events);
+				_saveSongJson(tempSongChart, "song", '${FunkinUtil.lowerDiffString()}');
+
+			case EVENTS:
+				_saveSongJson(songDataMap.get('song').events, "song", 'events${FunkinSound.erectModeSuffix(false)}');
+
+			case DATA:
+				_saveSongJson(songDataMap.get('song_data'), "song_data", 'songdata${FunkinSound.erectModeSuffix(false)}');
+
+			case METADATA:
+				_saveSongJson(songDataMap.get('metadata'), "metadata", 'metadata${FunkinSound.erectModeSuffix(false)}');
+		}
+	}
+
+	@:noPrivateAccess
+	private static function _saveSongJson(json:Dynamic, key:String, fileName:String):Void
+	{
+		if (json != null && key != null)
+		{
+			final f = { key: json };
+			var m_FileName:String = '';
+			if (fileName.trim() != '' && fileName != null) {
+				m_FileName = fileName;
+			} else {
+				m_FileName = 'FILE_$key';
+			}
+
+			trace('Saving... [${m_FileName}.json]');
+
+			FileUtil.saveJSON(f, m_FileName);
+		}
 	}
 
 	@:noPrivateAccess

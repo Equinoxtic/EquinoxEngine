@@ -94,19 +94,154 @@ class Note extends FlxSprite
 
 	public var hitsoundDisabled:Bool = false;
 
-	private function set_multSpeed(value:Float):Float {
-		resizeByRatio(value / multSpeed);
-		multSpeed = value;
-		return value;
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false):Void
+	{
+		super();
+
+		if (prevNote == null)
+			prevNote = this;
+
+		this.prevNote = prevNote;
+		isSustainNote = sustainNote;
+		this.inEditor = inEditor;
+
+		x += (GlobalSettings.MIDDLESCROLL ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
+		// MAKE SURE ITS DEFINITELY OFF SCREEN?
+		y -= 2000;
+		this.strumTime = strumTime;
+
+		if (!inEditor)
+			this.strumTime += GlobalSettings.NOTE_OFFSET;
+
+		this.noteData = noteData;
+
+		if (noteData > -1) {
+			texture = '';
+			colorSwap = new ColorSwap();
+			shader = colorSwap.shader;
+
+			x += swagWidth * (noteData);
+			if(!isSustainNote && noteData > -1 && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
+				var animToPlay:String = '';
+				animToPlay = colArray[noteData % 4];
+				animation.play(animToPlay + 'Scroll');
+			}
+		}
+
+		if (prevNote != null) {
+			prevNote.nextNote = this;
+		}
+
+		if (isSustainNote && prevNote != null)
+		{
+			alpha = Constants.NOTE_TAIL_ALPHA;
+			multAlpha = alpha;
+
+			hitsoundDisabled = true;
+
+			if (GlobalSettings.DOWNSCROLL)
+				flipY = true;
+
+			offsetX += width / 2;
+			copyAngle = false;
+
+			animation.play(colArray[noteData % 4] + 'holdend');
+
+			updateHitbox();
+
+			offsetX -= width / 2;
+
+			if (PlayState.isPixelStage)
+				offsetX += 30;
+
+			if (prevNote.isSustainNote)
+			{
+				prevNote.animation.play(colArray[prevNote.noteData % 4] + 'hold');
+
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
+
+				if (PlayState.instance != null)
+				{
+					prevNote.scale.y *= PlayState.instance.songSpeed;
+				}
+
+				if (PlayState.isPixelStage) {
+					prevNote.scale.y *= 1.19;
+					prevNote.scale.y *= (6 / height); //Auto adjust note size
+				}
+
+				prevNote.updateHitbox();
+			}
+
+			if (PlayState.isPixelStage) {
+				scale.y *= PlayState.daPixelZoom;
+				updateHitbox();
+			}
+		} else if(!isSustainNote) {
+			earlyHitMult = 1;
+		}
+
+		x += offsetX;
 	}
 
 	public function resizeByRatio(ratio:Float)
 	{
-		if(isSustainNote && !animation.curAnim.name.endsWith('end'))
-		{
+		if (isSustainNote && !animation.curAnim.name.endsWith('end')) {
 			scale.y *= ratio;
 			updateHitbox();
 		}
+	}
+
+	public function setEventValues(value1:Null<String>, value2:Null<String>):Void
+	{
+		if (value1 != null && value2 != null) {
+			eventVal1 = value1;
+			eventVal2 = value2;
+		}
+	}
+
+	override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+
+		if (mustPress)
+		{
+			// ok river
+			if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * lateHitMult)
+				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult)) {
+				canBeHit = true;
+			} else {
+				canBeHit = false;
+			}
+
+			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit) {
+				tooLate = true;
+			}
+		}
+		else
+		{
+			canBeHit = false;
+
+			if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult)) {
+				if ((isSustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition) {
+					wasGoodHit = true;
+				}
+			}
+		}
+
+		if (tooLate && !inEditor)
+		{
+			if (alpha > 0.3) {
+				alpha = 0.3;
+			}
+		}
+	}
+
+	private function set_multSpeed(value:Float):Float
+	{
+		resizeByRatio(value / multSpeed);
+		multSpeed = value;
+		return value;
 	}
 
 	private function set_texture(value:String):String {
@@ -127,7 +262,7 @@ class Note extends FlxSprite
 			colorSwap.brightness = Preferences.arrowHSV[noteData][2] / 100;
 		}
 
-		if(noteData > -1 && noteType != value) {
+		if (noteData > -1 && noteType != value) {
 			switch(value) {
 				case 'Hurt Note':
 					ignoreNote = mustPress;
@@ -162,101 +297,20 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false)
-	{
-		super();
-
-		if (prevNote == null)
-			prevNote = this;
-
-		this.prevNote = prevNote;
-		isSustainNote = sustainNote;
-		this.inEditor = inEditor;
-
-		x += (GlobalSettings.MIDDLESCROLL ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
-		// MAKE SURE ITS DEFINITELY OFF SCREEN?
-		y -= 2000;
-		this.strumTime = strumTime;
-		if(!inEditor) this.strumTime += GlobalSettings.NOTE_OFFSET;
-
-		this.noteData = noteData;
-
-		if(noteData > -1) {
-			texture = '';
-			colorSwap = new ColorSwap();
-			shader = colorSwap.shader;
-
-			x += swagWidth * (noteData);
-			if(!isSustainNote && noteData > -1 && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
-				var animToPlay:String = '';
-				animToPlay = colArray[noteData % 4];
-				animation.play(animToPlay + 'Scroll');
-			}
-		}
-
-		// trace(prevNote);
-
-		if(prevNote!=null)
-			prevNote.nextNote = this;
-
-		if (isSustainNote && prevNote != null)
-		{
-			alpha = Constants.NOTE_TAIL_ALPHA;
-
-			multAlpha = alpha;
-
-			hitsoundDisabled = true;
-
-			if(GlobalSettings.DOWNSCROLL) flipY = true;
-
-			offsetX += width / 2;
-			copyAngle = false;
-
-			animation.play(colArray[noteData % 4] + 'holdend');
-
-			updateHitbox();
-
-			offsetX -= width / 2;
-
-			if (PlayState.isPixelStage)
-				offsetX += 30;
-
-			if (prevNote.isSustainNote)
-			{
-				prevNote.animation.play(colArray[prevNote.noteData % 4] + 'hold');
-
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
-				if (PlayState.instance != null)
-				{
-					prevNote.scale.y *= PlayState.instance.songSpeed;
-				}
-
-				if (PlayState.isPixelStage) {
-					prevNote.scale.y *= 1.19;
-					prevNote.scale.y *= (6 / height); //Auto adjust note size
-				}
-
-				prevNote.updateHitbox();
-				// prevNote.setGraphicSize();
-			}
-
-			if(PlayState.isPixelStage) {
-				scale.y *= PlayState.daPixelZoom;
-				updateHitbox();
-			}
-		} else if(!isSustainNote) {
-			earlyHitMult = 1;
-		}
-		x += offsetX;
-	}
-
 	var lastNoteOffsetXForPixelAutoAdjusting:Float = 0;
 	var lastNoteScaleToo:Float = 1;
 	public var originalHeightForCalcs:Float = 6;
-	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '') {
-		if(prefix == null) prefix = '';
-		if(texture == null) texture = '';
-		if(suffix == null) suffix = '';
+
+	private function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = ''):Void
+	{
+		if (prefix == null)
+			prefix = '';
+
+		if (texture == null)
+			texture = '';
+
+		if (suffix == null)
+			suffix = '';
 
 		var skin:String = texture;
 		if(texture.length < 1) {
@@ -276,8 +330,8 @@ class Note extends FlxSprite
 
 		var lastScaleY:Float = scale.y;
 		var blahblah:String = arraySkin.join('/');
-		if(PlayState.isPixelStage) {
-			if(isSustainNote) {
+		if (PlayState.isPixelStage) {
+			if (isSustainNote) {
 				loadGraphic(Paths.image('pixelUI/' + blahblah + 'ENDS'));
 				width = width / 4;
 				height = height / 2;
@@ -289,6 +343,7 @@ class Note extends FlxSprite
 				height = height / 5;
 				loadGraphic(Paths.image('pixelUI/' + blahblah), true, Math.floor(width), Math.floor(height));
 			}
+
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			loadPixelNoteAnims();
 			antialiasing = false;
@@ -310,21 +365,23 @@ class Note extends FlxSprite
 			loadNoteAnims();
 			antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		}
-		if(isSustainNote) {
+
+		if (isSustainNote) {
 			scale.y = lastScaleY;
 		}
+
 		updateHitbox();
 
-		if(animName != null)
+		if (animName != null)
 			animation.play(animName, true);
 
-		if(inEditor) {
+		if (inEditor) {
 			setGraphicSize(ChartingState.GRID_SIZE, ChartingState.GRID_SIZE);
 			updateHitbox();
 		}
 	}
 
-	function loadNoteAnims() {
+	private function loadNoteAnims():Void {
 		animation.addByPrefix(colArray[noteData] + 'Scroll', colArray[noteData] + '0');
 
 		if (isSustainNote)
@@ -338,53 +395,12 @@ class Note extends FlxSprite
 		updateHitbox();
 	}
 
-	function loadPixelNoteAnims() {
-		if(isSustainNote) {
+	private function loadPixelNoteAnims():Void {
+		if (isSustainNote) {
 			animation.add(colArray[noteData] + 'holdend', [pixelInt[noteData] + 4]);
 			animation.add(colArray[noteData] + 'hold', [pixelInt[noteData]]);
 		} else {
 			animation.add(colArray[noteData] + 'Scroll', [pixelInt[noteData] + 4]);
-		}
-	}
-
-	public function setEventValues(value1:Null<String>, value2:Null<String>):Void {
-		if (value1 != null && value2 != null) {
-			eventVal1 = value1;
-			eventVal2 = value2;
-		}
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		if (mustPress)
-		{
-			// ok river
-			if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * lateHitMult)
-				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult))
-				canBeHit = true;
-			else
-				canBeHit = false;
-
-			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
-				tooLate = true;
-		}
-		else
-		{
-			canBeHit = false;
-
-			if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult))
-			{
-				if((isSustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition)
-					wasGoodHit = true;
-			}
-		}
-
-		if (tooLate && !inEditor)
-		{
-			if (alpha > 0.3)
-				alpha = 0.3;
 		}
 	}
 }

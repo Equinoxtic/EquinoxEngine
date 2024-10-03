@@ -1,5 +1,6 @@
 package funkin.menus.editors.charteditor;
 
+import funkin.sound.FunkinSound.FunkinSoundChartEditor;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.FlxSprite;
@@ -293,22 +294,51 @@ class ChartEditorBackend
 		return (v != null ? v : 4);
 	}
 
-	public static function getSectionStartTime(_song:Null<SwagSong>, ?sec:Null<Int> = 0, ?add:Int = 0):Float
+	public static function getSectionStartTime(SONG:Null<SwagSong>, ?sec:Null<Int> = 0, ?add:Int = 0):Float
 	{
-		var bpm:Float = _song.bpm;
+		var bpm:Float = SONG.bpm;
 		var pos:Float = 0;
 
 		for (i in 0 ... sec + add)
 		{
-			if (_song.notes[i] != null) {
-				if (_song.notes[i].changeBPM) {
-					bpm = _song.notes[i].bpm;
+			if (SONG.notes[i] != null) {
+				if (SONG.notes[i].changeBPM) {
+					bpm = SONG.notes[i].bpm;
 				}
-				pos += getSectionBeats(_song, i, sec) * (1000 * 60 / bpm);
+				pos += getSectionBeats(SONG, i, sec) * (1000 * 60 / bpm);
 			}
 		}
 
 		return pos;
+	}
+
+	public static function updateWaveform(SONG:Null<SwagSong>, waveformSprite:Null<FlxSprite>, gridBG:Null<FlxSprite>, gridSize:Null<Int>, currentSection:Null<Int>):Void
+	{
+		if (SONG == null) {
+			return;
+		}
+
+		#if (desktop)
+		FunkinSoundChartEditor.updateWaveformSprite(
+			waveformSprite,
+			gridSize,
+			gridBG.height,
+			gridBG.width
+		);
+
+		var steps:Int = Math.round(getSectionBeats(SONG, null, currentSection) * 4);
+		var st:Float = getSectionStartTime(SONG, currentSection, 0);
+		var et:Float = st + (Conductor.stepCrochet * steps);
+
+		FunkinSoundChartEditor.updateWaveforms(
+			st,
+			et,
+			gridSize,
+			gridBG.height
+		);
+
+		FunkinSoundChartEditor.drawWaveformData(gridSize, waveformSprite);
+		#end
 	}
 
 	@:noPrivateAccess

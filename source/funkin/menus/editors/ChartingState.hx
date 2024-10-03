@@ -545,7 +545,7 @@ class ChartingState extends MusicBeatState
 		addEventsUI();
 		addChartingUI();
 		updateIcons();
-		_updateWaveform();
+		updateSongWaveform();
 
 		add(curRenderedSustains);
 		add(curRenderedNotes);
@@ -604,7 +604,7 @@ class ChartingState extends MusicBeatState
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + 90, saveButton.y, "Reload Audio", function():Void {
 			currentSongName = Paths.formatToSongPath(UI_songTitle.text);
 			loadSong();
-			_updateWaveform();
+			updateSongWaveform();
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function():Void {
@@ -1380,7 +1380,7 @@ class ChartingState extends MusicBeatState
 			FlxG.save.data.chart_waveformVoicesPlayer = false;
 			FlxG.save.data.chart_waveformVoicesOpponent = false;
 			FlxG.save.data.chart_waveformInst = waveformUseInstrumental.checked;
-			_updateWaveform();
+			updateSongWaveform();
 		};
 
 		waveformUseVoicesPlayer = new FlxUICheckBox(waveformUseInstrumental.x + 120, waveformUseInstrumental.y, null, null, "Waveform Voices (PLAYER)", 100);
@@ -1390,7 +1390,7 @@ class ChartingState extends MusicBeatState
 			waveformUseInstrumental.checked = false;
 			FlxG.save.data.chart_waveformInst = false;
 			FlxG.save.data.chart_waveformVoicesPlayer = waveformUseVoicesPlayer.checked;
-			_updateWaveform();
+			updateSongWaveform();
 		};
 
 		waveformUseVoicesOpponent = new FlxUICheckBox(waveformUseVoicesPlayer.x, waveformUseInstrumental.y + 30, null, null, "Waveform Voices (OPPONENT)", 100);
@@ -1400,7 +1400,7 @@ class ChartingState extends MusicBeatState
 			waveformUseInstrumental.checked = false;
 			FlxG.save.data.chart_waveformInst = false;
 			FlxG.save.data.chart_waveformVoicesOpponent = waveformUseVoicesOpponent.checked;
-			_updateWaveform();
+			updateSongWaveform();
 		};
 		#end
 
@@ -2421,7 +2421,7 @@ class ChartingState extends MusicBeatState
 		gridBG.drawFrame(false);
 
 		#if desktop
-		_updateWaveform();
+		updateSongWaveform();
 		#end
 
 		var leHeight:Int = Std.int(gridBG.height);
@@ -2473,30 +2473,17 @@ class ChartingState extends MusicBeatState
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) / zoomList[curZoom] % (Conductor.stepCrochet * 16)) / (getSectionBeats() / 4);
 	}
 
-	var waveformPrinted:Bool = true;
-	var wavData:Array<Array<Array<Float>>> = [[[0], [0]], [[0], [0]]];
-	private function _updateWaveform()
+	@:noPrivateAccess
+	private function updateSongWaveform():Void
 	{
-		#if desktop
-		FunkinSoundChartEditor.updateWaveformSprite(
+		#if (desktop)
+		ChartEditorBackend.updateWaveform(
+			_song,
 			waveformSprite,
+			gridBG,
 			GRID_SIZE,
-			gridBG.height,
-			gridBG.width
+			curSec
 		);
-
-		var steps:Int = Math.round(getSectionBeats() * 4);
-		var st:Float = sectionStartTime();
-		var et:Float = st + (Conductor.stepCrochet * steps);
-
-		FunkinSoundChartEditor.updateWaveforms(
-			st,
-			et,
-			GRID_SIZE,
-			gridBG.height
-		);
-
-		FunkinSoundChartEditor.drawWaveformData(GRID_SIZE, waveformSprite);
 		#end
 	}
 
@@ -2549,7 +2536,7 @@ class ChartingState extends MusicBeatState
 
 		updateGridOfRenderedNotes();
 		_updateSectionUI();
-		_updateWaveform();
+		updateSongWaveform();
 	}
 
 	function changeSection(sec:Int = 0, ?updateMusic:Bool = true):Void
@@ -2584,7 +2571,7 @@ class ChartingState extends MusicBeatState
 			changeSection();
 		}
 		Conductor.songPosition = FlxG.sound.music.time;
-		_updateWaveform();
+		updateSongWaveform();
 	}
 
 	private function _updateSectionUI():Void

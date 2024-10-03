@@ -347,6 +347,13 @@ class Note extends FlxSprite
 		}
 	}
 
+	public function setEventValues(value1:Null<String>, value2:Null<String>):Void {
+		if (value1 != null && value2 != null) {
+			eventVal1 = value1;
+			eventVal2 = value2;
+		}
+	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);

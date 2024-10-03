@@ -279,33 +279,33 @@ class ChartEditorBackend
 		return spr;
 	}
 
-	public static function getSectionBeats(SONG:Null<SwagSong>, ?_section:Null<Int> = null, ?currentSection:Null<Int> = 0):Float
+	public static function getSectionBeats(SONG:Null<SwagSong>, ?targetSection:Null<Int> = null, ?currentSection:Null<Int> = 0):Float
 	{
-		if (_section == null) {
-			_section = currentSection;
+		if (targetSection == null) {
+			targetSection = currentSection;
 		}
 
 		var v:Null<Float> = null;
 
-		if (SONG.notes[_section] != null) {
-			v = SONG.notes[_section].sectionBeats;
+		if (SONG.notes[targetSection] != null) {
+			v = SONG.notes[targetSection].sectionBeats;
 		}
 
 		return (v != null ? v : 4);
 	}
 
-	public static function getSectionStartTime(SONG:Null<SwagSong>, ?sec:Null<Int> = 0, ?add:Int = 0):Float
+	public static function getSectionStartTime(SONG:Null<SwagSong>, ?currentSection:Null<Int> = 0, ?add:Int = 0):Float
 	{
 		var bpm:Float = SONG.bpm;
 		var pos:Float = 0;
 
-		for (i in 0 ... sec + add)
+		for (i in 0 ... currentSection + add)
 		{
 			if (SONG.notes[i] != null) {
 				if (SONG.notes[i].changeBPM) {
 					bpm = SONG.notes[i].bpm;
 				}
-				pos += getSectionBeats(SONG, i, sec) * (1000 * 60 / bpm);
+				pos += getSectionBeats(SONG, i, currentSection) * (1000 * 60 / bpm);
 			}
 		}
 

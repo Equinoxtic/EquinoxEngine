@@ -337,6 +337,8 @@ class ChartingState extends MusicBeatState
 
 	override function create():Void
 	{
+		ChartEditorBackend.setupNoteTypes(noteTypeMap, noteTypeIntMap);
+
 		if (PlayState.SONG != null)
 		{
 			_song = PlayState.SONG;
@@ -400,6 +402,8 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG_METADATA = _metadata;
 		}
 
+		ChartEditorBackend.setupSong(_song);
+
 		ChartEditorBackend.initializeDataMapForSong([
 			{ key: 'song',      value: _song      },
 			{ key: 'song_data', value: _song_data },
@@ -454,6 +458,11 @@ class ChartingState extends MusicBeatState
 		nextRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		nextRenderedNotes = new FlxTypedGroup<Note>();
 
+		ChartEditorBackend.setupNoteRenderer(
+			{ notes: curRenderedNotes,  sustains: curRenderedSustains  },
+			{ notes: nextRenderedNotes, sustains: nextRenderedSustains }
+		);
+
 		if (curSec >= _song.notes.length)
 			curSec = _song.notes.length - 1;
 
@@ -463,7 +472,11 @@ class ChartingState extends MusicBeatState
 
 		currentSongName = Paths.formatToSongPath(_song.song);
 		loadSong();
+
 		reloadGridLayer();
+
+		ChartEditorBackend.setupGrid(GRID_SIZE, gridBG.x, gridBG.y);
+
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
@@ -2483,13 +2496,7 @@ class ChartingState extends MusicBeatState
 	private function updateSongWaveform():Void
 	{
 		#if (desktop)
-		ChartEditorBackend.updateWaveform(
-			_song,
-			waveformSprite,
-			gridBG,
-			GRID_SIZE,
-			curSec
-		);
+		ChartEditorBackend.updateWaveform(waveformSprite, curSec, gridBG.height, gridBG.width);
 		#end
 	}
 
@@ -2598,7 +2605,6 @@ class ChartingState extends MusicBeatState
 	private function updateIcons():Void
 	{
 		ChartEditorBackend.updatePlayerIcons(
-			_song,
 			leftIcon,
 			rightIcon,
 			curSec
@@ -2642,7 +2648,7 @@ class ChartingState extends MusicBeatState
 			nextRenderedSustains
 		]);
 
-		ChartEditorBackend.updateGridBPM(_song, curSec);
+		ChartEditorBackend.updateGridBPM(curSec);
 
 		var beats:Float = getSectionBeats();
 		for (i in _song.notes[curSec].sectionNotes)
@@ -2702,15 +2708,7 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		ChartEditorBackend.updateRenderedNotes(
-			_song,
-			noteTypeIntMap,
-			curSec,
-			GRID_SIZE,
-			gridBG,
-			nextRenderedNotes,
-			nextRenderedSustains
-		);
+		ChartEditorBackend.updateRenderedNotes(curSec);
 	}
 
 	function setupNoteData(i:Array<Dynamic>, isNextSection:Bool):Note

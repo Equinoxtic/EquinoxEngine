@@ -351,7 +351,11 @@ class ChartEditorBackend
 	{
 		if (dataTable != null) {
 			for (tdata in dataTable) {
+				if (songDataMap.exists(tdata.key)) {
+					return; // Prevent from setting duplicate keys in songDataMap
+				}
 				songDataMap.set(tdata.key, tdata.value);
+				trace('Initialized Data: \"$tdata.key\" -> $tdata.value');
 			}
 		}
 	}

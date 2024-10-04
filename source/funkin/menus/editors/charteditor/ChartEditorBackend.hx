@@ -355,7 +355,7 @@ class ChartEditorBackend
 					return; // Prevent from setting duplicate keys in songDataMap
 				}
 				songDataMap.set(tdata.key, tdata.value);
-				trace('Initialized Data: \"$tdata.key\" -> $tdata.value');
+				trace('Initialized Data: \"${tdata.key}\"');
 			}
 		}
 	}
@@ -370,6 +370,7 @@ class ChartEditorBackend
 
 	public static function saveSong(?saveContext:Null<SaveContext> = SaveContext.CHART):Void
 	{
+		var v:Dynamic = {};
 
 		switch (saveContext)
 		{
@@ -378,36 +379,74 @@ class ChartEditorBackend
 				var tempSongChart:Dynamic = songDataMap.get('song');
 				// Clear the tempSongChart's events so that we can free up space in the json.
 				FunkinUtil.clearArray(tempSongChart.events);
-				_saveSongJson(tempSongChart, "song", '${FunkinUtil.lowerDiffString()}');
-
+				v = tempSongChart;
 			case EVENTS:
-				_saveSongJson(songDataMap.get('song').events, "song", 'events${FunkinSound.erectModeSuffix(false)}');
-
+				v = songDataMap.get('song').events;
 			case DATA:
-				_saveSongJson(songDataMap.get('song_data'), "song_data", 'songdata${FunkinSound.erectModeSuffix(false)}');
-
+				v = songDataMap.get('song_data');
 			case METADATA:
-				_saveSongJson(songDataMap.get('metadata'), "metadata", 'metadata${FunkinSound.erectModeSuffix(false)}');
+				v = songDataMap.get('metadata');
 		}
+
+		_saveJsonDataToSongByContext(v, _getFileNameByContext(saveContext), saveContext);
 	}
 
 	@:noPrivateAccess
-	private static function _saveSongJson(json:Dynamic, key:String, fileName:String):Void
+	private static function _saveJsonDataToSongByContext(json:Dynamic, fileName:String, ?saveContext:Null<SaveContext> = SaveContext.CHART):Void
 	{
-		if (json != null && key != null)
+		if (json != null)
 		{
-			final f = { key: json };
+			var f = {};
+
+			if (saveContext != null)
+			{
+				switch (saveContext)
+				{
+					case CHART | EVENTS:
+						f = { 'song': json };
+					case DATA:
+						f = { 'song_data': json };
+					case METADATA:
+						f = { 'metadata': json };
+					default:
+						f = { 'song': json };
+				}
+			}
+
 			var m_FileName:String = '';
 			if (fileName.trim() != '' && fileName != null) {
 				m_FileName = fileName;
-			} else {
-				m_FileName = 'FILE_$key';
 			}
 
 			trace('Saving... [${m_FileName}.json]');
 
-			FileUtil.saveJSON(f, m_FileName);
+			FileUtil.saveJSON(f, '$m_FileName');
 		}
+	}
+
+	@:noPrivateAccess
+	private static function _getFileNameByContext(?saveContext:Null<SaveContext> = SaveContext.CHART):String
+	{
+		var fname:String = '';
+
+		switch (saveContext)
+		{
+			case CHART:
+				fname = FunkinUtil.lowerDiffString();
+			case EVENTS:
+				fname = 'events';
+			case DATA:
+				fname = 'songdata';
+			case METADATA:
+				fname = 'metadata';
+		}
+
+		var ret:String = fname;
+		if (!saveContext.equals(CHART)) {
+			ret = '$fname' + FunkinSound.erectModeSuffix(false);
+		}
+
+		return ret;
 	}
 
 	@:noPrivateAccess

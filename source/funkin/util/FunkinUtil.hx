@@ -22,7 +22,7 @@ class FunkinUtil
 	inline public static function quantize(f:Float, snap:Float){
 		// changed so this actually works lol
 		var m:Float = Math.fround(f * snap);
-		trace(snap);
+		// trace(snap);
 		return (m / snap);
 	}
 

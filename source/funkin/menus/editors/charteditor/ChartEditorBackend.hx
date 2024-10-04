@@ -170,9 +170,9 @@ class ChartEditorBackend
 			for (i in CURRENT_SONG.notes[sec + 1].sectionNotes) {
 				var note:Note = setupNoteData(i, sec, true);
 				note.alpha = 0.6;
-				CURRENTLY_RENDERED_NOTES.add(note);
+				NEXT_RENDERED_NOTES.add(note);
 				if (note.sustainLength > 0) {
-					CURRENTLY_RENDERED_SUSTAINS.add(
+					NEXT_RENDERED_SUSTAINS.add(
 						setupSustainNote(note, beats, Conductor.stepCrochet)
 					);
 				}
@@ -188,7 +188,7 @@ class ChartEditorBackend
 			{
 				var note:Note = setupNoteData(event, sec, true);
 				note.alpha = 0.6;
-				CURRENTLY_RENDERED_NOTES.add(note);
+				NEXT_RENDERED_NOTES.add(note);
 			}
 		}
 	}

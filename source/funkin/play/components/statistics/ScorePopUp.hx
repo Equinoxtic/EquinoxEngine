@@ -12,25 +12,25 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 
 class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var _comboValue:Int;
-	private var _currentRating:Rating;
-	private var _showsTallyCounter:Bool;
-	private var _showsCombo:Bool;
+	private var comboAmount:Int;
+	private var currentRating:Rating;
+	private var showTallyCounter:Bool;
+	private var showCombo:Bool;
 
 	public function new(?rating:Null<Rating>, ?combo:Null<Int>, ?showCombo:Bool = false, ?showTallyCounter:Bool = true):Void
 	{
 		super(0, 0);
 
 		if (combo >= 0) {
-			this._comboValue = combo;
+			this.comboAmount = combo;
 		}
 
 		if (rating != null) {
-			this._currentRating = rating;
+			this.currentRating = rating;
 		}
 
-		this._showsTallyCounter = showTallyCounter;
-		this._showsCombo = showCombo;
+		this.showTallyCounter = showTallyCounter;
+		this.showCombo = showCombo;
 
 		scrollFactor.set();
 		cameras = [PlayState.instance.camRating];
@@ -41,13 +41,13 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 
 	private function _showScorePopUp():Void
 	{
-		var placement:String = Std.string(_comboValue);
+		var placement:String = Std.string(comboAmount);
 
 		var offsetText:FlxText = new FlxText(0, 0, 0, placement, 32);
 		offsetText.screenCenter();
 		offsetText.x = FlxG.width * 0.35;
 
-		var ratingSprite:RatingSprite = new RatingSprite(_currentRating);
+		var ratingSprite:RatingSprite = new RatingSprite(currentRating);
 		ratingSprite.x = offsetText.x - 50;
 		ratingSprite.y -= 20;
 		add(ratingSprite);
@@ -55,10 +55,10 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 		var seperatedScore:Array<Int> = [];
 
 		var comboConditions:Array<Dynamic> = [
-			[(_comboValue >= 1000), (_comboValue / 1000)],
-			[(_comboValue >= 100), (_comboValue / 100)],
-			[(_comboValue >= 10), (_comboValue / 10)],
-			[(_comboValue > 0), _comboValue],
+			[(comboAmount >= 1000), (comboAmount / 1000)],
+			[(comboAmount >= 100), (comboAmount / 100)],
+			[(comboAmount >= 10), (comboAmount / 10)],
+			[(comboAmount > 0), comboAmount],
 		];
 
 		for (i in 0...comboConditions.length) {
@@ -76,7 +76,7 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 			tallyCounter.setPosition(offsetText.x + (42 * iterations) - 75, ratingSprite.y);
 			tallyCounter.x += -5;
 			tallyCounter.y += 100;
-			tallyCounter.visible = _showsTallyCounter;
+			tallyCounter.visible = showTallyCounter;
 			add(tallyCounter);
 
 			iterations++;
@@ -89,7 +89,7 @@ class ScorePopUp extends FlxTypedSpriteGroup<FlxSprite>
 		var comboSprite:ComboSprite = new ComboSprite();
 		comboSprite.setPosition(xIncrement + 85, ratingSprite.y);
 		comboSprite.y += 85;
-		comboSprite.visible = _showsCombo;
+		comboSprite.visible = showCombo;
 		add(comboSprite);
 
 		offsetText.text = Std.string(seperatedScore);

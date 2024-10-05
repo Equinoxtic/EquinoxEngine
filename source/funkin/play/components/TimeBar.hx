@@ -10,9 +10,9 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 
 class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var _timeBar:FlxBar;
-	private var _timeBarBG:AttachedSprite;
-	private var _timeText:FunkinText;
+	private var timeBar:FlxBar;
+	private var timeBarBG:AttachedSprite;
+	private var timeText:FunkinText;
 
 	private var value:Float = 1.0;
 
@@ -22,30 +22,30 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		super(X, Y);
 
-		_timeBarBG = new AttachedSprite('solariumUI/timeBar');
-		_timeBarBG.screenCenter(FlxAxes.X);
-		_timeBarBG.setGraphicSize(Std.int(_timeBarBG.width * 1.15), Std.int(_timeBarBG.height * 1.75));
-		_timeBarBG.y += 10;
-		_timeBarBG.x -= 4;
+		timeBarBG = new AttachedSprite('solariumUI/timeBar');
+		timeBarBG.screenCenter(FlxAxes.X);
+		timeBarBG.setGraphicSize(Std.int(timeBarBG.width * 1.15), Std.int(timeBarBG.height * 1.75));
+		timeBarBG.y += 10;
+		timeBarBG.x -= 4;
 
-		_timeBar = new FlxBar(0, 0, FlxBarFillDirection.LEFT_TO_RIGHT, Std.int(_timeBarBG.width * 1), Std.int(_timeBarBG.height * 1), this,
+		timeBar = new FlxBar(0, 0, FlxBarFillDirection.LEFT_TO_RIGHT, Std.int(timeBarBG.width * 1), Std.int(timeBarBG.height * 1), this,
 		'value', 0, 1);
-		_timeBar.setGraphicSize(Std.int(_timeBar.width * 1.1), Std.int(_timeBar.height * 0.8));
-		_timeBar.createGradientBar([0xFF252525, 0xFF353535, 0xFF555555], [0xFFFFFFFF, 0xFFDDDDDD, 0xFFAAAAAA], 1, 180);
-		_timeBar.setPosition(_timeBarBG.x * 1, _timeBarBG.y - 1);
-		_timeBar.numDivisions = 1000;
+		timeBar.setGraphicSize(Std.int(timeBar.width * 1.1), Std.int(timeBar.height * 0.8));
+		timeBar.createGradientBar([0xFF252525, 0xFF353535, 0xFF555555], [0xFFFFFFFF, 0xFFDDDDDD, 0xFFAAAAAA], 1, 180);
+		timeBar.setPosition(timeBarBG.x * 1, timeBarBG.y - 1);
+		timeBar.numDivisions = 1000;
 
-		_timeText = new FunkinText(0, 0, FlxG.width, "", 20, CENTER, true);
-		_timeText.y = _timeBar.y - 1.5;
-		_timeText.borderSize = 3.0;
+		timeText = new FunkinText(0, 0, FlxG.width, "", 20, CENTER, true);
+		timeText.y = timeBar.y - 1.5;
+		timeText.borderSize = 3.0;
 
 		if (GlobalSettings.DOWNSCROLL) {
-			_timeText.y = FlxG.height - 44;
+			timeText.y = FlxG.height - 44;
 		}
 
-		add(_timeBar);
-		add(_timeBarBG);
-		add(_timeText);
+		add(timeBar);
+		add(timeBarBG);
+		add(timeText);
 
 		this.alpha = 0.0;
 
@@ -74,12 +74,12 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 			if (formatMap.exists(displayMode)) {
 				defaultKey = displayMode;
 				if (defaultKey == 'Percentage Only') {
-					_timeText.x = (_timeBar.x * 1.0) + 78.5;
-					_timeText.alignment = FlxTextAlign.LEFT;
+					timeText.x = (timeBar.x * 1.0) + 78.5;
+					timeText.alignment = FlxTextAlign.LEFT;
 				}
 			}
 
-			_timeText.text = formatMap.get(defaultKey);
+			timeText.text = formatMap.get(defaultKey);
 		}
 	}
 

@@ -10,33 +10,33 @@ import funkin.util.EaseUtil;
 
 class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var _songNameTxt:FunkinText;
-	private var _creditsTxt:FunkinText;
+	private var songNameText:FunkinText;
+	private var creditsText:FunkinText;
 
-	private var _playedAnimation:Bool = false;
+	private var m_playedAnimation:Bool = false;
 	public var animationTimer:FlxTimer;
 
-	private var _bg:FunkinSprite;
+	private var background:FunkinSprite;
 
 	public function new(songName:String, songArtist:String, songCharter:String):Void
 	{
 		super(FlxG.width * 2, 0);
 
-		_bg = new FunkinSprite(0, 0, true);
-		_bg.loadSprite('ui/play/SongCreditsBG');
-		_bg.scale.set(0.925, 0.925);
-		_bg.screenCenter(Y);
-		_bg.alpha = 0.65;
-		add(_bg);
+		background = new FunkinSprite(0, 0, true);
+		background.loadSprite('ui/play/SongCreditsBG');
+		background.scale.set(0.925, 0.925);
+		background.screenCenter(Y);
+		background.alpha = 0.65;
+		add(background);
 
-		_songNameTxt = new FunkinText(0, _bg.y * 1.4, FlxG.width, songName.toUpperCase(), 38, CENTER, true, 3.5);
-		_songNameTxt.forceDefaultFont = true;
-		add(_songNameTxt);
+		songNameText = new FunkinText(0, background.y * 1.4, FlxG.width, songName.toUpperCase(), 38, CENTER, true, 3.5);
+		songNameText.forceDefaultFont = true;
+		add(songNameText);
 
-		_creditsTxt = new FunkinText(0, _songNameTxt.y * 1.2, FlxG.width, 'By: ${songArtist} • Charted by: ${songCharter}', 21, CENTER, false);
-		_creditsTxt.forceDefaultFont = true;
-		_creditsTxt.defaultFont = 'vcr.ttf';
-		add(_creditsTxt);
+		creditsText = new FunkinText(0, songNameText.y * 1.2, FlxG.width, 'By: ${songArtist} • Charted by: ${songCharter}', 21, CENTER, false);
+		creditsText.forceDefaultFont = true;
+		creditsText.defaultFont = 'vcr.ttf';
+		add(creditsText);
 
 		var iconOffsetX:Float = 425;
 		var iconOffsetY:Float = 10;
@@ -56,7 +56,7 @@ class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function playAnimation():Void
 	{
-		if (_playedAnimation) {
+		if (m_playedAnimation) {
 			return;
 		}
 
@@ -73,6 +73,6 @@ class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 			});
 		}, 1);
 
-		_playedAnimation = true;
+		m_playedAnimation = true;
 	}
 }

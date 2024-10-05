@@ -66,6 +66,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		bg.antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
 		add(bg);
 
+		// Initialize boyfriend first so he won't be null anymore
+		boyfriend = new Character(840, 170, 'bf', true);
+		boyfriend.visible = false;
+		insert(1, boyfriend);
+
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
@@ -283,11 +288,12 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			}
 		}
 
-		/* if (boyfriend != null) { WHAT THE FUCK????
+		// I'm gonna kill psych devs because I have been trying to patch this
+		if (boyfriend != null) {
 			if (boyfriend.animation.curAnim.finished) {
 				boyfriend.dance();
 			}
-		} */
+		}
 
 		if (nextAccept > 0) {
 			nextAccept -= 1;
@@ -371,13 +377,12 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			wasVisible = boyfriend.visible;
 		}
 
-		boyfriend = new Character(840, 170, 'bf', true);
 		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.75));
 		boyfriend.updateHitbox();
 		boyfriend.dance();
-		insert(1, boyfriend);
-
 		boyfriend.visible = wasVisible;
+
+		insert(1, boyfriend);
 	}
 
 	function reloadCheckboxes():Void

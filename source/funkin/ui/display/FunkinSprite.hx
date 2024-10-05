@@ -43,6 +43,9 @@ typedef ChildOptions = {
 	@:optional var followVisibility:Bool;
 }
 
+/**
+ * The properties of a child sprite (in this case the current ``FunkinSprite``) to store certain values for the parent sprite (if existing).
+ */
 typedef ChildProperties = {
 	@:optional var xOffset:Float;
 	@:optional var yOffset:Float;

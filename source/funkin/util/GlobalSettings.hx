@@ -51,7 +51,7 @@ class GlobalSettings
 	 *
 	 * - Gameplay settings are excluded and seperated from this.
 	 *
-	 * *``(Only initialized first through TitleState.hx so the static variables in this class will be reused later on)``*
+	 * *``(Only initialized first through Main.hx so the static variables in this class will be reused later on)``*
 	 */
 	public static function initializeSettings():Void
 	{

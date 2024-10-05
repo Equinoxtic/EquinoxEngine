@@ -53,15 +53,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		super();
 	}
 
-	function onChangeAntiAliasing()
+	function onChangeAntiAliasing():Void
 	{
-		var _antialiasing:Bool = Preferences.getPlayerPreference('antialiasing', true);
-
 		for (sprite in members) {
 			var sprite:Dynamic = sprite; //Make it check for FlxSprite instead of FlxBasic
 			var sprite:FlxSprite = sprite; //Don't judge me ok
 			if(sprite != null && (sprite is FlxSprite) && !(sprite is FlxText)) {
-				sprite.antialiasing = _antialiasing;
+				sprite.antialiasing = Preferences.getPlayerPreference('antialiasing', true);
 			}
 		}
 	}

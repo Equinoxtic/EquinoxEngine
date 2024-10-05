@@ -38,20 +38,14 @@ class LuaLoader
 		var filesPushed:Array<String> = [];
 		var foldersToCheck:Array<String> = [Paths.getPreloadPath('scripts/')];
 
-		#if MODS_ALLOWED
-		foldersToCheck.insert(0, Paths.mods('scripts/'));
+		final path:String = 'scripts/';
 
-		if (Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
-			foldersToCheck.insert(0, Paths.mods('${Paths.currentModDirectory}/scripts/'));
-
-		for (mod in Paths.getGlobalMods())
-			foldersToCheck.insert(0, Paths.mods('${mod}/scripts/'));
-		#end
+		m_insertDirectoryToFolderChecks(foldersToCheck, path, Paths.currentModDirectory);
 
 		for (folder in foldersToCheck) {
 			if (FileSystem.exists(folder)) {
 				for (file in FileSystem.readDirectory(folder)) {
-					if (file.endsWith('.lua') && !filesPushed.contains(file)) {
+					if (m_checkLuaPath(file, filesPushed)) {
 						PlayState.instance.luaArray.push(new FunkinLua('${folder}${file}'));
 						filesPushed.push(file);
 					}
@@ -93,26 +87,20 @@ class LuaLoader
 		var filesPushed:Array<String> = [];
 		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/charts/${Paths.formatToSongPath(song)}/scripts/')];
 
-		#if MODS_ALLOWED
-		foldersToCheck.insert(0, Paths.mods('data/charts/${Paths.formatToSongPath(song)}/scripts/'));
+		final path:String = 'data/charts/${Paths.formatToSongPath(song)}/scripts/';
 
-		if (Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
-			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/${'data/charts/${Paths.formatToSongPath(song)}/scripts/'}'));
-
-		for (mod in Paths.getGlobalMods())
-			foldersToCheck.insert(0, Paths.mods(mod + 'data/charts/${Paths.formatToSongPath(song)}/scripts/'));
-		#end
+		m_insertDirectoryToFolderChecks(foldersToCheck, path, Paths.currentModDirectory);
 
 		for (folder in foldersToCheck) {
 			if (FileSystem.exists(folder)) {
 				for (file in FileSystem.readDirectory(folder)) {
 					if (PlayState.instance.erectMode) {
-						if (file.endsWith('.lua') && !filesPushed.contains(file)) {
+						if (m_checkLuaPath(file, filesPushed)) {
 							PlayState.instance.luaArray.push(new FunkinLua('${folder}${file}'));
 							filesPushed.push(file);
 						}
 					} else {
-						if (file.endsWith('.lua') && file.contains(Std.string('${FunkinSound.erectModeSuffix()}')) && !filesPushed.contains(file)) {
+						if (m_checkLuaPath(file, filesPushed) && file.contains(Std.string('${FunkinSound.erectModeSuffix()}'))) {
 							PlayState.instance.luaArray.push(new FunkinLua('${folder}${file}'));
 							filesPushed.push(file);
 						}
@@ -157,5 +145,27 @@ class LuaLoader
 			PlayState.instance.luaArray.push(new FunkinLua(file));
 		}
 		#end
+	}
+
+	@:noPrivateAccess
+	private static function m_insertDirectoryToFolderChecks(folders:Array<String>, directory:String, modDirectory:String):Void
+	{
+		#if (MODS_ALLOWED)
+		folders.insert(0, Paths.mods(directory));
+
+		if (modDirectory != null && modDirectory.length > 0) {
+			folders.insert(0, Paths.mods('$modDirectory/$directory'));
+		}
+
+		for (mod in Paths.getGlobalMods()) {
+			folders.insert(0, Paths.mods('$mod/$directory'));
+		}
+		#end
+	}
+
+	@:noPrivateAccess
+	private static function m_checkLuaPath(file:String, ?fileArray:Array<String>):Bool
+	{
+		return (file.endsWith('.lua') && !fileArray.contains(file));
 	}
 }

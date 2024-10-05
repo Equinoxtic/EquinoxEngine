@@ -78,10 +78,9 @@ class Option
 		}
 	}
 
-	public function change()
+	public function change():Void
 	{
-		//nothing lol
-		if(onChange != null) {
+		if (onChange != null) {
 			onChange();
 		}
 	}
@@ -101,9 +100,8 @@ class Option
 		if (!Preferences.playerPreferences.exists(variable)) {
 			return;
 		}
+
 		Preferences.playerPreferences.set(variable, value);
-		// Reload/reinitialize settings.
-		GlobalSettings.initializeSettings();
 	}
 
 	public function setChild(child:Alphabet):Void

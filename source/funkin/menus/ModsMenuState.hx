@@ -626,23 +626,10 @@ class ModMetadata
 				}
 				if(colors != null && colors.length > 2)
 				{
-					this.color = FlxColor.fromRGB(colors[0], colors[1], colors[2]);
+					this.color = ColorUtil.getRGBFromArray(colors);
 				}
 
 				this.restart = restart;
-				/*
-				if(stuff.name != null && stuff.name.length > 0)
-				{
-					this.name = stuff.name;
-				}
-				if(stuff.description != null && stuff.description.length > 0)
-				{
-					this.description = stuff.description;
-				}
-				if(stuff.color != null && stuff.color.length > 2)
-				{
-					this.color = FlxColor.fromRGB(stuff.color[0], stuff.color[1], stuff.color[2]);
-				}*/
 			}
 		}
 	}

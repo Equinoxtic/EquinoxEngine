@@ -78,23 +78,13 @@ class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 				 * Using Flx.fromRGBFloat to determine more precisee values of color, dividing each index of healthColorArray by 255 to achieve the same colors whilst avoiding conflicting results
 				 */
 				case 'bf' | 'boyfriend' | 'player':
-					return FlxColor.fromRGBFloat(
-						boyfriend.healthColorArray[0] / 255,
-						boyfriend.healthColorArray[1] / 255,
-						boyfriend.healthColorArray[2] / 255,
-						boyfriend.healthColorArray[3] / 255
-					);
+					return ColorUtil.convertRGBAArrayToFloats(boyfriend.healthColorArray);
 
 				case 'dad' | 'opponent' | 'enemy':
-					return FlxColor.fromRGBFloat(
-						dad.healthColorArray[0] / 255,
-						dad.healthColorArray[1] / 255,
-						dad.healthColorArray[2] / 255,
-						dad.healthColorArray[3] / 255
-					);
+					return ColorUtil.convertRGBAArrayToFloats(dad.healthColorArray);
 			}
 		}
 
-		return FlxColor.fromRGBFloat(1.0, 1.0, 1.0, 1.0);
+		return FlxColor.WHITE;
 	}
 }

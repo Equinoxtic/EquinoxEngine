@@ -2613,11 +2613,7 @@ class ChartingState extends MusicBeatState
 	@:noPrivateAccess
 	private function updateIcons():Void
 	{
-		ChartEditorBackend.updatePlayerIcons(
-			leftIcon,
-			rightIcon,
-			curSec
-		);
+		ChartEditorBackend.updatePlayerIcons(leftIcon, rightIcon, curSec);
 	}
 
 	private function _updateNoteUI():Void
@@ -2923,12 +2919,6 @@ class ChartingState extends MusicBeatState
 			leZoom = 1;
 
 		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height * leZoom);
-	}
-
-	function getYfromStrumNotes(strumTime:Float, beats:Float):Float
-	{
-		var value:Float = strumTime / (beats * 4 * Conductor.stepCrochet);
-		return GRID_SIZE * beats * 4 * zoomList[curZoom] * value + gridBG.y;
 	}
 
 	function getNotes():Array<Dynamic>

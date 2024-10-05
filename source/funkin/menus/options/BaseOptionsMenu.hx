@@ -283,11 +283,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			}
 		}
 
-		if (boyfriend != null) {
+		/* if (boyfriend != null) { WHAT THE FUCK????
 			if (boyfriend.animation.curAnim.finished) {
 				boyfriend.dance();
 			}
-		}
+		} */
 
 		if (nextAccept > 0) {
 			nextAccept -= 1;
@@ -376,6 +376,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		boyfriend.updateHitbox();
 		boyfriend.dance();
 		insert(1, boyfriend);
+
 		boyfriend.visible = wasVisible;
 	}
 

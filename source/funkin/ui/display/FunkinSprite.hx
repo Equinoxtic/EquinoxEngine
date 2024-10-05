@@ -295,6 +295,7 @@ class FunkinSprite extends FlxSprite
 	 * Updates the level of detail for the sprite.
 	 * @param levelOfDetailEnabled Whether the level of detail system should be enabled.
 	 */
+	@:noPrivateAccess
 	private function _updateLOD(levelOfDetailEnabled:Bool):Void
 	{
 		visible = true;
@@ -310,6 +311,7 @@ class FunkinSprite extends FlxSprite
 	 * @param framerate The framerate of the animation.
 	 * @param looped Whether the animation should be looped.
 	 */
+	@:noPrivateAccess
 	private function _constructAnimationPrefixes(name:String, prefix:String, ?framerate:Int = 24, ?looped:Bool = false):Void
 	{
 		if (name != null && prefix != null) {
@@ -325,6 +327,7 @@ class FunkinSprite extends FlxSprite
 	 * @param framerate The framerate of the indices.
 	 * @param looped Whether the animation should be looped.
 	 */
+	@:noPrivateAccess
 	private function _constructAnimationIndices(name:String, prefix:String, indices:Array<Int>, ?framerate:Int = 24, ?looped:Bool = false):Void
 	{
 		if (name != null && prefix != null) {
@@ -336,6 +339,7 @@ class FunkinSprite extends FlxSprite
 		}
 	}
 
+	@:noPrivateAccess
 	private function _setFramerate(framerate:Int):Int
 	{
 		var m_framerate:Int = 24;
@@ -350,6 +354,7 @@ class FunkinSprite extends FlxSprite
 	 * @param x The offset of the x position.
 	 * @param y The offset of the y position.
 	 */
+	@:noPrivateAccess
 	private function _setParentCoordinateOffset(?x:Null<Float> = 0.0, ?y:Null<Float> = 0.0):Void
 	{
 		if (x != null && y != null) {
@@ -361,6 +366,7 @@ class FunkinSprite extends FlxSprite
 	 * ### Sets the child sprite's angle offset from the parent sprite.
 	 * @param v The angle offset.
 	 */
+	@:noPrivateAccess
 	private function _setParentAngleOffset(?v:Null<Float> = 0.0):Void
 	{
 		if (v != null) {
@@ -372,6 +378,7 @@ class FunkinSprite extends FlxSprite
 	 * ### Set the multiplier of the transparency of the child's sprite to be multiplied with the parent sprite's current transparency.
 	 * @param v The value of the alpha multiplier.
 	 */
+	@:noPrivateAccess
 	private function _setParentAlphaMultiplier(?v:Null<Float> = 0.0):Void
 	{
 		if (v != null) {

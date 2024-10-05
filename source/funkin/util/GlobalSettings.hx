@@ -21,6 +21,7 @@ class GlobalSettings
 	public static var GAMEPLAY_INFO:Bool;
 	public static var HIDE_WATERMARK:Bool;
 	public static var NOTE_SPLASHES:Bool;
+	public static var HOLD_NOTE_SPLASHES:Bool;
 	public static var NOTE_OFFSET:Int;
 	public static var RATING_OFFSET:Int;
 	public static var COMBO_OFFSET:Int;
@@ -68,6 +69,7 @@ class GlobalSettings
 		GAMEPLAY_INFO = Preferences.getPlayerPreference('showGameplayInfo', false);
 		HIDE_WATERMARK = Preferences.getPlayerPreference('hideWatermark', false);
 		NOTE_SPLASHES = Preferences.getPlayerPreference('noteSplashes', true);
+		HOLD_NOTE_SPLASHES = Preferences.getPlayerPreference('holdNoteSplashes', true);
 		NOTE_OFFSET = Preferences.getPlayerPreference('noteOffset', 0);
 		RATING_OFFSET = Preferences.getPlayerPreference('ratingOffset', 0);
 		COMBO_OFFSET = Preferences.getPlayerPreference('comboOffset', 0);

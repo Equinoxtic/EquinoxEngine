@@ -38,6 +38,7 @@ class Preferences
 		'hitsoundVolume' => 0.0,
 		'ghostTapping' => true,
 		'noteSplashes' => true,
+		'holdNoteSplashes' => true,
 		'noteOffset' => 0,
 		'noResetButton' => false,
 		'controllerMode' => false,

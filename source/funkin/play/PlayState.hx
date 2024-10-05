@@ -391,8 +391,6 @@ class PlayState extends MusicBeatState
 
 	public var erectMode:Bool = (PlayState.storyDifficulty > 2);
 
-	private var holdingSustainNote:Bool = false;
-
 	private var songPopUp:SongCreditsPopUp;
 
 	private var cinematicBorder:CinematicBorder;
@@ -4695,8 +4693,10 @@ class PlayState extends MusicBeatState
 			}
 
 			if (!PlayState.SONG_METADATA.hasNoteWiggle) {
-				if (note.sustainLength > 0) {
-					spawnHoldSplashOnNote(playerStrums, note, false);
+				if (GlobalSettings.HOLD_NOTE_SPLASHES) {
+					if (note.sustainLength > 0) {
+						spawnHoldSplashOnNote(playerStrums, note, false);
+					}
 				}
 			}
 
@@ -4717,7 +4717,7 @@ class PlayState extends MusicBeatState
 	public function spawnHoldSplashOnNote(strums:Null<FlxTypedGroup<StrumNote>>, note:Note, ?isDad:Bool = false):Void
 	{
 		if (strums != null) {
-			if (GlobalSettings.NOTE_SPLASHES && note != null) {
+			if (GlobalSettings.NOTE_SPLASHES && GlobalSettings.HOLD_NOTE_SPLASHES && note != null) {
 				var strum:StrumNote = strums.members[note.noteData];
 				if (strum != null) {
 					spawnNoteSplash(strum.x, strum.y, note.noteData, note, true, isDad);
@@ -4728,8 +4728,13 @@ class PlayState extends MusicBeatState
 
 	public function processHoldSplash(parsedHoldArray:Null<Array<Bool>>, holdSplashArray:Null<Array<HoldCover>>, targetStrumline:Null<FlxTypedGroup<StrumNote>>):Void
 	{
-		if (parsedHoldArray == null || holdSplashArray == null)
+		if (!GlobalSettings.HOLD_NOTE_SPLASHES) {
 			return;
+		}
+
+		if (parsedHoldArray == null || holdSplashArray == null) {
+			return;
+		}
 
 		for (i in 0...4)
 		{
@@ -4748,8 +4753,13 @@ class PlayState extends MusicBeatState
 
 	public function endHoldSplash(holdSplashArray:Null<Array<HoldCover>>, note:Note):Void
 	{
-		if (holdSplashArray == null)
+		if (!GlobalSettings.HOLD_NOTE_SPLASHES) {
 			return;
+		}
+
+		if (holdSplashArray == null) {
+			return;
+		}
 
 		if (holdSplashArray[note.noteData] != null)
 		{
@@ -4787,7 +4797,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (sustainNote) {
+		if (sustainNote && GlobalSettings.HOLD_NOTE_SPLASHES) {
 			var holdCover:HoldCover = grpHoldCovers.recycle(HoldCover);
 			holdCover.setup(x, y, data, skin, hue, sat, brt);
 			grpHoldCovers.add(holdCover);

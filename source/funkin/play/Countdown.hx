@@ -8,8 +8,6 @@ import funkin.util.EaseUtil;
 
 class Countdown extends flixel.group.FlxSpriteGroup
 {
-	private var instance:FlxBasic;
-
 	private var antialias:Bool = true;
 	private var isHidden:Bool = false;
 	public var soundSuffix:String = '';
@@ -18,15 +16,10 @@ class Countdown extends flixel.group.FlxSpriteGroup
 	var countdownSet:FlxSprite;
 	var countdownGo:FlxSprite;
 
-	public function new(instance:FlxBasic, X:Float, Y:Float, ?antialias:Bool = true, ?introAssets:Null<Array<String>>):Void
+	public function new(X:Float, Y:Float, ?antialias:Bool = true, ?introAssets:Null<Array<String>>):Void
 	{
 		super(X, Y);
 
-		if (instance == null) {
-			instance = this;
-		}
-
-		this.instance = instance;
 		this.antialias = antialias;
 	}
 

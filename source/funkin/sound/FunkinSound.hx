@@ -1017,9 +1017,7 @@ class FunkinSoundChartEditor
 	 */
 	public static function enableVolumeControlKeys():Void
 	{
-		FlxG.sound.muteKeys = TitleState.muteKeys;
-		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
+		Preferences.saveVolumeControls();
 	}
 
 	/**
@@ -1027,9 +1025,7 @@ class FunkinSoundChartEditor
 	 */
 	public static function disableVolumeControlKeys():Void
 	{
-		FlxG.sound.muteKeys = [];
-		FlxG.sound.volumeDownKeys = [];
-		FlxG.sound.volumeUpKeys = [];
+		Preferences.clearVolumeControls();
 	}
 
 	/**

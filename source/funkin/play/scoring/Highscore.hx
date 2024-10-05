@@ -6,20 +6,11 @@ using StringTools;
 
 class Highscore
 {
-	#if (haxe >= "4.0.0")
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songAccuracy:Map<String, Float> = new Map();
 	public static var songRatingFC:Map<String, String> = new Map();
 	public static var songRanking:Map<String, String> = new Map();
-	#else
-	public static var weekScores:Map<String, Int> = new Map();
-	public static var songScores:Map<String, Int> = new Map<String, Int>();
-	public static var songAccuracy:Map<String, Float> = new Map<String, Float>();
-	public static var songRatingFC:Map<String, String> = new Map<String, String>();
-	public static var songRanking:Map<String, String> = new Map<String, String>();
-	#end
-
 
 	public static function resetSong(song:String, diff:Int = 0):Void
 	{
@@ -56,42 +47,41 @@ class Highscore
 	{
 		var daSong:String = formatSong(song, diff);
 
-		if (songScores.exists(daSong)) {
+		if (songScores.exists(daSong))
+		{
 			if (songScores.get(daSong) < score) {
 				setScore(daSong, score);
-				if (rank != '') setRanking(daSong, rank);
-				if (ratingFC != '') setRatingFC(daSong, ratingFC);
-				if (rating >= 0) setAccuracy(daSong, rating);
+				if (rank != '')
+					setRanking(daSong, rank);
+				if (ratingFC != '')
+					setRatingFC(daSong, ratingFC);
+				if (rating >= 0)
+					setAccuracy(daSong, rating);
 			}
-		} else {
-			setScore(daSong, score);
-			if (rank != '') setRanking(daSong, rank);
-			if (ratingFC != '') setRatingFC(daSong, ratingFC);
-			if (rating >= 0) setAccuracy(daSong, rating);
 		}
-
-		#if (debug)
-		FlxG.log.add(
-			'Saved score of ${song}\n'
-			+ 'Score: ${score}\n'
-			+ 'Rank: ${rank}\n'
-			+ 'Rating FC: ${ratingFC}\n'
-			+ 'Accuracy: ${rating}\n'
-		);
-		#end
+		else
+		{
+			setScore(daSong, score);
+			if (rank != '')
+				setRanking(daSong, rank);
+			if (ratingFC != '')
+				setRatingFC(daSong, ratingFC);
+			if (rating >= 0)
+				setAccuracy(daSong, rating);
+		}
 	}
 
 	public static function saveWeekScore(week:String, score:Int = 0, ?diff:Int = 0):Void
 	{
 		var daWeek:String = formatSong(week, diff);
 
-		if (weekScores.exists(daWeek))
-		{
-			if (weekScores.get(daWeek) < score)
+		if (weekScores.exists(daWeek)) {
+			if (weekScores.get(daWeek) < score) {
 				setWeekScore(daWeek, score);
-		}
-		else
+			}
+		} else {
 			setWeekScore(daWeek, score);
+		}
 	}
 
 	/**
@@ -125,14 +115,14 @@ class Highscore
 	{
 		songRatingFC.set(song, ratingFC);
 		FlxG.save.data.songRatingFC = songRatingFC;
-		FlxG.save.flush();	
+		FlxG.save.flush();
 	}
 
 	static function setRanking(song:String, ranking:String):Void
 	{
 		songRanking.set(song, ranking);
 		FlxG.save.data.songRanking = songRanking;
-		FlxG.save.flush();	
+		FlxG.save.flush();
 	}
 
 	public static function formatSong(song:String, diff:Int):String
@@ -189,24 +179,18 @@ class Highscore
 	public static function load():Void
 	{
 		if (FlxG.save.data.weekScores != null)
-		{
 			weekScores = FlxG.save.data.weekScores;
-		}
+
 		if (FlxG.save.data.songScores != null)
-		{
 			songScores = FlxG.save.data.songScores;
-		}
+
 		if (FlxG.save.data.songAccuracy != null)
-		{
 			songAccuracy = FlxG.save.data.songAccuracy;
-		}
+
 		if (FlxG.save.data.songRanking != null)
-		{
 			songRanking = FlxG.save.data.songRanking;
-		}
+
 		if (FlxG.save.data.songRatingFC != null)
-		{
 			songRatingFC = FlxG.save.data.songRatingFC;
-		}
 	}
 }

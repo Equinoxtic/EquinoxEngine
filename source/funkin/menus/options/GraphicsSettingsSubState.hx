@@ -8,9 +8,6 @@ using StringTools;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {
-	private var _framerate:Int = Preferences.getPlayerPreference('framerate', 60);
-	private var _antialiasing:Bool = Preferences.getPlayerPreference('antialiasing', true);
-
 	public function new()
 	{
 		title = 'Graphics';
@@ -43,7 +40,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		#if !html5 // Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:Option = new Option('Framerate',
 			"The current framerate/FPS of the game. (May affect the speed/rates of certain functions.)",
-			'framerate',
+			'framerateAmount',
 			'int',
 			60);
 		addOption(option);
@@ -56,27 +53,25 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		super();
 	}
 
-	function onChangeAntiAliasing()
+	function onChangeAntiAliasing():Void
 	{
-		for (sprite in members)
-		{
+		for (sprite in members) {
 			var sprite:Dynamic = sprite; //Make it check for FlxSprite instead of FlxBasic
 			var sprite:FlxSprite = sprite; //Don't judge me ok
 			if(sprite != null && (sprite is FlxSprite) && !(sprite is FlxText)) {
-				sprite.antialiasing = _antialiasing;
+				sprite.antialiasing = Preferences.getPlayerPreference('antialiasing', true);
 			}
 		}
 	}
 
 	function onChangeFramerate()
 	{
-		if(_framerate > FlxG.drawFramerate)
-		{
+		var _framerate:Int = Preferences.getPlayerPreference('framerateAmount', 60);
+
+		if (_framerate > FlxG.drawFramerate) {
 			FlxG.updateFramerate = _framerate;
 			FlxG.drawFramerate = _framerate;
-		}
-		else
-		{
+		} else {
 			FlxG.drawFramerate = _framerate;
 			FlxG.updateFramerate = _framerate;
 		}

@@ -1,5 +1,6 @@
 package funkin.play.components;
 
+import funkin.util.animation.CharacterUtil;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
 
@@ -44,19 +45,21 @@ class HealthIcon extends FunkinSprite
 	{
 		if (this.char != char)
 		{
-			var name:String = 'icons/' + char;
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char;
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face';
-			var file:Dynamic = Paths.image(name);
+			var file:Dynamic = Paths.image(
+				CharacterUtil.getPathToIcon(char)
+			);
 
 			loadGraphic(file); //Load stupidly first for getting the file size
-			loadGraphic(file, true, 150, 150); //Then load it fr
-			iconOffsets[0] = (width - 150) / 2;
-			iconOffsets[1] = (width - 150) / 2;
+			loadGraphic(file, true, Constants.ICON_WIDTH, Constants.ICON_HEIGHT); //Then load it fr
+
+			for (i in 0...iconOffsets.length)
+				iconOffsets[i] = (width - Constants.ICON_WIDTH) / 2;
+
 			updateHitbox();
 
 			animation.add(char, [0, 1, 2], 0, false, isPlayer);
 			animation.play(char);
+
 			this.char = char;
 
 			if (char.endsWith('-pixel')) {
@@ -88,10 +91,10 @@ class HealthIcon extends FunkinSprite
 	{
 		if (playerIcon) {
 			// Offsets for BF / Player.
-			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.value, 0, 2, 100, 0) * 0.01)) + (150 * scale.x - 150) / 2 - offset;
+			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * scale.x - 150) / 2 - offset;
 		} else {
 			// Offsets for Dad / Opponent.
-			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.value, 0, 2, 100, 0) * 0.01)) - (150 * scale.x) / 2 - offset * 2;
+			x = PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * scale.x) / 2 - offset * 2;
 		}
 	}
 

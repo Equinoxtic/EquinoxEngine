@@ -31,7 +31,7 @@ class LuaLoader
 		}
 		#end
 	}
-	
+
 	public static function loadGlobalScripts():Void
 	{
 		#if LUA_ALLOWED
@@ -40,10 +40,11 @@ class LuaLoader
 
 		#if MODS_ALLOWED
 		foldersToCheck.insert(0, Paths.mods('scripts/'));
-		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
+
+		if (Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
 			foldersToCheck.insert(0, Paths.mods('${Paths.currentModDirectory}/scripts/'));
 
-		for(mod in Paths.getGlobalMods())
+		for (mod in Paths.getGlobalMods())
 			foldersToCheck.insert(0, Paths.mods('${mod}/scripts/'));
 		#end
 
@@ -86,18 +87,20 @@ class LuaLoader
 	public static function loadSongScripts(song:Null<String>):Void
 	{
 		#if LUA_ALLOWED
-		if (song == null || song == '') return;
+		if (song == null || song == '')
+			return;
 
 		var filesPushed:Array<String> = [];
 		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/charts/${Paths.formatToSongPath(song)}/scripts/')];
 
 		#if MODS_ALLOWED
 		foldersToCheck.insert(0, Paths.mods('data/charts/${Paths.formatToSongPath(song)}/scripts/'));
-		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
+
+		if (Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
 			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/${'data/charts/${Paths.formatToSongPath(song)}/scripts/'}'));
 
-		for(mod in Paths.getGlobalMods())
-			foldersToCheck.insert(0, Paths.mods(mod + 'data/charts/${Paths.formatToSongPath(song)}/scripts/'));// using push instead of insert because these should run after everything else
+		for (mod in Paths.getGlobalMods())
+			foldersToCheck.insert(0, Paths.mods(mod + 'data/charts/${Paths.formatToSongPath(song)}/scripts/'));
 		#end
 
 		for (folder in foldersToCheck) {

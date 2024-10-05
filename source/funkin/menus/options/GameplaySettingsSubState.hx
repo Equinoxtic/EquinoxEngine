@@ -35,7 +35,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Middlescroll Opponent Notes',
 			'Shows the opponent strums when on middlescroll.',
-			'opponentNotesMiddleScroll',
+			'opponentNotesOnMiddleScroll',
 			'bool',
 			false);
 		addOption(option);

@@ -16,6 +16,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Hold Note Splashes',
+			"Whether if hold notes should have their exclusive visual effect when holding them.",
+			'holdNoteSplashes',
+			'bool',
+			true);
+		addOption(option);
+
 		#if (!debug)
 		var option:Option = new Option('Show Judgement Counter',
 			'Shows and tracks how many sicks, goods, bads and shits.',

@@ -3,7 +3,7 @@ package funkin.animateatlas;
 import funkin.animateatlas.JSONData.AtlasData;
 import openfl.display.BitmapData;
 import funkin.animateatlas.JSONData.AnimationData;
-import openfl.display.FPS;
+import funkin.ui.overlays.FPSCounter;
 import openfl.Lib;
 import openfl.events.MouseEvent;
 import funkin.animateatlas.HelperEnums.LoopMode;
@@ -48,7 +48,7 @@ class Main extends Sprite {
 		renderer.tileColorTransformEnabled = false;
 
 		addChild(renderer);
-		addChild(new FPS(10, 10, 0xFFFFFF));
+		addChild(new FPSCounter(10, 10, 0xFFFFFF));
 
 		tileSymbols = [];
 		spriteSymbols = [];

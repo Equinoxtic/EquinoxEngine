@@ -38,6 +38,7 @@ class Preferences
 		'hitsoundVolume' => 0.0,
 		'ghostTapping' => true,
 		'noteSplashes' => true,
+		'holdNoteSplashes' => true,
 		'noteOffset' => 0,
 		'noResetButton' => false,
 		'controllerMode' => false,
@@ -186,7 +187,7 @@ class Preferences
 		_preferenceAction(PreferenceActionType.LOAD);
 
 		_toggleFPSCounter(playerPreferences.get('showFramerate'));
-		_setFramerate(playerPreferences.get('framerate'));
+		_setFramerate(playerPreferences.get('framerateAmount'));
 
 		if (FlxG.save.data.gameplaySettings != null) {
 			var savedMap:Map<String, Dynamic> = FlxG.save.data.gameplaySettings;
@@ -205,14 +206,9 @@ class Preferences
 			reloadControls();
 		}
 
-		trace("Player Preferences Loaded!");
+		_loadVolumeState();
 
-		if (FlxG.save.data.playerPreferences != null) {
-			var loadedPreferences:Map<String, Dynamic> = FlxG.save.data.playerPreferences;
-			for (key => value in loadedPreferences) {
-				trace('Preference $key: $value');
-			}
-		}
+		trace("Player Preferences Loaded!");
 	}
 
 	private static function _setFramerate(?framerate:Int = 60):Void
@@ -251,17 +247,51 @@ class Preferences
 		return playerPreferences.get(key);
 	}
 
-	public static function reloadControls() {
+	public static function reloadControls():Void
+	{
 		PlayerSettings.player1.controls.setKeyboardScheme(KeyboardScheme.Solo);
 
-		TitleState.muteKeys = copyKey(keyBinds.get('volume_mute'));
-		TitleState.volumeDownKeys = copyKey(keyBinds.get('volume_down'));
-		TitleState.volumeUpKeys = copyKey(keyBinds.get('volume_up'));
-		FlxG.sound.muteKeys = TitleState.muteKeys;
-		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
+		loadVolumeControls();
+
+		saveVolumeControls();
 	}
-	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey> {
+
+	public static function saveVolumeControls():Void
+	{
+		FlxG.sound.muteKeys = GlobalSettings.MUTE_KEYS;
+		FlxG.sound.volumeUpKeys = GlobalSettings.VOLUME_UP_KEYS;
+		FlxG.sound.volumeDownKeys = GlobalSettings.VOLUME_DOWN_KEYS;
+	}
+
+	public static function loadVolumeControls():Void
+	{
+		GlobalSettings.MUTE_KEYS = copyKey(keyBinds.get('volume_mute'));
+		GlobalSettings.VOLUME_UP_KEYS = copyKey(keyBinds.get('volume_up'));
+		GlobalSettings.VOLUME_DOWN_KEYS = copyKey(keyBinds.get('volume_down'));
+	}
+
+	public static function clearVolumeControls():Void
+	{
+		FlxG.sound.muteKeys = [];
+		FlxG.sound.volumeUpKeys = [];
+		FlxG.sound.volumeDownKeys = [];
+	}
+
+	private static function _saveVolumeState():Void
+	{
+		FlxG.save.data.mute = FlxG.sound.muted;
+		FlxG.save.data.volume = FlxG.sound.volume;
+		FlxG.save.flush();
+	}
+
+	private static function _loadVolumeState():Void
+	{
+		FlxG.sound.muted = FlxG.save.data.mute;
+		FlxG.sound.volume = FlxG.save.data.volume;
+	}
+
+	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey>
+	{
 		var copiedArray:Array<FlxKey> = arrayToCopy.copy();
 		var i:Int = 0;
 		var len:Int = copiedArray.length;

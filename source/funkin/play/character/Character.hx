@@ -1,5 +1,6 @@
 package funkin.play.character;
 
+import funkin.ui.display.FunkinSprite.SpriteType;
 import flixel.FlxG;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
@@ -83,19 +84,13 @@ class Character extends FunkinSprite
 	{
 		super(x, y, false);
 
-		#if (haxe >= "4.0.0")
 		animOffsets = new Map();
-		#else
-		animOffsets = new Map<String, Array<Dynamic>>();
-		#end
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 		antialiasing = GlobalSettings.SPRITE_ANTIALIASING;
-		var library:String = null;
+
 		switch (curCharacter)
 		{
-			//case 'your character name in case you want to hardcode them instead':
-
 			default:
 				var characterPath:String = 'characters/' + curCharacter + '.json';
 
@@ -111,7 +106,7 @@ class Character extends FunkinSprite
 				if (!Assets.exists(path))
 				#end
 				{
-					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
+					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json');
 				}
 
 				#if MODS_ALLOWED
@@ -121,51 +116,34 @@ class Character extends FunkinSprite
 				#end
 
 				var json:CharacterFile = cast Json.parse(rawJson);
-				var spriteType = "sparrow";
+				var spriteType:SpriteType = SpriteType.SPARROW;
 				#if MODS_ALLOWED
 				var modTxtToFind:String = Paths.modsTxt(json.image);
 				var txtToFind:String = Paths.getPath('images/' + json.image + '.txt', TEXT);
-
-				//var modTextureToFind:String = Paths.modFolders("images/"+json.image);
-				//var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
-
 				if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
 				#end
 				{
-					spriteType = "packer";
+					spriteType = SpriteType.PACKER;
 				}
 
 				#if MODS_ALLOWED
 				var modAnimToFind:String = Paths.modFolders('images/' + json.image + '/Animation.json');
 				var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-
-				//var modTextureToFind:String = Paths.modFolders("images/"+json.image);
-				//var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
-
 				if (FileSystem.exists(modAnimToFind) || FileSystem.exists(animToFind) || Assets.exists(animToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '/Animation.json', TEXT)))
 				#end
 				{
-					spriteType = "texture";
+					spriteType = SpriteType.TEXTURE;
 				}
 
-				switch (spriteType){
+				setAtlasSpriteType(json.image, spriteType);
 
-					case "packer":
-						frames = Paths.getPackerAtlas(json.image);
-
-					case "sparrow":
-						frames = Paths.getSparrowAtlas(json.image);
-
-					case "texture":
-						frames = AtlasFrameMaker.construct(json.image);
-				}
 				imageFile = json.image;
 
-				if(json.scale != 1) {
+				if (json.scale != 1) {
 					jsonScale = json.scale;
 					setGraphicSize(Std.int(width * jsonScale));
 					updateHitbox();
@@ -179,33 +157,38 @@ class Character extends FunkinSprite
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;
 				flipX = !!json.flip_x;
+
 				if (json.no_antialiasing) {
 					antialiasing = false;
 					noAntialiasing = true;
 				}
 
-				if(json.healthbar_colors != null && json.healthbar_colors.length > 2) {
+				if (json.healthbar_colors != null && json.healthbar_colors.length > 2) {
 					healthColorArray = json.healthbar_colors;
 				}
 
 				antialiasing = !noAntialiasing;
-				if(!GlobalSettings.SPRITE_ANTIALIASING) antialiasing = false;
+
+				if (!GlobalSettings.SPRITE_ANTIALIASING)
+					antialiasing = false;
 
 				animationsArray = json.animations;
-				if(animationsArray != null && animationsArray.length > 0) {
+				if (animationsArray != null && animationsArray.length > 0) {
 					for (anim in animationsArray) {
 						var animAnim:String = '' + anim.anim;
 						var animName:String = '' + anim.name;
 						var animFps:Int = anim.fps;
 						var animLoop:Bool = !!anim.loop; //Bruh
 						var animIndices:Array<Int> = anim.indices;
-						if(animIndices != null && animIndices.length > 0) {
-							animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
-						} else {
-							animation.addByPrefix(animAnim, animName, animFps, animLoop);
-						}
 
-						if(anim.offsets != null && anim.offsets.length > 1) {
+						addIndicesToAnimatedSprite(
+							[ animAnim => { prefix: animName, indices: animIndices } ],
+							animFps,
+							animLoop,
+							null
+						);
+
+						if (anim.offsets != null && anim.offsets.length > 1) {
 							addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
 						}
 					}
@@ -213,12 +196,15 @@ class Character extends FunkinSprite
 					quickAnimAdd('idle', 'BF idle dance');
 				}
 		}
+
 		originalFlipX = flipX;
 
 		if (animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) {
 			hasMissAnimations = true;
 		}
+
 		recalculateDanceIdle();
+
 		dance();
 
 		if (isPlayer) {

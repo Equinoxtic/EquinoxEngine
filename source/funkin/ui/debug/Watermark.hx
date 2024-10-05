@@ -11,19 +11,11 @@ using StringTools;
 
 class Watermark extends FlxSpriteGroup
 {
-	private var instance:FlxBasic;
-
 	private var watermarkText:FlxText;
 
-	public function new(?instance:FlxBasic, ?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 10)
+	public function new(?x:Float = 0.0, ?y:Float = 0.0, ?initialSize:Float = 1.0, ?fontSize:Int = 10)
 	{
 		super();
-
-		if (instance == null) {
-			instance = this;
-		}
-
-		this.instance = instance;
 
 		watermarkText = new FlxText(x, y, FlxG.width, '${Variables.getGroupedVersionString()}', fontSize);
 		watermarkText.setFormat(Paths.font('phantommuff.ttf'), fontSize, 0xFFFFFFFF, CENTER, FlxTextBorderStyle.OUTLINE, 0xFF000000);

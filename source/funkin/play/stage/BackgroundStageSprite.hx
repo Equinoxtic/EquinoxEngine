@@ -1,25 +1,32 @@
 package funkin.play.stage;
 
+import funkin.ui.display.FunkinSprite.SpriteType;
+
 class BackgroundStageSprite extends FunkinSprite
 {
 	private var idleAnim:String;
-	public function new(image:String, x:Float = 0, y:Float = 0, ?scrollX:Float = 1, ?scrollY:Float = 1, ?animArray:Array<String> = null, ?loop:Bool = false, ?levelOfDetail:Bool = false):Void
+	public function new(key:String, x:Float = 0, y:Float = 0, ?scrollX:Float = 1, ?scrollY:Float = 1, ?animArray:Array<String> = null, ?loop:Bool = false, ?levelOfDetail:Bool = false):Void
 	{
 		super(x, y, levelOfDetail);
 
-		if (animArray != null) {
-			frames = Paths.getSparrowAtlas(image);
+		if (animArray != null)
+		{
+			setAtlasSpriteType(key, SpriteType.SPARROW);
 			for (i in 0...animArray.length) {
 				var anim:String = animArray[i];
-				animation.addByPrefix(anim, anim, 24, loop);
-				if(idleAnim == null) {
+				addAnimatedSprite(
+					[ anim => anim ], 24, loop, null
+				);
+				if (idleAnim == null) {
 					idleAnim = anim;
 					animation.play(anim);
 				}
 			}
-		} else {
-			if (image != null) {
-				loadGraphic(Paths.image(image));
+		}
+		else
+		{
+			if (key != null) {
+				loadSprite(key);
 			}
 			active = false;
 		}
@@ -27,8 +34,9 @@ class BackgroundStageSprite extends FunkinSprite
 		scrollFactor.set(scrollX, scrollY);
 	}
 
-	public function dance(?forceplay:Bool = false) {
-		if(idleAnim != null) {
+	public function dance(?forceplay:Bool = false):Void
+	{
+		if (idleAnim != null) {
 			animation.play(idleAnim, forceplay);
 		}
 	}

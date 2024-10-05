@@ -26,8 +26,6 @@ class MusicBeatState extends FlxUIState
 
 	override function create():Void
 	{
-		trace('Current State: ${FlxG.state}');
-
 		camBeat = FlxG.camera;
 
 		super.create();

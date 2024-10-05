@@ -197,7 +197,7 @@ class FunkinLua {
 
 		set('downscroll', GlobalSettings.DOWNSCROLL);
 		set('middlescroll', GlobalSettings.MIDDLESCROLL);
-		set('framerate', GlobalSettings.FRAMERATE);
+		set('framerateAmount', GlobalSettings.FRAMERATE);
 		set('ghostTapping', GlobalSettings.GHOST_TAPPING);
 		set('hideHud', GlobalSettings.HIDE_HUD);
 		set('timeBarType', GlobalSettings.TIME_BAR_DISPLAY);
@@ -936,7 +936,8 @@ class FunkinLua {
 
 			FlxG.sound.music.pause();
 			FlxG.sound.music.volume = 0;
-			if(PlayState.instance.vocals != null)
+
+			if (PlayState.instance.vocals != null)
 			{
 				PlayState.instance.vocals.pause();
 				PlayState.instance.vocals.volume = 0;
@@ -2017,9 +2018,11 @@ class FunkinLua {
 			var right:FlxColor = Std.parseInt(rightHex);
 			if(!rightHex.startsWith('0x')) right = Std.parseInt('0xff' + rightHex);
 
-			PlayState.instance.healthBar.createFilledBar(left, right);
-			PlayState.instance.healthBar.updateBar();
+			@:privateAccess
+			PlayState.instance.healthBar._setHealthBarColor(FlxColor.fromInt(left), FlxColor.fromInt(right));
 		});
+
+		/*
 		Lua_helper.add_callback(lua, "setTimeBarColors", function(leftHex:String, rightHex:String) {
 			var left:FlxColor = Std.parseInt(leftHex);
 			if(!leftHex.startsWith('0x')) left = Std.parseInt('0xff' + leftHex);
@@ -2029,6 +2032,7 @@ class FunkinLua {
 			PlayState.instance.timeBar.createFilledBar(right, left);
 			PlayState.instance.timeBar.updateBar();
 		});
+		*/
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = '') {
 			/*if(PlayState.instance.modchartSprites.exists(obj)) {

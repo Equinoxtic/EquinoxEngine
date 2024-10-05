@@ -321,10 +321,8 @@ class DialogueEditorState extends MusicBeatState
 
 		var blockInput:Bool = false;
 		for (inputText in blockPressWhileTypingOn) {
-			if(inputText.hasFocus) {
-				FlxG.sound.muteKeys = [];
-				FlxG.sound.volumeDownKeys = [];
-				FlxG.sound.volumeUpKeys = [];
+			if (inputText.hasFocus) {
+				Preferences.clearVolumeControls();
 				blockInput = true;
 
 				if(FlxG.keys.justPressed.ENTER) {
@@ -339,11 +337,11 @@ class DialogueEditorState extends MusicBeatState
 			}
 		}
 
-		if(!blockInput) {
-			FlxG.sound.muteKeys = TitleState.muteKeys;
-			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(FlxG.keys.justPressed.SPACE) {
+		if (!blockInput)
+		{
+			Preferences.saveVolumeControls();
+
+			if (FlxG.keys.justPressed.SPACE) {
 				reloadText(false);
 			}
 			if(FlxG.keys.justPressed.ESCAPE) {

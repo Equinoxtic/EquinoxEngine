@@ -162,13 +162,7 @@ class ChartEditorBackend
 		var STRUM_TIME = noteArray[0];
 		var SUSTAIN:Dynamic = noteArray[2];
 
-		var note:Note = new Note(
-			STRUM_TIME,
-			NOTE_INFO % 4,
-			null,
-			null,
-			true
-		);
+		var note:Note = new Note(STRUM_TIME, NOTE_INFO % 4, null, null, true);
 
 		if (SUSTAIN != null)
 		{
@@ -312,7 +306,7 @@ class ChartEditorBackend
 		if (dataTable != null) {
 			for (tdata in dataTable) {
 				if (songDataMap.exists(tdata.key)) {
-					return; // Prevent from setting duplicate keys in songDataMap
+					return; // Prevent from setting duplicate keys in songDataMap (Which may cost a lot of memory)
 				}
 				songDataMap.set(tdata.key, tdata.value);
 				trace('Initialized Data: \"${tdata.key}\"');

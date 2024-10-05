@@ -12,10 +12,11 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.system.FlxSound;
+import funkin.play.character.Character;
+
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
-import funkin.play.character.Character;
 
 using StringTools;
 
@@ -29,6 +30,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Character Editor',
 		'Chart Editor'
 	];
+
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
 
@@ -39,8 +41,8 @@ class MasterEditorMenu extends MusicBeatState
 	override function create()
 	{
 		FlxG.camera.bgColor = FlxColor.BLACK;
+
 		#if desktop
-		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Editors Main Menu", null);
 		#end
 
@@ -60,7 +62,7 @@ class MasterEditorMenu extends MusicBeatState
 			grpTexts.add(leText);
 			leText.snapToPosition();
 		}
-		
+
 		#if MODS_ALLOWED
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 42).makeGraphic(FlxG.width, 42, 0xFF000000);
 		textBG.alpha = 0.6;
@@ -70,16 +72,19 @@ class MasterEditorMenu extends MusicBeatState
 		directoryTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		directoryTxt.scrollFactor.set();
 		add(directoryTxt);
-		
-		for (folder in Paths.getModDirectories())
-		{
+
+		for (folder in Paths.getModDirectories()) {
 			directories.push(folder);
 		}
 
 		var found:Int = directories.indexOf(Paths.currentModDirectory);
-		if(found > -1) curDirectory = found;
+
+		if (found > -1)
+			curDirectory = found;
+
 		changeDirectory();
 		#end
+
 		changeSelection();
 
 		super.create();
@@ -87,27 +92,25 @@ class MasterEditorMenu extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_UP_P)
-		{
+		if (controls.UI_UP_P) {
 			changeSelection(-1);
 		}
-		if (controls.UI_DOWN_P)
-		{
+
+		if (controls.UI_DOWN_P) {
 			changeSelection(1);
 		}
+
 		#if MODS_ALLOWED
-		if(controls.UI_LEFT_P)
-		{
+		if (controls.UI_LEFT_P) {
 			changeDirectory(-1);
 		}
-		if(controls.UI_RIGHT_P)
-		{
+
+		if (controls.UI_RIGHT_P) {
 			changeDirectory(1);
 		}
 		#end
 
-		if (controls.BACK)
-		{
+		if (controls.BACK) {
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
@@ -128,26 +131,26 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
 			}
 			FlxG.sound.music.volume = 0;
+
 			#if PRELOAD_ALL
 			FreeplayState.destroyFreeplayVocals();
 			#end
 		}
-		
+
 		var bullShit:Int = 0;
+
 		for (item in grpTexts.members)
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
-			if (item.targetY == 0)
-			{
+			if (item.targetY == 0) {
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
 		super.update(elapsed);
 	}
 
@@ -170,19 +173,19 @@ class MasterEditorMenu extends MusicBeatState
 
 		curDirectory += change;
 
-		if(curDirectory < 0)
+		if (curDirectory < 0)
 			curDirectory = directories.length - 1;
-		if(curDirectory >= directories.length)
+		if (curDirectory >= directories.length)
 			curDirectory = 0;
-	
+
 		WeekData.setDirectoryFromWeek();
-		if(directories[curDirectory] == null || directories[curDirectory].length < 1)
+		if (directories[curDirectory] == null || directories[curDirectory].length < 1) {
 			directoryTxt.text = '< No Mod Directory Loaded >';
-		else
-		{
+		} else {
 			Paths.currentModDirectory = directories[curDirectory];
 			directoryTxt.text = '< Loaded Mod Directory: ' + Paths.currentModDirectory + ' >';
 		}
+
 		directoryTxt.text = directoryTxt.text.toUpperCase();
 	}
 	#end

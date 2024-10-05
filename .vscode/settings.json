@@ -8,13 +8,10 @@
 
 	"editor.codeLens": true,
 
-	"editor.bracketPairColorization.enabled": true,
-	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-
 	"editor.autoClosingBrackets": "languageDefined",
 	"editor.autoClosingQuotes": "languageDefined",
-	"editor.autoClosingOvertype": "always",
-	"editor.autoClosingComments": "always",
+	"editor.autoClosingOvertype": "auto",
+	"editor.autoClosingComments": "languageDefined",
 
 	"files.autoSave": "afterDelay",
 	"files.autoSaveDelay": 5000

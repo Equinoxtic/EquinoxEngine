@@ -98,6 +98,7 @@ class MainMenuState extends MusicBeatState
 		add(magentaBG);
 
 		mainChecker = new Checkerboard(XY, 1, HUGE, 0.3);
+		mainChecker.setTileSpeed(0.47, 0.16);
 		add(mainChecker);
 
 		menuItems = new FlxTypedGroup<FunkinSprite>();
@@ -108,21 +109,32 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 100 + (Math.max(optionShit.length, 4) - 4) * 250;
+
 			var menuItem:FunkinSprite = new FunkinSprite(0, (i * 180) + offset);
 			menuItem.scale.set(scale, scale);
-			// menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			// menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			// menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+
 			menuItem.loadAnimatedSprite('mainmenu/menu_${optionShit[i]}', [
-				[ 'idle',     '${optionShit[i]} basic' ],
-				[ 'selected', '${optionShit[i]} white' ]
-			], 24, 'idle');
+					'idle'     => '${optionShit[i]} basic',
+					'selected' => '${optionShit[i]} white'
+				], {
+					framerate: 24,
+					looped: true,
+					defaultAnimation: 'idle'
+				}
+			);
+
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
+
 			menuItems.add(menuItem);
+
 			var scr:Float = (optionShit.length - 4) * 0.35;
-			if(optionShit.length < 6) scr = 0;
+			if (optionShit.length < 6) {
+				scr = 0;
+			}
+
 			menuItem.scrollFactor.set(0, scr);
+
 			menuItem.updateHitbox();
 		}
 
@@ -148,8 +160,6 @@ class MainMenuState extends MusicBeatState
 			txt.setFormat(Paths.font('phantommuff.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		});
 
-		// NG.core.calls.event.logEvent('swag').send();
-
 		changeItem();
 
 		#if ACHIEVEMENTS_ALLOWED
@@ -157,7 +167,7 @@ class MainMenuState extends MusicBeatState
 		var leDate = Date.now();
 		if (leDate.getDay() == 5 && leDate.getHours() >= 18) {
 			var achieveID:Int = Achievements.getAchievementIndex('friday_night_play');
-			if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
+			if (!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
 				Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
 				giveAchievement();
 				Preferences.saveSettings();
@@ -170,7 +180,8 @@ class MainMenuState extends MusicBeatState
 
 	#if ACHIEVEMENTS_ALLOWED
 	// Unlocks "Freaky on a Friday Night" achievement
-	function giveAchievement() {
+	function giveAchievement():Void
+	{
 		add(new AchievementObject('friday_night_play', camAchievement));
 		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 		trace('Giving achievement "friday_night_play"');
@@ -181,13 +192,11 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.sound.music.volume < 0.8)
-		{
+		if (FlxG.sound.music.volume < 0.8) {
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-			if(FreeplayState.vocals != null) FreeplayState.vocals.volume += 0.5 * elapsed;
+			if (FreeplayState.vocals != null)
+				FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
-
-		mainChecker.updatePosition();
 
 		var lerpVal:Float = FunkinUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
@@ -223,8 +232,7 @@ class MainMenuState extends MusicBeatState
 						{
 							FlxTween.tween(spr, {alpha: 0}, 0.4, {
 								ease: FlxEase.quadOut,
-								onComplete: function(twn:FlxTween)
-								{
+								onComplete: function(twn:FlxTween) {
 									spr.kill();
 								}
 							});
@@ -290,11 +298,14 @@ class MainMenuState extends MusicBeatState
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
+
 				var add:Float = 0;
-				if(menuItems.length > 4) {
+				if (menuItems.length > 4) {
 					add = menuItems.length * 8;
 				}
+
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y - add);
+
 				spr.centerOffsets();
 			}
 		});

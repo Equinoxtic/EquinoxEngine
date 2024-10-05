@@ -108,56 +108,24 @@ class Song
 		/**
 		 * Event JSONs check.
 		 */
-		if (isEventFile != null || !isEventFile)
-		{
-			if (isEventFile)
-			{
-				#if MODS_ALLOWED
-				if (sys.FileSystem.exists(Paths.modsJson(eventsPath)) || sys.FileSystem.exists(Paths.json(eventsPath)))
-				#else
-				if (OpenFlAssets.exists(eventsPath))
-				#end
-				{
+		if (isEventFile != null || !isEventFile) {
+			if (isEventFile) {
+				if (FileUtil.jsonExists(eventsPath)) {
 					songPath = eventsPath;
-					#if (debug)
-					FlxG.log.add('Loaded song events json of: ${formattedFolder.toUpperCase()}');
-					#end
 				}
 			}
 		}
-		#if (debug)
-		else
-		{
-			FlxG.log.add('Skipping event jsons check.');
-		}
-		#end
 
 		/**
 		 * Mapped character animations (Like 'picospeaker') JSONs check.
 		 */
-		if (isMappedAnimJson != null || !isMappedAnimJson)
-		{
-			if (isMappedAnimJson)
-			{
-				#if MODS_ALLOWED
-				if (sys.FileSystem.exists(Paths.modsJson(mappedAnimsPath)) || sys.FileSystem.exists(Paths.json(mappedAnimsPath)))
-				#else
-				if (OpenFlAssets.exists(mappedAnimsPath))
-				#end
-				{
+		if (isMappedAnimJson != null || !isMappedAnimJson) {
+			if (isMappedAnimJson) {
+				if (FileUtil.jsonExists(mappedAnimsPath)) {
 					songPath = mappedAnimsPath;
-					#if (debug)
-					FlxG.log.add('Loaded character mapped json \'${jsonInput}\' for: ${formattedFolder.toUpperCase()}');
-					#end
 				}
 			}
 		}
-		#if (debug)
-		else
-		{
-			FlxG.log.add('Skipping mapped character anims check.');
-		}
-		#end
 
 		#if MODS_ALLOWED
 		var moddyFile:String = Paths.modsJson(songPath);
@@ -166,16 +134,11 @@ class Song
 		}
 		#end
 
-		if(rawJson == null) {
-			#if sys
-			rawJson = File.getContent(Paths.json(songPath)).trim();
-			#else
-			rawJson = Assets.getText(Paths.json(songPath)).trim();
-			#end
+		if (rawJson == null) {
+			rawJson = FileUtil.getContentOfFile(Paths.json(songPath)).trim();
 		}
 
-		while (!rawJson.endsWith("}"))
-		{
+		while (!rawJson.endsWith("}")) {
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 		}
 

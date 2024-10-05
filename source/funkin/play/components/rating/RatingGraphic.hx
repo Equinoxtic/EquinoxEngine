@@ -18,6 +18,8 @@ class RatingGraphic extends FunkinSprite
 	{
 		super(0, 0, false);
 
+		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING && !PlayState.isPixelStage);
+
 		loadRatingSprite(key, isPixelStage);
 
 		cameras = [ PlayState.instance.camHUD ];

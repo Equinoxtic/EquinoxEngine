@@ -9,21 +9,12 @@ import flixel.group.FlxSpriteGroup;
 
 class CinematicBorder extends flixel.group.FlxSpriteGroup
 {
-	private var instance:FlxBasic;
-
 	var borderSpriteTop:FlxSprite;
 	var borderSpriteBottom:FlxSprite;
 
-	public function new(instance:FlxBasic, ?initialScale:Null<Float>):Void
+	public function new(?initialScale:Null<Float>):Void
 	{
 		super();
-
-		if (instance == null)
-		{
-			instance = this;
-		}
-
-		this.instance = instance;
 
 		borderSpriteTop = new FlxSprite().loadGraphic(Paths.image('ui/visual/TopBorder'));
 		borderSpriteTop.screenCenter(X);
@@ -34,10 +25,5 @@ class CinematicBorder extends flixel.group.FlxSpriteGroup
 		borderSpriteBottom.screenCenter(X);
 		borderSpriteBottom.color = FlxColor.fromRGB(0, 0, 0);
 		add(borderSpriteBottom);
-	}
-
-	override function update(elapsed:Float):Void
-	{
-		super.update(elapsed);
 	}
 }

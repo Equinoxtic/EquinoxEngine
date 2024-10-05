@@ -10,8 +10,6 @@ import funkin.util.EaseUtil;
 
 class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 {
-	private var _instance:FlxBasic;
-
 	private var _songNameTxt:FunkinText;
 	private var _creditsTxt:FunkinText;
 
@@ -20,15 +18,9 @@ class SongCreditsPopUp extends FlxTypedSpriteGroup<FlxSprite>
 
 	private var _bg:FunkinSprite;
 
-	public function new(instance:Null<FlxBasic>, songName:String, songArtist:String, songCharter:String):Void
+	public function new(songName:String, songArtist:String, songCharter:String):Void
 	{
 		super(FlxG.width * 2, 0);
-
-		if (instance == null) {
-			instance = this;
-		}
-
-		this._instance = instance;
 
 		_bg = new FunkinSprite(0, 0, true);
 		_bg.loadSprite('ui/play/SongCreditsBG');

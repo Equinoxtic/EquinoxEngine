@@ -10,6 +10,13 @@ import llua.State;
 
 using StringTools;
 
+typedef PresenceOptions = {
+	@:optional var state             :String;
+	@:optional var smallImageKey     :String;
+	@:optional var hasStartTimestamp :Bool;
+	@:optional var endTimestamp      :Float;
+}
+
 class DiscordClient
 {
 	public static var isInitialized:Bool = false;
@@ -80,10 +87,13 @@ class DiscordClient
 
 	public static function changePresence(details:String, state:Null<String>, ?smallImageKey : String, ?hasStartTimestamp : Bool, ?endTimestamp: Float)
 	{
-		var startTimestamp:Float = if(hasStartTimestamp) Date.now().getTime() else 0;
+		var startTimestamp:Float = 0.0;
 
-		if (endTimestamp > 0)
-		{
+		if (hasStartTimestamp) {
+			startTimestamp = Date.now().getTime();
+		}
+
+		if (endTimestamp > 0) {
 			endTimestamp = startTimestamp + endTimestamp;
 		}
 
@@ -113,4 +123,22 @@ class DiscordClient
 		});
 	}
 	#end
+}
+
+class DiscordAPI
+{
+	public static function updateRichPresence(?details:Null<String> = '- DETAILS -', ?options:Null<PresenceOptions>):Void
+	{
+		#if (desktop)
+		DiscordClient.changePresence(
+			details,
+			options.state,
+			options.smallImageKey,
+			options.hasStartTimestamp,
+			options.endTimestamp
+		);
+		#else
+		return;
+		#end
+	}
 }

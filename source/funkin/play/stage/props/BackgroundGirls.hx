@@ -11,6 +11,8 @@ class BackgroundGirls extends FunkinSprite
 
 		frames = Paths.getSparrowAtlas('weeb/bgFreaks');
 
+		antialiasing = false;
+
 		swapDanceType();
 
 		animation.play('danceLeft');

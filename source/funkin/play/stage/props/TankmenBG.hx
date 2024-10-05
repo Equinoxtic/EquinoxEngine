@@ -17,7 +17,10 @@ class TankmenBG extends FunkinSprite
 		goingRight = false;
 		strumTime = 0;
 		goingRight = facingRight;
+
 		super(x, y);
+
+		scrollFactor.set(0.5, 0.5);
 
 		frames = Paths.getSparrowAtlas('tankmanKilled1');
 		animation.addByPrefix('run', 'tankman running', 24, true);

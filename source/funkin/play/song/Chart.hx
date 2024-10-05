@@ -30,20 +30,20 @@ class Chart
 	{
 		var JSON = null;
 
-		var stringPath:String = getDataPathOfSong(song, input, "difficulties/");
+		var stringPath:String = getDataPathOfSong(song, input, "difficulties");
 
 		switch (parseType)
 		{
 			case SONG:
-				stringPath = getDataPathOfSong(song, input, "difficulties");
+				stringPath = getDataPathOfSong(song, input, "difficulties", false);
 			case EVENTS:
-				stringPath = getDataPathOfSong(song, input, "events");
+				stringPath = getDataPathOfSong(song, input, "events", false);
 			case DATA:
-				stringPath = getDataPathOfSong(song, input, "songdata");
+				stringPath = getDataPathOfSong(song, input, "songdata", false);
 			case METADATA:
-				stringPath = getDataPathOfSong(song, input, null);
+				stringPath = getDataPathOfSong(song, input, null, false);
 			case CHARACTER_MAP:
-				stringPath = getDataPathOfSong(song, input, "character-maps");
+				stringPath = getDataPathOfSong(song, input, "character-maps", false);
 		}
 
 		#if (MODS_ALLOWED)
@@ -53,13 +53,8 @@ class Chart
 		}
 		#end
 
-		if (JSON == null)
-		{
-			#if (sys)
-			JSON = File.getContent(Paths.json(stringPath).trim());
-			#else
-			JSON = Assets.getText(Paths.json(stringPath).trim());
-			#end
+		if (JSON == null) {
+			JSON = FileUtil.getContentOfFile(Paths.json(stringPath)).trim();
 		}
 
 		while (!JSON.endsWith("}")) {
@@ -88,15 +83,13 @@ class Chart
 		return parsedJSON;
 	}
 
-	public static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = ""):String
+	public static function getDataPathOfSong(song:String, key:String, ?library:Null<String> = "", ?out:Bool = true):String
 	{
 		final songPath:String = Paths.formatToSongPath(song);
+		final filePathString:String = 'charts/${songPath}/${_formatLibraryString(library)}${key}';
+		var filePath:String = filePathString;
 
-		var filePathString = 'charts/${songPath}/${((library != '' && library != null) ? '$library/' : '')}${key}';
-
-		var filePath = filePathString;
-		switch(library)
-		{
+		switch(library) {
 			case 'events' | 'songdata' | 'character-maps':
 				filePath = '${filePathString}${FunkinSound.erectModeSuffix(false)}';
 			case 'difficulties':
@@ -105,14 +98,14 @@ class Chart
 				filePath = '${filePathString}${FunkinSound.erectModeSuffix(true)}';
 		}
 
-		trace(Paths.json(filePath));
+		if (!FileUtil.jsonExists(filePath)) {
+			return "";
+		}
 
-		#if (MODS_ALLOWED)
-		if (FileSystem.exists(Paths.json(filePath)) || FileSystem.exists(Paths.modsJson(filePath)))
-		#else
-		if (OpenFLAssets.exists(Paths.json(filePath)))
-		#end
-		{
+		if (FileUtil.jsonExists(filePath)) {
+			if (out) {
+				trace(filePath);
+			}
 			return filePath;
 		}
 
@@ -148,5 +141,13 @@ class Chart
 				}
 			}
 		}
+	}
+
+	private static function _formatLibraryString(library:String):String
+	{
+		if (library != null && library.charAt(0) != '') {
+			return '$library/';
+		}
+		return '';
 	}
 }

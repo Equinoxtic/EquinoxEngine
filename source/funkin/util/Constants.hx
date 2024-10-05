@@ -1,9 +1,5 @@
 package funkin.util;
 
-import lime.app.Application;
-import funkin.util.Http;
-import funkin.util.macro.GitCommit as Repository;
-
 using StringTools;
 
 class Constants
@@ -30,6 +26,16 @@ class Constants
 	 * The default offset of the icons.
 	 */
 	public static final ICON_OFFSET:Int = 26;
+
+	/**
+	 * The default width for the icon sprites.
+	 */
+	public static final ICON_WIDTH:Int = 150;
+
+	/**
+	 * The default height for the icon sprites.
+	 */
+	public static final ICON_HEIGHT:Int = 150;
 
 	/**
 	 * The winning percentage based on health percentage.
@@ -59,6 +65,11 @@ class Constants
 	/**
 	 * ============================= NOTE VALUES =============================
 	 */
+
+	/**
+	 * The alpha/transparency of the Note itself.
+	 */
+	public static final NOTE_ALPHA:Float = 1.0;
 
 	/**
 	 * The alpha/transparency of the Note Tail.
@@ -246,12 +257,12 @@ class Constants
 	/**
 	 * The maximum value for the score multiplier.
 	 */
-	public static final SCORE_MULTIPLIER_MAX:Float = 8.0;
+	public static final SCORE_MULTIPLIER_MAX:Float = 500.0;
 
 	/**
 	 * The maximum value for the miss multiplier.
 	 */
-	public static final MISS_MULTIPLIER_MAX:Float = 7.5;
+	public static final MISS_MULTIPLIER_MAX:Float = SCORE_MULTIPLIER_MAX / 15.0;
 
 	/**
 	 * The global cap for all integers.

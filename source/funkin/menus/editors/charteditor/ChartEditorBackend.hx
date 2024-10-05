@@ -1,5 +1,7 @@
 package funkin.menus.editors.charteditor;
 
+import flixel.FlxBasic;
+import flixel.FlxObject;
 import funkin.sound.FunkinSound;
 import funkin.menus.editors.ChartingState.SaveContext;
 import funkin.sound.FunkinSound.FunkinSoundChartEditor;
@@ -23,26 +25,16 @@ class ChartEditorBackend
 {
 	// TODO: Finish rest of the methods that are needed.
 
-	public static var zoomAmount:Float = 2.0;
+	public static var zoomAmount:Float = 1.0;
 
 	public static var songDataMap:Map<String, Dynamic> = [];
 
 	public static var CURRENT_SONG:SwagSong = null;
 
 	// private static var GRID_BACKGROUND:FlxSprite;
-	private static var GRID_SIZE:Int = 40;
-	private static var GRID_X:Null<Float> = 0.0;
-	private static var GRID_Y:Null<Float> = 0.0;
+	public static var GRID_SIZE:Int = 40;
 
-	public static var CURRENTLY_RENDERED_NOTES:FlxTypedGroup<Note>;
-	public static var CURRENTLY_RENDERED_SUSTAINS:FlxTypedGroup<FlxSprite>;
-	public static var NEXT_RENDERED_NOTES:FlxTypedGroup<Note>;
-	public static var NEXT_RENDERED_SUSTAINS:FlxTypedGroup<FlxSprite>;
-
-	public static var NOTE_TYPES:Map<String, Null<Int>> = [];
-	public static var NOTE_TYPES_INT:Map<Int, String> = [];
-
-	public static function updatePlayerIcons(leftIcon:Null<HealthIcon>, rightIcon:Null<HealthIcon>, ?currentSection:Int):Void
+	public static function updatePlayerIcons(leftIcon:HealthIcon, rightIcon:HealthIcon, ?currentSection:Int):Void
 	{
 		if (CURRENT_SONG == null) {
 			return;
@@ -87,25 +79,18 @@ class ChartEditorBackend
 		}
 	}
 
-	public static function setupSong(currentSong:Null<SwagSong>, ?initialBeats:Null<Int>):Void
+	public static function setupSong(currentSong:SwagSong, ?initialBeats:Int):Void
 	{
 		if (currentSong == null) {
 			return;
 		}
 
 		CURRENT_SONG = currentSong;
+
+		trace('Loaded Song ${CURRENT_SONG.song}');
 	}
 
-	public static function setupGrid(?gridSize:Null<Int> = 40, ?gridX:Null<Float> = 0.0, ?gridY:Null<Float> = 0.0):Void
-	{
-		if (gridSize != null && gridSize > 0) {
-			GRID_SIZE = gridSize;
-			GRID_X = gridX;
-			GRID_Y = gridY;
-		}
-	}
-
-	public static function updateGridBPM(?sec:Null<Int> = 0):Void
+	public static function updateGridBPM(?sec:Int = 0):Void
 	{
 		if (CURRENT_SONG == null) {
 			return;
@@ -129,52 +114,18 @@ class ChartEditorBackend
 		}
 	}
 
-	public static function setupNoteRenderer(
-		currentlyRendered:{notes: FlxTypedGroup<Note>, sustains: FlxTypedGroup<FlxSprite>},
-		renderedNext:{notes: FlxTypedGroup<Note>, sustains: FlxTypedGroup<FlxSprite>}
-	):Void
-	{
-		if (currentlyRendered != null && renderedNext != null)
-		{
-			CURRENTLY_RENDERED_NOTES = currentlyRendered.notes;
-			CURRENTLY_RENDERED_SUSTAINS = currentlyRendered.sustains;
-			NEXT_RENDERED_NOTES = renderedNext.notes;
-			NEXT_RENDERED_SUSTAINS = renderedNext.sustains;
-		}
-	}
-
-	public static function setupNoteTypes(noteTypes:Map<String, Null<Int>>, noteTypesInt:Map<Int, String>):Void
-	{
-		if (noteTypes != null && noteTypesInt != null) {
-			NOTE_TYPES = noteTypes;
-			NOTE_TYPES_INT = noteTypesInt;
-		}
-	}
-
-	public static function renderSectionNotes(notesArray:Null<Array<Dynamic>>, beats:Null<Int>):Void
-	{
-		var note:Note = setupNoteData(notesArray);
-		CURRENTLY_RENDERED_NOTES.add(note);
-
-		if (note.sustainLength > 0) {
-			CURRENTLY_RENDERED_SUSTAINS.add(setupSustainNote(note, beats, Conductor.stepCrochet));
-		}
-	}
-
-	public static function updateRenderedNotes(?sec:Null<Int> = 0):Void
+	public static function renderNextNotes(sec:Int = 0, noteTypes:Map<Int, String>, nextRenderedNotes:FlxTypedGroup<Note>, nextRenderedSustains:FlxTypedGroup<FlxSprite>, ?yAdd:Float):Void
 	{
 		var beats:Float = getSectionBeats(1);
 
 		if (sec < CURRENT_SONG.notes.length - 1)
 		{
 			for (i in CURRENT_SONG.notes[sec + 1].sectionNotes) {
-				var note:Note = setupNoteData(i, sec, true);
+				var note:Note = setupNoteData(i, noteTypes, sec, true, yAdd);
 				note.alpha = 0.6;
-				NEXT_RENDERED_NOTES.add(note);
+				nextRenderedNotes.add(note);
 				if (note.sustainLength > 0) {
-					NEXT_RENDERED_SUSTAINS.add(
-						setupSustainNote(note, beats, Conductor.stepCrochet)
-					);
+					nextRenderedSustains.add(setupSustainNote(note, beats, Conductor.stepCrochet));
 				}
 			}
 		}
@@ -186,14 +137,14 @@ class ChartEditorBackend
 		{
 			if (end > event[0] && event[0] >= start)
 			{
-				var note:Note = setupNoteData(event, sec, true);
-				note.alpha = 0.6;
-				NEXT_RENDERED_NOTES.add(note);
+				var eventNote:Note = setupNoteData(event, noteTypes, sec, true, yAdd);
+				eventNote.alpha = 0.6;
+				nextRenderedNotes.add(eventNote);
 			}
 		}
 	}
 
-	public static function getNoteType(noteType:Null<Map<String, Null<Int>>>, ?sectionNoteArray:Dynamic):String
+	public static function getNoteType(noteType:Map<String, Null<Int>>, ?sectionNoteArray:Array<Dynamic>):String
 	{
 		var m_IntType = noteType.get(sectionNoteArray[3]);
 		var m_Type:String = '' + m_IntType;
@@ -205,15 +156,11 @@ class ChartEditorBackend
 		return m_Type;
 	}
 
-	public static function setupNoteData(noteArray:Null<Array<Dynamic>>, ?currentSection:Null<Int>, ?isNextSection:Null<Bool>):Note
+	public static function setupNoteData(noteArray:Array<Dynamic>, noteTypes:Map<Int, String>, ?currentSection:Int, ?isNextSection:Bool, ?yAdd:Float):Note
 	{
-		if (CURRENT_SONG == null || noteArray == null) {
-			return null;
-		}
-
 		var NOTE_INFO = noteArray[1];
 		var STRUM_TIME = noteArray[0];
-		var SUSTAIN:Null<Dynamic> = noteArray[2];
+		var SUSTAIN:Dynamic = noteArray[2];
 
 		var note:Note = new Note(
 			STRUM_TIME,
@@ -229,12 +176,8 @@ class ChartEditorBackend
 			 * For Regular Notes.
 			 */
 
-			if (NOTE_TYPES_INT == null) {
-				return null;
-			}
-
 			if (!Std.isOfType(noteArray[3], String)) {
-				noteArray[3] = NOTE_TYPES_INT.get(noteArray[3]);
+				noteArray[3] = noteTypes.get(noteArray[3]);
 			}
 
 			if (noteArray.length > 3 && (noteArray[3] == null || noteArray[3].length < 1)) {
@@ -252,11 +195,10 @@ class ChartEditorBackend
 
 			note.loadGraphic(Paths.image('eventArrow'));
 			note.eventName = _getEventName(noteArray[1]);
-
-			var INDEXES = noteArray[1][0][2];
+			note.eventLength = noteArray[1].length;
 
 			if (noteArray[1].length < 2) {
-				note.setEventValues(INDEXES, INDEXES);
+				note.setEventValues(noteArray[1][0][1], noteArray[1][0][2]);
 			}
 
 			note.noteData = -1;
@@ -276,13 +218,9 @@ class ChartEditorBackend
 			}
 		}
 
-		var section:Float = getSectionBeats((isNextSection ? 1 : 0), currentSection);
+		var section:Float = getSectionBeats(isNextSection ? 1 : 0, currentSection);
 
-		note.y = _getYFromStrumNotes(
-			STRUM_TIME - getSectionStartTime(),
-			section,
-			Conductor.stepCrochet
-		);
+		note.y = _getYFromStrumNotes(STRUM_TIME - getSectionStartTime(currentSection), section, Conductor.stepCrochet, yAdd);
 
 		if (note.y < -150) {
 			note.y = -150;
@@ -291,7 +229,7 @@ class ChartEditorBackend
 		return note;
 	}
 
-	public static function setupSustainNote(note:Null<Note>, beats:Null<Float>, crochet:Null<Float>):FlxSprite
+	public static function setupSustainNote(note:Note, beats:Float, crochet:Float):FlxSprite
 	{
 		var height:Int = Math.floor(FlxMath.remapToRange(note.sustainLength, 0, crochet * 16, 0, GRID_SIZE * 16 * zoomAmount) + (GRID_SIZE * zoomAmount) - GRID_SIZE / 2);
 		var minHeight:Int = Std.int((GRID_SIZE * zoomAmount / 2) + GRID_SIZE / 2);
@@ -311,7 +249,7 @@ class ChartEditorBackend
 		return spr;
 	}
 
-	public static function getSectionBeats(?targetSection:Null<Int> = null, ?currentSection:Null<Int> = 0):Float
+	public static function getSectionBeats(?targetSection:Int = null, ?currentSection:Int = 0):Float
 	{
 		if (targetSection == null) {
 			targetSection = currentSection;
@@ -326,7 +264,7 @@ class ChartEditorBackend
 		return (v != null ? v : 4);
 	}
 
-	public static function getSectionStartTime(?currentSection:Null<Int> = 0, ?add:Int = 0):Float
+	public static function getSectionStartTime(?currentSection:Int = 0, ?add:Int = 0):Float
 	{
 		var bpm:Float = CURRENT_SONG.bpm;
 		var pos:Float = 0;
@@ -344,12 +282,8 @@ class ChartEditorBackend
 		return pos;
 	}
 
-	public static function updateWaveform(waveformSprite:Null<FlxSprite>, currentSection:Null<Int>, height:Float, width:Float):Void
+	public static function updateWaveform(waveformSprite:FlxSprite, currentSection:Int, height:Float, width:Float):Void
 	{
-		if (CURRENT_SONG == null) {
-			return;
-		}
-
 		#if (desktop)
 		FunkinSoundChartEditor.updateWaveformSprite(
 			waveformSprite,
@@ -394,7 +328,7 @@ class ChartEditorBackend
 		return null;
 	}
 
-	public static function saveSong(?saveContext:Null<SaveContext> = SaveContext.CHART):Void
+	public static function saveSong(?saveContext:SaveContext = SaveContext.CHART):Void
 	{
 		var v:Dynamic = {};
 
@@ -418,7 +352,7 @@ class ChartEditorBackend
 	}
 
 	@:noPrivateAccess
-	private static function _saveJsonDataToSongByContext(json:Dynamic, fileName:String, ?saveContext:Null<SaveContext> = SaveContext.CHART):Void
+	private static function _saveJsonDataToSongByContext(json:Dynamic, fileName:String, ?saveContext:SaveContext = SaveContext.CHART):Void
 	{
 		if (json != null)
 		{
@@ -451,7 +385,7 @@ class ChartEditorBackend
 	}
 
 	@:noPrivateAccess
-	private static function _getFileNameByContext(?saveContext:Null<SaveContext> = SaveContext.CHART):String
+	private static function _getFileNameByContext(?saveContext:SaveContext = SaveContext.CHART):String
 	{
 		var fname:String = '';
 
@@ -518,8 +452,9 @@ class ChartEditorBackend
 	}
 
 	@:noPrivateAccess
-	private static function _getYFromStrumNotes(strumTime:Null<Float>, beats:Null<Float>, crochet:Null<Float>):Float {
+	private static function _getYFromStrumNotes(strumTime:Float, beats:Float, ?crochet:Float, ?yAmount:Float):Float
+	{
 		var v:Float = strumTime / (beats * 4 * crochet);
-		return GRID_SIZE * beats * 4 * zoomAmount * v + GRID_Y;
+		return GRID_SIZE * beats * 4 * zoomAmount * v + yAmount;
 	}
 }

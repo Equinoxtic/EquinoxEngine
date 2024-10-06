@@ -7,14 +7,19 @@ class ColorUtil
 {
 	private static final DEFAULT_COLOR:Int = 0xFFFFFFFF;
 
-	public static function convertRGBAToFloat(colorList:{r:Int, g:Int, b:Int, a:Int}):FlxColor
+	/**
+	 * Converts colors of RGBA to Float using FlxColor.
+	 * @param colors
+	 * @return FlxColor
+	 */
+	public static function convertRGBAToFloat(colors:{r:Int, g:Int, b:Int, a:Int}):FlxColor
 	{
 		final max:Int = 255;
 
-		final R:Int = colorList.r;
-		final G:Int = colorList.g;
-		final B:Int = colorList.b;
-		final A:Int = colorList.a;
+		final R:Int = colors.r;
+		final G:Int = colors.g;
+		final B:Int = colors.b;
+		final A:Int = colors.a;
 
 		if (R >= max || G >= max || B >= max || A >= max) {
 			return DEFAULT_COLOR;
@@ -25,6 +30,11 @@ class ColorUtil
 		);
 	}
 
+	/**
+	 * Convert an array of RGBA integers into floats.
+	 * @param array
+	 * @return FlxColor
+	 */
 	public static function convertRGBAArrayToFloats(array:Array<Int>):FlxColor
 	{
 		if (array == null || array.length <= 0) {

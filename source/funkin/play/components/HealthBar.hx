@@ -85,6 +85,6 @@ class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 			}
 		}
 
-		return FlxColor.fromRGBFloat(1.0, 1.0, 1.0, 1.0);
+		return FlxColor.WHITE;
 	}
 }

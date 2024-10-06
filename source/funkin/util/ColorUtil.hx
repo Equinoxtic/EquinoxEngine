@@ -7,6 +7,32 @@ class ColorUtil
 {
 	private static final DEFAULT_COLOR:Int = 0xFFFFFFFF;
 
+	public static function convertIntToRGB(colors:{r:Int, g:Int, b:Int}):FlxColor
+	{
+		final R:Int = colors.r;
+		final G:Int = colors.g;
+		final B:Int = colors.b;
+
+		if ( m_checkColorsOutOfRange(R, G, B, null) ) {
+			return DEFAULT_COLOR;
+		}
+
+		return FlxColor.fromRGB(R, G, B);
+	}
+
+	public static function getRGBFromArray(colorArray:Array<Int>):FlxColor
+	{
+		if ( m_checkArrayOfColors(colorArray) ) {
+			return DEFAULT_COLOR;
+		}
+
+		return convertIntToRGB({
+			r: colorArray[0],
+			g: colorArray[1],
+			b: colorArray[2]
+		});
+	}
+
 	/**
 	 * Converts colors of RGBA to Float using FlxColor.
 	 * @param colors
@@ -21,7 +47,7 @@ class ColorUtil
 		final B:Int = colors.b;
 		final A:Int = colors.a;
 
-		if (R >= max || G >= max || B >= max || A >= max) {
+		if ( m_checkColorsOutOfRange(R, G, B, A) ) {
 			return DEFAULT_COLOR;
 		}
 
@@ -35,17 +61,17 @@ class ColorUtil
 	 * @param array
 	 * @return FlxColor
 	 */
-	public static function convertRGBAArrayToFloats(array:Array<Int>):FlxColor
+	public static function convertRGBAArrayToFloats(colorArray:Array<Int>):FlxColor
 	{
-		if (array == null || array.length <= 0) {
+		if ( m_checkArrayOfColors(colorArray) ) {
 			return DEFAULT_COLOR;
 		}
 
 		return convertRGBAToFloat({
-			r: array[0],
-			g: array[1],
-			b: array[2],
-			a: array[3]
+			r: colorArray[0],
+			g: colorArray[1],
+			b: colorArray[2],
+			a: colorArray[3]
 		});
 	}
 
@@ -89,5 +115,25 @@ class ColorUtil
 		}
 
 		return maxKey;
+	}
+
+	@:noPrivateAccess
+	private static function m_checkArrayOfColors(colorArray:Array<Dynamic>):Bool
+	{
+		return (colorArray == null || colorArray.length <= 0);
+	}
+
+	@:noPrivateAccess
+	private static function m_checkColorsOutOfRange(R:Int, G:Int, B:Int, ?A:Null<Int> = 255):Bool
+	{
+		final max:Int = 255;
+
+		var v:Bool = (R > max || G > max || B > max);
+
+		if (A != null) {
+			v = (R > max || G > max || B > max || A > max);
+		}
+
+		return v;
 	}
 }

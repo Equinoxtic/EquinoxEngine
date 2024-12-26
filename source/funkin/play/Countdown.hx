@@ -12,11 +12,11 @@ class Countdown extends flixel.group.FlxSpriteGroup
 	private var isHidden:Bool = false;
 	public var soundSuffix:String = '';
 
-	var countdownReady:FlxSprite;
-	var countdownSet:FlxSprite;
-	var countdownGo:FlxSprite;
+	var countdownReady:FunkinSprite;
+	var countdownSet:FunkinSprite;
+	var countdownGo:FunkinSprite;
 
-	public function new(X:Float, Y:Float, ?antialias:Bool = true, ?introAssets:Null<Array<String>>):Void
+	public function new(X:Float, Y:Float, ?antialias:Bool = true):Void
 	{
 		super(X, Y);
 
@@ -55,31 +55,25 @@ class Countdown extends flixel.group.FlxSpriteGroup
 		switch(key.toLowerCase())
 		{
 			case 'ready':
-				countdownReady = new FlxSprite().loadGraphic(Paths.image(introAssets[0]));
-				countdownReady.scrollFactor.set();
+				countdownReady = new FunkinSprite(0, 0, false);
+				countdownReady.loadSprite(introAssets[0]);
 				countdownReady.screenCenter();
-				countdownReady.antialiasing = antialias;
-
 				add(countdownReady);
 
 				startTween(countdownReady);
 
 			case 'set':
-				countdownSet = new FlxSprite().loadGraphic(Paths.image(introAssets[1]));
-				countdownSet.scrollFactor.set();
+				countdownSet = new FunkinSprite(0, 0, false);
+				countdownSet.loadSprite(introAssets[1]);
 				countdownSet.screenCenter();
-				countdownSet.antialiasing = antialias;
-
 				add(countdownSet);
 
 				startTween(countdownSet);
 
 			case 'go':
-				countdownGo = new FlxSprite().loadGraphic(Paths.image(introAssets[2]));
-				countdownGo.scrollFactor.set();
+				countdownGo = new FunkinSprite(0, 0, false);
+				countdownGo.loadSprite(introAssets[2]);
 				countdownGo.screenCenter();
-				countdownGo.antialiasing = antialias;
-
 				add(countdownGo);
 
 				startTween(countdownGo);

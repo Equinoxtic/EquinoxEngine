@@ -22,7 +22,7 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		super(X, Y);
 
-		timeBarBG = new AttachedSprite('solariumUI/timeBar');
+		timeBarBG = new AttachedSprite('equinoxUI/timeBar');
 		timeBarBG.screenCenter(FlxAxes.X);
 		timeBarBG.setGraphicSize(Std.int(timeBarBG.width * 1.15), Std.int(timeBarBG.height * 1.75));
 		timeBarBG.y += 10;

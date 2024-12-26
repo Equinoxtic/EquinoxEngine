@@ -2924,18 +2924,17 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		bopPlayerIconsToBeat(elapsed);
+
+		iconP1.updateHealthIcon();
+		iconP2.updateHealthIcon();
+
+		// Make song and character editor only debug exclusive.
+		#if (debug)
 		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene) {
 			FlxG.mouse.visible = true;
 			openChartEditor();
 		}
-
-		iconP1.scaleIcon(FlxMath.lerp(1, iconP1.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
-		iconP1.offsetIcon(Constants.ICON_OFFSET, true);
-		iconP1.updateHealthIcon();
-
-		iconP2.scaleIcon(FlxMath.lerp(1, iconP2.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
-		iconP2.offsetIcon(Constants.ICON_OFFSET, false);
-		iconP2.updateHealthIcon();
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene)
 		{
@@ -2945,6 +2944,7 @@ class PlayState extends MusicBeatState
 			cancelMusicFadeTween();
 			MusicBeatState.switchState(new CharacterEditorState(SONG.player2));
 		}
+		#end
 
 		if (startedCountdown) {
 			Conductor.songPosition += FlxG.elapsed * 1000 * playbackRate;
@@ -5154,6 +5154,15 @@ class PlayState extends MusicBeatState
 		} else {
 			lerpAmplitude = noteWiggleAmplitude;
 		}
+	}
+
+	private function bopPlayerIconsToBeat(elapsed:Float):Void
+	{
+		iconP1.scaleIcon(FlxMath.lerp(1, iconP1.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
+		iconP1.offsetIcon(Constants.ICON_OFFSET, true);
+
+		iconP2.scaleIcon(FlxMath.lerp(1, iconP2.scale.x, FunkinUtil.boundTo(1 - (elapsed * Constants.ICON_BOP_BEATDECAY * playbackRate), 0, 1)));
+		iconP2.offsetIcon(Constants.ICON_OFFSET, false);
 	}
 
 	override function sectionHit()

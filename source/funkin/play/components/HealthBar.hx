@@ -22,7 +22,7 @@ class HealthBar extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		super(X, Y);
 
-		healthBarBG = new AttachedSprite('gameUI/healthBar');
+		healthBarBG = new AttachedSprite('ui/healthBar');
 		healthBarBG.setGraphicSize(Std.int(healthBarBG.width * 1), Std.int(healthBarBG.height * 1.2));
 		healthBarBG.visible = !GlobalSettings.HIDE_HUD;
 		healthBarBG.xAdd = -4;

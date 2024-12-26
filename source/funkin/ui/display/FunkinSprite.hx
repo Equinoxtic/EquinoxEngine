@@ -87,7 +87,7 @@ class FunkinSprite extends FlxSprite
 
 		scrollFactor.set();
 
-		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING);
+		antialiasing = (GlobalSettings.SPRITE_ANTIALIASING && !PlayState.isPixelStage);
 	}
 
 	/**

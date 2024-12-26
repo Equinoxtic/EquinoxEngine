@@ -22,6 +22,8 @@ class FPSCounter extends TextField
 	**/
 	public var memoryMegas(get, never):Float;
 
+	@:noPrivateAccess private static var fontPath:String = 'assets/fonts';
+
 	@:noCompletion private var times:Array<Float>;
 
 	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
@@ -34,7 +36,7 @@ class FPSCounter extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat(Assets.getFont('assets/fonts/comfortaabold.ttf').fontName, 14, color);
+		defaultTextFormat = new TextFormat(Assets.getFont('$fontPath/comfortaabold.ttf').fontName, 14, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";

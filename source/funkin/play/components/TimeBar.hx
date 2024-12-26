@@ -74,7 +74,7 @@ class TimeBar extends FlxTypedSpriteGroup<FlxSprite>
 			if (formatMap.exists(displayMode)) {
 				defaultKey = displayMode;
 				if (defaultKey == 'Percentage Only') {
-					timeText.x = (timeBar.x * 1.0) + 78.5;
+					timeText.x = (timeBar.x * 1.0) - 78.5;
 					timeText.alignment = FlxTextAlign.LEFT;
 				}
 			}

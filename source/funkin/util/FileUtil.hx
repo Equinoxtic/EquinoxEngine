@@ -63,34 +63,51 @@ class FileUtil
 		if ((data != null) && (data.length > 0))
 		{
 			m_JSON = new FileReference();
-			m_JSON.addEventListener(Event.COMPLETE, m_onSaveComplete);
-			m_JSON.addEventListener(Event.CANCEL, m_onSaveCancel);
-			m_JSON.addEventListener(IOErrorEvent.IO_ERROR, m_onSaveError);
+			_addEventListeners(m_JSON);
 			m_JSON.save(data.trim(), filename + '.json');
 		}
 	}
 
+	@:noPrivateAccess
+	private static function _addEventListeners(json:Null<FileReference>)
+	{
+		if (json != null) {
+			json.addEventListener(Event.COMPLETE, m_onSaveComplete);
+			json.addEventListener(Event.CANCEL, m_onSaveCancel);
+			json.addEventListener(IOErrorEvent.IO_ERROR, m_onSaveError);
+		} else {
+			return;
+		}
+	}
+
+	@:noPrivateAccess
+	private static function _removeEventListeners(json:Null<FileReference>):Void
+	{
+		if (json != null) {
+			json.removeEventListener(Event.COMPLETE, m_onSaveComplete);
+			json.removeEventListener(Event.CANCEL, m_onSaveCancel);
+			json.removeEventListener(IOErrorEvent.IO_ERROR, m_onSaveError);
+			json = null;
+		} else {
+			return;
+		}
+	}
+
+	@:noPrivateAccess
 	private static function m_onSaveComplete(_):Void
 	{
-		m_JSON.removeEventListener(Event.COMPLETE, m_onSaveComplete);
-		m_JSON.removeEventListener(Event.CANCEL, m_onSaveCancel);
-		m_JSON.removeEventListener(IOErrorEvent.IO_ERROR, m_onSaveError);
-		m_JSON = null;
+		_removeEventListeners(m_JSON);
 	}
 
+	@:noPrivateAccess
 	private static function m_onSaveCancel(_):Void
 	{
-		m_JSON.removeEventListener(Event.COMPLETE, m_onSaveComplete);
-		m_JSON.removeEventListener(Event.CANCEL, m_onSaveCancel);
-		m_JSON.removeEventListener(IOErrorEvent.IO_ERROR, m_onSaveError);
-		m_JSON = null;
+		_removeEventListeners(m_JSON);
 	}
 
+	@:noPrivateAccess
 	private static function m_onSaveError(_):Void
 	{
-		m_JSON.removeEventListener(Event.COMPLETE, m_onSaveComplete);
-		m_JSON.removeEventListener(Event.CANCEL, m_onSaveCancel);
-		m_JSON.removeEventListener(IOErrorEvent.IO_ERROR, m_onSaveError);
-		m_JSON = null;
+		_removeEventListeners(m_JSON);
 	}
 }

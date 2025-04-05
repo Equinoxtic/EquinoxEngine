@@ -103,12 +103,15 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			optionText.targetY = i;
 			grpOptions.add(optionText);
 
-			if (optionsArray[i].type == 'bool') {
+			if (optionsArray[i].type == 'bool')
+			{
 				var checkbox:Checkbox = new Checkbox(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
 				checkbox.sprTracker = optionText;
 				checkbox.ID = i;
 				checkboxGroup.add(checkbox);
-			} else {
+			}
+			else
+			{
 				optionText.x -= 80;
 				optionText.startPosition.x -= 80;
 				var valueText:AttachedText = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 80);
@@ -144,18 +147,15 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var holdValue:Float = 0;
 	override function update(elapsed:Float):Void
 	{
-		if (controls.UI_UP_P)
-		{
+		if (controls.UI_UP_P) {
 			changeSelection(-1);
 		}
 
-		if (controls.UI_DOWN_P)
-		{
+		if (controls.UI_DOWN_P) {
 			changeSelection(1);
 		}
 
-		if (controls.BACK)
-		{
+		if (controls.BACK) {
 			close();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
@@ -164,15 +164,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		{
 			var usesCheckbox = true;
 
-			if (curOption.type != 'bool')
-			{
+			if (curOption.type != 'bool') {
 				usesCheckbox = false;
 			}
 
 			if (usesCheckbox)
 			{
-				if (controls.ACCEPT)
-				{
+				if (controls.ACCEPT) {
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					curOption.setValue((curOption.getValue() == true) ? false : true);
 					curOption.change();
@@ -184,11 +182,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				if (controls.UI_LEFT || controls.UI_RIGHT)
 				{
 					var pressed = (controls.UI_LEFT_P || controls.UI_RIGHT_P);
+
 					if (holdTime > 0.5 || pressed)
 					{
 						if (pressed)
 						{
 							var add:Dynamic = null;
+
 							if (curOption.type != 'string') {
 								add = controls.UI_LEFT ? -curOption.changeValue : curOption.changeValue;
 							}

@@ -48,7 +48,7 @@ $ git clone --depth=1 --recursive "https://github.com/Equinoxtic/EquinoxEngine.g
 * ALl of this is a total of 4GB. So it's advised to free a little bit of space in your hard drive.
 */
 
-MSVC v142 - VS 2019 C++ x64/x86 build tools (Latest)
+MSVC v143 - VS 2022 C++ x64/x86 build tools (Latest)
 
 Windows 10 SDK (10.0.17763.0) // For those who are on Visual Studio 2019.
 

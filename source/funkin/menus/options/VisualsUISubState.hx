@@ -33,7 +33,7 @@ class VisualsUISubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Detailed Judgement Counter Info',
 			'If checked, the Judgement Counter will also track the total note hits, combo and misses.',
-			'detailedJudgementInfo',
+			'detailedJudgementCounter',
 			'bool',
 			false);
 		addOption(option);

@@ -475,12 +475,12 @@ class PlayState extends MusicBeatState
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(borderCam, false);
-		FlxG.cameras.add(camRating, false);
 		FlxG.cameras.add(camStrum, false);
 		FlxG.cameras.add(camSus, false);
 		FlxG.cameras.add(camNotes, false);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camExternalInfo, false);
+		FlxG.cameras.add(camRating, false);
 		FlxG.cameras.add(camOther, false);
 
 		shaderCameraGroup.push(camGame);

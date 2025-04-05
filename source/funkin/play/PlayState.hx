@@ -484,11 +484,14 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camOther, false);
 
 		shaderCameraGroup.push(camGame);
+
+		/* No more of this nonsense, it just downgrades performance when you're in senpai's fucking game
 		shaderCameraGroup.push(camHUD);
 		shaderCameraGroup.push(camRating);
 		shaderCameraGroup.push(camSus);
 		shaderCameraGroup.push(camStrum);
 		shaderCameraGroup.push(camNotes);
+		*/
 
 		camHUD.zoom = Constants.CAMERA_HUD_ZOOM;
 		camRating.zoom = 0.8;
